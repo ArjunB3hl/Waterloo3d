@@ -1,9 +1,10 @@
 # Image request B014 - North-east of Laurier - tiles 4_-2, 3_-3, 4_-3
 
-> **DRAFT - do not send yet.** Waiting for 3_-2, 4_-1, 2_-3 to be accepted. After that, rebuild with
-> `python3 pipeline/art_request.py build B014` - the margins then show the finished art.
+> **DRAFT - do not send yet.** Waiting for tiles from B009 (4_-1); B010 (2_-3); B011 (3_-2) to be accepted. This packet is rebuilt
+> automatically when `art_import.py <batch> --accept` accepts the last of them (or run `python3 pipeline/art_request.py build B014`);
+> the current files are placeholders - do not attach them.
 
-Packet revision 1, built 2026-11-04T20:33:51Z. Status: `draft`.
+Packet revision 2, built 2026-11-04T20:53:53Z. Status: `draft`.
 
 ## What to do (for the user)
 
@@ -54,15 +55,17 @@ ATTACHED FILES
 - B014_classes_4_-2.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
 - B014_depth_4_-2.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
 - B014_style_0_0.png (1024x1024) - STYLE: finished, accepted artwork of neighbouring tile 0_0 - match its palette, pixel size, outlines, windows, trees and light exactly
-- B014_contact_sheet.png (2560x2104) - CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels
+- B014_contact_sheet.png (1536x1592) - CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels
 - B014_classes_legend.png (760x664) - LEGEND for the semantic maps
+
+INPUT LIMIT: if your image tool accepts at most 5 input images, pass exactly these to it: B014_context_4_-2.png, B014_mask_4_-2.png, B014_classes_4_-2.png, B014_depth_4_-2.png, B014_style_0_0.png. Read B014_contact_sheet.png and B014_classes_legend.png yourself and do not pass them to the tool.
 
 ART DIRECTION
 - Detailed pixel-art city illustration with a miniature-diorama feel: crisp, deliberate pixel clusters and clean edges where materials meet. No blur, airbrush, painterly smearing, film grain or photo texture.
 - Clear, readable architecture: repeated window detail on every facade (regular rows and columns matching the building's height), recognizable roof shapes, parapets and rooftop equipment.
 - Warm, readable palette in consistent late-summer afternoon daylight: rich but natural greens, cream and warm-grey paving, soft blue-grey shade.
-- Local vegetation: mature maple and oak canopy in layered leaf clusters, mown campus lawns crossed by worn footpaths, lush greens along creeks and ponds.
-- Waterloo materials: University of Waterloo brutalist / precast concrete (pale warm grey, deep window reveals), red-brown brick on many campus buildings, glass-and-metal curtain walls on the newer engineering buildings and the Quantum-Nano Centre. The reference's wall colour gives the material family: red-brown = brick, pale grey or cream = concrete, blue-grey = glass.
+- Local vegetation: mature maple and oak canopy in layered leaf clusters, mown lawns crossed by worn footpaths, lush greens along creeks, ponds and park trails.
+- Waterloo materials: on the University of Waterloo campus, brutalist / precast concrete (pale warm grey, deep window reveals), red-brown brick and glass-and-metal curtain walls; in Uptown, two-to-four-storey red-brick commercial blocks with shopfronts along King Street, church spires and newer glass mid-rises; in residential streets, detached houses with shingled pitched roofs, garages and backyard trees. The reference's wall colour gives the material family: red-brown = brick, pale grey or cream = concrete or render, blue-grey = glass.
 
 LIGHT (identical on every tile - moving objects on the map cast shadows with this same sun)
 - Sun from the south-west, behind the viewer's left shoulder: in the image the light comes from the lower left.
@@ -86,20 +89,20 @@ B014_mask_4_-2.png (same size) says what you may change: WHITE = paint, BLACK = 
 Match the finished style of B014_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B014_classes_4_-2.png (legend: B014_classes_legend.png) for surface types and B014_depth_4_-2.png for building heights.
 
 THIS TILE SHOWS
-- Science Building (left, around x=242, y=486): campus building - follow the reference wall colour for its material
-- Vogue (lower right, around x=701, y=786): campus building - follow the reference wall colour for its material
-- King Street Residence (upper centre, around x=386, y=97): campus building - follow the reference wall colour for its material
-- Univeristy View (centre, around x=481, y=673): campus building - follow the reference wall colour for its material
-- Bricker Academic Building (left, around x=51, y=682): campus building - follow the reference wall colour for its material
-- Science Research Building (left, around x=110, y=594): campus building - follow the reference wall colour for its material
-- Co-operative Education and Career Development Centre (upper centre, around x=460, y=278): campus building - follow the reference wall colour for its material
-- 202 Regina Street North (upper right, around x=778, y=19): campus building - follow the reference wall colour for its material
-- Athletics Complex (upper left, around x=26, y=50): campus building - follow the reference wall colour for its material
+- Science Building (left, around x=242, y=486): building - follow the reference wall colour for its material
+- Vogue (lower right, around x=701, y=786): building - follow the reference wall colour for its material
+- King Street Residence (upper centre, around x=386, y=97): building - follow the reference wall colour for its material
+- Univeristy View (centre, around x=481, y=673): building - follow the reference wall colour for its material
+- Bricker Academic Building (left, around x=51, y=682): building - follow the reference wall colour for its material
+- Science Research Building (left, around x=110, y=594): building - follow the reference wall colour for its material
+- Co-operative Education and Career Development Centre (upper centre, around x=460, y=278): building - follow the reference wall colour for its material
+- 202 Regina Street North (upper right, around x=778, y=19): building - follow the reference wall colour for its material
+- Athletics Complex (upper left, around x=26, y=50): building - follow the reference wall colour for its material
 - Streets and paths crossing it: King Street North, Lodge Street, Bricker Avenue, Regina Street North, Ezra Avenue, Marshall Street
 
 OUTPUT
 - Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B014_context_4_-2.png, named B014_4_-2.png. We cut the tile out ourselves.
-- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.
+- Any square size of 1024 px or more is fine - e.g. if your tool returns 1254 x 1254, send that file unchanged; we scale it ourselves. Never upscale, crop, pad or change the aspect ratio.
 
 WHAT TO SEND BACK
 - The ORIGINAL generated image file(s) exactly as produced - full resolution, PNG preferred - not a screenshot, preview or re-compressed copy - named exactly as listed above.
@@ -117,26 +120,28 @@ ATTACHED FILES
 - B014_classes_3_-3.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
 - B014_depth_3_-3.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
 
+INPUT LIMIT: if your image tool accepts at most 5 input images, pass exactly these to it: B014_context_3_-3.png, B014_mask_3_-3.png, B014_classes_3_-3.png, B014_depth_3_-3.png, B014_style_0_0.png (for tiles after the first you may swap the style file for your own previous output of the neighbouring tile).
+
 TASK - tile 3_-3
 Edit B014_context_3_-3.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.
 B014_mask_3_-3.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)
 Match the finished style of B014_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B014_classes_3_-3.png (legend: B014_classes_legend.png) for surface types and B014_depth_3_-3.png for building heights.
 
 THIS TILE SHOWS
-- 308 King (upper right, around x=711, y=48): campus building - follow the reference wall colour for its material
-- University Commons (centre, around x=637, y=552): campus building - follow the reference wall colour for its material
-- Sage II (upper left, around x=235, y=56): campus building - follow the reference wall colour for its material
-- Sage Condos I (upper centre, around x=367, y=278): campus building - follow the reference wall colour for its material
-- Athletics Complex (lower right, around x=926, y=997): campus building - follow the reference wall colour for its material
-- Preston House (upper centre, around x=365, y=33): campus building - follow the reference wall colour for its material
-- BMO (centre, around x=571, y=416): campus building - follow the reference wall colour for its material
-- Morty's Pub (right, around x=796, y=389): campus building - follow the reference wall colour for its material
-- Perfect Image Studio (right, around x=1001, y=648): campus building - follow the reference wall colour for its material
+- 308 King (upper right, around x=711, y=48): building - follow the reference wall colour for its material
+- University Commons (centre, around x=637, y=552): building - follow the reference wall colour for its material
+- Sage II (upper left, around x=235, y=56): building - follow the reference wall colour for its material
+- Sage Condos I (upper centre, around x=367, y=278): building - follow the reference wall colour for its material
+- Athletics Complex (lower right, around x=926, y=997): building - follow the reference wall colour for its material
+- Preston House (upper centre, around x=365, y=33): building - follow the reference wall colour for its material
+- BMO (centre, around x=571, y=416): building - follow the reference wall colour for its material
+- Morty's Pub (right, around x=796, y=389): building - follow the reference wall colour for its material
+- Perfect Image Studio (right, around x=1001, y=648): building - follow the reference wall colour for its material
 - Streets and paths crossing it: King Street North, Fir Street, Hickory Street West, Maple Court, State Court, Spruce Street
 
 OUTPUT
 - Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B014_context_3_-3.png, named B014_3_-3.png. We cut the tile out ourselves.
-- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.
+- Any square size of 1024 px or more is fine - e.g. if your tool returns 1254 x 1254, send that file unchanged; we scale it ourselves. Never upscale, crop, pad or change the aspect ratio.
 
 Send back the original file and the model/settings note as before.
 ```
@@ -152,6 +157,8 @@ ATTACHED FILES
 - B014_classes_4_-3.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
 - B014_depth_4_-3.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
 
+INPUT LIMIT: if your image tool accepts at most 5 input images, pass exactly these to it: B014_context_4_-3.png, B014_mask_4_-3.png, B014_classes_4_-3.png, B014_depth_4_-3.png, B014_style_0_0.png (for tiles after the first you may swap the style file for your own previous output of the neighbouring tile).
+
 TASK - tile 4_-3
 Edit B014_context_4_-3.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.
 B014_mask_4_-3.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)
@@ -159,20 +166,20 @@ Match the finished style of B014_style_0_0.png exactly: palette, pixel size, out
 Paint this tile after 3_-3 and 4_-2: where its border shows the underdrawing of 3_-3 / 4_-2, match what you painted for those tiles earlier in this conversation.
 
 THIS TILE SHOWS
-- Alumni Educational Services (lower right, around x=699, y=868): campus building - follow the reference wall colour for its material
-- 202 Regina Street North (lower right, around x=807, y=971): campus building - follow the reference wall colour for its material
-- Richmond Square Tower 1 (upper left, around x=138, y=85): campus building - follow the reference wall colour for its material
-- University Place Residence (upper centre, around x=500, y=169): campus building - follow the reference wall colour for its material
-- Wilfrid Laurier University Special Constable Service (lower left, around x=221, y=947): campus building - follow the reference wall colour for its material
-- Timbercreek Communities (upper left, around x=273, y=70): campus building - follow the reference wall colour for its material
-- RBC Royal Bank (lower left, around x=80, y=804): campus building - follow the reference wall colour for its material
-- Crabby Joe's Bar and Grill (upper right, around x=962, y=193): campus building - follow the reference wall colour for its material
-- Tim Hortons (right, around x=744, y=370): campus building - follow the reference wall colour for its material
+- Alumni Educational Services (lower right, around x=699, y=868): building - follow the reference wall colour for its material
+- 202 Regina Street North (lower right, around x=807, y=971): building - follow the reference wall colour for its material
+- Richmond Square Tower 1 (upper left, around x=138, y=85): building - follow the reference wall colour for its material
+- University Place Residence (upper centre, around x=500, y=169): building - follow the reference wall colour for its material
+- Wilfrid Laurier University Special Constable Service (lower left, around x=221, y=947): building - follow the reference wall colour for its material
+- Timbercreek Communities (upper left, around x=273, y=70): building - follow the reference wall colour for its material
+- RBC Royal Bank (lower left, around x=80, y=804): building - follow the reference wall colour for its material
+- Crabby Joe's Bar and Grill (upper right, around x=962, y=193): building - follow the reference wall colour for its material
+- Tim Hortons (right, around x=744, y=370): building - follow the reference wall colour for its material
 - Streets and paths crossing it: University Avenue East, Regina Street North, King Street North
 
 OUTPUT
 - Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B014_context_4_-3.png, named B014_4_-3.png. We cut the tile out ourselves.
-- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.
+- Any square size of 1024 px or more is fine - e.g. if your tool returns 1254 x 1254, send that file unchanged; we scale it ourselves. Never upscale, crop, pad or change the aspect ratio.
 
 Send back the original file and the model/settings note as before.
 ```
@@ -182,7 +189,7 @@ Send back the original file and the model/settings note as before.
 | File | Size | Purpose | Tiles | Defines composition | sha256 |
 |---|---|---|---|---|---|
 | `B014_style_0_0.png` | 1024x1024 | STYLE: finished, accepted artwork of neighbouring tile 0_0 - match its palette, pixel size, outlines, windows, trees and light exactly | 0_0 | no | `bfd18a94f0c7` |
-| `B014_contact_sheet.png` | 2560x2104 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | 0_0, 2_-3, 3_-2, 3_-3, 4_-1, 4_-2, 4_-3 | no | `20cd06362c9d` |
+| `B014_contact_sheet.png` | 1536x1592 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | 2_-3, 3_-2, 3_-3, 4_-1, 4_-2, 4_-3 | no | `2c771e39adc1` |
 | `B014_context_4_-2.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 4_-2 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 4_-2 | yes | `a5bb7e0f6f92` |
 | `B014_mask_4_-2.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 4_-2 | no | `fbbd60c1fa3f` |
 | `B014_classes_4_-2.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | 4_-2 | no | `df6a9444e484` |

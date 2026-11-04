@@ -1,9 +1,10 @@
-# Image request B015 - North-west and south-west corners - tiles -2_-3, -3_-3, -3_-2, -3_1
+# Image request B015 - North-west and south-west corners - tiles -2_-3, -3_-2, -3_-3, -3_1
 
-> **DRAFT - do not send yet.** Waiting for -1_-3, -2_-2, -3_-1, -2_1, -3_0 to be accepted. After that, rebuild with
-> `python3 pipeline/art_request.py build B015` - the margins then show the finished art.
+> **DRAFT - do not send yet.** Waiting for tiles from B010 (-1_-3); B011 (-2_-2, -2_1); B012 (-3_-1, -3_0) to be accepted. This packet is rebuilt
+> automatically when `art_import.py <batch> --accept` accepts the last of them (or run `python3 pipeline/art_request.py build B015`);
+> the current files are placeholders - do not attach them.
 
-Packet revision 1, built 2026-11-04T20:34:11Z. Status: `draft`.
+Packet revision 2, built 2026-11-04T20:54:08Z. Status: `draft`.
 
 ## What to do (for the user)
 
@@ -21,21 +22,21 @@ Everything is in `art/requests/B015/` (also zipped as `art/requests/B015.zip`). 
 
    Wait for the image before sending the next message.
 
-2. **Message 2** (tile -3_-3): attach these 4 files, then paste the text of "Message 2" below.
-
-   - `B015_context_-3_-3.png`
-   - `B015_mask_-3_-3.png`
-   - `B015_classes_-3_-3.png`
-   - `B015_depth_-3_-3.png`
-
-   Wait for the image before sending the next message.
-
-3. **Message 3** (tile -3_-2): attach these 4 files, then paste the text of "Message 3" below.
+2. **Message 2** (tile -3_-2): attach these 4 files, then paste the text of "Message 2" below.
 
    - `B015_context_-3_-2.png`
    - `B015_mask_-3_-2.png`
    - `B015_classes_-3_-2.png`
    - `B015_depth_-3_-2.png`
+
+   Wait for the image before sending the next message.
+
+3. **Message 3** (tile -3_-3): attach these 4 files, then paste the text of "Message 3" below.
+
+   - `B015_context_-3_-3.png`
+   - `B015_mask_-3_-3.png`
+   - `B015_classes_-3_-3.png`
+   - `B015_depth_-3_-3.png`
 
    Wait for the image before sending the next message.
 
@@ -46,7 +47,7 @@ Everything is in `art/requests/B015/` (also zipped as `art/requests/B015.zip`). 
    - `B015_classes_-3_1.png`
    - `B015_depth_-3_1.png`
 
-5. Save what comes back in one folder (e.g. `~/Downloads/B015/`) with exactly these names: `B015_-2_-3.png`, `B015_-3_-3.png`, `B015_-3_-2.png`, `B015_-3_1.png`. Copy the agent's note about model and settings into `B015_report.txt` in the same folder.
+5. Save what comes back in one folder (e.g. `~/Downloads/B015/`) with exactly these names: `B015_-2_-3.png`, `B015_-3_-2.png`, `B015_-3_-3.png`, `B015_-3_1.png`. Copy the agent's note about model and settings into `B015_report.txt` in the same folder.
 
 6. Check it: `python3 pipeline/art_import.py B015 ~/Downloads/B015` (QA report only), then `python3 pipeline/art_import.py B015 ~/Downloads/B015 --accept` to accept tiles that pass.
 
@@ -63,15 +64,17 @@ ATTACHED FILES
 - B015_classes_-2_-3.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
 - B015_depth_-2_-3.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
 - B015_style_0_0.png (1024x1024) - STYLE: finished, accepted artwork of neighbouring tile 0_0 - match its palette, pixel size, outlines, windows, trees and light exactly
-- B015_contact_sheet.png (2048x2616) - CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels
+- B015_contact_sheet.png (1536x2616) - CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels
 - B015_classes_legend.png (760x664) - LEGEND for the semantic maps
+
+INPUT LIMIT: if your image tool accepts at most 5 input images, pass exactly these to it: B015_context_-2_-3.png, B015_mask_-2_-3.png, B015_classes_-2_-3.png, B015_depth_-2_-3.png, B015_style_0_0.png. Read B015_contact_sheet.png and B015_classes_legend.png yourself and do not pass them to the tool.
 
 ART DIRECTION
 - Detailed pixel-art city illustration with a miniature-diorama feel: crisp, deliberate pixel clusters and clean edges where materials meet. No blur, airbrush, painterly smearing, film grain or photo texture.
 - Clear, readable architecture: repeated window detail on every facade (regular rows and columns matching the building's height), recognizable roof shapes, parapets and rooftop equipment.
 - Warm, readable palette in consistent late-summer afternoon daylight: rich but natural greens, cream and warm-grey paving, soft blue-grey shade.
-- Local vegetation: mature maple and oak canopy in layered leaf clusters, mown campus lawns crossed by worn footpaths, lush greens along creeks and ponds.
-- Waterloo materials: University of Waterloo brutalist / precast concrete (pale warm grey, deep window reveals), red-brown brick on many campus buildings, glass-and-metal curtain walls on the newer engineering buildings and the Quantum-Nano Centre. The reference's wall colour gives the material family: red-brown = brick, pale grey or cream = concrete, blue-grey = glass.
+- Local vegetation: mature maple and oak canopy in layered leaf clusters, mown lawns crossed by worn footpaths, lush greens along creeks, ponds and park trails.
+- Waterloo materials: on the University of Waterloo campus, brutalist / precast concrete (pale warm grey, deep window reveals), red-brown brick and glass-and-metal curtain walls; in Uptown, two-to-four-storey red-brick commercial blocks with shopfronts along King Street, church spires and newer glass mid-rises; in residential streets, detached houses with shingled pitched roofs, garages and backyard trees. The reference's wall colour gives the material family: red-brown = brick, pale grey or cream = concrete or render, blue-grey = glass.
 
 LIGHT (identical on every tile - moving objects on the map cast shadows with this same sun)
 - Sun from the south-west, behind the viewer's left shoulder: in the image the light comes from the lower left.
@@ -95,53 +98,23 @@ B015_mask_-2_-3.png (same size) says what you may change: WHITE = paint, BLACK =
 Match the finished style of B015_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B015_classes_-2_-3.png (legend: B015_classes_legend.png) for surface types and B015_depth_-2_-3.png for building heights.
 
 THIS TILE SHOWS
-- Valley Blades (lower right, around x=827, y=954): campus building - follow the reference wall colour for its material
-- evolv1 (lower left, around x=15, y=954): campus building - follow the reference wall colour for its material
+- Valley Blades (lower right, around x=827, y=954): building - follow the reference wall colour for its material
+- evolv1 (lower left, around x=15, y=954): building - follow the reference wall colour for its material
 - Streets and paths crossing it: Phillip Street, Waterloop
 
 OUTPUT
 - Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B015_context_-2_-3.png, named B015_-2_-3.png. We cut the tile out ourselves.
-- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.
+- Any square size of 1024 px or more is fine - e.g. if your tool returns 1254 x 1254, send that file unchanged; we scale it ourselves. Never upscale, crop, pad or change the aspect ratio.
 
 WHAT TO SEND BACK
 - The ORIGINAL generated image file(s) exactly as produced - full resolution, PNG preferred - not a screenshot, preview or re-compressed copy - named exactly as listed above.
 - A short note with the model name and version you used and any settings you can disclose (e.g. seed, steps, guidance / strength, quality, output size, edit or inpaint mode, number of attempts). Write "unknown" for anything you can't tell.
 ```
 
-## Message 2 - tile -3_-3
+## Message 2 - tile -3_-2
 
 ```text
 Next tile (2 of 4): same art direction, light, camera, geometry rules and style as before.
-
-ATTACHED FILES
-- B015_context_-3_-3.png (1536x1536) - COMPOSITION + CANVAS TO EDIT (1536x1536): tile -3_-3 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin
-- B015_mask_-3_-3.png (1536x1536) - EDIT MASK: white = paint, black = keep (finished neighbour art)
-- B015_classes_-3_-3.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
-- B015_depth_-3_-3.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
-
-TASK - tile -3_-3
-Edit B015_context_-3_-3.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.
-B015_mask_-3_-3.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)
-Match the finished style of B015_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B015_classes_-3_-3.png (legend: B015_classes_legend.png) for surface types and B015_depth_-3_-3.png for building heights.
-Paint this tile after -2_-3: where its border shows the underdrawing of -2_-3, match what you painted for that tile earlier in this conversation.
-
-THIS TILE SHOWS
-- Bauer Warehouse (upper right, around x=803, y=324): campus building - follow the reference wall colour for its material
-- evolv1 (lower right, around x=942, y=973): campus building - follow the reference wall colour for its material
-- Waterloo Christian Reformed Church (upper left, around x=111, y=64): campus building - follow the reference wall colour for its material
-- Streets and paths crossing it: Wes Graham Way, Waterloop, Corrie Crescent
-
-OUTPUT
-- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B015_context_-3_-3.png, named B015_-3_-3.png. We cut the tile out ourselves.
-- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.
-
-Send back the original file and the model/settings note as before.
-```
-
-## Message 3 - tile -3_-2
-
-```text
-Next tile (3 of 4): same art direction, light, camera, geometry rules and style as before.
 
 ATTACHED FILES
 - B015_context_-3_-2.png (1536x1536) - COMPOSITION + CANVAS TO EDIT (1536x1536): tile -3_-2 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin
@@ -149,23 +122,56 @@ ATTACHED FILES
 - B015_classes_-3_-2.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
 - B015_depth_-3_-2.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
 
+INPUT LIMIT: if your image tool accepts at most 5 input images, pass exactly these to it: B015_context_-3_-2.png, B015_mask_-3_-2.png, B015_classes_-3_-2.png, B015_depth_-3_-2.png, B015_style_0_0.png (for tiles after the first you may swap the style file for your own previous output of the neighbouring tile).
+
 TASK - tile -3_-2
 Edit B015_context_-3_-2.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.
 B015_mask_-3_-2.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)
 Match the finished style of B015_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B015_classes_-3_-2.png (legend: B015_classes_legend.png) for surface types and B015_depth_-3_-2.png for building heights.
-Paint this tile after -3_-3: where its border shows the underdrawing of -3_-3, match what you painted for that tile earlier in this conversation.
 
 THIS TILE SHOWS
-- Toby Jenkins Applied Health Research Building (centre, around x=657, y=532): campus building - follow the reference wall colour for its material
-- Cora Building (left, around x=165, y=662): campus building - follow the reference wall colour for its material
-- Accelerator Building (lower right, around x=717, y=980): campus building - follow the reference wall colour for its material
-- evolv1 (upper right, around x=841, y=44): campus building - follow the reference wall colour for its material
-- innoTECH Building (lower right, around x=965, y=801): campus building - follow the reference wall colour for its material
+- Toby Jenkins Applied Health Research Building (centre, around x=657, y=532): building - follow the reference wall colour for its material
+- Cora Building (left, around x=165, y=662): building - follow the reference wall colour for its material
+- Accelerator Building (lower right, around x=717, y=980): building - follow the reference wall colour for its material
+- evolv1 (upper right, around x=841, y=44): building - follow the reference wall colour for its material
+- innoTECH Building (lower right, around x=965, y=801): building - follow the reference wall colour for its material
 - Streets and paths crossing it: Hagey Boulevard, Wes Graham Way
 
 OUTPUT
 - Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B015_context_-3_-2.png, named B015_-3_-2.png. We cut the tile out ourselves.
-- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.
+- Any square size of 1024 px or more is fine - e.g. if your tool returns 1254 x 1254, send that file unchanged; we scale it ourselves. Never upscale, crop, pad or change the aspect ratio.
+
+Send back the original file and the model/settings note as before.
+```
+
+## Message 3 - tile -3_-3
+
+```text
+Next tile (3 of 4): same art direction, light, camera, geometry rules and style as before.
+
+ATTACHED FILES
+- B015_context_-3_-3.png (1536x1536) - COMPOSITION + CANVAS TO EDIT (1536x1536): tile -3_-3 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin
+- B015_mask_-3_-3.png (1536x1536) - EDIT MASK: white = paint, black = keep (finished neighbour art)
+- B015_classes_-3_-3.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
+- B015_depth_-3_-3.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
+
+INPUT LIMIT: if your image tool accepts at most 5 input images, pass exactly these to it: B015_context_-3_-3.png, B015_mask_-3_-3.png, B015_classes_-3_-3.png, B015_depth_-3_-3.png, B015_style_0_0.png (for tiles after the first you may swap the style file for your own previous output of the neighbouring tile).
+
+TASK - tile -3_-3
+Edit B015_context_-3_-3.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.
+B015_mask_-3_-3.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)
+Match the finished style of B015_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B015_classes_-3_-3.png (legend: B015_classes_legend.png) for surface types and B015_depth_-3_-3.png for building heights.
+Paint this tile after -2_-3 and -3_-2: where its border shows the underdrawing of -2_-3 / -3_-2, match what you painted for those tiles earlier in this conversation.
+
+THIS TILE SHOWS
+- Bauer Warehouse (upper right, around x=803, y=324): building - follow the reference wall colour for its material
+- evolv1 (lower right, around x=942, y=973): building - follow the reference wall colour for its material
+- Waterloo Christian Reformed Church (upper left, around x=111, y=64): building - follow the reference wall colour for its material
+- Streets and paths crossing it: Wes Graham Way, Waterloop, Corrie Crescent
+
+OUTPUT
+- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B015_context_-3_-3.png, named B015_-3_-3.png. We cut the tile out ourselves.
+- Any square size of 1024 px or more is fine - e.g. if your tool returns 1254 x 1254, send that file unchanged; we scale it ourselves. Never upscale, crop, pad or change the aspect ratio.
 
 Send back the original file and the model/settings note as before.
 ```
@@ -181,18 +187,20 @@ ATTACHED FILES
 - B015_classes_-3_1.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
 - B015_depth_-3_1.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
 
+INPUT LIMIT: if your image tool accepts at most 5 input images, pass exactly these to it: B015_context_-3_1.png, B015_mask_-3_1.png, B015_classes_-3_1.png, B015_depth_-3_1.png, B015_style_0_0.png (for tiles after the first you may swap the style file for your own previous output of the neighbouring tile).
+
 TASK - tile -3_1
 Edit B015_context_-3_1.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.
 B015_mask_-3_1.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)
 Match the finished style of B015_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B015_classes_-3_1.png (legend: B015_classes_legend.png) for surface types and B015_depth_-3_1.png for building heights.
 
 THIS TILE SHOWS
-- Ron Eydt Village (upper centre, around x=484, y=282): campus building - follow the reference wall colour for its material
+- Ron Eydt Village (upper centre, around x=484, y=282): building - follow the reference wall colour for its material
 - Streets and paths crossing it: Westmount Road North, Academy Crescent, Rev Road, Old Post Road, Post Horn Place, Villages Road
 
 OUTPUT
 - Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B015_context_-3_1.png, named B015_-3_1.png. We cut the tile out ourselves.
-- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.
+- Any square size of 1024 px or more is fine - e.g. if your tool returns 1254 x 1254, send that file unchanged; we scale it ourselves. Never upscale, crop, pad or change the aspect ratio.
 
 Send back the original file and the model/settings note as before.
 ```
@@ -202,30 +210,30 @@ Send back the original file and the model/settings note as before.
 | File | Size | Purpose | Tiles | Defines composition | sha256 |
 |---|---|---|---|---|---|
 | `B015_style_0_0.png` | 1024x1024 | STYLE: finished, accepted artwork of neighbouring tile 0_0 - match its palette, pixel size, outlines, windows, trees and light exactly | 0_0 | no | `bfd18a94f0c7` |
-| `B015_contact_sheet.png` | 2048x2616 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | -1_-3, -2_-2, -2_-3, -2_1, -3_-1, -3_-2, -3_-3, -3_0, -3_1, 0_0 | no | `95ff76b524d4` |
+| `B015_contact_sheet.png` | 1536x2616 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | -1_-3, -2_-2, -2_-3, -2_1, -3_-1, -3_-2, -3_-3, -3_0, -3_1 | no | `c58737d93eae` |
 | `B015_context_-2_-3.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile -2_-3 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | -2_-3 | yes | `3d22907f44fd` |
 | `B015_mask_-2_-3.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | -2_-3 | no | `17934c186a9b` |
 | `B015_classes_-2_-3.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | -2_-3 | no | `acb5c4b347a9` |
 | `B015_depth_-2_-3.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | -2_-3 | no | `9172324719ae` |
-| `B015_context_-3_-3.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile -3_-3 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | -3_-3 | yes | `47245be1b372` |
-| `B015_mask_-3_-3.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | -3_-3 | no | `cd2249b035c0` |
-| `B015_classes_-3_-3.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | -3_-3 | no | `222db92b934d` |
-| `B015_depth_-3_-3.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | -3_-3 | no | `711084a6c61a` |
 | `B015_context_-3_-2.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile -3_-2 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | -3_-2 | yes | `9943a6715e1d` |
 | `B015_mask_-3_-2.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | -3_-2 | no | `17934c186a9b` |
 | `B015_classes_-3_-2.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | -3_-2 | no | `df63244da22a` |
 | `B015_depth_-3_-2.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | -3_-2 | no | `d961cbc91db0` |
+| `B015_context_-3_-3.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile -3_-3 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | -3_-3 | yes | `47245be1b372` |
+| `B015_mask_-3_-3.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | -3_-3 | no | `cd2249b035c0` |
+| `B015_classes_-3_-3.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | -3_-3 | no | `222db92b934d` |
+| `B015_depth_-3_-3.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | -3_-3 | no | `711084a6c61a` |
 | `B015_context_-3_1.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile -3_1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | -3_1 | yes | `287eb1fcdd13` |
 | `B015_mask_-3_1.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | -3_1 | no | `7b69d5e8682c` |
 | `B015_classes_-3_1.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | -3_1 | no | `f3143fa4a016` |
 | `B015_depth_-3_1.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | -3_1 | no | `ecb49aec75e2` |
-| `B015_classes_legend.png` | 760x664 | LEGEND for the semantic maps | -2_-3, -3_-3, -3_-2, -3_1 | no | `91382d0bee63` |
+| `B015_classes_legend.png` | 760x664 | LEGEND for the semantic maps | -2_-3, -3_-2, -3_-3, -3_1 | no | `91382d0bee63` |
 
 | Return file | Item | Expected size | Crop in returned image (x0, y0, x1, y1) | Becomes |
 |---|---|---|---|---|
 | `B015_-2_-3.png` | -2_-3 | 1536x1536 | (256, 256, 1280, 1280) | `art/accepted/-2_-3.png` (1024x1024) |
-| `B015_-3_-3.png` | -3_-3 | 1536x1536 | (256, 256, 1280, 1280) | `art/accepted/-3_-3.png` (1024x1024) |
 | `B015_-3_-2.png` | -3_-2 | 1536x1536 | (256, 256, 1280, 1280) | `art/accepted/-3_-2.png` (1024x1024) |
+| `B015_-3_-3.png` | -3_-3 | 1536x1536 | (256, 256, 1280, 1280) | `art/accepted/-3_-3.png` (1024x1024) |
 | `B015_-3_1.png` | -3_1 | 1536x1536 | (256, 256, 1280, 1280) | `art/accepted/-3_1.png` (1024x1024) |
 
 **Crop math (context edit).** Context canvas = 1536x1536 canvas px at 1:1, origin at canvas px (tile_x*1024 - 256, tile_y*1024 - 256). For a returned image W x H with W/H = 1536/1536 (within 1 %), k = W/1536; the tile is the box (256k, 256k, 1280k, 1280k), resampled to 1024x1024 (box filter when k >= 1, Lanczos when k < 1). 1536x1536 -> crop (256, 256, 1280, 1280) exactly; a 2x image -> crop doubled, then box-halved. Fixed-size fallback 1024x1024: k = 0.6667, crop (170.67, 170.67, 853.33, 853.33) upscaled x1.50 (accepted with a reduced-detail warning). Agents limited to 1536x1024 or 1024x1536 get a native-scale packet instead: `build <batch> --frame wide` (margins left/right only, crop (256, 0, 1280, 1024)) or `--frame tall` (margins top/bottom only, crop (0, 256, 1024, 1280)). Joins that a frame has no margin for are repaired afterwards with seam packets (`art_request.py seam`).

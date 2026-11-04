@@ -1,9 +1,10 @@
 # Image request B016 - Uptown east and south - tiles 7_-1, 7_0, 5_1, 6_1, 7_1
 
-> **DRAFT - do not send yet.** Waiting for 6_-1, 6_0, 5_0, 4_1 to be accepted. After that, rebuild with
-> `python3 pipeline/art_request.py build B016` - the margins then show the finished art.
+> **DRAFT - do not send yet.** Waiting for tiles from B013 (6_-1, 6_0, 5_0, 4_1) to be accepted. This packet is rebuilt
+> automatically when `art_import.py <batch> --accept` accepts the last of them (or run `python3 pipeline/art_request.py build B016`);
+> the current files are placeholders - do not attach them.
 
-Packet revision 1, built 2026-11-04T20:34:35Z. Status: `draft`.
+Packet revision 2, built 2026-11-04T20:54:29Z. Status: `draft`.
 
 ## What to do (for the user)
 
@@ -72,15 +73,17 @@ ATTACHED FILES
 - B016_classes_7_-1.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
 - B016_depth_7_-1.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
 - B016_style_0_0.png (1024x1024) - STYLE: finished, accepted artwork of neighbouring tile 0_0 - match its palette, pixel size, outlines, windows, trees and light exactly
-- B016_contact_sheet.png (4096x1592) - CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels
+- B016_contact_sheet.png (2048x1592) - CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels
 - B016_classes_legend.png (760x744) - LEGEND for the semantic maps
+
+INPUT LIMIT: if your image tool accepts at most 5 input images, pass exactly these to it: B016_context_7_-1.png, B016_mask_7_-1.png, B016_classes_7_-1.png, B016_depth_7_-1.png, B016_style_0_0.png. Read B016_contact_sheet.png and B016_classes_legend.png yourself and do not pass them to the tool.
 
 ART DIRECTION
 - Detailed pixel-art city illustration with a miniature-diorama feel: crisp, deliberate pixel clusters and clean edges where materials meet. No blur, airbrush, painterly smearing, film grain or photo texture.
 - Clear, readable architecture: repeated window detail on every facade (regular rows and columns matching the building's height), recognizable roof shapes, parapets and rooftop equipment.
 - Warm, readable palette in consistent late-summer afternoon daylight: rich but natural greens, cream and warm-grey paving, soft blue-grey shade.
-- Local vegetation: mature maple and oak canopy in layered leaf clusters, mown campus lawns crossed by worn footpaths, lush greens along creeks and ponds.
-- Waterloo materials: University of Waterloo brutalist / precast concrete (pale warm grey, deep window reveals), red-brown brick on many campus buildings, glass-and-metal curtain walls on the newer engineering buildings and the Quantum-Nano Centre. The reference's wall colour gives the material family: red-brown = brick, pale grey or cream = concrete, blue-grey = glass.
+- Local vegetation: mature maple and oak canopy in layered leaf clusters, mown lawns crossed by worn footpaths, lush greens along creeks, ponds and park trails.
+- Waterloo materials: on the University of Waterloo campus, brutalist / precast concrete (pale warm grey, deep window reveals), red-brown brick and glass-and-metal curtain walls; in Uptown, two-to-four-storey red-brick commercial blocks with shopfronts along King Street, church spires and newer glass mid-rises; in residential streets, detached houses with shingled pitched roofs, garages and backyard trees. The reference's wall colour gives the material family: red-brown = brick, pale grey or cream = concrete or render, blue-grey = glass.
 
 LIGHT (identical on every tile - moving objects on the map cast shadows with this same sun)
 - Sun from the south-west, behind the viewer's left shoulder: in the image the light comes from the lower left.
@@ -104,13 +107,13 @@ B016_mask_7_-1.png (same size) says what you may change: WHITE = paint, BLACK = 
 Match the finished style of B016_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B016_classes_7_-1.png (legend: B016_classes_legend.png) for surface types and B016_depth_7_-1.png for building heights.
 
 THIS TILE SHOWS
-- Luther Manor (lower right, around x=944, y=962): campus building - follow the reference wall colour for its material
-- Spa Surgica MediSpa (right, around x=761, y=427): campus building - follow the reference wall colour for its material
+- Luther Manor (lower right, around x=944, y=962): building - follow the reference wall colour for its material
+- Spa Surgica MediSpa (right, around x=761, y=427): building - follow the reference wall colour for its material
 - Streets and paths crossing it: Erb Street East, Moore Avenue North, Devitt Avenue North, Moore Avenue South, Laurel Street, Tweed Street
 
 OUTPUT
 - Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B016_context_7_-1.png, named B016_7_-1.png. We cut the tile out ourselves.
-- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.
+- Any square size of 1024 px or more is fine - e.g. if your tool returns 1254 x 1254, send that file unchanged; we scale it ourselves. Never upscale, crop, pad or change the aspect ratio.
 
 WHAT TO SEND BACK
 - The ORIGINAL generated image file(s) exactly as produced - full resolution, PNG preferred - not a screenshot, preview or re-compressed copy - named exactly as listed above.
@@ -128,6 +131,8 @@ ATTACHED FILES
 - B016_classes_7_0.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
 - B016_depth_7_0.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
 
+INPUT LIMIT: if your image tool accepts at most 5 input images, pass exactly these to it: B016_context_7_0.png, B016_mask_7_0.png, B016_classes_7_0.png, B016_depth_7_0.png, B016_style_0_0.png (for tiles after the first you may swap the style file for your own previous output of the neighbouring tile).
+
 TASK - tile 7_0
 Edit B016_context_7_0.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.
 B016_mask_7_0.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)
@@ -135,19 +140,19 @@ Match the finished style of B016_style_0_0.png exactly: palette, pixel size, out
 Paint this tile after 7_-1: where its border shows the underdrawing of 7_-1, match what you painted for that tile earlier in this conversation.
 
 THIS TILE SHOWS
-- William Place (left, around x=120, y=413): campus building - follow the reference wall colour for its material
-- Luther Manor (upper right, around x=845, y=47): campus building - follow the reference wall colour for its material
-- Waterloo Mennonite Homes (lower centre, around x=367, y=912): campus building - follow the reference wall colour for its material
-- United Mennonite Church (lower left, around x=296, y=996): campus building - follow the reference wall colour for its material
-- Saint Louis Catholic Church (right, around x=967, y=642): campus building - follow the reference wall colour for its material
-- Spur Line Crossing (upper left, around x=27, y=125): campus building - follow the reference wall colour for its material
-- Church of the Holy Saviour (lower right, around x=747, y=972): campus building - follow the reference wall colour for its material
-- Convent (right, around x=969, y=556): campus building - follow the reference wall colour for its material
+- William Place (left, around x=120, y=413): building - follow the reference wall colour for its material
+- Luther Manor (upper right, around x=845, y=47): building - follow the reference wall colour for its material
+- Waterloo Mennonite Homes (lower centre, around x=367, y=912): building - follow the reference wall colour for its material
+- United Mennonite Church (lower left, around x=296, y=996): building - follow the reference wall colour for its material
+- Saint Louis Catholic Church (right, around x=967, y=642): building - follow the reference wall colour for its material
+- Spur Line Crossing (upper left, around x=27, y=125): building - follow the reference wall colour for its material
+- Church of the Holy Saviour (lower right, around x=747, y=972): building - follow the reference wall colour for its material
+- Convent (right, around x=969, y=556): building - follow the reference wall colour for its material
 - Streets and paths crossing it: Herbert Street, Spurline Trail, Allen Street East, Willow Street, George Street, William Street East
 
 OUTPUT
 - Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B016_context_7_0.png, named B016_7_0.png. We cut the tile out ourselves.
-- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.
+- Any square size of 1024 px or more is fine - e.g. if your tool returns 1254 x 1254, send that file unchanged; we scale it ourselves. Never upscale, crop, pad or change the aspect ratio.
 
 Send back the original file and the model/settings note as before.
 ```
@@ -163,19 +168,21 @@ ATTACHED FILES
 - B016_classes_5_1.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
 - B016_depth_5_1.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
 
+INPUT LIMIT: if your image tool accepts at most 5 input images, pass exactly these to it: B016_context_5_1.png, B016_mask_5_1.png, B016_classes_5_1.png, B016_depth_5_1.png, B016_style_0_0.png (for tiles after the first you may swap the style file for your own previous output of the neighbouring tile).
+
 TASK - tile 5_1
 Edit B016_context_5_1.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.
 B016_mask_5_1.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)
 Match the finished style of B016_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B016_classes_5_1.png (legend: B016_classes_legend.png) for surface types and B016_depth_5_1.png for building heights.
 
 THIS TILE SHOWS
-- CIGI Campus (upper left, around x=339, y=32): campus building - follow the reference wall colour for its material
-- Sole (upper left, around x=187, y=120): campus building - follow the reference wall colour for its material
+- CIGI Campus (upper left, around x=339, y=32): building - follow the reference wall colour for its material
+- Sole (upper left, around x=187, y=120): building - follow the reference wall colour for its material
 - Streets and paths crossing it: Euclid Avenue, Menno Street, Father David Bauer Drive, Alexandra Avenue, Avondale Avenue South, Wells Lane
 
 OUTPUT
 - Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B016_context_5_1.png, named B016_5_1.png. We cut the tile out ourselves.
-- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.
+- Any square size of 1024 px or more is fine - e.g. if your tool returns 1254 x 1254, send that file unchanged; we scale it ourselves. Never upscale, crop, pad or change the aspect ratio.
 
 Send back the original file and the model/settings note as before.
 ```
@@ -191,6 +198,8 @@ ATTACHED FILES
 - B016_classes_6_1.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
 - B016_depth_6_1.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
 
+INPUT LIMIT: if your image tool accepts at most 5 input images, pass exactly these to it: B016_context_6_1.png, B016_mask_6_1.png, B016_classes_6_1.png, B016_depth_6_1.png, B016_style_0_0.png (for tiles after the first you may swap the style file for your own previous output of the neighbouring tile).
+
 TASK - tile 6_1
 Edit B016_context_6_1.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.
 B016_mask_6_1.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)
@@ -198,18 +207,18 @@ Match the finished style of B016_style_0_0.png exactly: palette, pixel size, out
 Paint this tile after 5_1: where its border shows the underdrawing of 5_1, match what you painted for that tile earlier in this conversation.
 
 THIS TILE SHOWS
-- First United Church (upper centre, around x=560, y=185): campus building - follow the reference wall colour for its material
-- Chartwell Terrace on the Square Retirement Residence (upper right, around x=788, y=287): campus building - follow the reference wall colour for its material
-- First Gulf Building (upper centre, around x=523, y=33): campus building - follow the reference wall colour for its material
-- @LEX (left, around x=228, y=447): campus building - follow the reference wall colour for its material
-- Erb & Good Family Funeral Home (upper right, around x=1004, y=302): campus building - follow the reference wall colour for its material
-- Valentina Bridal & Couture (upper centre, around x=548, y=299): campus building - follow the reference wall colour for its material
-- Faire (upper left, around x=69, y=10): campus building - follow the reference wall colour for its material
+- First United Church (upper centre, around x=560, y=185): building - follow the reference wall colour for its material
+- Chartwell Terrace on the Square Retirement Residence (upper right, around x=788, y=287): building - follow the reference wall colour for its material
+- First Gulf Building (upper centre, around x=523, y=33): building - follow the reference wall colour for its material
+- @LEX (left, around x=228, y=447): building - follow the reference wall colour for its material
+- Erb & Good Family Funeral Home (upper right, around x=1004, y=302): building - follow the reference wall colour for its material
+- Valentina Bridal & Couture (upper centre, around x=548, y=299): building - follow the reference wall colour for its material
+- Faire (upper left, around x=69, y=10): building - follow the reference wall colour for its material
 - Streets and paths crossing it: Caroline Street South, Iron Horse Trail, William Street West, Park Street, Norman Street, King Street South
 
 OUTPUT
 - Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B016_context_6_1.png, named B016_6_1.png. We cut the tile out ourselves.
-- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.
+- Any square size of 1024 px or more is fine - e.g. if your tool returns 1254 x 1254, send that file unchanged; we scale it ourselves. Never upscale, crop, pad or change the aspect ratio.
 
 Send back the original file and the model/settings note as before.
 ```
@@ -225,6 +234,8 @@ ATTACHED FILES
 - B016_classes_7_1.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
 - B016_depth_7_1.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
 
+INPUT LIMIT: if your image tool accepts at most 5 input images, pass exactly these to it: B016_context_7_1.png, B016_mask_7_1.png, B016_classes_7_1.png, B016_depth_7_1.png, B016_style_0_0.png (for tiles after the first you may swap the style file for your own previous output of the neighbouring tile).
+
 TASK - tile 7_1
 Edit B016_context_7_1.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.
 B016_mask_7_1.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)
@@ -232,20 +243,20 @@ Match the finished style of B016_style_0_0.png exactly: palette, pixel size, out
 Paint this tile after 6_1 and 7_0: where its border shows the underdrawing of 6_1 / 7_0, match what you painted for those tiles earlier in this conversation.
 
 THIS TILE SHOWS
-- Circa 1877 (upper left, around x=156, y=253): campus building - follow the reference wall colour for its material
-- Bauer Lofts shops (centre, around x=479, y=483): campus building - follow the reference wall colour for its material
-- Red Condominium (upper centre, around x=610, y=234): campus building - follow the reference wall colour for its material
-- Bauer Lofts (centre, around x=657, y=363): campus building - follow the reference wall colour for its material
-- Erb & Good Family Funeral Home (upper left, around x=60, y=301): campus building - follow the reference wall colour for its material
-- Warrior Building (lower right, around x=873, y=835): campus building - follow the reference wall colour for its material
-- United Mennonite Church (upper left, around x=278, y=27): campus building - follow the reference wall colour for its material
-- Erb-Kumpf House (upper left, around x=218, y=172): campus building - follow the reference wall colour for its material
-- King Street Dental Centre (right, around x=950, y=346): campus building - follow the reference wall colour for its material
+- Circa 1877 (upper left, around x=156, y=253): building - follow the reference wall colour for its material
+- Bauer Lofts shops (centre, around x=479, y=483): building - follow the reference wall colour for its material
+- Red Condominium (upper centre, around x=610, y=234): building - follow the reference wall colour for its material
+- Bauer Lofts (centre, around x=657, y=363): building - follow the reference wall colour for its material
+- Erb & Good Family Funeral Home (upper left, around x=60, y=301): building - follow the reference wall colour for its material
+- Warrior Building (lower right, around x=873, y=835): building - follow the reference wall colour for its material
+- United Mennonite Church (upper left, around x=278, y=27): building - follow the reference wall colour for its material
+- Erb-Kumpf House (upper left, around x=218, y=172): building - follow the reference wall colour for its material
+- King Street Dental Centre (right, around x=950, y=346): building - follow the reference wall colour for its material
 - Streets and paths crossing it: King Street South, Iron Horse Trail, Park Street, Caroline Street South, Allen Street West, John Street West
 
 OUTPUT
 - Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B016_context_7_1.png, named B016_7_1.png. We cut the tile out ourselves.
-- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.
+- Any square size of 1024 px or more is fine - e.g. if your tool returns 1254 x 1254, send that file unchanged; we scale it ourselves. Never upscale, crop, pad or change the aspect ratio.
 
 Send back the original file and the model/settings note as before.
 ```
@@ -255,7 +266,7 @@ Send back the original file and the model/settings note as before.
 | File | Size | Purpose | Tiles | Defines composition | sha256 |
 |---|---|---|---|---|---|
 | `B016_style_0_0.png` | 1024x1024 | STYLE: finished, accepted artwork of neighbouring tile 0_0 - match its palette, pixel size, outlines, windows, trees and light exactly | 0_0 | no | `bfd18a94f0c7` |
-| `B016_contact_sheet.png` | 4096x1592 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | 0_0, 4_1, 5_0, 5_1, 6_-1, 6_0, 6_1, 7_-1, 7_0, 7_1 | no | `53a12b7042d4` |
+| `B016_contact_sheet.png` | 2048x1592 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | 4_1, 5_0, 5_1, 6_-1, 6_0, 6_1, 7_-1, 7_0, 7_1 | no | `f8469ac936e9` |
 | `B016_context_7_-1.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 7_-1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 7_-1 | yes | `f80b11a4c722` |
 | `B016_mask_7_-1.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 7_-1 | no | `cd2249b035c0` |
 | `B016_classes_7_-1.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | 7_-1 | no | `417f75d3521e` |

@@ -50,8 +50,8 @@ ART_DIRECTION = """ART DIRECTION
 - Detailed pixel-art city illustration with a miniature-diorama feel: crisp, deliberate pixel clusters and clean edges where materials meet. No blur, airbrush, painterly smearing, film grain or photo texture.
 - Clear, readable architecture: repeated window detail on every facade (regular rows and columns matching the building's height), recognizable roof shapes, parapets and rooftop equipment.
 - Warm, readable palette in consistent late-summer afternoon daylight: rich but natural greens, cream and warm-grey paving, soft blue-grey shade.
-- Local vegetation: mature maple and oak canopy in layered leaf clusters, mown campus lawns crossed by worn footpaths, lush greens along creeks and ponds.
-- Waterloo materials: University of Waterloo brutalist / precast concrete (pale warm grey, deep window reveals), red-brown brick on many campus buildings, glass-and-metal curtain walls on the newer engineering buildings and the Quantum-Nano Centre. The reference's wall colour gives the material family: red-brown = brick, pale grey or cream = concrete, blue-grey = glass."""
+- Local vegetation: mature maple and oak canopy in layered leaf clusters, mown lawns crossed by worn footpaths, lush greens along creeks, ponds and park trails.
+- Waterloo materials: on the University of Waterloo campus, brutalist / precast concrete (pale warm grey, deep window reveals), red-brown brick and glass-and-metal curtain walls; in Uptown, two-to-four-storey red-brick commercial blocks with shopfronts along King Street, church spires and newer glass mid-rises; in residential streets, detached houses with shingled pitched roofs, garages and backyard trees. The reference's wall colour gives the material family: red-brown = brick, pale grey or cream = concrete or render, blue-grey = glass."""
 
 LIGHT = """LIGHT (identical on every tile - moving objects on the map cast shadows with this same sun)
 - Sun from the south-west, behind the viewer's left shoulder: in the image the light comes from the lower left.
@@ -157,8 +157,19 @@ def cfg_axes():
 def tile_contents(t):
     lines = []
     for n in A.tile_notes(t):
-        desc = n['hint'] or 'campus building - follow the reference wall colour for its material'
+        desc = n['hint'] or 'building - follow the reference wall colour for its material'
         lines.append(f"- {n['name']} ({n['where']}, around x={n['x']}, y={n['y']}): {desc}")
+    # landmarks that are not buildings (plazas, parks, lakes) are not in the roof list - name them too
+    named = {n['name'] for n in A.tile_notes(t)}
+    i, j = A.parse_tid(t)
+    for lm in A.load_json(os.path.join(A.ROOT, 'web', 'public', 'data', 'landmarks.json'), []):
+        if lm.get('tile') != t or lm['name'] in named: continue
+        x, y = int(lm['canvas'][0] - i * F()), int(lm['canvas'][1] - j * F())
+        if not (0 <= x < F() and 0 <= y < F()): continue
+        kind = {'Public square': 'open paved civic plaza - keep it open and paved', 'Park': 'park lawns, paths and tree groups',
+                'Lake': 'pond - keep its shoreline exactly where it is', 'Conservation area': 'lake and natural shoreline'}.get(
+                lm.get('category'), 'landmark - follow the reference')
+        lines.append(f"- {lm['name']} ({A.position_words(x, y)}, around x={x}, y={y}): {kind}")
     streets = A.tile_streets(t)
     if streets: lines.append('- Streets and paths crossing it: ' + ', '.join(streets))
     return '\n'.join(lines)
@@ -232,7 +243,8 @@ def build_batch(bid, tiles=None, depends=None, frame='square', mode=None, title=
                    'windows, trees and light exactly' if art is not None else
                    'DRAFT PLACEHOLDER (reference render) - replaced by the accepted art of ' + style + ' when the batch is rebuilt')
         shared.append(pk.add(f'{bid}_style_{style}.png', img, purpose, [style]))
-    sheet_tiles = plan.get('sheet') or sorted(set(todo) | set(plan['depends_on']))
+    near = {A.tid(A.parse_tid(t)[0] + di, A.parse_tid(t)[1] + dj) for t in todo for di in (-1, 0, 1) for dj in (-1, 0, 1)}
+    sheet_tiles = plan.get('sheet') or sorted(set(todo) | (set(plan['depends_on']) & near))
     shared.append(pk.add(f'{bid}_contact_sheet.png', contact_sheet(sheet_tiles, todo, f'{bid}: context only - do not copy the labels'),
                          'CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels', sheet_tiles))
     frame_spec = FRAMES[frame] if plan['mode'] == 'context' else (F(), F(), 0, 0)
@@ -298,8 +310,8 @@ def tile_prompt(bid, t, plan, items, shared, order):
                 f"building heights. {bid}_contact_sheet.png shows the surrounding campus for orientation only (requested tile outlined "
                 f"in red) - don't copy its labels or grid.")
         out = (f"OUTPUT\n- One image, exactly {F()} x {F()} px (1:1), PNG, named {it['return_filename']}.\n"
-               f"- If your tool can only make a larger square (e.g. 2048 x 2048), that is fine: same composition, just bigger. "
-               f"Never crop, pad, letterbox or change the aspect ratio.")
+               f"- If your tool makes a different square size (e.g. 1254 x 1254 or 2048 x 2048), send that file unchanged: same "
+               f"composition, just a different size. Never upscale, crop, pad, letterbox or change the aspect ratio.")
     else:
         cw, ch = o['width'], o['height']; x0, y0, x1, y1 = o['crop']
         style = next((s for s in shared if '_style_' in s), None)
@@ -316,11 +328,11 @@ def tile_prompt(bid, t, plan, items, shared, order):
             task += (f"\nPaint this tile after {' and '.join(same_batch)}: where its border shows the underdrawing of "
                      f"{' / '.join(same_batch)}, match what you painted for {'those tiles' if len(same_batch) > 1 else 'that tile'} "
                      f"earlier in this conversation.")
-        alt = f'; if 1024 x 1024 is your only size, return the same full canvas scaled to it' if cw == ch else ''
+        alt = (' Any square size of 1024 px or more is fine - e.g. if your tool returns 1254 x 1254, send that file unchanged; we '
+               'scale it ourselves.') if cw == ch else ' A larger image with exactly the same aspect ratio is fine.'
         out = (f"OUTPUT\n- Return the WHOLE canvas: {cw} x {ch} px, PNG, same framing as {f['composition']}, named {it['return_filename']}. "
-               f"We cut the tile out ourselves.\n- If you can't output {cw} x {ch}: a larger image with exactly the same aspect ratio is "
-               f"fine{alt}. Never crop, pad or change the aspect ratio.")
-    return '\n\n'.join([task, 'THIS TILE SHOWS\n' + (tile_contents(t) or '- campus grounds'), out])
+               f"We cut the tile out ourselves.\n-{alt} Never upscale, crop, pad or change the aspect ratio.")
+    return '\n\n'.join([task, 'THIS TILE SHOWS\n' + (tile_contents(t) or '- open ground, follow the reference'), out])
 
 
 def finish_packet(rec, pk):
@@ -352,6 +364,15 @@ def messages(rec):
             body = [f'Next tile ({k + 1} of {len(order)}): same art direction, light, camera, geometry rules and style as before.',
                     attach_list(rec, attach), it['prompt'], 'Send back the original file and the model/settings note as before.']
             if rec['kind'] == 'revision': body.insert(1, rec['correction_text'][t])
+        tool_inputs = [v for k_, v in it['files'].items() if k_ in ('composition', 'mask', 'classes', 'depth')]
+        style_f = next((x for x in shared if '_style_' in x), None)
+        read_only = [x for x in shared if x != style_f]
+        if rec['kind'] != 'seam':
+            budget = (f"INPUT LIMIT: if your image tool accepts at most 5 input images, pass exactly these to it: "
+                      f"{', '.join(tool_inputs + ([style_f] if style_f else []))}"
+                      + (" (for tiles after the first you may swap the style file for your own previous output of the neighbouring tile)" if k else '')
+                      + (f". Read {' and '.join(read_only)} yourself and do not pass them to the tool." if read_only and k == 0 else '.'))
+            body.insert(2 if k == 0 else 2, budget)
         msgs.append({'tile': t, 'attach': attach, 'text': '\n\n'.join(body)})
     return msgs
 
@@ -366,8 +387,15 @@ def render_md(rec):
     total = len({a for m in msgs for a in m['attach']})
     L = [f'# Image request {bid} - {rec["title"]}', '']
     if rec['status'] == 'draft':
-        L += [f'> **DRAFT - do not send yet.** Waiting for {", ".join(rec["blocked_by"])} to be accepted. After that, rebuild with',
-              f'> `python3 pipeline/art_request.py build {bid}` - the margins then show the finished art.', '']
+        owners = {}
+        for b2, r2 in A.load_batches()['batches'].items():
+            if b2 == bid or r2.get('kind') in ('seam', 'revision'): continue
+            for t2 in rec['blocked_by']:
+                if t2 in r2.get('items', {}): owners.setdefault(b2, []).append(t2)
+        who = '; '.join(f'{b2} ({", ".join(ts)})' for b2, ts in sorted(owners.items())) or ', '.join(rec['blocked_by'])
+        L += [f'> **DRAFT - do not send yet.** Waiting for tiles from {who} to be accepted. This packet is rebuilt',
+              f'> automatically when `art_import.py <batch> --accept` accepts the last of them (or run `python3 pipeline/art_request.py build {bid}`);',
+              '> the current files are placeholders - do not attach them.', '']
     L += [f'Packet revision {rec["packet_rev"]}, built {rec["updated_utc"]}. Status: `{rec["status"]}`.', '',
           '## What to do (for the user)', '',
           f'Everything is in `art/requests/{bid}/` (also zipped as `art/requests/{bid}.zip`). Start a **new conversation** with the image agent.', '']
