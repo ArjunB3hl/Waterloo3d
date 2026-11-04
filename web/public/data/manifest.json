@@ -1,6 +1,6 @@
 {
  "name": "Tiny Waterloo",
- "generated_utc": "2026-11-04T18:09:18Z",
+ "generated_utc": "2026-11-04T19:08:18Z",
  "frame_px": 1024,
  "lods_px": [
   256,
@@ -386,8 +386,8 @@
    "j": 0,
    "kind": "art",
    "v": "5344c399a2ee",
-   "hv": "7224951c3b04",
-   "lv": "82a4fed35069",
+   "hv": "961c4926dd72",
+   "lv": "c4302fc84e1b",
    "art_version": "b1f9da2630ef",
    "batch": "B002",
    "finish": "px512-q64s"
@@ -519,7 +519,7 @@
    "kind": "art",
    "v": "5976343cd08b",
    "hv": "c31cc275ea44",
-   "lv": "a4045018c5a1",
+   "lv": "43d1c58876fe",
    "art_version": "413064644d1f",
    "batch": "B002",
    "finish": "px512-q64s"
@@ -551,8 +551,8 @@
    "j": 0,
    "kind": "art",
    "v": "26b3ba177a92",
-   "hv": "b02ec174c41b",
-   "lv": "8339ef8d1a6d",
+   "hv": "577c6a2ada79",
+   "lv": "7bf45f2ebd58",
    "art_version": "bfd18a94f0c7",
    "batch": "B001",
    "finish": "px512-q64s"
@@ -571,13 +571,13 @@
   "1_-1": {
    "i": 1,
    "j": -1,
-   "kind": "reference",
-   "v": "38b547ed3e72",
+   "kind": "art",
+   "v": "102dab0b9280",
    "hv": "ab492bbecbe7",
    "lv": "8caa9d81f19c",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "art_version": "886238e9fc9b",
+   "batch": "B003",
+   "finish": "px512-q64s"
   },
   "1_-2": {
    "i": 1,
@@ -604,13 +604,13 @@
   "1_0": {
    "i": 1,
    "j": 0,
-   "kind": "reference",
-   "v": "1800ef4f2b79",
+   "kind": "art",
+   "v": "2550dc9b454d",
    "hv": "7bc3fca6eea0",
    "lv": "de998846e4d7",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "art_version": "1a579696113b",
+   "batch": "B003",
+   "finish": "px512-q64s"
   },
   "1_1": {
    "i": 1,
@@ -956,8 +956,8 @@
  },
  "counts": {
   "tiles": 55,
-  "art": 4,
-  "reference": 51
+  "art": 6,
+  "reference": 49
  },
  "attribution": [
   "\u00a9 OpenStreetMap contributors (ODbL) via Overture Maps Foundation",

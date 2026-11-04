@@ -83,7 +83,10 @@ def main():
             painted_on = art_meta.get(d, {}).get('reference_files') or {}
             now = {k: sha(os.path.join(jd, f'{k}.png')) for k in painted_on if os.path.exists(os.path.join(jd, f'{k}.png'))}
             stale = [k for k, v in painted_on.items() if now.get(k) != v]
-            if stale:
+            pinned = os.path.exists(os.path.join(ROOT, 'art', 'accepted', 'layers', d, 'height.png'))
+            if stale and pinned:
+                print(f'note: {d} reference re-rendered since acceptance ({", ".join(stale)}); publishing the pinned layers the art was painted on')
+            elif stale:
                 print(f'warning: accepted art {d} was painted on a different reference ({", ".join(stale)} changed since); '
                       'its height/class/life layers may no longer match the artwork - re-request the tile', file=sys.stderr)
             if src.size != (F(), F()): src = src.resize((F(), F()), Image.LANCZOS)
@@ -98,12 +101,15 @@ def main():
                 im.save(fp, lossless=True, method=6)      # keep the finished palette exact (lossy WebP smears pixel art)
             else:
                 im.save(fp, quality=88 if kind == 'art' else 82, method=6)
-        h = np.asarray(Image.open(os.path.join(jd, 'height.png')).convert('RGB'))
+        # art tiles use the layers pinned when the art was accepted (the reference it was painted from)
+        ld = os.path.join(ROOT, 'art', 'accepted', 'layers', d)
+        layer_dir = ld if kind == 'art' and os.path.exists(os.path.join(ld, 'height.png')) else jd
+        h = np.asarray(Image.open(os.path.join(layer_dir, 'height.png')).convert('RGB'))
         step = F() // hp
         # nearest sample at pixel centres of each step x step block: keeps exact encoded values (no blending of packed bytes)
         hs = h[step // 2::step, step // 2::step]
         Image.fromarray(hs).save(os.path.join(OUT, 'heights', f'{d}.png'), optimize=True)
-        cls = np.asarray(Image.open(os.path.join(jd, 'cls.png')).convert('RGB'))[..., 0]
+        cls = np.asarray(Image.open(os.path.join(layer_dir, 'cls.png')).convert('RGB'))[..., 0]
         Image.fromarray(cls).save(os.path.join(OUT, 'cls', f'{d}.png'), optimize=True)
         life_mask(cls).save(os.path.join(OUT, 'life', f'{d}.png'), optimize=True)
         meta = art_meta.get(d, {})

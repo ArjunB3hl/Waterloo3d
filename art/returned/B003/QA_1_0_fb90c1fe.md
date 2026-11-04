@@ -1,0 +1,41 @@
+# QA B003 / 1_0: **PASS**
+
+- File: `B003_1_0.png` (stored as `art/returned/B003/B003_1_0.png`), sha256 `fb90c1fe09da`, PNG 1254x1254
+- Imported 2026-11-04T19:03:32Z; model reported: image_gen.imagegen (model name/version not exposed); settings: reference-image style transfer/edit; masks as image guidance; no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown; 1_0 used generated 1_-1 as northern neighbour reference
+- Side-by-side: `QA_1_0_fb90c1fe.png`
+
+## Warnings
+
+- **size**: returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)
+- **geometry-cells**: 2 cell(s) with weak agreement: [[768, 896, 0.16], [896, 896, -0.5]]
+
+## Measurements
+
+| Check | Value | Threshold |
+|---|---|---|
+| size | [1254, 1254] for [1536, 1536] (k = 0.8164) | same aspect, tile mode >= 1024 |
+| translation | (+0.28, +0.21) px, peak 0.0566 | <= 4.0 px, peak >= 0.02 |
+| camera (block field, 24 blocks) | scale 0.9994, rot -0.01 deg, max residual 13.19 px | scale +-0.01, rot +-0.5 deg, residual <= 10.0 px |
+| geometry (class boundaries vs edges) | 0.918 vs reference 0.936 -> 0.981 | >= 0.5; cells >= 0.3 |
+| weak cells | 2 | < 3 |
+| shadow (L shadow / L lit) | 0.784 (reference 0.713) | <= 0.88 (fail > 0.97) |
+| style | hist 0.325, dE mean 6.7 {'roof': 5.1, 'wall': 19.4, 'road': 2.5, 'path': 2.8, 'paved': 6.3, 'parking': 4.7, 'tree': 7.9, 'green': 4.5} vs ['-1_-1', '-1_0', '0_-1', '0_0', '1_-1'] | hist <= 0.35 (warn), dE mean <= 12.0 / 20.0, any class <= 30.0 |
+| seam left vs 0_0 | gradient x1.248, step x1.394 | <= 1.8 |
+| seam top vs 1_-1 | gradient x1.085, step x1.11 | <= 1.8 |
+| kept area drift | (-0.10, +0.11) px, mean abs diff 19.0 | <= 3.0 px |
+
+## Buildings (visible roof >= 1500 px)
+
+| Building | Landmark | Roof px | Outline vs ref | Contrast vs ref | OK |
+|---|---|---:|---:|---:|---|
+| Douglas Wright Engineering Building |  | 25128 | 1.16 | 1.2 | yes |
+| Carl A. Pollock Hall |  | 7078 | 1.0 | 1.19 | yes |
+| South Campus Hall |  | 3533 | 1.0 | 1.6 | yes |
+| unnamed building building |  | 2051 | 0.93 | 1.29 | yes |
+
+## Human review (automatic checks cannot judge these)
+
+- [ ] Pixel-art quality: crisp clusters, readable windows, recognisable roofs, no smudges or AI artefacts
+- [ ] Materials: concrete / brick / glass match the real buildings; trees and lawns look like late summer
+- [ ] Light: sun from the lower left, shadows toward the upper right, same as neighbouring tiles
+- [ ] No text, labels, borders or vignettes; frame filled edge to edge

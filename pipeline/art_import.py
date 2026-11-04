@@ -574,9 +574,19 @@ def write_report(rec, key, entry, res, tile_or_win, ov, ref_img, out_dir):
 
 
 # ----------------------------------------------------------------------------------------------- accept
+def snapshot_layers(t):
+    """Pin the height/class layers the art was painted from (art/accepted/layers/<t>/). publish_tiles.py uses them for
+    art tiles, so a later reference re-render cannot desynchronise heights, life masks and collision cues from the art."""
+    jd = os.path.join(A.ROOT, 'data_cache', 'jobs', t)
+    dst = A.sp('accepted', 'layers', t); os.makedirs(dst, exist_ok=True)
+    for f in ('height.png', 'cls.png'):
+        shutil.copy2(os.path.join(jd, f), os.path.join(dst, f))
+
+
 def accept_tile(rec, key, item, tile, entry, forced):
     t = key
     path = A.save_png(tile, A.accepted_path(t))
+    snapshot_layers(t)
     meta = A.load_tiles_meta()
     prev = meta.get(t)
     meta[t] = {'version': A.sha_file(path)[:12], 'batch': rec['id'], 'model_reported': entry['model_reported'],

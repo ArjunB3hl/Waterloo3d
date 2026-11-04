@@ -2592,7 +2592,7 @@
    "title": "Campus east edge toward Waterloo Park - tiles 1_-1, 1_0",
    "mode": "context",
    "frame": "square",
-   "status": "requested",
+   "status": "complete",
    "depends_on": [
     "0_0",
     "0_-1"
@@ -2600,7 +2600,7 @@
    "blocked_by": [],
    "parent": null,
    "created_utc": "2026-11-04T18:25:45Z",
-   "updated_utc": "2026-11-04T18:26:25Z",
+   "updated_utc": "2026-11-04T19:03:39Z",
    "packet_rev": 2,
    "order": [
     "1_-1",
@@ -2763,7 +2763,7 @@
    ],
    "items": {
     "1_-1": {
-     "status": "requested",
+     "status": "accepted",
      "return_filename": "B003_1_-1.png",
      "files": {
       "composition": "B003_context_1_-1.png",
@@ -2799,15 +2799,632 @@
        "1_0": "reference"
       }
      },
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null,
+     "model_reported": "image_gen.imagegen (model name/version not exposed)",
+     "settings_reported": "reference-image style transfer/edit; masks as image guidance; no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown; 1_0 used generated 1_-1 as northern neighbour reference",
+     "received": [
+      {
+       "file": "B003_1_-1.png",
+       "stored": "art/returned/B003/B003_1_-1.png",
+       "sha256": "5ee9fb6ec3ffcf98b85dcb4529f57e38874f6392386db447bca37c1f7f563f4b",
+       "utc": "2026-11-04T19:02:47Z",
+       "model_reported": "image_gen.imagegen (model name/version not exposed)",
+       "settings_reported": "reference-image style transfer/edit; masks as image guidance; no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown; 1_0 used generated 1_-1 as northern neighbour reference",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [
+        {
+         "check": "size",
+         "detail": "returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)"
+        },
+        {
+         "check": "geometry-cells",
+         "detail": "1 cell(s) with weak agreement: [[896, 896, 0.0]]"
+        },
+        {
+         "check": "building",
+         "detail": "unnamed building building (around x=72, y=997): roof outline score -0.82, roof contrast None of the reference"
+        },
+        {
+         "check": "building",
+         "detail": "Onnuri (around x=698, y=210): roof outline score 0.29, roof contrast 0.99 of the reference"
+        }
+       ],
+       "qa_md": "art/returned/B003/QA_1_-1_5ee9fb6e.md",
+       "qa_png": "art/returned/B003/QA_1_-1_5ee9fb6e.png"
+      },
+      {
+       "file": "B003_1_-1.png",
+       "stored": "art/returned/B003/B003_1_-1.png",
+       "sha256": "5ee9fb6ec3ffcf98b85dcb4529f57e38874f6392386db447bca37c1f7f563f4b",
+       "utc": "2026-11-04T19:03:25Z",
+       "model_reported": "image_gen.imagegen (model name/version not exposed)",
+       "settings_reported": "reference-image style transfer/edit; masks as image guidance; no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown; 1_0 used generated 1_-1 as northern neighbour reference",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [
+        {
+         "check": "size",
+         "detail": "returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)"
+        },
+        {
+         "check": "geometry-cells",
+         "detail": "1 cell(s) with weak agreement: [[896, 896, 0.0]]"
+        },
+        {
+         "check": "building",
+         "detail": "unnamed building building (around x=72, y=997): roof outline score -0.82, roof contrast None of the reference"
+        },
+        {
+         "check": "building",
+         "detail": "Onnuri (around x=698, y=210): roof outline score 0.29, roof contrast 0.99 of the reference"
+        }
+       ],
+       "qa_md": "art/returned/B003/QA_1_-1_5ee9fb6e.md",
+       "qa_png": "art/returned/B003/QA_1_-1_5ee9fb6e.png"
+      }
+     ],
+     "qa": {
+      "verdict": "pass",
+      "metrics": {
+       "size": {
+        "returned": [
+         1254,
+         1254
+        ],
+        "expected": [
+         1536,
+         1536
+        ],
+        "k": 0.8164
+       },
+       "registration": {
+        "dx": -0.68,
+        "dy": 0.79,
+        "peak": 0.0589,
+        "blocks": 38,
+        "scale": 1.0005,
+        "rot_deg": -0.004,
+        "max_resid": 4.21,
+        "unconfirmed_blocks": [],
+        "displaced": []
+       },
+       "geometry": {
+        "ref": 0.699,
+        "art": 0.803,
+        "rel": 1.149,
+        "bad_cells": [
+         [
+          896,
+          896,
+          0.0
+         ]
+        ]
+       },
+       "buildings": [
+        {
+         "name": "Wilmot Court",
+         "id": "31fe72bc-8748-465e-9862-0fd302c753e5",
+         "area": 22916,
+         "centroid": [
+          665,
+          791
+         ],
+         "bbox": [
+          499,
+          679,
+          846,
+          886
+         ],
+         "landmark": false,
+         "outline_rel": 1.91,
+         "contrast_rel": 1.61,
+         "bad": false
+        },
+        {
+         "name": "Wellesley Court",
+         "id": "bcd4d132-5be0-4e92-8711-e357cff5f1e9",
+         "area": 21093,
+         "centroid": [
+          858,
+          600
+         ],
+         "bbox": [
+          700,
+          510,
+          1014,
+          712
+         ],
+         "landmark": false,
+         "outline_rel": 1.88,
+         "contrast_rel": 1.57,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "ef80fdc6-b871-4ab4-9077-f03127df0856",
+         "area": 17630,
+         "centroid": [
+          228,
+          517
+         ],
+         "bbox": [
+          79,
+          422,
+          373,
+          620
+         ],
+         "landmark": false,
+         "outline_rel": 1.88,
+         "contrast_rel": 1.28,
+         "bad": false
+        },
+        {
+         "name": "Claudette Millar Hall",
+         "id": "2e5f74bc-cede-4525-942d-1aeb0399a062",
+         "area": 10185,
+         "centroid": [
+          929,
+          876
+         ],
+         "bbox": [
+          824,
+          833,
+          1024,
+          927
+         ],
+         "landmark": false,
+         "outline_rel": 1.69,
+         "contrast_rel": 1.29,
+         "bad": false
+        },
+        {
+         "name": "Waterloo Central Supermarket",
+         "id": "4acdac76-fc38-4d25-af12-eb30dfa13e0e",
+         "area": 10108,
+         "centroid": [
+          792,
+          183
+         ],
+         "bbox": [
+          700,
+          128,
+          885,
+          242
+         ],
+         "landmark": false,
+         "outline_rel": 0.85,
+         "contrast_rel": 1.11,
+         "bad": false
+        },
+        {
+         "name": "Elora House",
+         "id": "27715cf3-bee2-4471-a4e7-0428a2ddcf96",
+         "area": 8087,
+         "centroid": [
+          356,
+          111
+         ],
+         "bbox": [
+          279,
+          58,
+          436,
+          166
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.11,
+         "bad": false
+        },
+        {
+         "name": "Carl A. Pollock Hall",
+         "id": "2d630e3b-c37b-4ef0-a696-f683a72f057a",
+         "area": 8056,
+         "centroid": [
+          48,
+          986
+         ],
+         "bbox": [
+          0,
+          918,
+          133,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": 0.43,
+         "contrast_rel": 1.4,
+         "bad": false
+        },
+        {
+         "name": "Hespeler House",
+         "id": "2becb4f1-41af-47a0-9476-ea55d6650da1",
+         "area": 7998,
+         "centroid": [
+          539,
+          94
+         ],
+         "bbox": [
+          464,
+          40,
+          616,
+          151
+         ],
+         "landmark": false,
+         "outline_rel": 1.38,
+         "contrast_rel": 1.35,
+         "bad": false
+        },
+        {
+         "name": "Blair House",
+         "id": "84f631d8-dacc-420e-8f27-91dfb1173e55",
+         "area": 6916,
+         "centroid": [
+          207,
+          31
+         ],
+         "bbox": [
+          127,
+          0,
+          283,
+          80
+         ],
+         "landmark": false,
+         "outline_rel": 0.48,
+         "contrast_rel": 0.94,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "ee19fab4-7508-404c-8d6b-69480f306599",
+         "area": 6774,
+         "centroid": [
+          80,
+          786
+         ],
+         "bbox": [
+          0,
+          746,
+          182,
+          824
+         ],
+         "landmark": false,
+         "outline_rel": 0.63,
+         "contrast_rel": 1.34,
+         "bad": false
+        },
+        {
+         "name": "unnamed apartments building",
+         "id": "6e302dfb-3d0a-4bbe-86d7-ec139b339991",
+         "area": 5405,
+         "centroid": [
+          834,
+          28
+         ],
+         "bbox": [
+          750,
+          0,
+          904,
+          74
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.1,
+         "bad": false
+        },
+        {
+         "name": "Eby Hall",
+         "id": "5fa7e68d-34e1-4493-b52b-46d8be79ba05",
+         "area": 4445,
+         "centroid": [
+          992,
+          756
+         ],
+         "bbox": [
+          947,
+          716,
+          1024,
+          798
+         ],
+         "landmark": false,
+         "outline_rel": 2.05,
+         "contrast_rel": 1.51,
+         "bad": false
+        },
+        {
+         "name": "WCRI Hammar",
+         "id": "0cfda6c9-e83f-491a-b1d5-d656134125a9",
+         "area": 4125,
+         "centroid": [
+          915,
+          425
+         ],
+         "bbox": [
+          858,
+          384,
+          976,
+          466
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.64,
+         "bad": false
+        },
+        {
+         "name": "Rooster's Fried Chicken",
+         "id": "cffacaad-5fb9-419a-b1a8-8f52eb2cf736",
+         "area": 3353,
+         "centroid": [
+          408,
+          566
+         ],
+         "bbox": [
+          360,
+          533,
+          458,
+          602
+         ],
+         "landmark": false,
+         "outline_rel": 1.41,
+         "contrast_rel": 0.96,
+         "bad": false
+        },
+        {
+         "name": "WCRI-Carver",
+         "id": "0f6df143-a32f-4df1-8d5a-4fb71475f2af",
+         "area": 3221,
+         "centroid": [
+          61,
+          31
+         ],
+         "bbox": [
+          8,
+          0,
+          125,
+          72
+         ],
+         "landmark": false,
+         "outline_rel": 0.95,
+         "contrast_rel": 1.36,
+         "bad": false
+        },
+        {
+         "name": "Burger King",
+         "id": "ba66abd0-a90d-4d02-a4fb-d9e85a6ca3fd",
+         "area": 2780,
+         "centroid": [
+          705,
+          340
+         ],
+         "bbox": [
+          661,
+          310,
+          750,
+          372
+         ],
+         "landmark": false,
+         "outline_rel": 0.64,
+         "contrast_rel": 1.13,
+         "bad": false
+        },
+        {
+         "name": "UniClaw",
+         "id": "71b796bc-4058-4b56-aec1-cec0121eba81",
+         "area": 2742,
+         "centroid": [
+          928,
+          179
+         ],
+         "bbox": [
+          884,
+          149,
+          973,
+          212
+         ],
+         "landmark": false,
+         "outline_rel": 1.83,
+         "contrast_rel": null,
+         "bad": false
+        },
+        {
+         "name": "bb.q Village",
+         "id": "0bd98f4c-dcbe-4534-80dc-91ea8041f58c",
+         "area": 2635,
+         "centroid": [
+          974,
+          148
+         ],
+         "bbox": [
+          932,
+          118,
+          1018,
+          179
+         ],
+         "landmark": false,
+         "outline_rel": null,
+         "contrast_rel": 1.38,
+         "bad": false
+        },
+        {
+         "name": "mochi mochi",
+         "id": "1a6d46d5-0265-4a98-bd88-c3256386394b",
+         "area": 2403,
+         "centroid": [
+          884,
+          211
+         ],
+         "bbox": [
+          849,
+          183,
+          926,
+          242
+         ],
+         "landmark": false,
+         "outline_rel": 0.58,
+         "contrast_rel": 0.97,
+         "bad": false
+        },
+        {
+         "name": "unnamed building building",
+         "id": "d3103906-1a1d-47a0-8190-24a446e6ed43",
+         "area": 2326,
+         "centroid": [
+          72,
+          997
+         ],
+         "bbox": [
+          23,
+          966,
+          123,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": -0.82,
+         "contrast_rel": null,
+         "bad": true
+        },
+        {
+         "name": "Shawerma Plus",
+         "id": "a2c25d2d-823d-49cd-a3c0-263e456e2b19",
+         "area": 2151,
+         "centroid": [
+          371,
+          542
+         ],
+         "bbox": [
+          332,
+          515,
+          413,
+          573
+         ],
+         "landmark": false,
+         "outline_rel": 0.67,
+         "contrast_rel": null,
+         "bad": false
+        },
+        {
+         "name": "Onnuri",
+         "id": "dc3c95a7-6853-401d-9e2f-5d52439aac0a",
+         "area": 2059,
+         "centroid": [
+          698,
+          210
+         ],
+         "bbox": [
+          659,
+          183,
+          739,
+          238
+         ],
+         "landmark": false,
+         "outline_rel": 0.29,
+         "contrast_rel": 0.99,
+         "bad": true
+        },
+        {
+         "name": "Fergus House",
+         "id": "1ca52bba-5a3f-4166-95a7-cc84bdb9c1b8",
+         "area": 1891,
+         "centroid": [
+          356,
+          11
+         ],
+         "bbox": [
+          303,
+          0,
+          409,
+          36
+         ],
+         "landmark": false,
+         "outline_rel": 0.49,
+         "contrast_rel": 1.89,
+         "bad": false
+        },
+        {
+         "name": "Mr. Yin",
+         "id": "0de0a59d-e7bf-408f-a79d-eb9308b072c2",
+         "area": 1575,
+         "centroid": [
+          648,
+          381
+         ],
+         "bbox": [
+          623,
+          356,
+          684,
+          407
+         ],
+         "landmark": false,
+         "outline_rel": 0.87,
+         "contrast_rel": 0.91,
+         "bad": false
+        }
+       ],
+       "shadow": {
+        "ref": 0.622,
+        "art": 0.604,
+        "pixels": 22783
+       },
+       "style": {
+        "against": [
+         "-1_-1",
+         "-1_0",
+         "0_-1",
+         "0_0"
+        ],
+        "hist": 0.159,
+        "dE": {
+         "roof": 3.5,
+         "wall": 9.2,
+         "road": 1.0,
+         "path": 3.1,
+         "paved": 4.9,
+         "parking": 2.8,
+         "tree": 9.7,
+         "green": 4.9
+        },
+        "dE_mean": 4.9
+       },
+       "seams": [
+        {
+         "grad_ratio": 1.146,
+         "step_ratio": 1.147,
+         "cross_mean": 25.5,
+         "interior_mean": 22.25,
+         "worst": [],
+         "side": "left",
+         "neighbour": "0_-1",
+         "bad": false
+        }
+       ],
+       "keep": {
+        "dx": -0.15,
+        "dy": 0.06,
+        "peak": 0.4,
+        "mad": 13.3
+       }
+      },
+      "file": "B003_1_-1.png"
+     },
      "prompt": "TASK - tile 1_-1\nEdit B003_context_1_-1.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.\nB003_mask_1_-1.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)\nMatch the finished style of B003_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B003_classes_1_-1.png (legend: B003_classes_legend.png) for surface types and B003_depth_1_-1.png for building heights.\n\nTHIS TILE SHOWS\n- Wilmot Court (lower centre, around x=665, y=791): campus building - follow the reference wall colour for its material\n- Wellesley Court (right, around x=858, y=600): campus building - follow the reference wall colour for its material\n- Claudette Millar Hall (lower right, around x=929, y=876): campus building - follow the reference wall colour for its material\n- Waterloo Central Supermarket (upper right, around x=792, y=183): campus building - follow the reference wall colour for its material\n- Elora House (upper centre, around x=356, y=111): campus building - follow the reference wall colour for its material\n- Carl A. Pollock Hall (lower left, around x=48, y=986): campus building - follow the reference wall colour for its material\n- Hespeler House (upper centre, around x=539, y=94): campus building - follow the reference wall colour for its material\n- Blair House (upper left, around x=207, y=31): campus building - follow the reference wall colour for its material\n- Eby Hall (lower right, around x=992, y=756): campus building - follow the reference wall colour for its material\n- Streets and paths crossing it: University Avenue West, Phillip Street, Laurel Trail (Trans-Canada Trail), Path 2 East, Ring Road, Lester Street\n\nOUTPUT\n- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B003_context_1_-1.png, named B003_1_-1.png. We cut the tile out ourselves.\n- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.",
-     "prompt_sha": "98f24c061d94"
+     "prompt_sha": "98f24c061d94",
+     "report_text": "B003 generation report\nTool: built-in image_gen.imagegen\nModel name: unknown (not exposed)\nModel version: unknown\nMode: reference-image style transfer/edit; masks supplied as image guidance. Dedicated inpainting-mask control not exposed.\nTransparent background: false\nRequested output: 1536 x 1536, whole context canvas\nSeed: unknown\nSteps: unknown\nGuidance/strength: unknown\nQuality setting: unknown\nAttempts: 2 successful generations, one per tile.\nGenerated in order: 1_-1, 1_0. Second canvas uses first generated canvas as a northern neighbour reference and existing finished left-margin art as a style reference.\nAll outputs below are unchanged original PNGs, copied byte for byte. No cropping, resizing, compositing or recompression performed.\nVisual review: full square compositions, detailed facades, parking, vegetation and consistent warm palette; no visible labels. Pixel-exact geometry, preservation of masked pixels and seamless joins are not verified. Pipeline acceptance QA not run.\n\nB003_1_-1.png: 1254 x 1254 PNG; SHA256 5ee9fb6ec3ffcf98b85dcb4529f57e38874f6392386db447bca37c1f7f563f4b\nB003_1_0.png: 1254 x 1254 PNG; SHA256 fb90c1fe09da9d960e1ff28ccbded1a769d9e252550a827efeea03d3cb75848b\n",
+     "accepted": {
+      "file": "B003_1_-1.png",
+      "utc": "2026-11-04T19:03:32Z",
+      "forced": false
+     }
     },
     "1_0": {
-     "status": "requested",
+     "status": "accepted",
      "return_filename": "B003_1_0.png",
      "files": {
       "composition": "B003_context_1_0.png",
@@ -2843,12 +3460,255 @@
        "1_1": "reference"
       }
      },
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null,
+     "model_reported": "image_gen.imagegen (model name/version not exposed)",
+     "settings_reported": "reference-image style transfer/edit; masks as image guidance; no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown; 1_0 used generated 1_-1 as northern neighbour reference",
+     "received": [
+      {
+       "file": "B003_1_0.png",
+       "stored": "art/returned/B003/B003_1_0.png",
+       "sha256": "fb90c1fe09da9d960e1ff28ccbded1a769d9e252550a827efeea03d3cb75848b",
+       "utc": "2026-11-04T19:02:59Z",
+       "model_reported": "image_gen.imagegen (model name/version not exposed)",
+       "settings_reported": "reference-image style transfer/edit; masks as image guidance; no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown; 1_0 used generated 1_-1 as northern neighbour reference",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [
+        {
+         "check": "size",
+         "detail": "returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)"
+        },
+        {
+         "check": "geometry-cells",
+         "detail": "2 cell(s) with weak agreement: [[768, 896, 0.16], [896, 896, -0.5]]"
+        }
+       ],
+       "qa_md": "art/returned/B003/QA_1_0_fb90c1fe.md",
+       "qa_png": "art/returned/B003/QA_1_0_fb90c1fe.png"
+      },
+      {
+       "file": "B003_1_0.png",
+       "stored": "art/returned/B003/B003_1_0.png",
+       "sha256": "fb90c1fe09da9d960e1ff28ccbded1a769d9e252550a827efeea03d3cb75848b",
+       "utc": "2026-11-04T19:03:32Z",
+       "model_reported": "image_gen.imagegen (model name/version not exposed)",
+       "settings_reported": "reference-image style transfer/edit; masks as image guidance; no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown; 1_0 used generated 1_-1 as northern neighbour reference",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [
+        {
+         "check": "size",
+         "detail": "returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)"
+        },
+        {
+         "check": "geometry-cells",
+         "detail": "2 cell(s) with weak agreement: [[768, 896, 0.16], [896, 896, -0.5]]"
+        }
+       ],
+       "qa_md": "art/returned/B003/QA_1_0_fb90c1fe.md",
+       "qa_png": "art/returned/B003/QA_1_0_fb90c1fe.png"
+      }
+     ],
+     "qa": {
+      "verdict": "pass",
+      "metrics": {
+       "size": {
+        "returned": [
+         1254,
+         1254
+        ],
+        "expected": [
+         1536,
+         1536
+        ],
+        "k": 0.8164
+       },
+       "registration": {
+        "dx": 0.28,
+        "dy": 0.21,
+        "peak": 0.0566,
+        "blocks": 24,
+        "scale": 0.9994,
+        "rot_deg": -0.01,
+        "max_resid": 13.19,
+        "unconfirmed_blocks": [
+         [
+          384,
+          768,
+          13.2
+         ]
+        ],
+        "displaced": []
+       },
+       "geometry": {
+        "ref": 0.936,
+        "art": 0.918,
+        "rel": 0.981,
+        "bad_cells": [
+         [
+          768,
+          896,
+          0.16
+         ],
+         [
+          896,
+          896,
+          -0.5
+         ]
+        ]
+       },
+       "buildings": [
+        {
+         "name": "Douglas Wright Engineering Building",
+         "id": "08ed5f6b-ecab-4acf-a533-e09a7d022d15",
+         "area": 25128,
+         "centroid": [
+          102,
+          176
+         ],
+         "bbox": [
+          0,
+          63,
+          224,
+          300
+         ],
+         "landmark": false,
+         "outline_rel": 1.16,
+         "contrast_rel": 1.2,
+         "bad": false
+        },
+        {
+         "name": "Carl A. Pollock Hall",
+         "id": "2d630e3b-c37b-4ef0-a696-f683a72f057a",
+         "area": 7078,
+         "centroid": [
+          78,
+          25
+         ],
+         "bbox": [
+          0,
+          0,
+          176,
+          70
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.19,
+         "bad": false
+        },
+        {
+         "name": "South Campus Hall",
+         "id": "5fc4a2d4-1120-44a2-b873-7a866afbb8ac",
+         "area": 3533,
+         "centroid": [
+          22,
+          441
+         ],
+         "bbox": [
+          0,
+          394,
+          68,
+          523
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.6,
+         "bad": false
+        },
+        {
+         "name": "unnamed building building",
+         "id": "ef4bae90-ddd8-419a-b18e-a661d2f0366d",
+         "area": 2051,
+         "centroid": [
+          304,
+          46
+         ],
+         "bbox": [
+          166,
+          41,
+          420,
+          55
+         ],
+         "landmark": false,
+         "outline_rel": 0.93,
+         "contrast_rel": 1.29,
+         "bad": false
+        }
+       ],
+       "shadow": {
+        "ref": 0.713,
+        "art": 0.784,
+        "pixels": 15757
+       },
+       "style": {
+        "against": [
+         "-1_-1",
+         "-1_0",
+         "0_-1",
+         "0_0",
+         "1_-1"
+        ],
+        "hist": 0.325,
+        "dE": {
+         "roof": 5.1,
+         "wall": 19.4,
+         "road": 2.5,
+         "path": 2.8,
+         "paved": 6.3,
+         "parking": 4.7,
+         "tree": 7.9,
+         "green": 4.5
+        },
+        "dE_mean": 6.7
+       },
+       "seams": [
+        {
+         "grad_ratio": 1.248,
+         "step_ratio": 1.394,
+         "cross_mean": 25.08,
+         "interior_mean": 20.11,
+         "worst": [],
+         "side": "left",
+         "neighbour": "0_0",
+         "bad": false
+        },
+        {
+         "grad_ratio": 1.085,
+         "step_ratio": 1.11,
+         "cross_mean": 25.09,
+         "interior_mean": 23.12,
+         "worst": [],
+         "side": "top",
+         "neighbour": "1_-1",
+         "bad": false
+        }
+       ],
+       "keep": {
+        "dx": -0.1,
+        "dy": 0.11,
+        "peak": 0.18,
+        "mad": 19.0
+       }
+      },
+      "file": "B003_1_0.png"
+     },
      "prompt": "TASK - tile 1_0\nEdit B003_context_1_0.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.\nB003_mask_1_0.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)\nMatch the finished style of B003_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B003_classes_1_0.png (legend: B003_classes_legend.png) for surface types and B003_depth_1_0.png for building heights.\nPaint this tile after 1_-1: where its border shows the underdrawing of 1_-1, match what you painted for that tile earlier in this conversation.\n\nTHIS TILE SHOWS\n- Douglas Wright Engineering Building (upper left, around x=102, y=176): campus building - follow the reference wall colour for its material\n- Carl A. Pollock Hall (upper left, around x=78, y=25): campus building - follow the reference wall colour for its material\n- South Campus Hall (left, around x=22, y=441): brick building at the south edge of the campus core\n- Streets and paths crossing it: University Avenue West, Ring Road, Seagram Drive, Laurel Trail (Trans-Canada Trail), Two Row Path, Path 1 East\n\nOUTPUT\n- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B003_context_1_0.png, named B003_1_0.png. We cut the tile out ourselves.\n- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.",
-     "prompt_sha": "24a55dbbcbe6"
+     "prompt_sha": "24a55dbbcbe6",
+     "report_text": "B003 generation report\nTool: built-in image_gen.imagegen\nModel name: unknown (not exposed)\nModel version: unknown\nMode: reference-image style transfer/edit; masks supplied as image guidance. Dedicated inpainting-mask control not exposed.\nTransparent background: false\nRequested output: 1536 x 1536, whole context canvas\nSeed: unknown\nSteps: unknown\nGuidance/strength: unknown\nQuality setting: unknown\nAttempts: 2 successful generations, one per tile.\nGenerated in order: 1_-1, 1_0. Second canvas uses first generated canvas as a northern neighbour reference and existing finished left-margin art as a style reference.\nAll outputs below are unchanged original PNGs, copied byte for byte. No cropping, resizing, compositing or recompression performed.\nVisual review: full square compositions, detailed facades, parking, vegetation and consistent warm palette; no visible labels. Pixel-exact geometry, preservation of masked pixels and seamless joins are not verified. Pipeline acceptance QA not run.\n\nB003_1_-1.png: 1254 x 1254 PNG; SHA256 5ee9fb6ec3ffcf98b85dcb4529f57e38874f6392386db447bca37c1f7f563f4b\nB003_1_0.png: 1254 x 1254 PNG; SHA256 fb90c1fe09da9d960e1ff28ccbded1a769d9e252550a827efeea03d3cb75848b\n",
+     "accepted": {
+      "file": "B003_1_0.png",
+      "utc": "2026-11-04T19:03:39Z",
+      "forced": false
+     }
     }
    },
    "packet": {
@@ -2856,6 +3716,280 @@
     "dir": "art/requests/B003",
     "zip": "art/requests/B003.zip",
     "zip_sha256": "f7f26aa2ae397d1c86917f435fb01a09d79e1f6ec4e838f07673c859887dcb95"
+   }
+  },
+  "B004": {
+   "id": "B004",
+   "kind": "patch",
+   "title": "Waterloo Park west edge - tiles 2_-1, 2_0",
+   "mode": "context",
+   "frame": "square",
+   "status": "requested",
+   "depends_on": [
+    "0_0",
+    "1_-1",
+    "1_0"
+   ],
+   "blocked_by": [],
+   "parent": null,
+   "created_utc": "2026-11-04T19:10:35Z",
+   "updated_utc": "2026-11-04T19:10:35Z",
+   "packet_rev": 1,
+   "order": [
+    "2_-1",
+    "2_0"
+   ],
+   "style_from": "0_0",
+   "shared_files": [
+    "B004_style_0_0.png",
+    "B004_contact_sheet.png",
+    "B004_classes_legend.png"
+   ],
+   "attachments": [
+    {
+     "file": "B004_style_0_0.png",
+     "purpose": "STYLE: finished, accepted artwork of neighbouring tile 0_0 - match its palette, pixel size, outlines, windows, trees and light exactly",
+     "tiles": [
+      "0_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "bfd18a94f0c795a075713d7f7e3cb3de3a1f28fb784b4a9929d587c97da04c58"
+    },
+    {
+     "file": "B004_contact_sheet.png",
+     "purpose": "CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels",
+     "tiles": [
+      "0_0",
+      "1_-1",
+      "1_0",
+      "2_-1",
+      "2_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1080
+     ],
+     "sha256": "72a19cabfa1751bb8e129b44339850ed6fcbeb0f3d45fa08573501c91557122f"
+    },
+    {
+     "file": "B004_context_2_-1.png",
+     "purpose": "COMPOSITION + CANVAS TO EDIT (1536x1536): tile 2_-1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin",
+     "tiles": [
+      "2_-1"
+     ],
+     "defines_composition": true,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "91597c54fab1c8074e7772380df0ff3a060bc00e8b6c64e4fc817728533dfefa"
+    },
+    {
+     "file": "B004_mask_2_-1.png",
+     "purpose": "EDIT MASK: white = paint, black = keep (finished neighbour art)",
+     "tiles": [
+      "2_-1"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "46fa38d1d7044746a27560d748819c23d5d50a98c805e73f3fd5ffa2028fb5a6"
+    },
+    {
+     "file": "B004_classes_2_-1.png",
+     "purpose": "SEMANTIC MAP (same framing as the composition): colour = surface type, see legend",
+     "tiles": [
+      "2_-1"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "7ae5771059f4ee0af344621865ff783cf449e8777311c1f96c5fa30bc476d279"
+    },
+    {
+     "file": "B004_depth_2_-1.png",
+     "purpose": "HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more",
+     "tiles": [
+      "2_-1"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "9a1e73c0df8f856e59c6147e77c74a8e6296f599a2b3d1da00126bd6f92d1031"
+    },
+    {
+     "file": "B004_context_2_0.png",
+     "purpose": "COMPOSITION + CANVAS TO EDIT (1536x1536): tile 2_0 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin",
+     "tiles": [
+      "2_0"
+     ],
+     "defines_composition": true,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "80c3f33166c3df2fb60b1129ede13cf65b7b62f8411cec66c899a95e63fa3369"
+    },
+    {
+     "file": "B004_mask_2_0.png",
+     "purpose": "EDIT MASK: white = paint, black = keep (finished neighbour art)",
+     "tiles": [
+      "2_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "4aa71b138e65a0371df3d936840a547d56fd71a342be9689a3b7ecc53275d0e0"
+    },
+    {
+     "file": "B004_classes_2_0.png",
+     "purpose": "SEMANTIC MAP (same framing as the composition): colour = surface type, see legend",
+     "tiles": [
+      "2_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "b8f0f93d9295251bffb0c2958bcffa6ec52783ea41543d0e645dc781b55e4350"
+    },
+    {
+     "file": "B004_depth_2_0.png",
+     "purpose": "HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more",
+     "tiles": [
+      "2_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "1597f6d001a32e794df0f6441269869828dad5c928a942b04abc724f6b33bdba"
+    },
+    {
+     "file": "B004_classes_legend.png",
+     "purpose": "LEGEND for the semantic maps",
+     "tiles": [
+      "2_-1",
+      "2_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      760,
+      784
+     ],
+     "sha256": "972b62f81e8280c37f8e3c86d59c48b95f9f44e8151f9ff3228527f9582b3804"
+    }
+   ],
+   "items": {
+    "2_-1": {
+     "status": "requested",
+     "return_filename": "B004_2_-1.png",
+     "files": {
+      "composition": "B004_context_2_-1.png",
+      "mask": "B004_mask_2_-1.png",
+      "classes": "B004_classes_2_-1.png",
+      "depth": "B004_depth_2_-1.png"
+     },
+     "output": {
+      "mode": "context",
+      "frame": "square",
+      "width": 1536,
+      "height": 1536,
+      "crop": [
+       256,
+       256,
+       1280,
+       1280
+      ],
+      "canvas_origin": [
+       1792,
+       -1280
+      ]
+     },
+     "reference": {
+      "color2x": "45d6d865d3d5",
+      "cls": "b549565f2b0a",
+      "height": "149f4873cbba",
+      "composition": "91597c54fab1",
+      "neighbours": {
+       "1_-1": "886238e9fc9b",
+       "3_-1": "reference",
+       "2_-2": "reference",
+       "2_0": "reference"
+      }
+     },
+     "model_reported": "unknown",
+     "settings_reported": "unknown",
+     "received": [],
+     "qa": null,
+     "prompt": "TASK - tile 2_-1\nEdit B004_context_2_-1.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.\nB004_mask_2_-1.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)\nMatch the finished style of B004_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B004_classes_2_-1.png (legend: B004_classes_legend.png) for surface types and B004_depth_2_-1.png for building heights.\n\nTHIS TILE SHOWS\n- KW Granite Club (lower right, around x=869, y=760): campus building - follow the reference wall colour for its material\n- Woolwich Court (lower centre, around x=503, y=685): campus building - follow the reference wall colour for its material\n- Waterloo Court (lower left, around x=235, y=934): campus building - follow the reference wall colour for its material\n- Waterloo College Hall (right, around x=860, y=348): campus building - follow the reference wall colour for its material\n- The Beckett School (upper centre, around x=616, y=282): campus building - follow the reference wall colour for its material\n- Beck Hall (left, around x=173, y=661): campus building - follow the reference wall colour for its material\n- UW Place Grand Commons (lower left, around x=74, y=788): campus building - follow the reference wall colour for its material\n- Claudette Millar Hall (lower left, around x=26, y=903): campus building - follow the reference wall colour for its material\n- Eby Hall (lower left, around x=12, y=757): campus building - follow the reference wall colour for its material\n- Streets and paths crossing it: University Avenue West, Lester Street, Seagram Drive, Sunview Street\n\nOUTPUT\n- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B004_context_2_-1.png, named B004_2_-1.png. We cut the tile out ourselves.\n- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.",
+     "prompt_sha": "c94306d0e98b"
+    },
+    "2_0": {
+     "status": "requested",
+     "return_filename": "B004_2_0.png",
+     "files": {
+      "composition": "B004_context_2_0.png",
+      "mask": "B004_mask_2_0.png",
+      "classes": "B004_classes_2_0.png",
+      "depth": "B004_depth_2_0.png"
+     },
+     "output": {
+      "mode": "context",
+      "frame": "square",
+      "width": 1536,
+      "height": 1536,
+      "crop": [
+       256,
+       256,
+       1280,
+       1280
+      ],
+      "canvas_origin": [
+       1792,
+       -256
+      ]
+     },
+     "reference": {
+      "color2x": "2f50997a9824",
+      "cls": "e39d29893ad7",
+      "height": "b3ffebdcf37c",
+      "composition": "80c3f33166c3",
+      "neighbours": {
+       "1_0": "1a579696113b",
+       "3_0": "reference",
+       "2_-1": "reference",
+       "2_1": "reference"
+      }
+     },
+     "model_reported": "unknown",
+     "settings_reported": "unknown",
+     "received": [],
+     "qa": null,
+     "prompt": "TASK - tile 2_0\nEdit B004_context_2_0.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.\nB004_mask_2_0.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)\nMatch the finished style of B004_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B004_classes_2_0.png (legend: B004_classes_legend.png) for surface types and B004_depth_2_0.png for building heights.\nPaint this tile after 2_-1: where its border shows the underdrawing of 2_-1, match what you painted for that tile earlier in this conversation.\n\nTHIS TILE SHOWS\n- Streets and paths crossing it: Laurel Trail (Trans-Canada Trail), Seagram Drive, Central Promenade Trail\n\nOUTPUT\n- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B004_context_2_0.png, named B004_2_0.png. We cut the tile out ourselves.\n- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.",
+     "prompt_sha": "bf76b1c99b96"
+    }
+   },
+   "packet": {
+    "md": "IMAGE_REQUEST_B004.md",
+    "dir": "art/requests/B004",
+    "zip": "art/requests/B004.zip",
+    "zip_sha256": "b483c80ce2c416b4c37719aa12c5a6f11e4dda27adbd44116d13a15d0769144f"
    }
   }
  }
