@@ -515,7 +515,7 @@ def seam_profiles(geo, rgb):
     return out
 
 
-def build_seam(pair=None, quad=None, band=SEAM_BAND):
+def build_seam(pair=None, quad=None, band=SEAM_BAND, note=None):
     geo = seam_geometry(pair, quad)
     tiles_meta = A.load_tiles_meta()
     missing = [t for t in geo['tiles'] if not os.path.exists(A.accepted_path(t))]
@@ -542,8 +542,11 @@ def build_seam(pair=None, quad=None, band=SEAM_BAND):
               f"roads, kerbs, path edges, lawn texture and tree clusters straight across the line and blend colour and brightness "
               f"smoothly. Everything in the black area must stay pixel-identical. Keep every edge where {f_ref} has it (no moved or "
               f"invented buildings, roads or trees). {f_mark} shows the band and the worst spots - it is a guide only.\n"
-              f"Measured now: {joins_txt}.\n\nOUTPUT\n- One image, exactly {SEAM_WINDOW} x {SEAM_WINDOW} px, PNG, named {sid}_seam.png, "
-              f"same framing as {f_win}. A larger square is fine; never crop, pad or change the aspect ratio.")
+              f"Measured now: {joins_txt}."
+              + (f"\nSPECIFIC FIX (from our review of this join): {note}" if note else '')
+              + f"\n\nOUTPUT\n- One image, exactly {SEAM_WINDOW} x {SEAM_WINDOW} px, PNG, named {sid}_seam.png, "
+              f"same framing as {f_win}. Any square size of {SEAM_WINDOW} px or more is fine (e.g. 1254 x 1254 if that is what your tool "
+              f"returns - send it unchanged); never upscale, crop, pad or change the aspect ratio.")
     item = {'status': 'requested', 'return_filename': f'{sid}_seam.png', 'files': {'composition': f_win, 'mask': f_mask},
             'output': {'mode': 'seam', 'width': SEAM_WINDOW, 'height': SEAM_WINDOW, 'window': [x0, y0], 'band': band,
                        'kind': geo['kind'], 'joins': geo['joins'], 'tiles': geo['tiles']},
@@ -716,6 +719,7 @@ def main(argv=None):
     g.add_argument('--pair', help='A:B edge neighbours, e.g. 0_0:1_0')
     g.add_argument('--quad', help='top-left tile of a 2x2 junction, e.g. -1_-1')
     s.add_argument('--band', type=int, default=SEAM_BAND)
+    s.add_argument('--note', help='specific correction for this join, added to the prompt')
     sub.add_parser('status', help='print batches.json')
     a = ap.parse_args(argv)
     if a.state_dir: os.environ['TW_ART_DIR'] = os.path.abspath(a.state_dir)
@@ -725,7 +729,7 @@ def main(argv=None):
         split = lambda v: [x.strip() for x in v.split(',') if x.strip()] if v is not None else None
         build_batch(a.batch, split(a.tiles), split(a.depends), a.frame, a.mode, a.title)
     elif a.cmd == 'seam':
-        build_seam(a.pair, a.quad, a.band)
+        build_seam(a.pair, a.quad, a.band, a.note)
     else:
         status()
 

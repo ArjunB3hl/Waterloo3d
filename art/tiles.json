@@ -373,5 +373,233 @@
   "qa_verdict": "fail",
   "forced": true,
   "history": []
+ },
+ "4_-1": {
+  "version": "ba865d56d8b2",
+  "batch": "B009",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+  "prompt_sha": "6af5bdc8a277",
+  "reference_sha": "680dd0fdd840",
+  "reference_files": {
+   "color2x": "82eff0ab0a38",
+   "cls": "97d21351cd8c",
+   "height": "fd3a83ed8f24"
+  },
+  "accepted_utc": "2026-11-04T21:01:03Z",
+  "source_file": "art/returned/B009/B009_4_-1.png",
+  "source_sha256": "dd4877bd5ef24f5f47dfb5f25c7116ac5ac1aef738f829bd7f5766649c7bd56a",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "4_0": {
+  "version": "47928ee70ac4",
+  "batch": "B009",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+  "prompt_sha": "b1cd85e21f58",
+  "reference_sha": "c009b71da66c",
+  "reference_files": {
+   "color2x": "88cbc1b345a7",
+   "cls": "52877ec9bab3",
+   "height": "56d4bddf7f8d"
+  },
+  "accepted_utc": "2026-11-04T21:01:14Z",
+  "source_file": "art/returned/B009/B009_4_0.png",
+  "source_sha256": "4ab180aa3e9d2d182d1716ce202df18c7f0e6cbbf5d99e78ba8ca7b8e38e1032",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "3_1": {
+  "version": "4d00a8d7e718",
+  "batch": "B009",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+  "prompt_sha": "d7b2bec55e13",
+  "reference_sha": "030e073db688",
+  "reference_files": {
+   "color2x": "f9660b2a5467",
+   "cls": "6a44b3ca7584",
+   "height": "aa45218e51ac"
+  },
+  "accepted_utc": "2026-11-04T21:01:25Z",
+  "source_file": "art/returned/B009/B009_3_1.png",
+  "source_sha256": "f9a5f13f8ba75758a2c8d7a8bd15b18a202ae6043bcc24a92cb3663b158cd24e",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "0_-3": {
+  "version": "897ea0c6a204",
+  "batch": "B010",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+  "prompt_sha": "e35f6c96eb22",
+  "reference_sha": "b974398af565",
+  "reference_files": {
+   "color2x": "b7931f4f622b",
+   "cls": "14fb229ea523",
+   "height": "bdf46dc0fc21"
+  },
+  "accepted_utc": "2026-11-04T21:02:59Z",
+  "source_file": "art/returned/B010/B010_0_-3.png",
+  "source_sha256": "81982b2113795f28102a44dd03dc3ba439cb1e5c1ffe116aeedce6ac3847a3ce",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "1_-3": {
+  "version": "7230691aeb16",
+  "batch": "B010",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+  "prompt_sha": "375ea0ee97dc",
+  "reference_sha": "9e0663773117",
+  "reference_files": {
+   "color2x": "e70a615fe99a",
+   "cls": "355e329be397",
+   "height": "08ca1fad8173"
+  },
+  "accepted_utc": "2026-11-04T21:03:11Z",
+  "source_file": "art/returned/B010/B010_1_-3.png",
+  "source_sha256": "abd72ef9ddcfd04242ec6db544d82f38c3dabd8a73be09f09ffd6ed46ba3d5a0",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "2_-3": {
+  "version": "8fde9e3cb34c",
+  "batch": "B010",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+  "prompt_sha": "333d651c2101",
+  "reference_sha": "dedb0958a159",
+  "reference_files": {
+   "color2x": "522a2e1243fa",
+   "cls": "ff09b451f8fc",
+   "height": "0b46d03c034d"
+  },
+  "accepted_utc": "2026-11-04T21:03:24Z",
+  "source_file": "art/returned/B010/B010_2_-3.png",
+  "source_sha256": "209c65d182d825e2c66c1c35e2787d837105d346b012b37bd27714dc4e3946cf",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "-1_-3": {
+  "version": "7793cffcc39a",
+  "batch": "B010",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED: geometry 0.996 of reference; bottom seam x1.9 caused by accepted -1_-2's lawn patch at x 330-450 (rest of join x1.11-1.13); right seam lawn tone -4 L; seam packets queued",
+  "prompt_sha": "6943c67d4d99",
+  "reference_sha": "ecf602314110",
+  "reference_files": {
+   "color2x": "0101d0fefc30",
+   "cls": "d03c7dcba3b1",
+   "height": "cbbbfca73637"
+  },
+  "accepted_utc": "2026-11-04T21:04:35Z",
+  "source_file": "art/returned/B010/B010_-1_-3.png",
+  "source_sha256": "9bd470531be537fc88058aceac073ba5233ecda088d4144303d7fb052a1e6f2f",
+  "qa_verdict": "fail",
+  "forced": true,
+  "history": []
+ },
+ "3_-2": {
+  "version": "7caaca002590",
+  "batch": "B011",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+  "prompt_sha": "9ba65a40589b",
+  "reference_sha": "25806faa23d5",
+  "reference_files": {
+   "color2x": "372e915750a6",
+   "cls": "1055b6f9fca1",
+   "height": "634b9987e450"
+  },
+  "accepted_utc": "2026-11-04T21:05:47Z",
+  "source_file": "art/returned/B011/B011_3_-2.png",
+  "source_sha256": "ccacb42c0b08d93f92de2d37b6d0f57ba555b30d8105d5312cee4f1ae85b5f8f",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "-2_-2": {
+  "version": "48a4036b073a",
+  "batch": "B011",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+  "prompt_sha": "62beaa0fa1dc",
+  "reference_sha": "fa87209e09cd",
+  "reference_files": {
+   "color2x": "d64604d2f8b8",
+   "cls": "1be9c5149f82",
+   "height": "9aa0ee312708"
+  },
+  "accepted_utc": "2026-11-04T21:06:00Z",
+  "source_file": "art/returned/B011/B011_-2_-2.png",
+  "source_sha256": "3cd4b8104bb4e4d64fb7f674fef1d9e956e859a37e6a87c0a46d3e06980a3a7a",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "-2_1": {
+  "version": "0c8e04dfd6d2",
+  "batch": "B011",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+  "prompt_sha": "bc1a23926ced",
+  "reference_sha": "2b939608f4f5",
+  "reference_files": {
+   "color2x": "5bec3620ab46",
+   "cls": "39c370edf12f",
+   "height": "bbd8a621ea6c"
+  },
+  "accepted_utc": "2026-11-04T21:06:14Z",
+  "source_file": "art/returned/B011/B011_-2_1.png",
+  "source_sha256": "1fce370383c7ab4399539c245d98ec02ccc771745f0248aac64dd0af2c135bf7",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "-3_-1": {
+  "version": "43c761eb7c44",
+  "batch": "B012",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. -3_-1 FORCED: QA translation (+6.1,+4.8) px at peak 0.021 is blur-dependent texture aliasing; hard-boundary template match best (+1,+2) px; trimmed affine over 46 blocks scale 1.0041 rot 0.25 deg t(-1.2,+3.4); roofs on outlines within 1-2 px",
+  "prompt_sha": "452454706c0a",
+  "reference_sha": "89e9191c6f92",
+  "reference_files": {
+   "color2x": "3c7ca16b4895",
+   "cls": "ca67fa705f7d",
+   "height": "91dcff58ff13"
+  },
+  "accepted_utc": "2026-11-04T21:07:40Z",
+  "source_file": "art/returned/B012/B012_-3_-1.png",
+  "source_sha256": "771c744f8bb44c9ba01c86291cf149d4f2486198b841a091a00e5d762cce9d41",
+  "qa_verdict": "fail",
+  "forced": true,
+  "history": []
+ },
+ "-3_0": {
+  "version": "879e74494503",
+  "batch": "B012",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. -3_-1 FORCED: QA translation (+6.1,+4.8) px at peak 0.021 is blur-dependent texture aliasing; hard-boundary template match best (+1,+2) px; trimmed affine over 46 blocks scale 1.0041 rot 0.25 deg t(-1.2,+3.4); roofs on outlines within 1-2 px",
+  "prompt_sha": "6dafb495b2f8",
+  "reference_sha": "533144ec8f73",
+  "reference_files": {
+   "color2x": "18c06c96247a",
+   "cls": "846141df1818",
+   "height": "e471327fce1b"
+  },
+  "accepted_utc": "2026-11-04T21:07:54Z",
+  "source_file": "art/returned/B012/B012_-3_0.png",
+  "source_sha256": "f8282523fa8057f173e2939641e986d8a4d37c4ec61f595be5bcb4efd238d412",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
  }
 }

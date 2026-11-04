@@ -1,10 +1,6 @@
 # Image request B014 - North-east of Laurier - tiles 4_-2, 3_-3, 4_-3
 
-> **DRAFT - do not send yet.** Waiting for tiles from B009 (4_-1); B010 (2_-3); B011 (3_-2) to be accepted. This packet is rebuilt
-> automatically when `art_import.py <batch> --accept` accepts the last of them (or run `python3 pipeline/art_request.py build B014`);
-> the current files are placeholders - do not attach them.
-
-Packet revision 2, built 2026-11-04T20:53:53Z. Status: `draft`.
+Packet revision 3, built 2026-11-04T21:07:25Z. Status: `requested`.
 
 ## What to do (for the user)
 
@@ -189,17 +185,17 @@ Send back the original file and the model/settings note as before.
 | File | Size | Purpose | Tiles | Defines composition | sha256 |
 |---|---|---|---|---|---|
 | `B014_style_0_0.png` | 1024x1024 | STYLE: finished, accepted artwork of neighbouring tile 0_0 - match its palette, pixel size, outlines, windows, trees and light exactly | 0_0 | no | `bfd18a94f0c7` |
-| `B014_contact_sheet.png` | 1536x1592 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | 2_-3, 3_-2, 3_-3, 4_-1, 4_-2, 4_-3 | no | `2c771e39adc1` |
-| `B014_context_4_-2.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 4_-2 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 4_-2 | yes | `a5bb7e0f6f92` |
-| `B014_mask_4_-2.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 4_-2 | no | `fbbd60c1fa3f` |
+| `B014_contact_sheet.png` | 1536x1592 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | 2_-3, 3_-2, 3_-3, 4_-1, 4_-2, 4_-3 | no | `080c1f5876a2` |
+| `B014_context_4_-2.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 4_-2 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 4_-2 | yes | `2d0d88d6bd50` |
+| `B014_mask_4_-2.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 4_-2 | no | `32673d99b60e` |
 | `B014_classes_4_-2.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | 4_-2 | no | `df6a9444e484` |
 | `B014_depth_4_-2.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | 4_-2 | no | `92ca639eca4a` |
-| `B014_context_3_-3.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 3_-3 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 3_-3 | yes | `7e2ec49408c7` |
-| `B014_mask_3_-3.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 3_-3 | no | `fbbd60c1fa3f` |
+| `B014_context_3_-3.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 3_-3 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 3_-3 | yes | `a4091a0e8e5c` |
+| `B014_mask_3_-3.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 3_-3 | no | `32673d99b60e` |
 | `B014_classes_3_-3.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | 3_-3 | no | `9004a72b1e9f` |
 | `B014_depth_3_-3.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | 3_-3 | no | `864d29b5e7e6` |
-| `B014_context_4_-3.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 4_-3 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 4_-3 | yes | `447f9d95ab88` |
-| `B014_mask_4_-3.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 4_-3 | no | `cd2249b035c0` |
+| `B014_context_4_-3.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 4_-3 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 4_-3 | yes | `b540ba9bdbeb` |
+| `B014_mask_4_-3.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 4_-3 | no | `fbbd60c1fa3f` |
 | `B014_classes_4_-3.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | 4_-3 | no | `2a7f3ff4bfa7` |
 | `B014_depth_4_-3.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | 4_-3 | no | `4682bc5b514e` |
 | `B014_classes_legend.png` | 760x664 | LEGEND for the semantic maps | 4_-2, 3_-3, 4_-3 | no | `62f5363a73ef` |

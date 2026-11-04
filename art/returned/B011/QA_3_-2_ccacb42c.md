@@ -1,0 +1,60 @@
+# QA B011 / 3_-2: **PASS**
+
+- File: `B011_3_-2.png` (stored as `art/returned/B011/B011_3_-2.png`), sha256 `ccacb42c0b08`, PNG 1254x1254
+- Imported 2026-11-04T21:05:33Z; model reported: image_gen.imagegen built into Codex (model name/version not exposed); settings: reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown
+- Side-by-side: `QA_3_-2_ccacb42c.png`
+
+## Warnings
+
+- **size**: returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)
+
+## Measurements
+
+| Check | Value | Threshold |
+|---|---|---|
+| size | [1254, 1254] for [1536, 1536] (k = 0.8164) | same aspect, tile mode >= 1024 |
+| translation | (+0.06, +0.09) px, peak 0.0619 | <= 4.0 px, peak >= 0.02 |
+| camera (block field, 36 blocks) | scale 1.0011, rot -0.016 deg, max residual 3.98 px | scale +-0.01, rot +-0.5 deg, residual <= 10.0 px |
+| geometry (class boundaries vs edges) | 0.932 vs reference 0.879 -> 1.06 | >= 0.5; cells >= 0.3 |
+| weak cells | 0 | < 3 |
+| shadow (L shadow / L lit) | 0.726 (reference 0.659) | <= 0.88 (fail > 0.97) |
+| style | hist 0.191, dE mean 8.1 {'roof': 4.1, 'wall': 5.4, 'road': 2.8, 'path': 4.7, 'paved': 27.9, 'parking': 2.2, 'tree': 10.2, 'green': 7.2} vs ['-1_-1', '-1_-2', '-1_-3', '-1_0', '-1_1', '-2_-1', '-2_0', '0_-1', '0_-2', '0_-3', '0_0', '0_1', '1_-1', '1_-2', '1_-3', '1_0', '1_1', '2_-1', '2_-2', '2_-3', '2_0', '2_1', '3_-1', '3_0', '3_1', '4_-1', '4_0'] | hist <= 0.35 (warn), dE mean <= 12.0 / 20.0, any class <= 30.0 |
+| seam left vs 2_-2 | gradient x1.086, step x1.149 | <= 1.8 |
+| seam bottom vs 3_-1 | gradient x1.127, step x1.444 | <= 1.8 |
+| kept area drift | (-0.05, +0.00) px, mean abs diff 12.4 | <= 3.0 px |
+
+## Buildings (visible roof >= 1500 px)
+
+| Building | Landmark | Roof px | Outline vs ref | Contrast vs ref | OK |
+|---|---|---:|---:|---:|---|
+| Athletics Complex |  | 37135 | 1.0 | 1.48 | yes |
+| John Aird Centre |  | 25240 | 1.01 | 1.47 | yes |
+| Clara Conrad Residence |  | 23862 | 1.04 | 1.26 | yes |
+| Fred Nichols Campus Centre |  | 18564 | 0.94 | 1.37 | yes |
+| Arts Building - E Wing |  | 16855 | 1.18 | 2.16 | yes |
+| Willison Residence |  | 15399 | 1.0 | 1.13 | yes |
+| Little House Residence |  | 12365 | 1.0 | 1.53 | yes |
+| Dr. Alvin Woods Building |  | 11949 | 1.94 | 1.44 | yes |
+| Laurier Library | yes | 11059 | 1.4 | 2.02 | yes |
+| Theatre Auditorium |  | 10259 | 1.0 | 1.2 | yes |
+| Lazaridis Hall |  | 10226 | 1.0 | 1.8 | yes |
+| Dining Hall |  | 9377 | 0.91 | 1.19 | yes |
+| Bricker Residence |  | 8839 | 1.09 | 1.23 | yes |
+| MacDonald House |  | 8455 | 1.17 | 1.53 | yes |
+| Arts Building - C Wing |  | 8234 | 1.01 | 1.31 | yes |
+| Bricker Academic Building |  | 6011 | 0.98 | 1.28 | yes |
+| Alumni Hall |  | 5738 | 0.87 | 1.49 | yes |
+| Leopold Residence |  | 5702 | 1.35 | 2.16 | yes |
+| Student Services Building |  | 5183 | 0.91 | 1.67 | yes |
+| Bouckaert Residence |  | 4941 | 1.05 | 2.69 | yes |
+| Euler Residence |  | 4682 | 1.1 | 1.44 | yes |
+| Schlegel Building |  | 2390 | 2.08 | 1.97 | yes |
+| Martin Luther University College |  | 2359 | 1.31 | 2.04 | yes |
+| Solarium |  | 2050 | 1.48 | 2.04 | yes |
+
+## Human review (automatic checks cannot judge these)
+
+- [ ] Pixel-art quality: crisp clusters, readable windows, recognisable roofs, no smudges or AI artefacts
+- [ ] Materials: concrete / brick / glass match the real buildings; trees and lawns look like late summer
+- [ ] Light: sun from the lower left, shadows toward the upper right, same as neighbouring tiles
+- [ ] No text, labels, borders or vignettes; frame filled edge to edge
