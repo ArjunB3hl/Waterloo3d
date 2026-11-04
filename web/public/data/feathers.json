@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generated_utc": "2026-11-04T13:33:16Z",
+ "generated_utc": "2026-11-04T16:39:27Z",
  "datum_m": 330.0,
  "source": "pipeline/build_feathers.py (collision field + landmarks.json + scene areas)",
  "coords": "x, y, z local ENU metres (z rel. datum_m); canvas = artwork px of (x, y, z); over = what lies directly below",
@@ -189,22 +189,34 @@
   },
   {
    "id": "feather-waterloo-park-1",
-   "x": 375.1,
-   "y": -579.3,
-   "z": 9.8,
+   "x": 231.1,
+   "y": -899.3,
+   "z": 12.3,
    "label": "Waterloo Park (1 of 4)",
    "over": "tree",
    "canvas": [
-    1879.4,
-    980.6
+    1791.1,
+    1819.2
    ]
   },
   {
    "id": "feather-waterloo-park-2",
+   "x": 427.1,
+   "y": -547.3,
+   "z": 10.7,
+   "label": "Waterloo Park (2 of 4)",
+   "over": "tree",
+   "canvas": [
+    2008.9,
+    862.9
+   ]
+  },
+  {
+   "id": "feather-waterloo-park-3",
    "x": 1175.1,
    "y": -251.3,
    "z": 14.0,
-   "label": "Waterloo Park (2 of 4)",
+   "label": "Waterloo Park (3 of 4)",
    "over": "ground",
    "canvas": [
     4062.5,
@@ -212,27 +224,15 @@
    ]
   },
   {
-   "id": "feather-waterloo-park-3",
+   "id": "feather-waterloo-park-4",
    "x": 811.1,
    "y": -183.3,
    "z": 9.5,
-   "label": "Waterloo Park (3 of 4)",
+   "label": "Waterloo Park (4 of 4)",
    "over": "ground",
    "canvas": [
     2815.6,
     -276.8
-   ]
-  },
-  {
-   "id": "feather-waterloo-park-4",
-   "x": 591.1,
-   "y": -379.3,
-   "z": 10.6,
-   "label": "Waterloo Park (4 of 4)",
-   "over": "tree",
-   "canvas": [
-    2338.7,
-    346.7
    ]
   },
   {

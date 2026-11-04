@@ -12,8 +12,8 @@
    "blocked_by": [],
    "parent": null,
    "created_utc": "2026-11-04T13:28:23Z",
-   "updated_utc": "2026-11-04T13:31:12Z",
-   "packet_rev": 2,
+   "updated_utc": "2026-11-04T16:39:58Z",
+   "packet_rev": 3,
    "order": [
     "0_0"
    ],
@@ -37,7 +37,7 @@
       1024,
       1080
      ],
-     "sha256": "c0151d192ce5efb7db04e497f28ac89ab1a5490cd693291df23a33e41bad6fa4"
+     "sha256": "37c652b863eea712730398cb48f95126933c3c6fd86f0249dce9b5318a3d6355"
     },
     {
      "file": "B001_ref_0_0.png",
@@ -50,7 +50,7 @@
       1024,
       1024
      ],
-     "sha256": "56cd5ccd5bcaa47f18c4f9a26c08d67fa8e94c0d4a1bf629fc69c0cc81a424af"
+     "sha256": "08f080a20101cc16a91a06a3218c484619e787966f5e2ada5e8ba6df52621444"
     },
     {
      "file": "B001_classes_0_0.png",
@@ -63,7 +63,7 @@
       1024,
       1024
      ],
-     "sha256": "d7ea8c8e92a98a655a3851de05a106b9696ecc06f7fbd8a3ae3759d1b80c25d7"
+     "sha256": "cbc308e34af836684632042ca35d92b070cfce534bb27fb2f342a85cbae21db5"
     },
     {
      "file": "B001_depth_0_0.png",
@@ -76,7 +76,7 @@
       1024,
       1024
      ],
-     "sha256": "56cbb6fe868f15cfecb77153ee9f154d8cb992fa175393ae6c7a1570dc192f46"
+     "sha256": "3ca4494683fc9ac7a977f27b55ade1f93ace905ae1ce436fd162dc070c8676fb"
     },
     {
      "file": "B001_classes_legend.png",
@@ -118,10 +118,10 @@
       ]
      },
      "reference": {
-      "color2x": "b7e399c18dfa",
-      "cls": "9d56dfb45b90",
-      "height": "7038065cfbeb",
-      "composition": "56cd5ccd5bca",
+      "color2x": "c042001ce879",
+      "cls": "1dbec20a2bb3",
+      "height": "5f221ba4641c",
+      "composition": "08f080a20101",
       "neighbours": {}
      },
      "model_reported": "unknown",
@@ -136,7 +136,7 @@
     "md": "IMAGE_REQUEST_B001.md",
     "dir": "art/requests/B001",
     "zip": "art/requests/B001.zip",
-    "zip_sha256": "8558a10856128219ec00af2570b9de9487df4de9897983db93c053fe8fba421e"
+    "zip_sha256": "fcf3f978228eb4458fe77b8edf517d36744a5e1c7d2e89626624b2df3c641608"
    }
   },
   "B002": {

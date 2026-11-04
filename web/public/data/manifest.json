@@ -1,6 +1,6 @@
 {
  "name": "Tiny Waterloo",
- "generated_utc": "2026-11-04T12:55:47Z",
+ "generated_utc": "2026-11-04T16:38:52Z",
  "frame_px": 1024,
  "lods_px": [
   256,
@@ -73,10 +73,10 @@
  },
  "overview": {
   "url": "overview.webp",
-  "i0": -1,
-  "j0": -2,
-  "cols": 8,
-  "rows": 3,
+  "i0": -3,
+  "j0": -3,
+  "cols": 11,
+  "rows": 5,
   "px_per_tile": 64
  },
  "regions": {
@@ -215,6 +215,136 @@
     "Waterloo City Hall",
     "Waterloo Public Library Main"
    ]
+  },
+  "stage2_surround": {
+   "title": "Ring around stage 2: west campus/Columbia, north campus/Laurier, south Uptown (stage 2b)",
+   "stage": 2,
+   "tiles": [
+    [
+     -3,
+     -3
+    ],
+    [
+     -3,
+     -2
+    ],
+    [
+     -3,
+     -1
+    ],
+    [
+     -3,
+     0
+    ],
+    [
+     -3,
+     1
+    ],
+    [
+     -2,
+     -3
+    ],
+    [
+     -2,
+     -2
+    ],
+    [
+     -2,
+     -1
+    ],
+    [
+     -2,
+     0
+    ],
+    [
+     -2,
+     1
+    ],
+    [
+     -1,
+     -3
+    ],
+    [
+     -1,
+     1
+    ],
+    [
+     0,
+     -3
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     -3
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     2,
+     -3
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     3,
+     -3
+    ],
+    [
+     3,
+     1
+    ],
+    [
+     4,
+     -3
+    ],
+    [
+     4,
+     1
+    ],
+    [
+     5,
+     -3
+    ],
+    [
+     5,
+     1
+    ],
+    [
+     6,
+     -3
+    ],
+    [
+     6,
+     1
+    ],
+    [
+     7,
+     -3
+    ],
+    [
+     7,
+     -2
+    ],
+    [
+     7,
+     -1
+    ],
+    [
+     7,
+     0
+    ],
+    [
+     7,
+     1
+    ]
+   ]
   }
  },
  "tiles": {
@@ -222,7 +352,7 @@
    "i": -1,
    "j": -1,
    "kind": "reference",
-   "v": "10d20d7e3f41",
+   "v": "351732440382",
    "hv": "86a6c0cf3f72",
    "art_version": null,
    "batch": null
@@ -231,8 +361,17 @@
    "i": -1,
    "j": -2,
    "kind": "reference",
-   "v": "a9768027e511",
+   "v": "f61f49ec9635",
    "hv": "19089bb5b2c7",
+   "art_version": null,
+   "batch": null
+  },
+  "-1_-3": {
+   "i": -1,
+   "j": -3,
+   "kind": "reference",
+   "v": "8d7d64816f20",
+   "hv": "b1979a9d2d28",
    "art_version": null,
    "batch": null
   },
@@ -245,11 +384,110 @@
    "art_version": null,
    "batch": null
   },
+  "-1_1": {
+   "i": -1,
+   "j": 1,
+   "kind": "reference",
+   "v": "1c579a71e775",
+   "hv": "11a14f17a92b",
+   "art_version": null,
+   "batch": null
+  },
+  "-2_-1": {
+   "i": -2,
+   "j": -1,
+   "kind": "reference",
+   "v": "a7b01ca60f4b",
+   "hv": "b854e3bf9602",
+   "art_version": null,
+   "batch": null
+  },
+  "-2_-2": {
+   "i": -2,
+   "j": -2,
+   "kind": "reference",
+   "v": "b078a86aef4f",
+   "hv": "fff0a14bd886",
+   "art_version": null,
+   "batch": null
+  },
+  "-2_-3": {
+   "i": -2,
+   "j": -3,
+   "kind": "reference",
+   "v": "30d65b57a2a4",
+   "hv": "7d6c5268f057",
+   "art_version": null,
+   "batch": null
+  },
+  "-2_0": {
+   "i": -2,
+   "j": 0,
+   "kind": "reference",
+   "v": "a9b65b4693e8",
+   "hv": "e93cbe7e56b6",
+   "art_version": null,
+   "batch": null
+  },
+  "-2_1": {
+   "i": -2,
+   "j": 1,
+   "kind": "reference",
+   "v": "6f2607c77041",
+   "hv": "a8fdb844e828",
+   "art_version": null,
+   "batch": null
+  },
+  "-3_-1": {
+   "i": -3,
+   "j": -1,
+   "kind": "reference",
+   "v": "3d8d4481dec2",
+   "hv": "de3858b10142",
+   "art_version": null,
+   "batch": null
+  },
+  "-3_-2": {
+   "i": -3,
+   "j": -2,
+   "kind": "reference",
+   "v": "c3bb3b6d8afc",
+   "hv": "acd9933aaf49",
+   "art_version": null,
+   "batch": null
+  },
+  "-3_-3": {
+   "i": -3,
+   "j": -3,
+   "kind": "reference",
+   "v": "6fb75689cd28",
+   "hv": "fae666fe023d",
+   "art_version": null,
+   "batch": null
+  },
+  "-3_0": {
+   "i": -3,
+   "j": 0,
+   "kind": "reference",
+   "v": "c2a3ee20a242",
+   "hv": "37297e46ab84",
+   "art_version": null,
+   "batch": null
+  },
+  "-3_1": {
+   "i": -3,
+   "j": 1,
+   "kind": "reference",
+   "v": "e790427337ab",
+   "hv": "36dacd62884b",
+   "art_version": null,
+   "batch": null
+  },
   "0_-1": {
    "i": 0,
    "j": -1,
    "kind": "reference",
-   "v": "53b4fdc0dbfc",
+   "v": "ac2c8c46494d",
    "hv": "c31cc275ea44",
    "art_version": null,
    "batch": null
@@ -259,7 +497,16 @@
    "j": -2,
    "kind": "reference",
    "v": "3c2a09ecea8b",
-   "hv": "36d6d598535b",
+   "hv": "a23f80fdcc13",
+   "art_version": null,
+   "batch": null
+  },
+  "0_-3": {
+   "i": 0,
+   "j": -3,
+   "kind": "reference",
+   "v": "d8f576cd1907",
+   "hv": "ba61eac1973d",
    "art_version": null,
    "batch": null
   },
@@ -267,8 +514,17 @@
    "i": 0,
    "j": 0,
    "kind": "reference",
-   "v": "1ba989b51784",
+   "v": "8a15b23d1ed3",
    "hv": "577c6a2ada79",
+   "art_version": null,
+   "batch": null
+  },
+  "0_1": {
+   "i": 0,
+   "j": 1,
+   "kind": "reference",
+   "v": "39a656349f20",
+   "hv": "788d5e2b3c64",
    "art_version": null,
    "batch": null
   },
@@ -276,7 +532,7 @@
    "i": 1,
    "j": -1,
    "kind": "reference",
-   "v": "65ac74900b26",
+   "v": "e59aed87bba4",
    "hv": "dd1534334b2c",
    "art_version": null,
    "batch": null
@@ -286,7 +542,16 @@
    "j": -2,
    "kind": "reference",
    "v": "cc3b970a0dc0",
-   "hv": "41e19dc9d106",
+   "hv": "acb0a3636c3a",
+   "art_version": null,
+   "batch": null
+  },
+  "1_-3": {
+   "i": 1,
+   "j": -3,
+   "kind": "reference",
+   "v": "7eb1d6a71b1d",
+   "hv": "990a0a8c93e4",
    "art_version": null,
    "batch": null
   },
@@ -299,11 +564,20 @@
    "art_version": null,
    "batch": null
   },
+  "1_1": {
+   "i": 1,
+   "j": 1,
+   "kind": "reference",
+   "v": "0fef396d6cac",
+   "hv": "517c3e39b4c5",
+   "art_version": null,
+   "batch": null
+  },
   "2_-1": {
    "i": 2,
    "j": -1,
    "kind": "reference",
-   "v": "12bf6017dfbf",
+   "v": "b6a4a647869d",
    "hv": "1b9dc379b0b4",
    "art_version": null,
    "batch": null
@@ -312,8 +586,17 @@
    "i": 2,
    "j": -2,
    "kind": "reference",
-   "v": "71242a7eb321",
+   "v": "b4fc00c20367",
    "hv": "832994e4927e",
+   "art_version": null,
+   "batch": null
+  },
+  "2_-3": {
+   "i": 2,
+   "j": -3,
+   "kind": "reference",
+   "v": "1a183ea81cc6",
+   "hv": "04a13251afca",
    "art_version": null,
    "batch": null
   },
@@ -321,8 +604,17 @@
    "i": 2,
    "j": 0,
    "kind": "reference",
-   "v": "924b7cf72d7f",
+   "v": "318808b94cea",
    "hv": "53ac91589adc",
+   "art_version": null,
+   "batch": null
+  },
+  "2_1": {
+   "i": 2,
+   "j": 1,
+   "kind": "reference",
+   "v": "3c427b2f2887",
+   "hv": "dc6f2678f4bc",
    "art_version": null,
    "batch": null
   },
@@ -330,7 +622,7 @@
    "i": 3,
    "j": -1,
    "kind": "reference",
-   "v": "e31c6f98aa88",
+   "v": "55074ac2216d",
    "hv": "5c732a140a03",
    "art_version": null,
    "batch": null
@@ -339,8 +631,17 @@
    "i": 3,
    "j": -2,
    "kind": "reference",
-   "v": "cb262fad67f0",
-   "hv": "72dd18836ab1",
+   "v": "6babe50315f8",
+   "hv": "c43f9cd35ee5",
+   "art_version": null,
+   "batch": null
+  },
+  "3_-3": {
+   "i": 3,
+   "j": -3,
+   "kind": "reference",
+   "v": "0f78cc9783f2",
+   "hv": "b0c7c6dfbe53",
    "art_version": null,
    "batch": null
   },
@@ -353,12 +654,21 @@
    "art_version": null,
    "batch": null
   },
+  "3_1": {
+   "i": 3,
+   "j": 1,
+   "kind": "reference",
+   "v": "080fa6ab2d94",
+   "hv": "e651df1c08a7",
+   "art_version": null,
+   "batch": null
+  },
   "4_-1": {
    "i": 4,
    "j": -1,
    "kind": "reference",
-   "v": "66ab25f0b6a3",
-   "hv": "470ccad9d406",
+   "v": "9e0e4eb39778",
+   "hv": "4c284c13b6ea",
    "art_version": null,
    "batch": null
   },
@@ -371,12 +681,30 @@
    "art_version": null,
    "batch": null
   },
+  "4_-3": {
+   "i": 4,
+   "j": -3,
+   "kind": "reference",
+   "v": "053a198532d1",
+   "hv": "b753f978bf2c",
+   "art_version": null,
+   "batch": null
+  },
   "4_0": {
    "i": 4,
    "j": 0,
    "kind": "reference",
-   "v": "9872b8f397f6",
+   "v": "ce38c8892ec0",
    "hv": "da25f4b3164c",
+   "art_version": null,
+   "batch": null
+  },
+  "4_1": {
+   "i": 4,
+   "j": 1,
+   "kind": "reference",
+   "v": "b652e84c1ed7",
+   "hv": "3a47a178c53a",
    "art_version": null,
    "batch": null
   },
@@ -384,8 +712,8 @@
    "i": 5,
    "j": -1,
    "kind": "reference",
-   "v": "23bf7db2cd6f",
-   "hv": "3f5b76030d40",
+   "v": "7e1a1cc1f09b",
+   "hv": "77db3c1f7013",
    "art_version": null,
    "batch": null
   },
@@ -398,12 +726,30 @@
    "art_version": null,
    "batch": null
   },
+  "5_-3": {
+   "i": 5,
+   "j": -3,
+   "kind": "reference",
+   "v": "1ed5128a94cd",
+   "hv": "afa02757dc41",
+   "art_version": null,
+   "batch": null
+  },
   "5_0": {
    "i": 5,
    "j": 0,
    "kind": "reference",
-   "v": "0c540924d83b",
-   "hv": "cb2e86fed34d",
+   "v": "1c00ebe3376a",
+   "hv": "561ac9d62c8c",
+   "art_version": null,
+   "batch": null
+  },
+  "5_1": {
+   "i": 5,
+   "j": 1,
+   "kind": "reference",
+   "v": "f67dff9a8e7a",
+   "hv": "e69147647c14",
    "art_version": null,
    "batch": null
   },
@@ -425,20 +771,83 @@
    "art_version": null,
    "batch": null
   },
+  "6_-3": {
+   "i": 6,
+   "j": -3,
+   "kind": "reference",
+   "v": "b6292a874ba2",
+   "hv": "8d1af9571db9",
+   "art_version": null,
+   "batch": null
+  },
   "6_0": {
    "i": 6,
    "j": 0,
    "kind": "reference",
    "v": "105a98ba597d",
-   "hv": "2a6d1e380a6b",
+   "hv": "a881fc38f2f8",
+   "art_version": null,
+   "batch": null
+  },
+  "6_1": {
+   "i": 6,
+   "j": 1,
+   "kind": "reference",
+   "v": "2f95eb240931",
+   "hv": "2ce759d3a185",
+   "art_version": null,
+   "batch": null
+  },
+  "7_-1": {
+   "i": 7,
+   "j": -1,
+   "kind": "reference",
+   "v": "1e6b1d56e851",
+   "hv": "a9cafca6e5c0",
+   "art_version": null,
+   "batch": null
+  },
+  "7_-2": {
+   "i": 7,
+   "j": -2,
+   "kind": "reference",
+   "v": "82076908e734",
+   "hv": "027213c0ff92",
+   "art_version": null,
+   "batch": null
+  },
+  "7_-3": {
+   "i": 7,
+   "j": -3,
+   "kind": "reference",
+   "v": "440697f7348a",
+   "hv": "6a0c8db40472",
+   "art_version": null,
+   "batch": null
+  },
+  "7_0": {
+   "i": 7,
+   "j": 0,
+   "kind": "reference",
+   "v": "acec47e1bba9",
+   "hv": "0e251f9e4231",
+   "art_version": null,
+   "batch": null
+  },
+  "7_1": {
+   "i": 7,
+   "j": 1,
+   "kind": "reference",
+   "v": "878d0f9ef048",
+   "hv": "b4b84b4588e1",
    "art_version": null,
    "batch": null
   }
  },
  "counts": {
-  "tiles": 24,
+  "tiles": 55,
   "art": 0,
-  "reference": 24
+  "reference": 55
  },
  "attribution": [
   "\u00a9 OpenStreetMap contributors (ODbL) via Overture Maps Foundation",

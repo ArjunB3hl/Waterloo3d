@@ -1,6 +1,6 @@
 # Image request B001 - Style sample - tile 0_0, University of Waterloo campus core
 
-Packet revision 2, built 2026-11-04T13:31:12Z. Status: `requested`.
+Packet revision 3, built 2026-11-04T16:39:58Z. Status: `requested`.
 
 ## What to do (for the user)
 
@@ -83,10 +83,10 @@ WHAT TO SEND BACK
 
 | File | Size | Purpose | Tiles | Defines composition | sha256 |
 |---|---|---|---|---|---|
-| `B001_contact_sheet.png` | 1024x1080 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | -1_-1, 0_-1, -1_0, 0_0 | no | `c0151d192ce5` |
-| `B001_ref_0_0.png` | 1024x1024 | COMPOSITION: reference render of tile 0_0; the output must match its layout pixel for pixel | 0_0 | yes | `56cd5ccd5bca` |
-| `B001_classes_0_0.png` | 1024x1024 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | 0_0 | no | `d7ea8c8e92a9` |
-| `B001_depth_0_0.png` | 1024x1024 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | 0_0 | no | `56cbb6fe868f` |
+| `B001_contact_sheet.png` | 1024x1080 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | -1_-1, 0_-1, -1_0, 0_0 | no | `37c652b863ee` |
+| `B001_ref_0_0.png` | 1024x1024 | COMPOSITION: reference render of tile 0_0; the output must match its layout pixel for pixel | 0_0 | yes | `08f080a20101` |
+| `B001_classes_0_0.png` | 1024x1024 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | 0_0 | no | `cbc308e34af8` |
+| `B001_depth_0_0.png` | 1024x1024 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | 0_0 | no | `3ca4494683fc` |
 | `B001_classes_legend.png` | 760x544 | LEGEND for the semantic maps | 0_0 | no | `8aa88109d682` |
 
 | Return file | Item | Expected size | Crop in returned image (x0, y0, x1, y1) | Becomes |

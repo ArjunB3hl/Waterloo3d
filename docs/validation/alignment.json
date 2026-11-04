@@ -182,6 +182,742 @@
  ],
  "junctions": [
   {
+   "junction": "Academy Crescent & Old Post Road",
+   "lonlat": [
+    -80.553334,
+    43.467892
+   ],
+   "terrain_z_m": 6.39,
+   "canvas_px": [
+    -2244.4,
+    1692.5
+   ],
+   "sample": {
+    "tile": [
+     -3,
+     1
+    ],
+    "z": 6.420000000000002,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.03,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & Bricker Avenue",
+   "lonlat": [
+    -80.52915,
+    43.471463
+   ],
+   "terrain_z_m": 7.81,
+   "canvas_px": [
+    3569.1,
+    -826.0
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -1
+    ],
+    "z": 7.799999999999997,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & Bridgeport Road West & Caroline Street North",
+   "lonlat": [
+    -80.525125,
+    43.467316
+   ],
+   "terrain_z_m": 1.97,
+   "canvas_px": [
+    5151.7,
+    -36.1
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": 1.9599999999999937,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & Cardill Crescent",
+   "lonlat": [
+    -80.536827,
+    43.480813
+   ],
+   "terrain_z_m": 12.93,
+   "canvas_px": [
+    363.7,
+    -2681.5
+   ],
+   "sample": {
+    "tile": [
+     0,
+     -3
+    ],
+    "z": 12.939999999999998,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & Central Street",
+   "lonlat": [
+    -80.527676,
+    43.470133
+   ],
+   "terrain_z_m": 3.0,
+   "canvas_px": [
+    4124.1,
+    -577.9
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -1
+    ],
+    "z": 3.010000000000005,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & Columbia Street West",
+   "lonlat": [
+    -80.535244,
+    43.478642
+   ],
+   "terrain_z_m": 15.0,
+   "canvas_px": [
+    1056.2,
+    -2245.2
+   ],
+   "sample": {
+    "tile": [
+     1,
+     -3
+    ],
+    "z": 15.0,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & Dorset Street",
+   "lonlat": [
+    -80.523891,
+    43.465987
+   ],
+   "terrain_z_m": -0.0,
+   "canvas_px": [
+    5644.7,
+    221.0
+   ],
+   "sample": {
+    "tile": [
+     5,
+     0
+    ],
+    "z": 0.0,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & Dupont Street West",
+   "lonlat": [
+    -80.523784,
+    43.465881
+   ],
+   "terrain_z_m": 0.0,
+   "canvas_px": [
+    5686.0,
+    240.5
+   ],
+   "sample": {
+    "tile": [
+     5,
+     0
+    ],
+    "z": 0.0,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & Erb Street West",
+   "lonlat": [
+    -80.523347,
+    43.465095
+   ],
+   "terrain_z_m": -2.92,
+   "canvas_px": [
+    5901.4,
+    416.5
+   ],
+   "sample": {
+    "tile": [
+     5,
+     0
+    ],
+    "z": -2.9399999999999977,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.02,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & Ezra Avenue",
+   "lonlat": [
+    -80.528374,
+    43.470757
+   ],
+   "terrain_z_m": 4.82,
+   "canvas_px": [
+    3862.1,
+    -692.7
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -1
+    ],
+    "z": 4.810000000000002,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & Hickory Street West",
+   "lonlat": [
+    -80.533796,
+    43.4766
+   ],
+   "terrain_z_m": 15.04,
+   "canvas_px": [
+    1696.9,
+    -1827.6
+   ],
+   "sample": {
+    "tile": [
+     1,
+     -2
+    ],
+    "z": 15.040000000000006,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & Princess Street",
+   "lonlat": [
+    -80.524513,
+    43.466653
+   ],
+   "terrain_z_m": 0.97,
+   "canvas_px": [
+    5396.7,
+    92.4
+   ],
+   "sample": {
+    "tile": [
+     5,
+     0
+    ],
+    "z": 0.9699999999999989,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & Seagram Drive",
+   "lonlat": [
+    -80.529836,
+    43.472068
+   ],
+   "terrain_z_m": 10.01,
+   "canvas_px": [
+    3312.8,
+    -937.9
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -1
+    ],
+    "z": 10.010000000000005,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & Spring Street West",
+   "lonlat": [
+    -80.526608,
+    43.468902
+   ],
+   "terrain_z_m": 1.03,
+   "canvas_px": [
+    4561.1,
+    -334.3
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -1
+    ],
+    "z": 1.0300000000000011,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Albert Street & University Avenue West",
+   "lonlat": [
+    -80.531675,
+    43.473742
+   ],
+   "terrain_z_m": 11.69,
+   "canvas_px": [
+    2618.1,
+    -1240.8
+   ],
+   "sample": {
+    "tile": [
+     2,
+     -2
+    ],
+    "z": 64.31,
+    "valid": true,
+    "cls": "wall"
+   },
+   "dz_m": 52.62,
+   "pass": false
+  },
+  {
+   "junction": "Albert Street & Young Street West",
+   "lonlat": [
+    -80.525892,
+    43.468111
+   ],
+   "terrain_z_m": 1.06,
+   "canvas_px": [
+    4849.7,
+    -183.1
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -1
+    ],
+    "z": 1.0600000000000023,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Alexandra Avenue & Caroline Street South",
+   "lonlat": [
+    -80.522832,
+    43.461554
+   ],
+   "terrain_z_m": -2.05,
+   "canvas_px": [
+    6494.7,
+    1272.1
+   ],
+   "sample": {
+    "tile": [
+     6,
+     1
+    ],
+    "z": -2.049999999999997,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Alexandra Avenue & Euclid Avenue",
+   "lonlat": [
+    -80.525074,
+    43.46042
+   ],
+   "terrain_z_m": 0.0,
+   "canvas_px": [
+    6060.1,
+    1702.9
+   ],
+   "sample": {
+    "tile": [
+     5,
+     1
+    ],
+    "z": 0.010000000000005116,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Alexandra Avenue & Menno Street",
+   "lonlat": [
+    -80.526013,
+    43.459843
+   ],
+   "terrain_z_m": -0.03,
+   "canvas_px": [
+    5891.3,
+    1911.1
+   ],
+   "sample": {
+    "tile": [
+     5,
+     1
+    ],
+    "z": -0.04000000000000625,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Alexandra Avenue & Short Street",
+   "lonlat": [
+    -80.523942,
+    43.461078
+   ],
+   "terrain_z_m": 0.01,
+   "canvas_px": [
+    6268.6,
+    1461.4
+   ],
+   "sample": {
+    "tile": [
+     6,
+     1
+    ],
+    "z": 0.010000000000005116,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Algonquin Drive & Iroquois Place",
+   "lonlat": [
+    -80.545296,
+    43.464967
+   ],
+   "terrain_z_m": 6.52,
+   "canvas_px": [
+    221.4,
+    1892.7
+   ],
+   "sample": {
+    "tile": [
+     0,
+     1
+    ],
+    "z": 6.569999999999993,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.05,
+   "pass": true
+  },
+  {
+   "junction": "Allen Street East & Allen Street West & King Street South",
+   "lonlat": [
+    -80.519124,
+    43.460279
+   ],
+   "terrain_z_m": -2.19,
+   "canvas_px": [
+    7622.7,
+    1345.8
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": -2.1599999999999966,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.03,
+   "pass": true
+  },
+  {
+   "junction": "Allen Street East & Dodds Lane",
+   "lonlat": [
+    -80.518727,
+    43.460645
+   ],
+   "terrain_z_m": -1.98,
+   "canvas_px": [
+    7678.3,
+    1226.7
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": -1.980000000000004,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Allen Street East & Herbert Street",
+   "lonlat": [
+    -80.517197,
+    43.462028
+   ],
+   "terrain_z_m": -1.0,
+   "canvas_px": [
+    7895.8,
+    773.5
+   ],
+   "sample": {
+    "tile": [
+     7,
+     0
+    ],
+    "z": -0.9899999999999949,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Allen Street East & Mary Street",
+   "lonlat": [
+    -80.518336,
+    43.460995
+   ],
+   "terrain_z_m": -1.79,
+   "canvas_px": [
+    7734.1,
+    1111.7
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": -1.7600000000000051,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.03,
+   "pass": true
+  },
+  {
+   "junction": "Allen Street East & Willow Street",
+   "lonlat": [
+    -80.515953,
+    43.46316
+   ],
+   "terrain_z_m": -3.7,
+   "canvas_px": [
+    8071.7,
+    411.6
+   ],
+   "sample": {
+    "tile": [
+     7,
+     0
+    ],
+    "z": -3.7099999999999937,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Allen Street West & Caroline Street South",
+   "lonlat": [
+    -80.519914,
+    43.459556
+   ],
+   "terrain_z_m": -2.0,
+   "canvas_px": [
+    7511.4,
+    1580.4
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": 54.860000000000014,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": 56.86,
+   "pass": false
+  },
+  {
+   "junction": "Allen Street West & Freemont Street",
+   "lonlat": [
+    -80.520315,
+    43.459215
+   ],
+   "terrain_z_m": -1.99,
+   "canvas_px": [
+    7451.7,
+    1693.1
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": -1.9899999999999949,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Allen Street West & Park Street",
+   "lonlat": [
+    -80.520671,
+    43.458865
+   ],
+   "terrain_z_m": -2.03,
+   "canvas_px": [
+    7404.7,
+    1805.3
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": -2.030000000000001,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Allen Street West & York Street",
+   "lonlat": [
+    -80.521418,
+    43.458185
+   ],
+   "terrain_z_m": -2.05,
+   "canvas_px": [
+    7298.9,
+    2026.4
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": -2.049999999999997,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Alvin Street & Mackay Crescent",
+   "lonlat": [
+    -80.515484,
+    43.474677
+   ],
+   "terrain_z_m": -9.96,
+   "canvas_px": [
+    6698.3,
+    -2506.3
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -3
+    ],
+    "z": -9.959999999999994,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Alvin Street & Marshall Street",
+   "lonlat": [
+    -80.516049,
+    43.475422
+   ],
+   "terrain_z_m": -11.14,
+   "canvas_px": [
+    6455.0,
+    -2653.5
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -3
+    ],
+    "z": -11.120000000000005,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.02,
+   "pass": true
+  },
+  {
    "junction": "Ambulance & Taxi Access & University Campus Lane",
    "lonlat": [
     -80.546478,
@@ -202,6 +938,3456 @@
     "cls": "road"
    },
    "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Austin Drive & Cardill Crescent",
+   "lonlat": [
+    -80.53392,
+    43.481061
+   ],
+   "terrain_z_m": 8.62,
+   "canvas_px": [
+    1085.9,
+    -2927.6
+   ],
+   "sample": {
+    "tile": [
+     1,
+     -3
+    ],
+    "z": 8.64,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.02,
+   "pass": true
+  },
+  {
+   "junction": "Avondale Avenue North & Erb Street West",
+   "lonlat": [
+    -80.529878,
+    43.462352
+   ],
+   "terrain_z_m": 0.81,
+   "canvas_px": [
+    4562.3,
+    1535.1
+   ],
+   "sample": {
+    "tile": [
+     4,
+     1
+    ],
+    "z": 0.7999999999999972,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Avondale Avenue North & Father David Bauer Drive",
+   "lonlat": [
+    -80.531797,
+    43.465202
+   ],
+   "terrain_z_m": -4.97,
+   "canvas_px": [
+    3694.4,
+    959.3
+   ],
+   "sample": {
+    "tile": [
+     3,
+     0
+    ],
+    "z": -4.959999999999994,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Avondale Avenue South & Dawson Street",
+   "lonlat": [
+    -80.528869,
+    43.461245
+   ],
+   "terrain_z_m": 2.99,
+   "canvas_px": [
+    4967.9,
+    1741.4
+   ],
+   "sample": {
+    "tile": [
+     4,
+     1
+    ],
+    "z": 2.980000000000004,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Avondale Avenue South & Erb Street West",
+   "lonlat": [
+    -80.529794,
+    43.462389
+   ],
+   "terrain_z_m": 0.26,
+   "canvas_px": [
+    4579.5,
+    1521.7
+   ],
+   "sample": {
+    "tile": [
+     4,
+     1
+    ],
+    "z": 0.2600000000000051,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Balsam Street & Hazel Street",
+   "lonlat": [
+    -80.529068,
+    43.476479
+   ],
+   "terrain_z_m": 2.23,
+   "canvas_px": [
+    2939.6,
+    -2081.9
+   ],
+   "sample": {
+    "tile": [
+     2,
+     -3
+    ],
+    "z": 2.239999999999995,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Balsam Street & Hemlock Street",
+   "lonlat": [
+    -80.531619,
+    43.475541
+   ],
+   "terrain_z_m": 12.24,
+   "canvas_px": [
+    2399.3,
+    -1699.3
+   ],
+   "sample": {
+    "tile": [
+     2,
+     -2
+    ],
+    "z": 33.400000000000006,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": 21.16,
+   "pass": false
+  },
+  {
+   "junction": "Balsam Street & Larch Street",
+   "lonlat": [
+    -80.530365,
+    43.476002
+   ],
+   "terrain_z_m": 5.92,
+   "canvas_px": [
+    2664.9,
+    -1884.1
+   ],
+   "sample": {
+    "tile": [
+     2,
+     -2
+    ],
+    "z": 5.909999999999997,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Barrel Yards Bouldevard & Barrel Yards Boulevard & Merchant Avenue",
+   "lonlat": [
+    -80.529517,
+    43.463777
+   ],
+   "terrain_z_m": -0.14,
+   "canvas_px": [
+    4471.2,
+    1154.3
+   ],
+   "sample": {
+    "tile": [
+     4,
+     1
+    ],
+    "z": 41.68000000000001,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": 41.82,
+   "pass": false
+  },
+  {
+   "junction": "Barrel Yards Bouldevard & Erb Street West & Menno Street",
+   "lonlat": [
+    -80.52874,
+    43.462862
+   ],
+   "terrain_z_m": -0.9,
+   "canvas_px": [
+    4791.6,
+    1334.6
+   ],
+   "sample": {
+    "tile": [
+     4,
+     1
+    ],
+    "z": -0.9000000000000057,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Barrel Yards Boulevard & Father David Bauer Drive",
+   "lonlat": [
+    -80.53021,
+    43.465128
+   ],
+   "terrain_z_m": -4.4,
+   "canvas_px": [
+    4115.9,
+    870.4
+   ],
+   "sample": {
+    "tile": [
+     4,
+     0
+    ],
+    "z": 72.09,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": 76.49,
+   "pass": false
+  },
+  {
+   "junction": "Batavia Place & Columbia Street West",
+   "lonlat": [
+    -80.536373,
+    43.478246
+   ],
+   "terrain_z_m": 15.0,
+   "canvas_px": [
+    814.7,
+    -2070.1
+   ],
+   "sample": {
+    "tile": [
+     0,
+     -3
+    ],
+    "z": 15.0,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Beech Street & Hazel Street",
+   "lonlat": [
+    -80.528784,
+    43.476092
+   ],
+   "terrain_z_m": 1.83,
+   "canvas_px": [
+    3063.5,
+    -2002.3
+   ],
+   "sample": {
+    "tile": [
+     2,
+     -2
+    ],
+    "z": 1.8299999999999983,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Beech Street & State Court & State Street",
+   "lonlat": [
+    -80.528147,
+    43.476652
+   ],
+   "terrain_z_m": 0.0,
+   "canvas_px": [
+    3155.9,
+    -2181.8
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -3
+    ],
+    "z": 0.0,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Bricker Avenue & Clayfield Avenue",
+   "lonlat": [
+    -80.526988,
+    43.472256
+   ],
+   "terrain_z_m": 0.98,
+   "canvas_px": [
+    4027.2,
+    -1153.8
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -2
+    ],
+    "z": 0.980000000000004,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Bricker Avenue & King Street North",
+   "lonlat": [
+    -80.524335,
+    43.473184
+   ],
+   "terrain_z_m": 0.22,
+   "canvas_px": [
+    4595.4,
+    -1563.1
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -2
+    ],
+    "z": 33.379999999999995,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 33.16,
+   "pass": false
+  },
+  {
+   "junction": "Bridgeport Road East & Bridgeport Road West & King Street North",
+   "lonlat": [
+    -80.523048,
+    43.467642
+   ],
+   "terrain_z_m": -0.93,
+   "canvas_px": [
+    5648.6,
+    -250.1
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": -0.9300000000000068,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Bridgeport Road East & Devitt Avenue North",
+   "lonlat": [
+    -80.515555,
+    43.468937
+   ],
+   "terrain_z_m": -8.05,
+   "canvas_px": [
+    7424.9,
+    -1060.1
+   ],
+   "sample": {
+    "tile": [
+     7,
+     -2
+    ],
+    "z": -8.049999999999997,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Bridgeport Road East & Laurel Street",
+   "lonlat": [
+    -80.516338,
+    43.468633
+   ],
+   "terrain_z_m": -8.64,
+   "canvas_px": [
+    7261.4,
+    -929.7
+   ],
+   "sample": {
+    "tile": [
+     7,
+     -1
+    ],
+    "z": -8.620000000000005,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.02,
+   "pass": true
+  },
+  {
+   "junction": "Bridgeport Road East & Moore Avenue North",
+   "lonlat": [
+    -80.517033,
+    43.468462
+   ],
+   "terrain_z_m": -9.0,
+   "canvas_px": [
+    7103.2,
+    -839.3
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -1
+    ],
+    "z": -8.989999999999995,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Bridgeport Road East & Peppler Street",
+   "lonlat": [
+    -80.5197,
+    43.468117
+   ],
+   "terrain_z_m": -8.25,
+   "canvas_px": [
+    6455.8,
+    -575.7
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -1
+    ],
+    "z": -8.230000000000004,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.02,
+   "pass": true
+  },
+  {
+   "junction": "Bridgeport Road East & Regina Street North",
+   "lonlat": [
+    -80.52184,
+    43.46781
+   ],
+   "terrain_z_m": -5.04,
+   "canvas_px": [
+    5940.2,
+    -363.2
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": -5.030000000000001,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Bridgeport Road East & Weber Street North",
+   "lonlat": [
+    -80.512643,
+    43.470137
+   ],
+   "terrain_z_m": -6.94,
+   "canvas_px": [
+    8025.0,
+    -1559.7
+   ],
+   "sample": {
+    "tile": [
+     7,
+     -2
+    ],
+    "z": -6.939999999999998,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Bridgeport Road West & Dorset Street",
+   "lonlat": [
+    -80.524248,
+    43.467492
+   ],
+   "terrain_z_m": 1.0,
+   "canvas_px": [
+    5356.6,
+    -136.6
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": 1.0100000000000051,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Brighton Street & Elgin Crescent",
+   "lonlat": [
+    -80.519923,
+    43.473092
+   ],
+   "terrain_z_m": -5.43,
+   "canvas_px": [
+    5752.3,
+    -1821.2
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -2
+    ],
+    "z": -5.390000000000001,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.04,
+   "pass": true
+  },
+  {
+   "junction": "Brighton Street & Marshall Street",
+   "lonlat": [
+    -80.520347,
+    43.473887
+   ],
+   "terrain_z_m": -7.05,
+   "canvas_px": [
+    5538.9,
+    -1989.2
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -2
+    ],
+    "z": -7.040000000000006,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Brighton Street & Noecker Street",
+   "lonlat": [
+    -80.519287,
+    43.471966
+   ],
+   "terrain_z_m": -5.15,
+   "canvas_px": [
+    6063.3,
+    -1580.8
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -2
+    ],
+    "z": -5.159999999999997,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Caroline Street North & Caroline Street South & Erb Street West",
+   "lonlat": [
+    -80.525206,
+    43.464376
+   ],
+   "terrain_z_m": -6.0,
+   "canvas_px": [
+    5512.3,
+    729.4
+   ],
+   "sample": {
+    "tile": [
+     5,
+     0
+    ],
+    "z": -6.0,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Caroline Street North & Dupont Street West",
+   "lonlat": [
+    -80.525748,
+    43.465256
+   ],
+   "terrain_z_m": -4.47,
+   "canvas_px": [
+    5257.4,
+    540.1
+   ],
+   "sample": {
+    "tile": [
+     5,
+     0
+    ],
+    "z": -4.510000000000005,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.04,
+   "pass": true
+  },
+  {
+   "junction": "Caroline Street South & Father David Bauer Drive",
+   "lonlat": [
+    -80.524085,
+    43.46309
+   ],
+   "terrain_z_m": -6.05,
+   "canvas_px": [
+    5970.2,
+    978.7
+   ],
+   "sample": {
+    "tile": [
+     5,
+     0
+    ],
+    "z": -6.019999999999996,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.03,
+   "pass": true
+  },
+  {
+   "junction": "Caroline Street South & Fire Route",
+   "lonlat": [
+    -80.517974,
+    43.458393
+   ],
+   "terrain_z_m": 1.01,
+   "canvas_px": [
+    8166.0,
+    1736.4
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": 1.0100000000000051,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Caroline Street South & Freemont Street",
+   "lonlat": [
+    -80.520737,
+    43.460034
+   ],
+   "terrain_z_m": -2.92,
+   "canvas_px": [
+    7235.9,
+    1517.2
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": -2.9099999999999966,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Caroline Street South & Fullerton Street",
+   "lonlat": [
+    -80.521754,
+    43.46063
+   ],
+   "terrain_z_m": -2.62,
+   "canvas_px": [
+    6894.6,
+    1434.3
+   ],
+   "sample": {
+    "tile": [
+     6,
+     1
+    ],
+    "z": -2.5799999999999983,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.04,
+   "pass": true
+  },
+  {
+   "junction": "Caroline Street South & John Street West",
+   "lonlat": [
+    -80.518355,
+    43.458643
+   ],
+   "terrain_z_m": 0.6,
+   "canvas_px": [
+    8034.6,
+    1699.8
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": 0.6099999999999994,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Caroline Street South & Norman Street",
+   "lonlat": [
+    -80.521371,
+    43.460408
+   ],
+   "terrain_z_m": -2.87,
+   "canvas_px": [
+    7022.7,
+    1465.1
+   ],
+   "sample": {
+    "tile": [
+     6,
+     1
+    ],
+    "z": -2.8700000000000045,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Caroline Street South & William Street West",
+   "lonlat": [
+    -80.522207,
+    43.460901
+   ],
+   "terrain_z_m": -2.02,
+   "canvas_px": [
+    6741.7,
+    1394.8
+   ],
+   "sample": {
+    "tile": [
+     6,
+     1
+    ],
+    "z": -2.030000000000001,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Caroline Street South & Willis Way",
+   "lonlat": [
+    -80.52383,
+    43.462788
+   ],
+   "terrain_z_m": -5.06,
+   "canvas_px": [
+    6075.5,
+    1035.2
+   ],
+   "sample": {
+    "tile": [
+     5,
+     1
+    ],
+    "z": -5.060000000000002,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Carter Avenue & Marshall Street",
+   "lonlat": [
+    -80.513638,
+    43.476278
+   ],
+   "terrain_z_m": -7.92,
+   "canvas_px": [
+    6969.5,
+    -3038.0
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -3
+    ],
+    "z": -7.909999999999997,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Central Street & Dorset Street",
+   "lonlat": [
+    -80.524832,
+    43.469823
+   ],
+   "terrain_z_m": 0.06,
+   "canvas_px": [
+    4902.6,
+    -682.8
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -1
+    ],
+    "z": 0.06999999999999318,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Central Street & Fountain Street",
+   "lonlat": [
+    -80.526087,
+    43.469977
+   ],
+   "terrain_z_m": 1.01,
+   "canvas_px": [
+    4556.9,
+    -639.9
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -1
+    ],
+    "z": 1.0100000000000051,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Central Street & King Street North",
+   "lonlat": [
+    -80.523608,
+    43.469784
+   ],
+   "terrain_z_m": -4.01,
+   "canvas_px": [
+    5225.2,
+    -744.9
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": -4.010000000000005,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Clayfield Avenue & Ezra Avenue",
+   "lonlat": [
+    -80.526333,
+    43.471481
+   ],
+   "terrain_z_m": 0.0,
+   "canvas_px": [
+    4297.8,
+    -1000.1
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -1
+    ],
+    "z": 0.0,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Columbia Street West & Hagey Boulevard",
+   "lonlat": [
+    -80.546506,
+    43.474738
+   ],
+   "terrain_z_m": 10.81,
+   "canvas_px": [
+    -1360.0,
+    -499.0
+   ],
+   "sample": {
+    "tile": [
+     -2,
+     -1
+    ],
+    "z": 10.819999999999993,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Columbia Street West & Hagey Boulevard & North Campus Road",
+   "lonlat": [
+    -80.546427,
+    43.474629
+   ],
+   "terrain_z_m": 10.59,
+   "canvas_px": [
+    -1325.5,
+    -476.4
+   ],
+   "sample": {
+    "tile": [
+     -2,
+     -1
+    ],
+    "z": 10.569999999999993,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.02,
+   "pass": true
+  },
+  {
+   "junction": "Columbia Street West & Hazel Street",
+   "lonlat": [
+    -80.531711,
+    43.479918
+   ],
+   "terrain_z_m": 9.96,
+   "canvas_px": [
+    1807.4,
+    -2790.4
+   ],
+   "sample": {
+    "tile": [
+     1,
+     -3
+    ],
+    "z": 9.950000000000003,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Columbia Street West & Lester Street",
+   "lonlat": [
+    -80.537642,
+    43.477803
+   ],
+   "terrain_z_m": 12.15,
+   "canvas_px": [
+    542.7,
+    -1866.7
+   ],
+   "sample": {
+    "tile": [
+     0,
+     -2
+    ],
+    "z": 12.159999999999997,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Columbia Street West & Phillip Street",
+   "lonlat": [
+    -80.539939,
+    43.476982
+   ],
+   "terrain_z_m": 8.8,
+   "canvas_px": [
+    53.2,
+    -1498.4
+   ],
+   "sample": {
+    "tile": [
+     0,
+     -2
+    ],
+    "z": 8.790000000000006,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Dawson Street & Dunbar Road South",
+   "lonlat": [
+    -80.52993,
+    43.460771
+   ],
+   "terrain_z_m": 5.0,
+   "canvas_px": [
+    4754.0,
+    1926.9
+   ],
+   "sample": {
+    "tile": [
+     4,
+     1
+    ],
+    "z": 5.0,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Dawson Street & Euclid Avenue",
+   "lonlat": [
+    -80.52676,
+    43.462164
+   ],
+   "terrain_z_m": -1.72,
+   "canvas_px": [
+    5396.0,
+    1380.4
+   ],
+   "sample": {
+    "tile": [
+     5,
+     1
+    ],
+    "z": -1.7000000000000028,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.02,
+   "pass": true
+  },
+  {
+   "junction": "Dawson Street & Menno Street",
+   "lonlat": [
+    -80.527821,
+    43.461697
+   ],
+   "terrain_z_m": 0.08,
+   "canvas_px": [
+    5181.2,
+    1564.5
+   ],
+   "sample": {
+    "tile": [
+     5,
+     1
+    ],
+    "z": 0.10999999999999943,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.03,
+   "pass": true
+  },
+  {
+   "junction": "Dawson Street & Wells Lane",
+   "lonlat": [
+    -80.527278,
+    43.461932
+   ],
+   "terrain_z_m": -1.04,
+   "canvas_px": [
+    5291.6,
+    1471.7
+   ],
+   "sample": {
+    "tile": [
+     5,
+     1
+    ],
+    "z": -1.0400000000000063,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Devitt Avenue North & Devitt Avenue South & Erb Street East",
+   "lonlat": [
+    -80.513959,
+    43.467469
+   ],
+   "terrain_z_m": -2.52,
+   "canvas_px": [
+    8029.7,
+    -810.2
+   ],
+   "sample": {
+    "tile": [
+     7,
+     -1
+    ],
+    "z": -2.530000000000001,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Dominion Lane & Dupont Street West",
+   "lonlat": [
+    -80.523109,
+    43.465943
+   ],
+   "terrain_z_m": -0.01,
+   "canvas_px": [
+    5853.2,
+    179.9
+   ],
+   "sample": {
+    "tile": [
+     5,
+     0
+    ],
+    "z": -0.010000000000005116,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Dominion Lane & Erb Street West",
+   "lonlat": [
+    -80.522905,
+    43.465134
+   ],
+   "terrain_z_m": -3.4,
+   "canvas_px": [
+    6011.3,
+    378.3
+   ],
+   "sample": {
+    "tile": [
+     5,
+     0
+    ],
+    "z": -3.430000000000007,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.03,
+   "pass": true
+  },
+  {
+   "junction": "Dorset Street & Princess Street West",
+   "lonlat": [
+    -80.524027,
+    43.466676
+   ],
+   "terrain_z_m": 0.0,
+   "canvas_px": [
+    5519.9,
+    56.5
+   ],
+   "sample": {
+    "tile": [
+     5,
+     0
+    ],
+    "z": 0.0,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Dorset Street & Spring Street West",
+   "lonlat": [
+    -80.524658,
+    43.469149
+   ],
+   "terrain_z_m": -1.43,
+   "canvas_px": [
+    5035.1,
+    -520.8
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -1
+    ],
+    "z": -1.4399999999999977,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Dorset Street & Young Street West",
+   "lonlat": [
+    -80.524446,
+    43.468326
+   ],
+   "terrain_z_m": 0.01,
+   "canvas_px": [
+    5196.9,
+    -331.1
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": 0.010000000000005116,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Dunbar Road North & Dunbar Road South & Erb Street West",
+   "lonlat": [
+    -80.530886,
+    43.461925
+   ],
+   "terrain_z_m": 2.29,
+   "canvas_px": [
+    4356.1,
+    1706.4
+   ],
+   "sample": {
+    "tile": [
+     4,
+     1
+    ],
+    "z": 2.3400000000000034,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.05,
+   "pass": true
+  },
+  {
+   "junction": "Dupont Street East & Dupont Street West & King Street North",
+   "lonlat": [
+    -80.522627,
+    43.466012
+   ],
+   "terrain_z_m": -2.26,
+   "canvas_px": [
+    5969.6,
+    135.8
+   ],
+   "sample": {
+    "tile": [
+     5,
+     0
+    ],
+    "z": -2.260000000000005,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Dupont Street East & Peppler Street",
+   "lonlat": [
+    -80.519276,
+    43.466457
+   ],
+   "terrain_z_m": -8.99,
+   "canvas_px": [
+    6781.2,
+    -184.1
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -1
+    ],
+    "z": -8.989999999999995,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Dupont Street East & Regina Street North",
+   "lonlat": [
+    -80.52142,
+    43.466164
+   ],
+   "terrain_z_m": -5.85,
+   "canvas_px": [
+    6263.0,
+    25.5
+   ],
+   "sample": {
+    "tile": [
+     6,
+     0
+    ],
+    "z": -5.849999999999994,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Elgin Crescent & Noecker Street",
+   "lonlat": [
+    -80.517026,
+    43.473021
+   ],
+   "terrain_z_m": -3.98,
+   "canvas_px": [
+    6513.3,
+    -2000.4
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -2
+    ],
+    "z": -4.0,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.02,
+   "pass": true
+  },
+  {
+   "junction": "Elgin Crescent & Regina Street North",
+   "lonlat": [
+    -80.522299,
+    43.472269
+   ],
+   "terrain_z_m": 0.03,
+   "canvas_px": [
+    5242.6,
+    -1468.2
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -2
+    ],
+    "z": 0.04000000000000625,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Elgin Street & King Street North",
+   "lonlat": [
+    -80.523694,
+    43.470134
+   ],
+   "terrain_z_m": -4.71,
+   "canvas_px": [
+    5157.4,
+    -825.7
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": -4.680000000000007,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.03,
+   "pass": true
+  },
+  {
+   "junction": "Elgin Street & Peppler Street",
+   "lonlat": [
+    -80.520358,
+    43.470551
+   ],
+   "terrain_z_m": -5.0,
+   "canvas_px": [
+    5969.3,
+    -1153.0
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -2
+    ],
+    "z": -5.0,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Elgin Street & Regina Street North",
+   "lonlat": [
+    -80.522509,
+    43.470288
+   ],
+   "terrain_z_m": -4.99,
+   "canvas_px": [
+    5445.2,
+    -942.9
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": -4.989999999999995,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Ellis Crescent North & Lincoln Road",
+   "lonlat": [
+    -80.50983,
+    43.474571
+   ],
+   "terrain_z_m": 10.73,
+   "canvas_px": [
+    8179.3,
+    -2907.7
+   ],
+   "sample": {
+    "tile": [
+     7,
+     -3
+    ],
+    "z": 10.730000000000004,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Erb Street East & Erb Street West & King Street North & King Street South",
+   "lonlat": [
+    -80.522367,
+    43.465188
+   ],
+   "terrain_z_m": -4.77,
+   "canvas_px": [
+    6143.9,
+    332.1
+   ],
+   "sample": {
+    "tile": [
+     5,
+     0
+    ],
+    "z": -4.780000000000001,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Erb Street East & Gillen Street",
+   "lonlat": [
+    -80.520257,
+    43.465473
+   ],
+   "terrain_z_m": -7.94,
+   "canvas_px": [
+    6654.3,
+    126.8
+   ],
+   "sample": {
+    "tile": [
+     6,
+     0
+    ],
+    "z": -7.950000000000003,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Erb Street East & Hughes Lane",
+   "lonlat": [
+    -80.521793,
+    43.465261
+   ],
+   "terrain_z_m": -5.0,
+   "canvas_px": [
+    6283.2,
+    275.8
+   ],
+   "sample": {
+    "tile": [
+     6,
+     0
+    ],
+    "z": 6.739999999999995,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": 11.74,
+   "pass": false
+  },
+  {
+   "junction": "Erb Street East & Moore Avenue North & Moore Avenue South",
+   "lonlat": [
+    -80.515073,
+    43.466839
+   ],
+   "terrain_z_m": -6.04,
+   "canvas_px": [
+    7822.6,
+    -568.4
+   ],
+   "sample": {
+    "tile": [
+     7,
+     -1
+    ],
+    "z": -6.040000000000006,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Erb Street East & Peppler Street",
+   "lonlat": [
+    -80.519046,
+    43.46563
+   ],
+   "terrain_z_m": -8.99,
+   "canvas_px": [
+    6948.4,
+    8.7
+   ],
+   "sample": {
+    "tile": [
+     6,
+     0
+    ],
+    "z": -8.989999999999995,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Erb Street East & Regina Street North & Regina Street South",
+   "lonlat": [
+    -80.52118,
+    43.465341
+   ],
+   "terrain_z_m": -5.62,
+   "canvas_px": [
+    6431.9,
+    216.3
+   ],
+   "sample": {
+    "tile": [
+     6,
+     0
+    ],
+    "z": -5.6200000000000045,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Erb Street East & Tweed Street",
+   "lonlat": [
+    -80.51687,
+    43.466047
+   ],
+   "terrain_z_m": -5.16,
+   "canvas_px": [
+    7459.1,
+    -251.0
+   ],
+   "sample": {
+    "tile": [
+     7,
+     -1
+    ],
+    "z": -5.140000000000001,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.02,
+   "pass": true
+  },
+  {
+   "junction": "Erb Street East & Willow Street",
+   "lonlat": [
+    -80.518039,
+    43.465759
+   ],
+   "terrain_z_m": -8.05,
+   "canvas_px": [
+    7193.0,
+    -93.2
+   ],
+   "sample": {
+    "tile": [
+     7,
+     -1
+    ],
+    "z": -8.049999999999997,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Erb Street West & Euclid Avenue",
+   "lonlat": [
+    -80.527704,
+    43.463326
+   ],
+   "terrain_z_m": -4.02,
+   "canvas_px": [
+    5000.3,
+    1156.1
+   ],
+   "sample": {
+    "tile": [
+     4,
+     1
+    ],
+    "z": -4.019999999999996,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Erb Street West & Father David Bauer Drive",
+   "lonlat": [
+    -80.526891,
+    43.463676
+   ],
+   "terrain_z_m": -4.95,
+   "canvas_px": [
+    5165.9,
+    1016.0
+   ],
+   "sample": {
+    "tile": [
+     5,
+     0
+    ],
+    "z": -4.950000000000003,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Erb Street West & Roslin Avenue South & Sunshine Avenue",
+   "lonlat": [
+    -80.531924,
+    43.461472
+   ],
+   "terrain_z_m": 0.86,
+   "canvas_px": [
+    4145.5,
+    1893.7
+   ],
+   "sample": {
+    "tile": [
+     4,
+     1
+    ],
+    "z": 0.8400000000000034,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.02,
+   "pass": true
+  },
+  {
+   "junction": "Erb Street West & Wells Lane",
+   "lonlat": [
+    -80.528224,
+    43.46309
+   ],
+   "terrain_z_m": -3.05,
+   "canvas_px": [
+    4896.0,
+    1247.9
+   ],
+   "sample": {
+    "tile": [
+     4,
+     1
+    ],
+    "z": -3.0400000000000063,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Euclid Avenue & William Street West",
+   "lonlat": [
+    -80.523757,
+    43.459507
+   ],
+   "terrain_z_m": -0.37,
+   "canvas_px": [
+    6520.3,
+    1845.8
+   ],
+   "sample": {
+    "tile": [
+     6,
+     1
+    ],
+    "z": -0.37999999999999545,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Ezra Avenue & King Street North",
+   "lonlat": [
+    -80.524141,
+    43.472262
+   ],
+   "terrain_z_m": 0.87,
+   "canvas_px": [
+    4765.1,
+    -1345.4
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -2
+    ],
+    "z": 0.8400000000000034,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.03,
+   "pass": true
+  },
+  {
+   "junction": "Father David Bauer Drive & Merchant Avenue",
+   "lonlat": [
+    -80.52824,
+    43.464754
+   ],
+   "terrain_z_m": -5.07,
+   "canvas_px": [
+    4676.0,
+    834.7
+   ],
+   "sample": {
+    "tile": [
+     4,
+     0
+    ],
+    "z": -5.060000000000002,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Fir Street & Hickory Street West & Spruce Street",
+   "lonlat": [
+    -80.526565,
+    43.477975
+   ],
+   "terrain_z_m": -3.98,
+   "canvas_px": [
+    3394.8,
+    -2611.3
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -3
+    ],
+    "z": -3.989999999999995,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Fir Street & State Street",
+   "lonlat": [
+    -80.528238,
+    43.477053
+   ],
+   "terrain_z_m": 0.02,
+   "canvas_px": [
+    3080.4,
+    -2276.8
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -3
+    ],
+    "z": 0.01999999999999602,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Fountain Street & Spring Street West",
+   "lonlat": [
+    -80.525846,
+    43.468991
+   ],
+   "terrain_z_m": -0.02,
+   "canvas_px": [
+    4747.3,
+    -405.2
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -1
+    ],
+    "z": -0.01999999999999602,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Fountain Street & Young Street West",
+   "lonlat": [
+    -80.525606,
+    43.468177
+   ],
+   "terrain_z_m": 0.99,
+   "canvas_px": [
+    4915.3,
+    -218.5
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -1
+    ],
+    "z": 1.0,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Fullerton Street & Park Street",
+   "lonlat": [
+    -80.522584,
+    43.459994
+   ],
+   "terrain_z_m": -1.02,
+   "canvas_px": [
+    6761.7,
+    1646.1
+   ],
+   "sample": {
+    "tile": [
+     6,
+     1
+    ],
+    "z": -1.019999999999996,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "George Street & Herbert Street",
+   "lonlat": [
+    -80.518352,
+    43.462706
+   ],
+   "terrain_z_m": -4.87,
+   "canvas_px": [
+    7508.1,
+    689.2
+   ],
+   "sample": {
+    "tile": [
+     7,
+     0
+    ],
+    "z": -4.840000000000003,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.03,
+   "pass": true
+  },
+  {
+   "junction": "George Street & King Street South",
+   "lonlat": [
+    -80.520275,
+    43.46095
+   ],
+   "terrain_z_m": -4.92,
+   "canvas_px": [
+    7236.9,
+    1260.3
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": -4.890000000000001,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.03,
+   "pass": true
+  },
+  {
+   "junction": "George Street & Willow Street",
+   "lonlat": [
+    -80.516913,
+    43.463998
+   ],
+   "terrain_z_m": -4.23,
+   "canvas_px": [
+    7713.9,
+    266.0
+   ],
+   "sample": {
+    "tile": [
+     7,
+     0
+    ],
+    "z": -4.239999999999995,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Hagey Boulevard & Wes Graham Way",
+   "lonlat": [
+    -80.547115,
+    43.475984
+   ],
+   "terrain_z_m": 14.95,
+   "canvas_px": [
+    -1679.5,
+    -782.4
+   ],
+   "sample": {
+    "tile": [
+     -2,
+     -1
+    ],
+    "z": 14.950000000000003,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Hawthorn Street & Hickory Street West",
+   "lonlat": [
+    -80.52769,
+    43.477849
+   ],
+   "terrain_z_m": -0.93,
+   "canvas_px": [
+    3119.3,
+    -2511.5
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -3
+    ],
+    "z": -0.9300000000000068,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Hazel Street & Hickory Street West",
+   "lonlat": [
+    -80.529892,
+    43.477596
+   ],
+   "terrain_z_m": 2.95,
+   "canvas_px": [
+    2580.7,
+    -2310.1
+   ],
+   "sample": {
+    "tile": [
+     2,
+     -3
+    ],
+    "z": 2.950000000000003,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Hazel Street & High Street",
+   "lonlat": [
+    -80.532278,
+    43.48066
+   ],
+   "terrain_z_m": 8.84,
+   "canvas_px": [
+    1564.1,
+    -2937.0
+   ],
+   "sample": {
+    "tile": [
+     1,
+     -3
+    ],
+    "z": 8.870000000000005,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.03,
+   "pass": true
+  },
+  {
+   "junction": "Hazel Street & MidCampus Drive & University Avenue West",
+   "lonlat": [
+    -80.528028,
+    43.475057
+   ],
+   "terrain_z_m": 1.82,
+   "canvas_px": [
+    3394.0,
+    -1792.1
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -2
+    ],
+    "z": 1.8100000000000023,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Hemlock Street & Hickory Street West",
+   "lonlat": [
+    -80.532722,
+    43.477021
+   ],
+   "terrain_z_m": 9.05,
+   "canvas_px": [
+    1921.0,
+    -1990.9
+   ],
+   "sample": {
+    "tile": [
+     1,
+     -2
+    ],
+    "z": 9.040000000000006,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Hemlock Street & University Avenue West",
+   "lonlat": [
+    -80.530622,
+    43.474128
+   ],
+   "terrain_z_m": 11.02,
+   "canvas_px": [
+    2841.3,
+    -1407.0
+   ],
+   "sample": {
+    "tile": [
+     2,
+     -2
+    ],
+    "z": 11.030000000000001,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Herbert Street & William Street East",
+   "lonlat": [
+    -80.519503,
+    43.463367
+   ],
+   "terrain_z_m": -7.0,
+   "canvas_px": [
+    7123.4,
+    604.9
+   ],
+   "sample": {
+    "tile": [
+     6,
+     0
+    ],
+    "z": -6.989999999999995,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Hickory Street East & Hickory Street West & King Street North",
+   "lonlat": [
+    -80.525369,
+    43.4781
+   ],
+   "terrain_z_m": -5.06,
+   "canvas_px": [
+    3688.9,
+    -2720.1
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -3
+    ],
+    "z": -5.060000000000002,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Hickory Street East & Regina Street North",
+   "lonlat": [
+    -80.5243,
+    43.478946
+   ],
+   "terrain_z_m": -3.04,
+   "canvas_px": [
+    3856.5,
+    -3009.3
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -3
+    ],
+    "z": 63.91,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": 66.95,
+   "pass": false
+  },
+  {
+   "junction": "Hickory Street West & Larch Street",
+   "lonlat": [
+    -80.531311,
+    43.477308
+   ],
+   "terrain_z_m": 5.44,
+   "canvas_px": [
+    2249.9,
+    -2148.6
+   ],
+   "sample": {
+    "tile": [
+     2,
+     -3
+    ],
+    "z": 5.450000000000003,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Hickory Street West & Lester Street",
+   "lonlat": [
+    -80.536144,
+    43.475756
+   ],
+   "terrain_z_m": 14.54,
+   "canvas_px": [
+    1197.1,
+    -1456.8
+   ],
+   "sample": {
+    "tile": [
+     1,
+     -2
+    ],
+    "z": 14.549999999999997,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Hickory Street West & State Street",
+   "lonlat": [
+    -80.528382,
+    43.477768
+   ],
+   "terrain_z_m": -0.04,
+   "canvas_px": [
+    2950.2,
+    -2447.2
+   ],
+   "sample": {
+    "tile": [
+     2,
+     -3
+    ],
+    "z": -0.04000000000000625,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Hickory Street West & Sunview Street",
+   "lonlat": [
+    -80.534907,
+    43.476194
+   ],
+   "terrain_z_m": 15.0,
+   "canvas_px": [
+    1461.3,
+    -1650.9
+   ],
+   "sample": {
+    "tile": [
+     1,
+     -2
+    ],
+    "z": 15.0,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Hughes Lane & Laurel Trail",
+   "lonlat": [
+    -80.521531,
+    43.464382
+   ],
+   "terrain_z_m": -7.01,
+   "canvas_px": [
+    6465.5,
+    484.7
+   ],
+   "sample": {
+    "tile": [
+     6,
+     0
+    ],
+    "z": -7.010000000000005,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Hughes Lane & William Street East",
+   "lonlat": [
+    -80.520924,
+    43.462101
+   ],
+   "terrain_z_m": -4.97,
+   "canvas_px": [
+    6919.0,
+    1013.8
+   ],
+   "sample": {
+    "tile": [
+     6,
+     0
+    ],
+    "z": -4.969999999999999,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Hughes Lane & Willis Way",
+   "lonlat": [
+    -80.521347,
+    43.463719
+   ],
+   "terrain_z_m": -6.94,
+   "canvas_px": [
+    6599.3,
+    639.2
+   ],
+   "sample": {
+    "tile": [
+     6,
+     0
+    ],
+    "z": -6.939999999999998,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Iroquois Place & Longfellow Drive",
+   "lonlat": [
+    -80.545895,
+    43.465385
+   ],
+   "terrain_z_m": 5.19,
+   "canvas_px": [
+    11.7,
+    1830.6
+   ],
+   "sample": {
+    "tile": [
+     0,
+     1
+    ],
+    "z": 5.200000000000003,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "James Street & King Street North",
+   "lonlat": [
+    -80.524072,
+    43.471923
+   ],
+   "terrain_z_m": 0.08,
+   "canvas_px": [
+    4827.3,
+    -1262.7
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -2
+    ],
+    "z": 60.99000000000001,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": 60.91,
+   "pass": false
+  },
+  {
+   "junction": "John Street East & John Street West & King Street South",
+   "lonlat": [
+    -80.517622,
+    43.459322
+   ],
+   "terrain_z_m": 0.13,
+   "canvas_px": [
+    8136.9,
+    1481.0
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": 0.14000000000000057,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "John Street East & King Street South",
+   "lonlat": [
+    -80.517502,
+    43.459429
+   ],
+   "terrain_z_m": -0.05,
+   "canvas_px": [
+    8154.2,
+    1446.5
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": -0.04999999999999716,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "John Street West & Park Street",
+   "lonlat": [
+    -80.519106,
+    43.457953
+   ],
+   "terrain_z_m": 0.98,
+   "canvas_px": [
+    7929.2,
+    1923.0
+   ],
+   "sample": {
+    "tile": [
+     7,
+     1
+    ],
+    "z": 0.9899999999999949,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "King Street North & Lodge Street",
+   "lonlat": [
+    -80.524425,
+    43.473599
+   ],
+   "terrain_z_m": -1.59,
+   "canvas_px": [
+    4518.2,
+    -1657.3
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -2
+    ],
+    "z": -1.5499999999999972,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.04,
+   "pass": true
+  },
+  {
+   "junction": "King Street North & Marshall Street",
+   "lonlat": [
+    -80.524205,
+    43.472554
+   ],
+   "terrain_z_m": 1.0,
+   "canvas_px": [
+    4710.8,
+    -1415.1
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -2
+    ],
+    "z": 1.0,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "King Street North & Noecker Street",
+   "lonlat": [
+    -80.523951,
+    43.471323
+   ],
+   "terrain_z_m": -0.96,
+   "canvas_px": [
+    4936.5,
+    -1117.1
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -2
+    ],
+    "z": -0.980000000000004,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.02,
+   "pass": true
+  },
+  {
+   "junction": "King Street North & Princess Street East & Princess Street West",
+   "lonlat": [
+    -80.522843,
+    43.466843
+   ],
+   "terrain_z_m": -1.03,
+   "canvas_px": [
+    5805.6,
+    -62.2
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": -1.0300000000000011,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "King Street North & Spring Street East & Spring Street West",
+   "lonlat": [
+    -80.523492,
+    43.469305
+   ],
+   "terrain_z_m": -4.18,
+   "canvas_px": [
+    5317.4,
+    -631.6
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": -4.180000000000007,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "King Street North & University Avenue East & University Avenue West",
+   "lonlat": [
+    -80.524969,
+    43.476153
+   ],
+   "terrain_z_m": -5.0,
+   "canvas_px": [
+    4045.5,
+    -2256.2
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -3
+    ],
+    "z": -5.0,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "King Street North & Young Street East & Young Street West",
+   "lonlat": [
+    -80.523283,
+    43.468493
+   ],
+   "terrain_z_m": -1.64,
+   "canvas_px": [
+    5477.1,
+    -447.0
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": -1.6400000000000006,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "King Street South & Kuntz Lane",
+   "lonlat": [
+    -80.520692,
+    43.461183
+   ],
+   "terrain_z_m": -4.96,
+   "canvas_px": [
+    7098.4,
+    1229.7
+   ],
+   "sample": {
+    "tile": [
+     6,
+     1
+    ],
+    "z": -4.959999999999994,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "King Street South & William Street East & William Street West",
+   "lonlat": [
+    -80.521401,
+    43.461659
+   ],
+   "terrain_z_m": -5.1,
+   "canvas_px": [
+    6852.5,
+    1157.5
+   ],
+   "sample": {
+    "tile": [
+     6,
+     1
+    ],
+    "z": -5.099999999999994,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "King Street South & Willis Way",
+   "lonlat": [
+    -80.521954,
+    43.463624
+   ],
+   "terrain_z_m": -7.07,
+   "canvas_px": [
+    6453.9,
+    704.1
+   ],
+   "sample": {
+    "tile": [
+     6,
+     0
+    ],
+    "z": -7.040000000000006,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.03,
+   "pass": true
+  },
+  {
+   "junction": "Kuntz Lane & William Street West",
+   "lonlat": [
+    -80.521758,
+    43.461307
+   ],
+   "terrain_z_m": -3.95,
+   "canvas_px": [
+    6805.5,
+    1267.1
+   ],
+   "sample": {
+    "tile": [
+     6,
+     1
+    ],
+    "z": -3.950000000000003,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Laurel Street & Moore Avenue North",
+   "lonlat": [
+    -80.5167,
+    43.468278
+   ],
+   "terrain_z_m": -8.86,
+   "canvas_px": [
+    7213.5,
+    -815.6
+   ],
+   "sample": {
+    "tile": [
+     7,
+     -1
+    ],
+    "z": -8.849999999999994,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Laurel Street & Peppler Street",
+   "lonlat": [
+    -80.519101,
+    43.465846
+   ],
+   "terrain_z_m": -9.01,
+   "canvas_px": [
+    6906.1,
+    -41.9
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -1
+    ],
+    "z": -9.010000000000005,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Laurel Street & Tweed Street",
+   "lonlat": [
+    -80.517869,
+    43.466909
+   ],
+   "terrain_z_m": -8.73,
+   "canvas_px": [
+    7087.8,
+    -392.7
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -1
+    ],
+    "z": -8.739999999999995,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Laurel Trail & Regina Street South",
+   "lonlat": [
+    -80.520937,
+    43.464473
+   ],
+   "terrain_z_m": -6.98,
+   "canvas_px": [
+    6607.8,
+    421.8
+   ],
+   "sample": {
+    "tile": [
+     6,
+     0
+    ],
+    "z": -6.989999999999995,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Lester Street & Seagram Drive",
+   "lonlat": [
+    -80.531811,
+    43.470924
+   ],
+   "terrain_z_m": 4.65,
+   "canvas_px": [
+    2948.3,
+    -504.9
+   ],
+   "sample": {
+    "tile": [
+     2,
+     -1
+    ],
+    "z": 4.650000000000006,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Lester Street & University Avenue West",
+   "lonlat": [
+    -80.533965,
+    43.472871
+   ],
+   "terrain_z_m": 7.93,
+   "canvas_px": [
+    2136.9,
+    -859.5
+   ],
+   "sample": {
+    "tile": [
+     2,
+     -1
+    ],
+    "z": 46.129999999999995,
+    "valid": true,
+    "cls": "wall"
+   },
+   "dz_m": 38.2,
+   "pass": false
+  },
+  {
+   "junction": "Lincoln Road & Weber Street North",
+   "lonlat": [
+    -80.513717,
+    43.471115
+   ],
+   "terrain_z_m": -8.93,
+   "canvas_px": [
+    7619.3,
+    -1729.5
+   ],
+   "sample": {
+    "tile": [
+     7,
+     -2
+    ],
+    "z": -8.939999999999998,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Lions Court & The Lions Gate",
+   "lonlat": [
+    -80.551392,
+    43.467658
+   ],
+   "terrain_z_m": 6.35,
+   "canvas_px": [
+    -1710.0,
+    1622.2
+   ],
+   "sample": {
+    "tile": [
+     -2,
+     1
+    ],
+    "z": 6.390000000000001,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.04,
+   "pass": true
+  },
+  {
+   "junction": "Lodge Street & Regina Street North",
+   "lonlat": [
+    -80.522851,
+    43.474113
+   ],
+   "terrain_z_m": -5.03,
+   "canvas_px": [
+    4859.8,
+    -1883.7
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -2
+    ],
+    "z": -5.030000000000001,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Lodge Street & Weber Street North",
+   "lonlat": [
+    -80.517975,
+    43.475858
+   ],
+   "terrain_z_m": -12.07,
+   "canvas_px": [
+    5898.5,
+    -2632.4
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -3
+    ],
+    "z": -12.069999999999993,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Longfellow Drive & Mohawk Avenue",
+   "lonlat": [
+    -80.547942,
+    43.465131
+   ],
+   "terrain_z_m": 14.33,
+   "canvas_px": [
+    -486.9,
+    2009.3
+   ],
+   "sample": {
+    "tile": [
+     -1,
+     1
+    ],
+    "z": 14.329999999999998,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Longfellow Drive & Shakespeare Drive & Shakespeare Place",
+   "lonlat": [
+    -80.55041,
+    43.465913
+   ],
+   "terrain_z_m": 17.75,
+   "canvas_px": [
+    -1228.8,
+    1968.6
+   ],
+   "sample": {
+    "tile": [
+     -2,
+     1
+    ],
+    "z": 17.769999999999996,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.02,
+   "pass": true
+  },
+  {
+   "junction": "Longfellow Drive & Tennyson Place",
+   "lonlat": [
+    -80.546576,
+    43.465095
+   ],
+   "terrain_z_m": 10.04,
+   "canvas_px": [
+    -127.5,
+    1937.3
+   ],
+   "sample": {
+    "tile": [
+     -1,
+     1
+    ],
+    "z": 10.040000000000006,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Longfellow Drive & Westmount Road North",
+   "lonlat": [
+    -80.545382,
+    43.465734
+   ],
+   "terrain_z_m": 4.05,
+   "canvas_px": [
+    99.5,
+    1711.1
+   ],
+   "sample": {
+    "tile": [
+     0,
+     1
+    ],
+    "z": 4.049999999999997,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Mackay Crescent & Weber Street North",
+   "lonlat": [
+    -80.514976,
+    43.472257
+   ],
+   "terrain_z_m": -9.09,
+   "canvas_px": [
+    7144.4,
+    -1932.8
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -2
+    ],
+    "z": -9.090000000000003,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Maple Court & State Court",
+   "lonlat": [
+    -80.527171,
+    43.47675
+   ],
+   "terrain_z_m": -1.77,
+   "canvas_px": [
+    3396.5,
+    -2267.3
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -3
+    ],
+    "z": -1.7800000000000011,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Maple Court & University Avenue West",
+   "lonlat": [
+    -80.526022,
+    43.475787
+   ],
+   "terrain_z_m": -2.98,
+   "canvas_px": [
+    3819.8,
+    -2098.7
+   ],
+   "sample": {
+    "tile": [
+     3,
+     -3
+    ],
+    "z": -2.980000000000004,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Marshall Street & Regina Street North",
+   "lonlat": [
+    -80.522627,
+    43.473076
+   ],
+   "terrain_z_m": -0.39,
+   "canvas_px": [
+    5052.5,
+    -1648.7
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -2
+    ],
+    "z": -0.37999999999999545,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Marshall Street & Weber Street North",
+   "lonlat": [
+    -80.517274,
+    43.474979
+   ],
+   "terrain_z_m": -11.04,
+   "canvas_px": [
+    6194.7,
+    -2460.2
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -3
+    ],
+    "z": -11.049999999999997,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Noecker Street & Peppler Street",
+   "lonlat": [
+    -80.520644,
+    43.471735
+   ],
+   "terrain_z_m": -4.98,
+   "canvas_px": [
+    5741.3,
+    -1432.2
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -2
+    ],
+    "z": -4.980000000000004,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Noecker Street & Regina Street North",
+   "lonlat": [
+    -80.522707,
+    43.471474
+   ],
+   "terrain_z_m": -0.85,
+   "canvas_px": [
+    5239.8,
+    -1238.5
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -2
+    ],
+    "z": -0.8499999999999943,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Noecker Street & Weber Street North",
+   "lonlat": [
+    -80.516037,
+    43.473456
+   ],
+   "terrain_z_m": -5.96,
+   "canvas_px": [
+    6713.4,
+    -2171.3
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -3
+    ],
+    "z": -5.969999999999999,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Norman Street & Park Street",
+   "lonlat": [
+    -80.522133,
+    43.459719
+   ],
+   "terrain_z_m": -2.01,
+   "canvas_px": [
+    6914.3,
+    1687.6
+   ],
+   "sample": {
+    "tile": [
+     6,
+     1
+    ],
+    "z": -2.0,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "North Campus Road & Ring Road",
+   "lonlat": [
+    -80.545799,
+    43.474106
+   ],
+   "terrain_z_m": 9.43,
+   "canvas_px": [
+    -1094.6,
+    -383.8
+   ],
+   "sample": {
+    "tile": [
+     -2,
+     -1
+    ],
+    "z": 9.400000000000006,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.03,
+   "pass": true
+  },
+  {
+   "junction": "Old Post Road & Post Horn Place",
+   "lonlat": [
+    -80.554377,
+    43.466781
+   ],
+   "terrain_z_m": 11.24,
+   "canvas_px": [
+    -2371.0,
+    2030.5
+   ],
+   "sample": {
+    "tile": [
+     -3,
+     1
+    ],
+    "z": 11.269999999999996,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.03,
+   "pass": true
+  },
+  {
+   "junction": "Old Post Road & Westmount Road North",
+   "lonlat": [
+    -80.551782,
+    43.469029
+   ],
+   "terrain_z_m": 2.97,
+   "canvas_px": [
+    -1989.0,
+    1310.9
+   ],
+   "sample": {
+    "tile": [
+     -2,
+     1
+    ],
+    "z": 2.9599999999999937,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Park Street & William Street West",
+   "lonlat": [
+    -80.522824,
+    43.460343
+   ],
+   "terrain_z_m": -0.09,
+   "canvas_px": [
+    6653.9,
+    1572.0
+   ],
+   "sample": {
+    "tile": [
+     6,
+     1
+    ],
+    "z": -0.06999999999999318,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.02,
    "pass": true
   },
   {
@@ -228,6 +4414,305 @@
    "pass": true
   },
   {
+   "junction": "Peppler Street & Princess Street East",
+   "lonlat": [
+    -80.519494,
+    43.467297
+   ],
+   "terrain_z_m": -8.44,
+   "canvas_px": [
+    6615.6,
+    -382.5
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -1
+    ],
+    "z": -8.439999999999998,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Peppler Street & Young Street East",
+   "lonlat": [
+    -80.519926,
+    43.468922
+   ],
+   "terrain_z_m": -8.02,
+   "canvas_px": [
+    6292.6,
+    -764.0
+   ],
+   "sample": {
+    "tile": [
+     6,
+     -1
+    ],
+    "z": -8.030000000000001,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Phillip Street & Transit Plaza Road",
+   "lonlat": [
+    -80.538408,
+    43.474918
+   ],
+   "terrain_z_m": 9.26,
+   "canvas_px": [
+    718.2,
+    -1081.6
+   ],
+   "sample": {
+    "tile": [
+     0,
+     -2
+    ],
+    "z": 9.269999999999996,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Phillip Street & University Avenue West",
+   "lonlat": [
+    -80.536266,
+    43.472045
+   ],
+   "terrain_z_m": 9.98,
+   "canvas_px": [
+    1646.9,
+    -502.4
+   ],
+   "sample": {
+    "tile": [
+     1,
+     -1
+    ],
+    "z": 9.989999999999995,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Princess Street East & Regina Street North",
+   "lonlat": [
+    -80.521634,
+    43.467008
+   ],
+   "terrain_z_m": -5.52,
+   "canvas_px": [
+    6097.8,
+    -173.8
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": -5.480000000000004,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.04,
+   "pass": true
+  },
+  {
+   "junction": "Regina Street North & Spring Street East",
+   "lonlat": [
+    -80.522283,
+    43.469467
+   ],
+   "terrain_z_m": -5.36,
+   "canvas_px": [
+    5610.2,
+    -750.3
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": -5.349999999999994,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Regina Street North & University Avenue East",
+   "lonlat": [
+    -80.523766,
+    43.476582
+   ],
+   "terrain_z_m": -5.97,
+   "canvas_px": [
+    4301.9,
+    -2442.4
+   ],
+   "sample": {
+    "tile": [
+     4,
+     -3
+    ],
+    "z": -5.969999999999999,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Regina Street North & Young Street East",
+   "lonlat": [
+    -80.52207,
+    43.468648
+   ],
+   "terrain_z_m": -4.02,
+   "canvas_px": [
+    5771.9,
+    -561.5
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -1
+    ],
+    "z": -4.019999999999996,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Regina Street South & William Street East",
+   "lonlat": [
+    -80.520424,
+    43.46255
+   ],
+   "terrain_z_m": -6.0,
+   "canvas_px": [
+    6990.5,
+    869.7
+   ],
+   "sample": {
+    "tile": [
+     6,
+     0
+    ],
+    "z": -6.010000000000005,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Regina Street South & Willis Way",
+   "lonlat": [
+    -80.520747,
+    43.463806
+   ],
+   "terrain_z_m": -8.03,
+   "canvas_px": [
+    6743.7,
+    579.7
+   ],
+   "sample": {
+    "tile": [
+     6,
+     0
+    ],
+    "z": -8.030000000000001,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Residence Road & Villages Road",
+   "lonlat": [
+    -80.554345,
+    43.471216
+   ],
+   "terrain_z_m": 4.91,
+   "canvas_px": [
+    -2937.7,
+    926.1
+   ],
+   "sample": {
+    "tile": [
+     -3,
+     0
+    ],
+    "z": 4.909999999999997,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "Rev Road & Villages Road",
+   "lonlat": [
+    -80.553242,
+    43.471604
+   ],
+   "terrain_z_m": 8.93,
+   "canvas_px": [
+    -2702.0,
+    745.0
+   ],
+   "sample": {
+    "tile": [
+     -3,
+     0
+    ],
+    "z": 8.930000000000007,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Ring Road & Seagram Drive & University Avenue West",
+   "lonlat": [
+    -80.539135,
+    43.468797
+   ],
+   "terrain_z_m": 0.01,
+   "canvas_px": [
+    1323.4,
+    531.6
+   ],
+   "sample": {
+    "tile": [
+     1,
+     0
+    ],
+    "z": 0.0,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
    "junction": "Ring Road & Transit Plaza Road & William Tutte Way",
    "lonlat": [
     -80.541919,
@@ -249,6 +4734,213 @@
    },
    "dz_m": -0.0,
    "pass": true
+  },
+  {
+   "junction": "Ring Road & Villages Road",
+   "lonlat": [
+    -80.548082,
+    43.47262
+   ],
+   "terrain_z_m": 12.67,
+   "canvas_px": [
+    -1494.5,
+    135.3
+   ],
+   "sample": {
+    "tile": [
+     -2,
+     0
+    ],
+    "z": 12.670000000000002,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Seagram Drive & University Avenue West",
+   "lonlat": [
+    -80.538986,
+    43.468753
+   ],
+   "terrain_z_m": 0.07,
+   "canvas_px": [
+    1367.9,
+    532.8
+   ],
+   "sample": {
+    "tile": [
+     1,
+     0
+    ],
+    "z": 0.0799999999999983,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Sunview Street & University Avenue West",
+   "lonlat": [
+    -80.532814,
+    43.473289
+   ],
+   "terrain_z_m": 9.95,
+   "canvas_px": [
+    2381.3,
+    -1046.5
+   ],
+   "sample": {
+    "tile": [
+     2,
+     -2
+    ],
+    "z": 9.950000000000003,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.0,
+   "pass": true
+  },
+  {
+   "junction": "The Lions Gate & Westmount Road North",
+   "lonlat": [
+    -80.548823,
+    43.468502
+   ],
+   "terrain_z_m": 6.73,
+   "canvas_px": [
+    -1152.7,
+    1237.0
+   ],
+   "sample": {
+    "tile": [
+     -2,
+     1
+    ],
+    "z": 6.739999999999995,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "University Avenue East & Weber Street North",
+   "lonlat": [
+    -80.519795,
+    43.478014
+   ],
+   "terrain_z_m": -9.06,
+   "canvas_px": [
+    5146.4,
+    -3061.1
+   ],
+   "sample": {
+    "tile": [
+     5,
+     -3
+    ],
+    "z": -9.069999999999993,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "University Avenue West & Westmount Road North",
+   "lonlat": [
+    -80.541504,
+    43.464297
+   ],
+   "terrain_z_m": -1.99,
+   "canvas_px": [
+    1292.5,
+    1828.6
+   ],
+   "sample": {
+    "tile": [
+     1,
+     1
+    ],
+    "z": -1.980000000000004,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "University Campus Lane & Westmount Road North",
+   "lonlat": [
+    -80.549481,
+    43.468865
+   ],
+   "terrain_z_m": 3.42,
+   "canvas_px": [
+    -1370.4,
+    1197.5
+   ],
+   "sample": {
+    "tile": [
+     -2,
+     1
+    ],
+    "z": 3.4200000000000017,
+    "valid": true,
+    "cls": "major_road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "Villages Road & West Culdesac",
+   "lonlat": [
+    -80.552122,
+    43.471999
+   ],
+   "terrain_z_m": 11.1,
+   "canvas_px": [
+    -2462.3,
+    565.5
+   ],
+   "sample": {
+    "tile": [
+     -3,
+     0
+    ],
+    "z": 11.099999999999994,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  },
+  {
+   "junction": "William Street East & Willow Street",
+   "lonlat": [
+    -80.517528,
+    43.464499
+   ],
+   "terrain_z_m": -6.45,
+   "canvas_px": [
+    7489.1,
+    186.1
+   ],
+   "sample": {
+    "tile": [
+     7,
+     0
+    ],
+    "z": -6.409999999999997,
+    "valid": true,
+    "cls": "rail"
+   },
+   "dz_m": 0.04,
+   "pass": false
   }
  ],
  "poi_vs_footprint": [
