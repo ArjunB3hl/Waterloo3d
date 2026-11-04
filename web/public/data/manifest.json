@@ -1,0 +1,449 @@
+{
+ "name": "Tiny Waterloo",
+ "generated_utc": "2026-11-04T12:55:47Z",
+ "frame_px": 1024,
+ "lods_px": [
+  256,
+  512,
+  1024
+ ],
+ "height_px": 512,
+ "camera": {
+  "right_enu": [
+   0.939692621,
+   -0.342020143,
+   0.0
+  ],
+  "up_enu": [
+   0.241844763,
+   0.664463024,
+   0.707106781
+  ],
+  "back_enu": [
+   -0.241844763,
+   -0.664463024,
+   0.707106781
+  ],
+  "sun_enu": [
+   -0.454519478,
+   -0.454519478,
+   0.766044443
+  ],
+  "meters_per_px": 0.29296875,
+  "frame_px": 1024,
+  "canvas_from_world": "cx = dot(p,right)/meters_per_px ; cy = -dot(p,up)/meters_per_px ; depth = dot(p,back)",
+  "world_from_canvas": "X=cx*mpp, Y=-cy*mpp, t=(z - Y*up.z)/back.z, p = X*right + Y*up + t*back"
+ },
+ "heights": {
+  "comment": "Lossless PNG. encoded = 256*R + G ; height_m = encoded / units_per_m + floor_m ; valid = B > 127. height is z (metres relative to datum_m).",
+  "floor_m": -100.0,
+  "units_per_m": 100
+ },
+ "origin": {
+  "comment": "Local ENU origin (canvas 0,0 at z=0): centre of the UW main-campus landmark cluster (SLC, MC, EIT, E5/E7, Dana Porter) so the first 2x2 tile patch frames it.",
+  "lat": 43.471854,
+  "lon": -80.542707
+ },
+ "datum_m": 330.0,
+ "proj4": "+proj=tmerc +lat_0=43.471854 +lon_0=-80.542707 +k=1 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs",
+ "classes": {
+  "void": 0,
+  "lawn": 1,
+  "park": 2,
+  "pitch": 3,
+  "farmland": 4,
+  "forest_floor": 5,
+  "wetland": 6,
+  "sand": 7,
+  "paved": 8,
+  "parking": 9,
+  "road": 10,
+  "major_road": 11,
+  "path": 12,
+  "rail": 13,
+  "water": 14,
+  "roof": 15,
+  "wall": 16,
+  "tree": 17,
+  "residential": 18,
+  "golf": 19,
+  "track": 20,
+  "construction": 21,
+  "pool": 22
+ },
+ "overview": {
+  "url": "overview.webp",
+  "i0": -1,
+  "j0": -2,
+  "cols": 8,
+  "rows": 3,
+  "px_per_tile": 64
+ },
+ "regions": {
+  "campus2x2": {
+   "title": "University of Waterloo main campus (first 2x2 patch)",
+   "stage": 1,
+   "tiles": [
+    [
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1
+    ],
+    [
+     -1,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ]
+  },
+  "park_uptown": {
+   "title": "Campus to Waterloo Park, Silver Lake, Uptown Waterloo and Laurier (stage 2)",
+   "stage": 2,
+   "tiles": [
+    [
+     -1,
+     -2
+    ],
+    [
+     -1,
+     -1
+    ],
+    [
+     -1,
+     0
+    ],
+    [
+     0,
+     -2
+    ],
+    [
+     0,
+     -1
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     1,
+     -2
+    ],
+    [
+     1,
+     -1
+    ],
+    [
+     1,
+     0
+    ],
+    [
+     2,
+     -2
+    ],
+    [
+     2,
+     -1
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     3,
+     -2
+    ],
+    [
+     3,
+     -1
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     4,
+     -2
+    ],
+    [
+     4,
+     -1
+    ],
+    [
+     4,
+     0
+    ],
+    [
+     5,
+     -2
+    ],
+    [
+     5,
+     -1
+    ],
+    [
+     5,
+     0
+    ],
+    [
+     6,
+     -2
+    ],
+    [
+     6,
+     -1
+    ],
+    [
+     6,
+     0
+    ]
+   ],
+   "anchors": [
+    "Student Life Centre",
+    "Engineering 7",
+    "Laurier Library",
+    "Laurier Arts",
+    "Waterloo Park (Silver Lake)",
+    "Perimeter Institute",
+    "Waterloo Public Square",
+    "Uptown King St N",
+    "Waterloo City Hall",
+    "Waterloo Public Library Main"
+   ]
+  }
+ },
+ "tiles": {
+  "-1_-1": {
+   "i": -1,
+   "j": -1,
+   "kind": "reference",
+   "v": "10d20d7e3f41",
+   "hv": "86a6c0cf3f72",
+   "art_version": null,
+   "batch": null
+  },
+  "-1_-2": {
+   "i": -1,
+   "j": -2,
+   "kind": "reference",
+   "v": "a9768027e511",
+   "hv": "19089bb5b2c7",
+   "art_version": null,
+   "batch": null
+  },
+  "-1_0": {
+   "i": -1,
+   "j": 0,
+   "kind": "reference",
+   "v": "b30e7eb32005",
+   "hv": "961c4926dd72",
+   "art_version": null,
+   "batch": null
+  },
+  "0_-1": {
+   "i": 0,
+   "j": -1,
+   "kind": "reference",
+   "v": "53b4fdc0dbfc",
+   "hv": "c31cc275ea44",
+   "art_version": null,
+   "batch": null
+  },
+  "0_-2": {
+   "i": 0,
+   "j": -2,
+   "kind": "reference",
+   "v": "3c2a09ecea8b",
+   "hv": "36d6d598535b",
+   "art_version": null,
+   "batch": null
+  },
+  "0_0": {
+   "i": 0,
+   "j": 0,
+   "kind": "reference",
+   "v": "1ba989b51784",
+   "hv": "577c6a2ada79",
+   "art_version": null,
+   "batch": null
+  },
+  "1_-1": {
+   "i": 1,
+   "j": -1,
+   "kind": "reference",
+   "v": "65ac74900b26",
+   "hv": "dd1534334b2c",
+   "art_version": null,
+   "batch": null
+  },
+  "1_-2": {
+   "i": 1,
+   "j": -2,
+   "kind": "reference",
+   "v": "cc3b970a0dc0",
+   "hv": "41e19dc9d106",
+   "art_version": null,
+   "batch": null
+  },
+  "1_0": {
+   "i": 1,
+   "j": 0,
+   "kind": "reference",
+   "v": "d28e602a4e4f",
+   "hv": "0547f4f39345",
+   "art_version": null,
+   "batch": null
+  },
+  "2_-1": {
+   "i": 2,
+   "j": -1,
+   "kind": "reference",
+   "v": "12bf6017dfbf",
+   "hv": "1b9dc379b0b4",
+   "art_version": null,
+   "batch": null
+  },
+  "2_-2": {
+   "i": 2,
+   "j": -2,
+   "kind": "reference",
+   "v": "71242a7eb321",
+   "hv": "832994e4927e",
+   "art_version": null,
+   "batch": null
+  },
+  "2_0": {
+   "i": 2,
+   "j": 0,
+   "kind": "reference",
+   "v": "924b7cf72d7f",
+   "hv": "53ac91589adc",
+   "art_version": null,
+   "batch": null
+  },
+  "3_-1": {
+   "i": 3,
+   "j": -1,
+   "kind": "reference",
+   "v": "e31c6f98aa88",
+   "hv": "5c732a140a03",
+   "art_version": null,
+   "batch": null
+  },
+  "3_-2": {
+   "i": 3,
+   "j": -2,
+   "kind": "reference",
+   "v": "cb262fad67f0",
+   "hv": "72dd18836ab1",
+   "art_version": null,
+   "batch": null
+  },
+  "3_0": {
+   "i": 3,
+   "j": 0,
+   "kind": "reference",
+   "v": "58d2462ede90",
+   "hv": "e87421425714",
+   "art_version": null,
+   "batch": null
+  },
+  "4_-1": {
+   "i": 4,
+   "j": -1,
+   "kind": "reference",
+   "v": "66ab25f0b6a3",
+   "hv": "470ccad9d406",
+   "art_version": null,
+   "batch": null
+  },
+  "4_-2": {
+   "i": 4,
+   "j": -2,
+   "kind": "reference",
+   "v": "2f8e40e2c77a",
+   "hv": "cbd7e1358736",
+   "art_version": null,
+   "batch": null
+  },
+  "4_0": {
+   "i": 4,
+   "j": 0,
+   "kind": "reference",
+   "v": "9872b8f397f6",
+   "hv": "da25f4b3164c",
+   "art_version": null,
+   "batch": null
+  },
+  "5_-1": {
+   "i": 5,
+   "j": -1,
+   "kind": "reference",
+   "v": "23bf7db2cd6f",
+   "hv": "3f5b76030d40",
+   "art_version": null,
+   "batch": null
+  },
+  "5_-2": {
+   "i": 5,
+   "j": -2,
+   "kind": "reference",
+   "v": "b6ae65078188",
+   "hv": "15909b7d6e44",
+   "art_version": null,
+   "batch": null
+  },
+  "5_0": {
+   "i": 5,
+   "j": 0,
+   "kind": "reference",
+   "v": "0c540924d83b",
+   "hv": "cb2e86fed34d",
+   "art_version": null,
+   "batch": null
+  },
+  "6_-1": {
+   "i": 6,
+   "j": -1,
+   "kind": "reference",
+   "v": "4774f89d669a",
+   "hv": "266cd07efa6b",
+   "art_version": null,
+   "batch": null
+  },
+  "6_-2": {
+   "i": 6,
+   "j": -2,
+   "kind": "reference",
+   "v": "09637811959b",
+   "hv": "37ccff3d91e5",
+   "art_version": null,
+   "batch": null
+  },
+  "6_0": {
+   "i": 6,
+   "j": 0,
+   "kind": "reference",
+   "v": "105a98ba597d",
+   "hv": "2a6d1e380a6b",
+   "art_version": null,
+   "batch": null
+  }
+ },
+ "counts": {
+  "tiles": 24,
+  "art": 0,
+  "reference": 24
+ },
+ "attribution": [
+  "\u00a9 OpenStreetMap contributors (ODbL) via Overture Maps Foundation",
+  "Overture Maps Foundation",
+  "Microsoft ML Building heights (ODbL) via Overture",
+  "Terrain: AWS Terrain Tiles / Mapzen (incl. CDEM \u00a9 NRCan, OGL-Canada)"
+ ]
+}

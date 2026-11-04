@@ -1,0 +1,325 @@
+{
+ "codec": {
+  "max_abs_error_m": 0.005000000000023874,
+  "step_m": 0.01
+ },
+ "landmarks": [
+  {
+   "name": "Mathematics & Computer",
+   "osm": "w43250630@39",
+   "height_src": "osm_levels",
+   "source_lonlat": [
+    -80.54383,
+    43.472363
+   ],
+   "expected_roof_z_m": 28.62,
+   "canvas_px": [
+    -357.6,
+    -122.2
+   ],
+   "sample": {
+    "tile": [
+     -1,
+     -1
+    ],
+    "z": 28.620000000000005,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": 0.003,
+   "pass": true
+  },
+  {
+   "name": "Student Life Centre",
+   "osm": "w43250627@37",
+   "height_src": "osm_levels",
+   "source_lonlat": [
+    -80.545324,
+    43.472255
+   ],
+   "expected_roof_z_m": 16.64,
+   "canvas_px": [
+    -731.3,
+    33.6
+   ],
+   "sample": {
+    "tile": [
+     -1,
+     0
+    ],
+    "z": 16.64,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": 0.002,
+   "pass": true
+  },
+  {
+   "name": "Engineering 6",
+   "osm": "w158807251@13",
+   "height_src": "osm_levels",
+   "source_lonlat": [
+    -80.538685,
+    43.473003
+   ],
+   "expected_roof_z_m": 29.53,
+   "canvas_px": [
+    894.7,
+    -629.4
+   ],
+   "sample": {
+    "tile": [
+     0,
+     -1
+    ],
+    "z": 29.53,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": 0.004,
+   "pass": true
+  },
+  {
+   "name": "Engineering 5",
+   "osm": "w51125806@22",
+   "height_src": "osm_levels",
+   "source_lonlat": [
+    -80.540083,
+    43.472922
+   ],
+   "expected_roof_z_m": 28.57,
+   "canvas_px": [
+    542.3,
+    -513.4
+   ],
+   "sample": {
+    "tile": [
+     0,
+     -1
+    ],
+    "z": 28.569999999999993,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": -0.001,
+   "pass": true
+  },
+  {
+   "name": "Pearl Sullivan Engineering Building",
+   "osm": "w382735686@10",
+   "height_src": "osm_levels",
+   "source_lonlat": [
+    -80.539504,
+    43.472834
+   ],
+   "expected_roof_z_m": 17.78,
+   "canvas_px": [
+    704.0,
+    -503.9
+   ],
+   "sample": {
+    "tile": [
+     0,
+     -1
+    ],
+    "z": 17.78,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": 0.001,
+   "pass": true
+  },
+  {
+   "name": "Centre for Environmental and Information Technology",
+   "osm": "w188703119@11",
+   "height_src": "osm_levels",
+   "source_lonlat": [
+    -80.542301,
+    43.471638
+   ],
+   "expected_roof_z_m": 22.95,
+   "canvas_px": [
+    133.4,
+    -27.9
+   ],
+   "sample": {
+    "tile": [
+     0,
+     -1
+    ],
+    "z": 22.950000000000003,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": 0.001,
+   "pass": true
+  },
+  {
+   "name": "Dana Porter Library",
+   "osm": "w43250626@28",
+   "height_src": "osm_levels",
+   "source_lonlat": [
+    -80.542262,
+    43.469725
+   ],
+   "expected_roof_z_m": 39.92,
+   "canvas_px": [
+    391.5,
+    410.3
+   ],
+   "sample": {
+    "tile": [
+     0,
+     0
+    ],
+    "z": 39.91999999999999,
+    "valid": true,
+    "cls": "roof"
+   },
+   "dz_m": -0.003,
+   "pass": true
+  }
+ ],
+ "junctions": [
+  {
+   "junction": "Ambulance & Taxi Access & University Campus Lane",
+   "lonlat": [
+    -80.546478,
+    43.470047
+   ],
+   "terrain_z_m": 1.02,
+   "canvas_px": [
+    -744.3,
+    704.6
+   ],
+   "sample": {
+    "tile": [
+     -1,
+     0
+    ],
+    "z": 1.0100000000000051,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.01,
+   "pass": true
+  },
+  {
+   "junction": "Path 1 West & Ring Road",
+   "lonlat": [
+    -80.543766,
+    43.468312
+   ],
+   "terrain_z_m": 0.96,
+   "canvas_px": [
+    184.6,
+    960.9
+   ],
+   "sample": {
+    "tile": [
+     0,
+     0
+    ],
+    "z": 0.9699999999999989,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": 0.01,
+   "pass": true
+  },
+  {
+   "junction": "Ring Road & Transit Plaza Road & William Tutte Way",
+   "lonlat": [
+    -80.541919,
+    43.473562
+   ],
+   "terrain_z_m": 5.0,
+   "canvas_px": [
+    -17.2,
+    -495.2
+   ],
+   "sample": {
+    "tile": [
+     -1,
+     -1
+    ],
+    "z": 5.0,
+    "valid": true,
+    "cls": "road"
+   },
+   "dz_m": -0.0,
+   "pass": true
+  }
+ ],
+ "poi_vs_footprint": [
+  {
+   "name": "Student Life Centre",
+   "poi_sources": [
+    "Overture",
+    "meta"
+   ],
+   "poi_lonlat": [
+    -80.53926,
+    43.46896
+   ],
+   "distance_to_footprint_m": 532.7,
+   "candidates": 1
+  },
+  {
+   "name": "Engineering 5",
+   "poi_sources": [
+    "Overture",
+    "meta"
+   ],
+   "poi_lonlat": [
+    -80.540133,
+    43.472754
+   ],
+   "distance_to_footprint_m": 0.0,
+   "candidates": 1
+  },
+  {
+   "name": "Laurier Library",
+   "poi_sources": [
+    "AllThePlaces",
+    "Overture"
+   ],
+   "poi_lonlat": [
+    -80.54095,
+    43.472572
+   ],
+   "distance_to_footprint_m": 866.6,
+   "candidates": 1
+  }
+ ],
+ "inverse": [
+  {
+   "name": "Mathematics & Computer",
+   "horizontal_error_m": 0.003
+  },
+  {
+   "name": "Student Life Centre",
+   "horizontal_error_m": 0.002
+  },
+  {
+   "name": "Engineering 6",
+   "horizontal_error_m": 0.004
+  },
+  {
+   "name": "Engineering 5",
+   "horizontal_error_m": 0.001
+  },
+  {
+   "name": "Pearl Sullivan Engineering Building",
+   "horizontal_error_m": 0.001
+  },
+  {
+   "name": "Centre for Environmental and Information Technology",
+   "horizontal_error_m": 0.001
+  },
+  {
+   "name": "Dana Porter Library",
+   "horizontal_error_m": 0.003
+  }
+ ]
+}

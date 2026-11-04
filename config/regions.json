@@ -1,0 +1,138 @@
+{
+ "campus2x2": {
+  "title": "University of Waterloo main campus (first 2x2 patch)",
+  "stage": 1,
+  "tiles": [
+   [
+    -1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    -1,
+    0
+   ],
+   [
+    0,
+    0
+   ]
+  ]
+ },
+ "park_uptown": {
+  "title": "Campus to Waterloo Park, Silver Lake, Uptown Waterloo and Laurier (stage 2)",
+  "stage": 2,
+  "tiles": [
+   [
+    -1,
+    -2
+   ],
+   [
+    -1,
+    -1
+   ],
+   [
+    -1,
+    0
+   ],
+   [
+    0,
+    -2
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    -2
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    0
+   ],
+   [
+    2,
+    -2
+   ],
+   [
+    2,
+    -1
+   ],
+   [
+    2,
+    0
+   ],
+   [
+    3,
+    -2
+   ],
+   [
+    3,
+    -1
+   ],
+   [
+    3,
+    0
+   ],
+   [
+    4,
+    -2
+   ],
+   [
+    4,
+    -1
+   ],
+   [
+    4,
+    0
+   ],
+   [
+    5,
+    -2
+   ],
+   [
+    5,
+    -1
+   ],
+   [
+    5,
+    0
+   ],
+   [
+    6,
+    -2
+   ],
+   [
+    6,
+    -1
+   ],
+   [
+    6,
+    0
+   ]
+  ],
+  "anchors": [
+   "Student Life Centre",
+   "Engineering 7",
+   "Laurier Library",
+   "Laurier Arts",
+   "Waterloo Park (Silver Lake)",
+   "Perimeter Institute",
+   "Waterloo Public Square",
+   "Uptown King St N",
+   "Waterloo City Hall",
+   "Waterloo Public Library Main"
+  ]
+ }
+}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Tiny Waterloo</title>
+  <meta name="description" content="An interactive illustrated isometric map of Waterloo, Ontario." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23e8892f'/%3E%3Cpath d='M3 12V6l5-3 5 3v6z' fill='%23fff3e0'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <div id="app" aria-label="Tiny Waterloo map application">
+    <div id="stage" role="application" aria-label="Isometric map of Waterloo, Ontario. Drag to move, scroll or pinch to zoom, arrow keys to pan, plus and minus to zoom." tabindex="0">
+      <canvas id="map-base"></canvas>
+      <!-- fx/ and depth/ canvases are inserted here in z-order: fx, actor -->
+      <div id="labels" aria-hidden="false"></div>
+    </div>
+    <div id="ui"></div>
+    <footer id="attribution" aria-label="Map data attribution"></footer>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

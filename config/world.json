@@ -1,0 +1,47 @@
+{
+  "name": "Tiny Waterloo",
+  "comment": "Single source of truth for the map frame. Read by pipeline (Python), reference renderer (three.js) and the web viewer.",
+  "overture_release": "2026-10-21.0",
+  "fetch_bbox_wgs84": [
+    -80.64,
+    43.42,
+    -80.455,
+    43.545
+  ],
+  "origin": {
+    "comment": "Local ENU origin (canvas 0,0 at z=0): centre of the UW main-campus landmark cluster (SLC, MC, EIT, E5/E7, Dana Porter) so the first 2x2 tile patch frames it.",
+    "lat": 43.471854,
+    "lon": -80.542707
+  },
+  "projection": {
+    "comment": "Local tangent plane: transverse Mercator (UTM-like) centred on origin, metres. x=east, y=north, z=up (z relative to datum_m above sea level).",
+    "proj4": "+proj=tmerc +lat_0=43.471854 +lon_0=-80.542707 +k=1 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs",
+    "datum_m": 330.0
+  },
+  "camera": {
+    "comment": "Fixed orthographic oblique camera. heading_deg = compass bearing the camera looks toward (horizontal), pitch_deg = downward tilt. Axes are derived and stored explicitly by pipeline/world.py; never re-derive from angles elsewhere.",
+    "heading_deg": 20.0,
+    "pitch_deg": 45.0,
+    "meters_per_px": 0.29296875
+  },
+  "tiles": {
+    "frame_px": 1024,
+    "lods_px": [
+      256,
+      512,
+      1024
+    ],
+    "height_px": 512,
+    "overview_px_per_tile": 64
+  },
+  "sun": {
+    "comment": "Direction TOWARD the sun. Late-summer mid-afternoon in Waterloo, from the south-west so shadows fall north-east (up-right on screen).",
+    "azimuth_deg": 225.0,
+    "elevation_deg": 50.0
+  },
+  "heights": {
+    "comment": "Lossless PNG. encoded = 256*R + G ; height_m = encoded / units_per_m + floor_m ; valid = B > 127. height is z (metres relative to datum_m).",
+    "floor_m": -100.0,
+    "units_per_m": 100
+  }
+}

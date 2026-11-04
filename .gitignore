@@ -1,0 +1,9 @@
+node_modules/
+data_cache/
+.playwright-mcp/
+web/dist/
+__pycache__/
+*.pyc
+.env
+.env.*
+.DS_Store

@@ -1,0 +1,488 @@
+[
+ {
+  "id": "dana-porter",
+  "name": "Dana Porter Library",
+  "short": "DP",
+  "category": "Library",
+  "lonlat": [
+   -80.542271,
+   43.469733
+  ],
+  "canvas": [
+   388.3,
+   409.0
+  ],
+  "zoom": 1.0,
+  "description": "The University of Waterloo's main library for the arts, humanities and social sciences. Its concrete tower rises above the low campus core and is one of the easiest buildings to spot from across the main campus.",
+  "facts": [],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "University of Waterloo Library",
+    "url": "https://uwaterloo.ca/library/"
+   }
+  ],
+  "geometry_source": "OSM w43250626@28 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "0_0"
+ },
+ {
+  "id": "slc",
+  "name": "Student Life Centre",
+  "short": "SLC",
+  "category": "Student hub",
+  "lonlat": [
+   -80.545213,
+   43.471972
+  ],
+  "canvas": [
+   -665.7,
+   97.4
+  ],
+  "zoom": 1.0,
+  "description": "The Student Life Centre is the central student building on main campus, with food outlets, student services, lounges and meeting rooms, and a busy route between residences and classes.",
+  "facts": [],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "University of Waterloo campus map",
+    "url": "https://uwaterloo.ca/map/"
+   }
+  ],
+  "geometry_source": "OSM w43250627@37 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "-1_0"
+ },
+ {
+  "id": "e5",
+  "name": "Engineering 5",
+  "short": "E5",
+  "category": "Engineering",
+  "lonlat": [
+   -80.540083,
+   43.472922
+  ],
+  "canvas": [
+   542.4,
+   -513.4
+  ],
+  "zoom": 1.0,
+  "description": "Engineering 5 sits on the north-east edge of the campus core beside Ring Road. It houses engineering teaching and research space and student design-team workshops.",
+  "facts": [],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "Waterloo Engineering",
+    "url": "https://uwaterloo.ca/engineering/"
+   }
+  ],
+  "geometry_source": "OSM w51125806@22 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "0_-1"
+ },
+ {
+  "id": "e7",
+  "name": "Pearl Sullivan Engineering Building",
+  "short": "E7",
+  "category": "Engineering",
+  "lonlat": [
+   -80.539504,
+   43.472834
+  ],
+  "canvas": [
+   704.1,
+   -503.8
+  ],
+  "zoom": 1.0,
+  "description": "Engineering 7 (named the Pearl Sullivan Engineering Building in OpenStreetMap) is one of the newest engineering buildings on campus, next to E5 and E6 at the north-east corner of Ring Road.",
+  "facts": [
+   "Also mapped as: Engineering 7"
+  ],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "Waterloo Engineering",
+    "url": "https://uwaterloo.ca/engineering/"
+   }
+  ],
+  "geometry_source": "OSM w382735686@10 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "0_-1"
+ },
+ {
+  "id": "eit",
+  "name": "Centre for Environmental and Information Technology",
+  "short": "EIT",
+  "category": "Science & Engineering",
+  "lonlat": [
+   -80.541988,
+   43.471492
+  ],
+  "canvas": [
+   233.5,
+   -12.1
+  ],
+  "zoom": 1.0,
+  "description": "The Centre for Environmental and Information Technology (EIT) connects the engineering and science sides of the campus core, near Mathematics & Computer and the Davis Centre.",
+  "facts": [],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "University of Waterloo campus map",
+    "url": "https://uwaterloo.ca/map/"
+   }
+  ],
+  "geometry_source": "OSM w188703119@11 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "0_-1"
+ },
+ {
+  "id": "mc",
+  "name": "Mathematics & Computer",
+  "short": "MC",
+  "category": "Mathematics",
+  "lonlat": [
+   -80.543927,
+   43.472107
+  ],
+  "canvas": [
+   -349.5,
+   -51.3
+  ],
+  "zoom": 1.0,
+  "description": "Mathematics & Computer (MC) is the home of the Faculty of Mathematics, a long concrete building on the western side of the campus core.",
+  "facts": [],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "Faculty of Mathematics",
+    "url": "https://uwaterloo.ca/math/"
+   }
+  ],
+  "geometry_source": "OSM w43250630@39 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "-1_-1"
+ },
+ {
+  "id": "dc",
+  "name": "William G. Davis Computer Research Centre",
+  "short": "DC",
+  "category": "Computer Science",
+  "lonlat": [
+   -80.542041,
+   43.472502
+  ],
+  "canvas": [
+   88.9,
+   -254.4
+  ],
+  "zoom": 1.0,
+  "description": "The Davis Centre houses the Cheriton School of Computer Science and a large study library; its stepped roofline is visible north of Ring Road.",
+  "facts": [],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "Cheriton School of Computer Science",
+    "url": "https://cs.uwaterloo.ca/"
+   }
+  ],
+  "geometry_source": "OSM r8765264@4 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "0_-1"
+ },
+ {
+  "id": "qnc",
+  "name": "Mike & Ophelia Lazaridis Quantum Nano Centre",
+  "short": "QNC",
+  "category": "Research",
+  "lonlat": [
+   -80.54421,
+   43.471249
+  ],
+  "canvas": [
+   -311.7,
+   187.6
+  ],
+  "zoom": 1.0,
+  "description": "The Quantum-Nano Centre brings together quantum information and nanotechnology research next to the main campus green.",
+  "facts": [
+   "Also mapped as: Quantum Nano Centre, Centre Quantum-Nano, \u91cf\u5b50\u7eb3\u7c73\u4e2d\u5fc3"
+  ],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "Institute for Quantum Computing",
+    "url": "https://uwaterloo.ca/institute-for-quantum-computing/"
+   }
+  ],
+  "geometry_source": "OSM w182091547@18 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "-1_0"
+ },
+ {
+  "id": "waterloo-park",
+  "name": "Waterloo Park",
+  "short": "Park",
+  "category": "Park",
+  "lonlat": [
+   -80.532476,
+   43.466897
+  ],
+  "canvas": [
+   3298.4,
+   575.2
+  ],
+  "zoom": 1.0,
+  "description": "Waterloo Park is the city's large central park between the University of Waterloo and Uptown, with Silver Lake, Laurel Creek, trails, sports fields and the LRT line running along its edge.",
+  "facts": [],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "City of Waterloo - Waterloo Park",
+    "url": "https://www.waterloo.ca/"
+   }
+  ],
+  "geometry_source": "OSM land_use polygon via Overture 2026-10-21.0",
+  "height_source": "terrain (AWS Terrain Tiles / CDEM)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "3_0"
+ },
+ {
+  "id": "silver-lake",
+  "name": "Silver Lake",
+  "short": "Lake",
+  "category": "Lake",
+  "lonlat": [
+   -80.528172,
+   43.46608
+  ],
+  "canvas": [
+   4521.3,
+   493.4
+  ],
+  "zoom": 1.0,
+  "description": "Silver Lake is the pond at the heart of Waterloo Park, fed by Laurel Creek and lined with paths between the park and Uptown.",
+  "facts": [],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "City of Waterloo",
+    "url": "https://www.waterloo.ca/"
+   }
+  ],
+  "geometry_source": "OSM water polygon via Overture 2026-10-21.0",
+  "height_source": "terrain (AWS Terrain Tiles / CDEM)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "4_0"
+ },
+ {
+  "id": "perimeter",
+  "name": "Perimeter Institute for Theoretical Physics",
+  "short": "PI",
+  "category": "Research institute",
+  "lonlat": [
+   -80.527653,
+   43.465368
+  ],
+  "canvas": [
+   4748.6,
+   611.8
+  ],
+  "zoom": 1.0,
+  "description": "Perimeter Institute for Theoretical Physics is an independent research centre beside Silver Lake. Its angular building faces the park on one side and Uptown on the other.",
+  "facts": [
+   "Also mapped as: Perimeter Institute"
+  ],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "Perimeter Institute",
+    "url": "https://perimeterinstitute.ca/"
+   }
+  ],
+  "geometry_source": "OSM w240741299@8 via Overture 2026-10-21.0",
+  "height_source": "class default height (approximation)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "4_0"
+ },
+ {
+  "id": "public-square",
+  "name": "Waterloo Public Square",
+  "short": "Square",
+  "category": "Public square",
+  "lonlat": [
+   -80.522367,
+   43.463772
+  ],
+  "canvas": [
+   6327.7,
+   693.7
+  ],
+  "zoom": 1.0,
+  "description": "Waterloo Public Square is Uptown's central plaza beside King Street, used for markets, events and a winter rink.",
+  "facts": [],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "City of Waterloo",
+    "url": "https://www.waterloo.ca/"
+   }
+  ],
+  "geometry_source": "OSM land_use polygon via Overture 2026-10-21.0",
+  "height_source": "terrain (AWS Terrain Tiles / CDEM)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "6_0"
+ },
+ {
+  "id": "wpl-main",
+  "name": "Waterloo Public Library - Main",
+  "short": "WPL",
+  "category": "Library",
+  "lonlat": [
+   -80.524678,
+   43.465906
+  ],
+  "canvas": [
+   5450.9,
+   276.8
+  ],
+  "zoom": 1.0,
+  "description": "The main branch of the Waterloo Public Library, on Albert Street at the edge of Uptown.",
+  "facts": [],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "Waterloo Public Library",
+    "url": "https://www.wpl.ca/"
+   }
+  ],
+  "geometry_source": "OSM w43251385@19 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "5_0"
+ },
+ {
+  "id": "laurier",
+  "name": "Laurier Library",
+  "short": "WLU",
+  "category": "University",
+  "lonlat": [
+   -80.529953,
+   43.472857
+  ],
+  "canvas": [
+   3179.9,
+   -1194.4
+  ],
+  "zoom": 1.0,
+  "description": "The Wilfrid Laurier University Waterloo campus sits east of the University of Waterloo along University Avenue. This card marks the Laurier Library on the campus core.",
+  "facts": [],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "Wilfrid Laurier University",
+    "url": "https://www.wlu.ca/"
+   }
+  ],
+  "geometry_source": "OSM w43250600@10 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "covered",
+  "tile": "3_-2"
+ },
+ {
+  "id": "laurel-creek",
+  "name": "Laurel Creek Reservoir",
+  "short": "Reservoir",
+  "category": "Conservation area",
+  "lonlat": [
+   -80.576905,
+   43.478976
+  ],
+  "canvas": [
+   -9798.8,
+   459.1
+  ],
+  "zoom": 1.0,
+  "description": "Laurel Creek Reservoir and Conservation Area in north-west Waterloo is a large dam-made lake with trails and campgrounds, upstream of Waterloo Park.",
+  "facts": [],
+  "sources": [
+   {
+    "label": "Geometry: OpenStreetMap contributors (ODbL) via Overture Maps",
+    "url": "https://www.openstreetmap.org/copyright"
+   },
+   {
+    "label": "Grand River Conservation Authority",
+    "url": "https://www.grandriver.ca/"
+   }
+  ],
+  "geometry_source": "OSM water polygon via Overture 2026-10-21.0",
+  "height_source": "terrain (AWS Terrain Tiles / CDEM)",
+  "description_source": "editorial summary (not fetched/verified online from build environment)",
+  "status": "pending",
+  "tile": "-10_0"
+ }
+]
