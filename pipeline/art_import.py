@@ -48,6 +48,8 @@ T = {
     'de_group_fail': 30.0,                     # any single class group (e.g. all lawns) this far off fails
     'seam_ratio': 1.8,           # grad_ratio / step_ratio across a join with an accepted neighbour
     'keep_px': 3.0, 'keep_mad_warn': 30.0, 'seam_keep_mad': 12.0,
+    'seam_edge_tol': 0.15,       # a band-edge block fails only if it exceeds seam_ratio AND the accepted art's own ratio at the
+                                 # same place by this much (a kerb or shoreline lying on the band edge is not a repair defect)
     'seam_block': 128,           # seam repair QA: join and band-edge ratios per 128 px block along the line; the worst block
                                  # must stay <= seam_ratio (a 200-row lake or 30-row rail defect is not averaged away)
     'seam_feather': True,        # seam accept: triangular blend weight (1 at the join -> 0 at the band edges) instead of the
@@ -453,7 +455,8 @@ def qa_seam(item, img, info):
     if g is not None and g < T['geom_rel']:
         res.fail('geometry', f'band geometry agreement {g:.2f} of the reference',
                  'Inside the band, roofs, roads and paths must stay on the reference outlines (see the _ref image).')
-    after = R.seam_profiles(geo, comp); before = item.get('before') or R.seam_profiles(geo, base)
+    # before = the accepted art being repaired, measured now (the packet's stored profile may predate a measurement fix)
+    after = R.seam_profiles(geo, comp); before = R.seam_profiles(geo, base)
     jb_after, jb_before = join_blocks(geo, comp), join_blocks(geo, base)
     res.metrics['seams'] = [{'tiles': a['tiles'], 'before': [b['grad_ratio'], b['step_ratio']], 'after': [a['grad_ratio'], a['step_ratio']],
                              'worst_block_before': [kb['grad_ratio'], kb['step_ratio']],
@@ -466,25 +469,26 @@ def qa_seam(item, img, info):
                              f'(worst {T["seam_block"]} px block {ka["block"]}: gradient x{ka["grad_ratio"]}, step x{ka["step_ratio"]})',
                      f'The join between {a["tiles"][0]} and {a["tiles"][1]} is still visible: blend colour and brightness smoothly '
                      'and continue every feature straight across the line.')
-    edges = band_edge_profiles(geo, comp, o['band'], mask)
+    edges = band_edge_profiles(geo, comp, o['band'], mask, ref=base)
     res.metrics['band_edges'] = edges
-    bad = [e for e in edges if max(e['grad_ratio'], e['step_ratio']) > T['seam_ratio']]
+    bad = [(e, b) for e in edges for b in e['bad_blocks']]
     if bad:
-        res.fail('band-edge', 'band edges visible: ' + '; '.join(f'{e["axis"]} edge at {e["at"]} px, block {e["block"]}: gradient '
-                                                                 f'x{e["grad_ratio"]}, step x{e["step_ratio"]}' for e in bad),
+        res.fail('band-edge', 'band edges visible: ' + '; '.join(f'{e["axis"]} edge at {e["at"]} px, block {b[:2]}: gradient x{b[2]}, '
+                                                                 f'step x{b[3]} (accepted art there x{b[4]}, x{b[5]})' for e, b in bad),
                  'The edges of the repainted band show: the band must fade into the untouched art with no visible boundary.')
     return res, comp, {'geo': geo, 'mask': mask, 'after': after, 'win': win}
 
 
 def feather_weight(geo, band, size=None):
-    """Seam blend weight: per join a triangle across the band, 1 on the join line falling linearly to 0 at the band edges
-    (pixel centres; the join lies between pixels at-1 and at). Where two bands cross (a 2x2 junction) the weight follows
-    the nearest join line, i.e. the minimum distance over both axes (= the maximum of the per-join triangles)."""
+    """Seam blend weight: per join a triangle across the band, ~1 on the join line falling linearly to exactly 0 on the
+    outermost band pixels (pixel centres; the join lies between pixels at-1 and at, the band covers at-band .. at+band-1,
+    whose centres are band-0.5 from the join). Where two bands cross (a 2x2 junction) the weight follows the nearest join
+    line, i.e. the minimum distance over both axes (= the maximum of the per-join triangles)."""
     n = size or R.SEAM_WINDOW
     c = np.arange(n, dtype=np.float32) + 0.5
     w = np.zeros((n, n), np.float32)
     for jn in geo['joins']:
-        tri = np.clip(1.0 - np.abs(c - jn['at']) / band, 0.0, 1.0)
+        tri = np.clip(1.0 - np.abs(c - jn['at']) / (band - 0.5), 0.0, 1.0)
         w = np.maximum(w, tri[None, :] if jn['axis'] == 'vertical' else tri[:, None])
     return w
 
@@ -531,9 +535,12 @@ def join_blocks(geo, rgb):
     return out
 
 
-def band_edge_profiles(geo, comp, band, mask=None):
+def band_edge_profiles(geo, comp, band, mask=None, ref=None):
     """Gradient AND step ratio across both edges of every band, per 128 px block (worst block reported). Along an edge
-    only the stretches whose outer side is kept art are measured (in a junction the other band crosses the edge)."""
+    only the stretches whose outer side is kept art are measured (in a junction the other band crosses the edge).
+    With `ref` (the accepted art of the window) a block is bad only if a ratio exceeds T['seam_ratio'] and the same
+    ratio of `ref` there by more than T['seam_edge_tol']: the band edge is an arbitrary line through untouched art, so
+    a feature that happens to lie on it is not a defect the repair introduced."""
     if mask is None: mask = R.seam_mask(geo, band)
     out = []
     for jn in geo['joins']:
@@ -548,8 +555,15 @@ def band_edge_profiles(geo, comp, band, mask=None):
                 while e < len(ok) and ok[e]: e += 1
                 if e - k >= 32:
                     m = block_metrics(comp, ax, at, k, e)
+                    r = block_metrics(ref, ax, at, k, e) if ref is not None else None
+                    bad = []
+                    for n, (s0, e0, g, st) in enumerate(m['blocks']):
+                        rg, rs = (r['blocks'][n][2], r['blocks'][n][3]) if r else (0.0, 0.0)
+                        if any(v > T['seam_ratio'] and v > rv + T['seam_edge_tol'] for v, rv in ((g, rg), (st, rs))):
+                            bad.append([s0, e0, g, st, rg, rs])
+                    wb = next((b for b in (r or m)['blocks'] if m['block'] and b[:2] == m['block']), None) if r else None
                     out.append({'axis': ax, 'at': at, 'span': [k, e], 'grad_ratio': m['grad_ratio'], 'step_ratio': m['step_ratio'],
-                                'block': m['block']})
+                                'block': m['block'], 'ref_at_block': wb[2:] if wb else None, 'bad_blocks': bad})
                 k = e
     # a vertical pair has the same two edges for its single join; a junction repeats them per half-join: keep unique
     seen, uniq = set(), []
@@ -660,7 +674,9 @@ def write_report(rec, key, entry, res, tile_or_win, ov, ref_img, out_dir):
     if m.get('keep'): L.append(f'| kept area drift | ({m["keep"]["dx"]:+.2f}, {m["keep"]["dy"]:+.2f}) px, mean abs diff {m["keep"]["mad"]} | <= {T["keep_px"]} px |')
     for e in m.get('band_edges', []):
         L.append(f'| band edge {e["axis"]} at {e["at"]} px (span {e["span"]}), worst block {e["block"]} | gradient x{e["grad_ratio"]}, '
-                 f'step x{e["step_ratio"]} | <= {T["seam_ratio"]} |')
+                 f'step x{e["step_ratio"]}' + (f' (accepted art there: x{e["ref_at_block"][0]}, x{e["ref_at_block"][1]})' if e.get('ref_at_block') else '')
+                 + f'{"; FAILS in " + str([b[:2] for b in e["bad_blocks"]]) if e.get("bad_blocks") else ""} | <= {T["seam_ratio"]} '
+                 f'(or <= accepted art + {T["seam_edge_tol"]}) |')
     if m.get('buildings'):
         L += ['', '## Buildings (visible roof >= 1500 px)', '', '| Building | Landmark | Roof px | Outline vs ref | Contrast vs ref | OK |', '|---|---|---:|---:|---:|---|']
         for b in m['buildings']:

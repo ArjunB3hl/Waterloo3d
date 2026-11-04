@@ -33,7 +33,11 @@ def main():
         def fail(self, *a, **k): pass
         def warn(self, *a, **k): pass
     pil = Image.open(path); fmt = pil.format
-    tile, _full = I.cut_tile(it, pil.convert('RGB'), {'format': fmt, 'alpha_min': None}, _Res())
+    if it['output']['mode'] == 'seam':   # a seam return is the whole window: scale it to the window size
+        w = it['output']['width']
+        tile = pil.convert('RGB').resize((w, w), Image.LANCZOS if pil.width < w else Image.BOX)
+    else:
+        tile, _full = I.cut_tile(it, pil.convert('RGB'), {'format': fmt, 'alpha_min': None}, _Res())
     if tile is None: raise SystemExit(f'{path}: could not cut the item with the batch crop rules')
     prev = np.asarray(tile)
     marked = Image.fromarray(prev).convert('RGB'); d = ImageDraw.Draw(marked)

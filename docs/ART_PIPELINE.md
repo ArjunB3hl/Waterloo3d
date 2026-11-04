@@ -54,8 +54,8 @@ both look right side by side in the viewer. New batches use the same commands, e
    (vertical or horizontal edge neighbours) or `seam --quad -1_-1` (the 2x2 junction whose top-left tile is given). The
    packet is a 1024 window centred on the join, a band mask (white = repaint, 96 px wide by default, `--band`), the
    reference underdrawing of the window and an annotated copy with the worst rows marked. On `--accept`, only the band
-   is composited back, feathered by about 8 px. Every affected tile gets a new version, and its previous version is
-   kept in the tile's `history` in `art/tiles.json`.
+   is composited back, with a triangular feather (see [Seam compositing](#seam-compositing)). Every affected tile gets
+   a new version, and its previous version is kept in the tile's `history` in `art/tiles.json`.
 
 `--force` accepts an item that failed QA. Use it only after reviewing the report, for example when a visible join will
 be fixed with a seam packet next. The forced acceptance is recorded (`forced: true`). `--only 0_-1` limits an import to
@@ -130,12 +130,42 @@ trusting them for wide coverage. They live in `T` at the top of `pipeline/art_im
 | style | per class-group mean colour difference (CIE76 dE) and coarse HSV histogram (Bhattacharyya) vs all accepted tiles; skipped until a style sample is accepted | mean dE > 20 or any group > 30 (warns at dE > 12 or histogram > 0.35) |
 | seams | against each accepted edge neighbour: colour difference of pixels 2 px apart across the join vs the same inside 4 px bands (`grad_ratio`), and the colour step between the 4 px bands vs the next band in (`step_ratio`) | either ratio > 1.8 |
 | kept margin (context) | phase correlation and mean absolute difference of the mask-black area, returned vs sent | moved > 3 px (warns when repainted, mean abs diff > 30) |
-| seam repair | kept area unchanged (mean abs diff <= 12, shift <= 2 px); band geometry; join and band-edge ratios after compositing | any of these |
+| seam repair | kept area unchanged (mean abs diff <= 12, shift <= 2 px); band geometry; after compositing: join `grad_ratio` and `step_ratio` over the whole join **and per 128 px block along it** (worst block reported); both band edges, gradient **and** step ratio per 128 px block | kept area / geometry as stated; join: whole-join or worst-block ratio > 1.8; band edge: a block > 1.8 **and** > the accepted art's own ratio at that block + 0.15 |
 
 A global failure (translation, registration or camera) is reported as the cause. The geometry and building failures
 it produces are folded into one "consequence" note, so the revision asks for one clear fix. Pixel-art quality, the
 right materials, the absence of text or borders, and the overall feel cannot be judged automatically. Each QA report
 ends with a human-review checklist for them.
+
+### Seam compositing
+
+The image tool regenerates the whole frame even when it is given a mask, so the band it returns never meets the kept
+pixels exactly. With a hard band, the tone step or feature offset only moves from the join to the two band edges (S001
+water, S002 lawn: step ratios 2.2-4.2 at the band edges; S004: the rail kink moved to the band edge). Accepting a seam
+is therefore a deterministic, documented blend of two images - local tile assembly, not a generative redraw:
+
+    final = w * returned + (1 - w) * accepted
+
+`w` is a triangle across the band: about 1 on the join line, falling linearly to exactly 0 on the outermost band pixels
+(`w = clip(1 - |x + 0.5 - join| / (band - 0.5), 0, 1)` per pixel column or row). At a 2x2 junction the weight follows
+the nearest join line, which is the minimum distance over both axes (the maximum of the two triangles). The band
+edges are the accepted pixels, unchanged, and the repaint takes over at the join. The kept area of the return is not
+used at all. The kept-area check still applies, because it tells you whether the window drifted or was redrawn.
+
+Feathering fixes tone and texture steps. It cannot fix geometry. If the returned band draws a line feature somewhere
+other than where the kept art has it at the band edges, both versions show at half strength mid-band, as a ghost or
+double line. The return must still bring every feature into the band edges where the kept art has it (S004: tracks).
+Check the rails, kerbs and roof edges in the QA image. The ratio checks measure tone and gradient, not line offsets.
+
+`T['seam_feather'] = True` in `pipeline/art_import.py` is the switch. With `False` you get the legacy composite: the
+whole band from the return, with its edges blurred over about 8 px.
+
+The seam QA measures the composite. Each join is measured over its whole length and per 128 px block, and the worst
+block must stay at or below 1.8, so a lake about 200 rows long or a rail defect about 30 rows long is not averaged
+away. Both band edges are measured for gradient and colour step per 128 px block. A band-edge block fails only if it
+is above 1.8 and also above the accepted art's own ratio at that block by more than 0.15 (`T['seam_edge_tol']`). The
+band edge is an arbitrary line through untouched art, so a kerb or shoreline that happens to lie on it is not a defect
+of the repair. In a junction, the parts of a band edge that the other band crosses are skipped.
 
 ## Statuses (`art/batches.json`)
 
@@ -179,7 +209,8 @@ returns:
 - a B002 context edit: **pass**, including the seam against `0_0`; a version 30 levels brighter **fails** the seam; a
   1024x1024 fallback passes with a warning;
 - a seam packet for `0_0:0_-1`: a return that changes the kept area **fails**; a faithful band repair is
-  **accepted** and composited into both tiles;
+  **accepted** and composited into both tiles; a regenerated frame with a brighter band is accepted with the feathered
+  blend, and the band-edge pixels and everything outside the band stay identical to the accepted art;
 - the CLI entry points.
 
 Set `TW_ART_DIR` (or pass `--state-dir`) to try the tools on a scratch copy at any time.

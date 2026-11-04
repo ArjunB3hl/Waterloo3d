@@ -24075,7 +24075,7 @@
    "kind": "seam",
    "title": "Seam repair - vertical join of 3_0, 4_0",
    "mode": "seam",
-   "status": "requested",
+   "status": "complete",
    "depends_on": [
     "3_0",
     "4_0"
@@ -24083,7 +24083,7 @@
    "blocked_by": [],
    "parent": null,
    "created_utc": "2026-11-04T21:09:57Z",
-   "updated_utc": "2026-11-04T21:09:57Z",
+   "updated_utc": "2026-11-04T22:40:16Z",
    "packet_rev": 1,
    "order": [
     "seam"
@@ -24154,7 +24154,7 @@
    ],
    "items": {
     "seam": {
-     "status": "requested",
+     "status": "accepted",
      "return_filename": "S001_seam.png",
      "files": {
       "composition": "S001_window.png",
@@ -24220,10 +24220,117 @@
      ],
      "prompt": "TASK - seam repair S001\nIn S001_window.png, the vertical line at x = 512 is where separately painted tiles meet, and the join is visible. Repaint ONLY the white band of S001_mask.png so the band reads as one continuous painting: carry roofs, walls, window rows, roads, kerbs, path edges, lawn texture and tree clusters straight across the line and blend colour and brightness smoothly. Everything in the black area must stay pixel-identical. Keep every edge where S001_ref.png has it (no moved or invented buildings, roads or trees). S001_marked.png shows the band and the worst spots - it is a guide only.\nMeasured now: vertical join between 3_0 and 4_0 (discontinuity x1.04 of the interior gradient, colour step x0.73).\nSPECIFIC FIX (from our review of this join): Silver Lake crosses this join (water band roughly y 500-720). The right side's water is brighter with dense sparkle (L~55) and the left side is darker and smoother (L~45): repaint the water in the band so it keeps the left tile's darker, smoother blue across the line and blends the sparkle texture in gradually. No vertical line or tone step in the water; shoreline stays where the reference has it.\n\nOUTPUT\n- One image, exactly 1024 x 1024 px, PNG, named S001_seam.png, same framing as S001_window.png. Any square size of 1024 px or more is fine (e.g. 1254 x 1254 if that is what your tool returns - send it unchanged); never upscale, crop, pad or change the aspect ratio.",
      "prompt_sha": "a3c909fef622",
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null
+     "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+     "settings_reported": "seam repair; tool regenerates the whole frame; composited with feathered band (seam_feather)",
+     "received": [
+      {
+       "file": "S001_seam.png",
+       "stored": "art/returned/S001/S001_seam.png",
+       "sha256": "1f7953e8fa4f665c8d9d51b5d9f4bdb43cd50e9bb1ca0c9ddacbbcc3e62f56ba",
+       "utc": "2026-11-04T22:40:13Z",
+       "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+       "settings_reported": "seam repair; tool regenerates the whole frame; composited with feathered band (seam_feather)",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [],
+       "qa_md": "art/returned/S001/QA_seam_1f7953e8.md",
+       "qa_png": "art/returned/S001/QA_seam_1f7953e8.png"
+      }
+     ],
+     "qa": {
+      "verdict": "pass",
+      "metrics": {
+       "keep": {
+        "dx": -0.01,
+        "dy": 0.05,
+        "peak": 0.467,
+        "mad": 11.2
+       },
+       "geometry": {
+        "band_rel": 0.837
+       },
+       "seams": [
+        {
+         "tiles": [
+          "3_0",
+          "4_0"
+         ],
+         "before": [
+          1.161,
+          1.157
+         ],
+         "after": [
+          0.923,
+          0.913
+         ],
+         "worst_block_before": [
+          2.113,
+          6.82
+         ],
+         "worst_block_after": [
+          1.349,
+          1.101,
+          [
+           640,
+           768
+          ]
+         ]
+        }
+       ],
+       "band_edges": [
+        {
+         "axis": "vertical",
+         "at": 464,
+         "span": [
+          0,
+          1024
+         ],
+         "grad_ratio": 1.584,
+         "step_ratio": 1.947,
+         "block": [
+          768,
+          896
+         ],
+         "ref_at_block": [
+          1.572,
+          1.947
+         ],
+         "bad_blocks": []
+        },
+        {
+         "axis": "vertical",
+         "at": 560,
+         "span": [
+          0,
+          1024
+         ],
+         "grad_ratio": 1.185,
+         "step_ratio": 1.159,
+         "block": [
+          0,
+          128
+         ],
+         "ref_at_block": [
+          1.175,
+          1.078
+         ],
+         "bad_blocks": []
+        }
+       ]
+      },
+      "file": "S001_seam.png"
+     },
+     "report_text": "S001 seam repair candidate\nTool: image_gen.imagegen (built-in)\nModel name/version: unknown\nSeed/steps/guidance/strength/quality: unknown\nAttempts: 1\nTransparent background: false\nRequested: 1024 x 1024 square\nActual: 1254 x 1254 PNG\nMode: Reference-guided precise object edit. Mask provided as reference image plus prompt; dedicated inpainting/mask parameter unavailable; internal mode unknown.\nNone; original generated PNG bytes retained unchanged.\nOriginal byte identity, PNG dimensions and ZIP CRC verified. Generated candidate has not passed project geometry or seam QA. The model can change pixels outside the mask; pixel-identical preservation is not guaranteed. No project import or acceptance performed.\nSHA-256: 1f7953e8fa4f665c8d9d51b5d9f4bdb43cd50e9bb1ca0c9ddacbbcc3e62f56ba\nExact prompt: S001_prompt.txt\n",
+     "accepted": {
+      "file": "S001_seam.png",
+      "utc": "2026-11-04T22:40:16Z",
+      "forced": false
+     }
     }
    },
    "packet": {
@@ -24238,7 +24345,7 @@
    "kind": "seam",
    "title": "Seam repair - vertical join of -1_-3, 0_-3",
    "mode": "seam",
-   "status": "requested",
+   "status": "complete",
    "depends_on": [
     "-1_-3",
     "0_-3"
@@ -24246,7 +24353,7 @@
    "blocked_by": [],
    "parent": null,
    "created_utc": "2026-11-04T21:09:59Z",
-   "updated_utc": "2026-11-04T21:09:59Z",
+   "updated_utc": "2026-11-04T22:41:21Z",
    "packet_rev": 1,
    "order": [
     "seam"
@@ -24317,7 +24424,7 @@
    ],
    "items": {
     "seam": {
-     "status": "requested",
+     "status": "accepted",
      "return_filename": "S002_seam.png",
      "files": {
       "composition": "S002_window.png",
@@ -24383,10 +24490,117 @@
      ],
      "prompt": "TASK - seam repair S002\nIn S002_window.png, the vertical line at x = 512 is where separately painted tiles meet, and the join is visible. Repaint ONLY the white band of S002_mask.png so the band reads as one continuous painting: carry roofs, walls, window rows, roads, kerbs, path edges, lawn texture and tree clusters straight across the line and blend colour and brightness smoothly. Everything in the black area must stay pixel-identical. Keep every edge where S002_ref.png has it (no moved or invented buildings, roads or trees). S002_marked.png shows the band and the worst spots - it is a guide only.\nMeasured now: vertical join between -1_-3 and 0_-3 (discontinuity x1.17 of the interior gradient, colour step x1.47).\nSPECIFIC FIX (from our review of this join): Features already line up across this vertical join; only the tone steps. The left tile's lawn is about 4 L darker than the right tile and than all other neighbours, and its paving slightly darker: even out lawn and paving brightness across the line so no straight vertical edge is visible.\n\nOUTPUT\n- One image, exactly 1024 x 1024 px, PNG, named S002_seam.png, same framing as S002_window.png. Any square size of 1024 px or more is fine (e.g. 1254 x 1254 if that is what your tool returns - send it unchanged); never upscale, crop, pad or change the aspect ratio.",
      "prompt_sha": "6f9b6ad2e3b1",
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null
+     "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+     "settings_reported": "seam repair; tool regenerates the whole frame; composited with feathered band (seam_feather)",
+     "received": [
+      {
+       "file": "S002_seam.png",
+       "stored": "art/returned/S002/S002_seam.png",
+       "sha256": "90df63d4cb801b2a9bf7f69775264278f82a416d69e35abc2878ba89548f8845",
+       "utc": "2026-11-04T22:41:18Z",
+       "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+       "settings_reported": "seam repair; tool regenerates the whole frame; composited with feathered band (seam_feather)",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [],
+       "qa_md": "art/returned/S002/QA_seam_90df63d4.md",
+       "qa_png": "art/returned/S002/QA_seam_90df63d4.png"
+      }
+     ],
+     "qa": {
+      "verdict": "pass",
+      "metrics": {
+       "keep": {
+        "dx": -0.07,
+        "dy": 0.11,
+        "peak": 0.377,
+        "mad": 10.5
+       },
+       "geometry": {
+        "band_rel": 0.788
+       },
+       "seams": [
+        {
+         "tiles": [
+          "-1_-3",
+          "0_-3"
+         ],
+         "before": [
+          1.194,
+          1.869
+         ],
+         "after": [
+          0.86,
+          1.002
+         ],
+         "worst_block_before": [
+          1.577,
+          5.169
+         ],
+         "worst_block_after": [
+          0.981,
+          1.263,
+          [
+           896,
+           1024
+          ]
+         ]
+        }
+       ],
+       "band_edges": [
+        {
+         "axis": "vertical",
+         "at": 464,
+         "span": [
+          0,
+          1024
+         ],
+         "grad_ratio": 1.112,
+         "step_ratio": 1.405,
+         "block": [
+          512,
+          640
+         ],
+         "ref_at_block": [
+          0.956,
+          1.322
+         ],
+         "bad_blocks": []
+        },
+        {
+         "axis": "vertical",
+         "at": 560,
+         "span": [
+          0,
+          1024
+         ],
+         "grad_ratio": 1.168,
+         "step_ratio": 1.83,
+         "block": [
+          896,
+          1024
+         ],
+         "ref_at_block": [
+          1.157,
+          1.818
+         ],
+         "bad_blocks": []
+        }
+       ]
+      },
+      "file": "S002_seam.png"
+     },
+     "report_text": "S002 seam repair candidate\nTool: image_gen.imagegen (built-in)\nModel name/version: unknown\nSeed/steps/guidance/strength/quality: unknown\nAttempts: 1\nTransparent background: false\nRequested: 1024 x 1024 square\nActual: 1254 x 1254 PNG\nMode: Reference-guided precise object edit. Mask provided as reference image plus prompt; dedicated inpainting/mask parameter unavailable; internal mode unknown.\nNone; original generated PNG bytes retained unchanged.\nOriginal byte identity, PNG dimensions and ZIP CRC verified. Generated candidate has not passed project geometry or seam QA. The model can change pixels outside the mask; pixel-identical preservation is not guaranteed. No project import or acceptance performed.\nSHA-256: 90df63d4cb801b2a9bf7f69775264278f82a416d69e35abc2878ba89548f8845\nExact prompt: S002_prompt.txt\n",
+     "accepted": {
+      "file": "S002_seam.png",
+      "utc": "2026-11-04T22:41:21Z",
+      "forced": false
+     }
     }
    },
    "packet": {
@@ -24628,7 +24842,7 @@
    "kind": "seam",
    "title": "Seam repair - vertical join of -2_-2, -1_-2",
    "mode": "seam",
-   "status": "requested",
+   "status": "revision-needed",
    "depends_on": [
     "-2_-2",
     "-1_-2"
@@ -24636,7 +24850,7 @@
    "blocked_by": [],
    "parent": null,
    "created_utc": "2026-11-04T21:10:02Z",
-   "updated_utc": "2026-11-04T21:10:02Z",
+   "updated_utc": "2026-11-04T22:42:25Z",
    "packet_rev": 1,
    "order": [
     "seam"
@@ -24707,7 +24921,7 @@
    ],
    "items": {
     "seam": {
-     "status": "requested",
+     "status": "revision-needed",
      "return_filename": "S004_seam.png",
      "files": {
       "composition": "S004_window.png",
@@ -24773,10 +24987,119 @@
      ],
      "prompt": "TASK - seam repair S004\nIn S004_window.png, the vertical line at x = 512 is where separately painted tiles meet, and the join is visible. Repaint ONLY the white band of S004_mask.png so the band reads as one continuous painting: carry roofs, walls, window rows, roads, kerbs, path edges, lawn texture and tree clusters straight across the line and blend colour and brightness smoothly. Everything in the black area must stay pixel-identical. Keep every edge where S004_ref.png has it (no moved or invented buildings, roads or trees). S004_marked.png shows the band and the worst spots - it is a guide only.\nMeasured now: vertical join between -2_-2 and -1_-2 (discontinuity x1.09 of the interior gradient, colour step x1.13).\nSPECIFIC FIX (from our review of this join): Vertical join. The two railway tracks kink where they cross the line (in the lower-middle part of the window): bend both tracks smoothly inside the band so they continue exactly into the tracks of the right-hand tile - same spacing, same direction, no step or offset. Ballast and the adjacent lawn should continue across too.\n\nOUTPUT\n- One image, exactly 1024 x 1024 px, PNG, named S004_seam.png, same framing as S004_window.png. Any square size of 1024 px or more is fine (e.g. 1254 x 1254 if that is what your tool returns - send it unchanged); never upscale, crop, pad or change the aspect ratio.",
      "prompt_sha": "19e71ce2b2b4",
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null
+     "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+     "settings_reported": "seam repair; whole-frame regeneration",
+     "received": [
+      {
+       "file": "S004_seam.png",
+       "stored": "art/returned/S004/S004_seam.png",
+       "sha256": "7a6fc774eca21c0c07f6f2073ab40598c7dde919fdc0aa790e9ee749b73bccbb",
+       "utc": "2026-11-04T22:42:23Z",
+       "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+       "settings_reported": "seam repair; whole-frame regeneration",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "fail",
+       "failures": [
+        {
+         "check": "keep-changed",
+         "detail": "kept area changed (mean abs diff 12.1)",
+         "fix": "Only the white band may change; everything in the black area must stay pixel-identical."
+        }
+       ],
+       "warnings": [],
+       "qa_md": "art/returned/S004/QA_seam_7a6fc774.md",
+       "qa_png": "art/returned/S004/QA_seam_7a6fc774.png"
+      }
+     ],
+     "qa": {
+      "verdict": "fail",
+      "metrics": {
+       "keep": {
+        "dx": -0.11,
+        "dy": 0.03,
+        "peak": 0.41,
+        "mad": 12.1
+       },
+       "geometry": {
+        "band_rel": 0.871
+       },
+       "seams": [
+        {
+         "tiles": [
+          "-2_-2",
+          "-1_-2"
+         ],
+         "before": [
+          1.16,
+          1.225
+         ],
+         "after": [
+          0.999,
+          1.001
+         ],
+         "worst_block_before": [
+          1.443,
+          1.894
+         ],
+         "worst_block_after": [
+          1.247,
+          1.682,
+          [
+           256,
+           384
+          ]
+         ]
+        }
+       ],
+       "band_edges": [
+        {
+         "axis": "vertical",
+         "at": 464,
+         "span": [
+          0,
+          1024
+         ],
+         "grad_ratio": 1.076,
+         "step_ratio": 1.537,
+         "block": [
+          256,
+          384
+         ],
+         "ref_at_block": [
+          0.967,
+          1.544
+         ],
+         "bad_blocks": []
+        },
+        {
+         "axis": "vertical",
+         "at": 560,
+         "span": [
+          0,
+          1024
+         ],
+         "grad_ratio": 1.117,
+         "step_ratio": 1.376,
+         "block": [
+          0,
+          128
+         ],
+         "ref_at_block": [
+          0.858,
+          1.378
+         ],
+         "bad_blocks": []
+        }
+       ]
+      },
+      "file": "S004_seam.png"
+     },
+     "report_text": "S004 seam repair candidate\nTool: image_gen.imagegen (built-in)\nModel name/version: unknown\nSeed/steps/guidance/strength/quality: unknown\nAttempts: 1\nTransparent background: false\nRequested: 1024 x 1024 square\nActual: 1254 x 1254 PNG\nMode: Reference-guided precise object edit. Mask provided as reference image plus prompt; dedicated inpainting/mask parameter unavailable; internal mode unknown.\nNone; original generated PNG bytes retained unchanged.\nOriginal byte identity, PNG dimensions and ZIP CRC verified. Generated candidate has not passed project geometry or seam QA. The model can change pixels outside the mask; pixel-identical preservation is not guaranteed. No project import or acceptance performed.\nSHA-256: 7a6fc774eca21c0c07f6f2073ab40598c7dde919fdc0aa790e9ee749b73bccbb\nExact prompt: S004_prompt.txt\n",
+     "revision_batch": "S004R1"
     }
    },
    "packet": {
@@ -24980,6 +25303,192 @@
     "dir": "art/requests/B013R1",
     "zip": "art/requests/B013R1.zip",
     "zip_sha256": "31bff84010fee5b4ca6c58836c069167f10132eacad4ebae57a595d66e72a381"
+   }
+  },
+  "S004R1": {
+   "id": "S004R1",
+   "kind": "revision",
+   "title": "Revision of S004: seam",
+   "mode": "seam",
+   "frame": null,
+   "status": "requested",
+   "depends_on": [
+    "-2_-2",
+    "-1_-2"
+   ],
+   "blocked_by": [],
+   "parent": "S004",
+   "created_utc": "2026-11-04T22:44:44Z",
+   "updated_utc": "2026-11-04T22:44:44Z",
+   "packet_rev": 1,
+   "order": [
+    "seam"
+   ],
+   "style_from": null,
+   "shared_files": [],
+   "attachments": [
+    {
+     "file": "S004R1_window.png",
+     "purpose": "CANVAS TO EDIT + COMPOSITION: current accepted art around the join",
+     "tiles": [
+      "-2_-2",
+      "-1_-2"
+     ],
+     "defines_composition": true,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "a18f757c05b5b7591f06a364ab311e268afde30b2e461dd3ad9e5d961905c25c"
+    },
+    {
+     "file": "S004R1_mask.png",
+     "purpose": "EDIT MASK: white = repaint band, black = keep",
+     "tiles": [
+      "-2_-2",
+      "-1_-2"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "e446f0d7f6065bd6e187a21850867115e0172ad25ef40d79e438941533cde173"
+    },
+    {
+     "file": "S004R1_ref.png",
+     "purpose": "GEOMETRY: reference underdrawing of the window",
+     "tiles": [
+      "-2_-2",
+      "-1_-2"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "0c742b4f33664278891804cf8b1e2e7c1abdb5aae1d57b6cc5b66cdcfb229015"
+    },
+    {
+     "file": "S004R1_previous_seam.png",
+     "purpose": "YOUR PREVIOUS OUTPUT (as received) - keep what is good about it",
+     "tiles": [
+      "-2_-2",
+      "-1_-2"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "0a06367acb521372d461cf113ed8f072bf8f34ce88916f7f0f45edf99ca6d631"
+    },
+    {
+     "file": "S004R1_marked_seam.png",
+     "purpose": "ANNOTATED: what is wrong (red = missing/misplaced vs reference, yellow = displaced area, labels give the fix)",
+     "tiles": [
+      "-2_-2",
+      "-1_-2"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "672c784343864dd86c5945b420617a32c4c35777c01ea7160af3df631b21825c"
+    }
+   ],
+   "items": {
+    "seam": {
+     "status": "requested",
+     "return_filename": "S004R1_seam.png",
+     "files": {
+      "composition": "S004R1_window.png",
+      "mask": "S004R1_mask.png",
+      "reference": "S004R1_ref.png",
+      "previous": "S004R1_previous_seam.png",
+      "marked": "S004R1_marked_seam.png"
+     },
+     "output": {
+      "mode": "seam",
+      "width": 1024,
+      "height": 1024,
+      "window": [
+       -1536,
+       -2048
+      ],
+      "band": 48,
+      "kind": "vertical",
+      "joins": [
+       {
+        "axis": "vertical",
+        "at": 512,
+        "tiles": [
+         "-2_-2",
+         "-1_-2"
+        ]
+       }
+      ],
+      "tiles": [
+       "-2_-2",
+       "-1_-2"
+      ]
+     },
+     "reference": {
+      "composition": "a18f757c05b5",
+      "tiles": {
+       "-2_-2": "48a4036b073a",
+       "-1_-2": "637e1ddaab20"
+      },
+      "jobs": {
+       "-2_-2": {
+        "color2x": "d64604d2f8b8",
+        "cls": "1be9c5149f82",
+        "height": "9aa0ee312708"
+       },
+       "-1_-2": {
+        "color2x": "d25893b781e8",
+        "cls": "23a41b0d0875",
+        "height": "b7ed1cc15867"
+       }
+      }
+     },
+     "model_reported": "unknown",
+     "settings_reported": "unknown",
+     "received": [],
+     "qa": null,
+     "revision_of": {
+      "batch": "S004",
+      "corrections": [
+       "Rail kink at the vertical join. Use S004R1_window.png as the only truth outside the white band: do not repaint, shift or restyle anything there, and do not move the right-hand tracks. Inside the band (x 464-559, rows about 580-710) draw both tracks as straight lines from where the kept tracks ENTER to where they LEAVE: left band edge x=464 - upper track rails at y=596 and y=601, lower track rails at y=614 and y=620; right band edge x=559 - upper track rails at y=670 and y=675, lower track rails at y=688 and y=693. So the rails run (464,596)->(559,670), (464,601)->(559,675), (464,614)->(559,688), (464,620)->(559,693): about 0.78 px down per px right, slightly flatter than the tiles' 0.875, which absorbs the 8 px offset; at the join x=512 they are near y=633/638 and 651/657. Keep the 5-6 px gauge and 18-19 px spacing between the tracks, and move the ballast bed and its edges with them. At x=464 and x=559 the rails must land exactly on the kept rails. Do NOT continue the left tile's line straight across - the last attempt did that and ended 8 px too low at x=559 (y=678/684 and 696/702)."
+      ]
+     },
+     "before": [
+      {
+       "grad_ratio": 1.089,
+       "step_ratio": 1.134,
+       "cross_mean": 23.39,
+       "interior_mean": 21.48,
+       "worst": [],
+       "tiles": [
+        "-2_-2",
+        "-1_-2"
+       ],
+       "axis": "vertical"
+      }
+     ],
+     "prompt": "TASK - revised seam seam\nRepaint ONLY the white band of S004R1_mask.png in S004R1_window.png so the join reads as one continuous painting; everything in the black area must stay pixel-identical. S004R1_previous_seam.png is what you sent last time and S004R1_marked_seam.png marks what has to change: fix those points and keep the rest of its style. Geometry must follow S004R1_ref.png.\n\nOUTPUT\n- 1024 x 1024 px, PNG, named S004R1_seam.png. A larger image with exactly the same aspect ratio is fine; never crop, pad or change the aspect ratio.",
+     "prompt_sha": "b60be4ec4c71"
+    }
+   },
+   "correction_text": {
+    "seam": "REVISION - your previous image for this item could not be used. Exact corrections:\n- Rail kink at the vertical join. Use S004R1_window.png as the only truth outside the white band: do not repaint, shift or restyle anything there, and do not move the right-hand tracks. Inside the band (x 464-559, rows about 580-710) draw both tracks as straight lines from where the kept tracks ENTER to where they LEAVE: left band edge x=464 - upper track rails at y=596 and y=601, lower track rails at y=614 and y=620; right band edge x=559 - upper track rails at y=670 and y=675, lower track rails at y=688 and y=693. So the rails run (464,596)->(559,670), (464,601)->(559,675), (464,614)->(559,688), (464,620)->(559,693): about 0.78 px down per px right, slightly flatter than the tiles' 0.875, which absorbs the 8 px offset; at the join x=512 they are near y=633/638 and 651/657. Keep the 5-6 px gauge and 18-19 px spacing between the tracks, and move the ballast bed and its edges with them. At x=464 and x=559 the rails must land exactly on the kept rails. Do NOT continue the left tile's line straight across - the last attempt did that and ended 8 px too low at x=559 (y=678/684 and 696/702)."
+   },
+   "packet": {
+    "md": "IMAGE_REQUEST_S004R1.md",
+    "dir": "art/requests/S004R1",
+    "zip": "art/requests/S004R1.zip",
+    "zip_sha256": "ab752972b14407e3c8b9b48fdff6049d5a5539b2fa4cdfb9b989a3998db3379a"
    }
   }
  }

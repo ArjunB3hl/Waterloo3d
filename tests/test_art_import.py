@@ -8,6 +8,7 @@ skipped automatically for such copies. Synthetic returns are derived from the re
   bigger    2048 px square                                   -> accepted after box downsampling
   wide      1536x1024                                        -> size failure
   context   B002 edits that keep the mask's black area       -> crop, keep-drift and seam checks vs accepted 0_0
+  seam      S001 window repairs                              -> kept-area check, accept, feathered composite keeps band edges
 
 Run:  python3 tests/test_art_import.py   (or python3 -m unittest tests.test_art_import)   ~1-2 minutes
 """
@@ -221,6 +222,39 @@ class ArtRelayTest(unittest.TestCase):
         for t in ('0_0', '0_-1'):
             self.assertEqual(meta[t]['batch'], sid)
             self.assertEqual(meta[t]['history'][-1]['version'], before[t])
+        q = self.item(sid, 'seam')['qa']['metrics']
+        self.assertTrue(q['band_edges'] and all('step_ratio' in e and 'block' in e for e in q['band_edges']))
+        self.assertIn('worst_block_after', q['seams'][0])
+
+    def test_seam_feather_keeps_band_edges(self):
+        """Feathered seam composite (T['seam_feather']): a return whose band does not meet the kept art (the whole frame
+        regenerated 25 levels brighter, within the kept-area tolerance) is blended 1 at the join -> 0 at the band edges,
+        so the outermost band pixels and everything outside the band stay identical to the accepted art."""
+        self.assertTrue(I.T['seam_feather'])
+        self.accept_style_sample()
+        quiet(I.process, 'B002', save(self.ret, 'B002_0_-1.png', self.context_return('0_-1')), accept=True)
+        rec = quiet(R.build_seam, pair='0_0:0_-1')
+        sid, o = rec['id'], rec['items']['seam']['output']
+        orig, _ = A.mosaic(*o['window'], R.SEAM_WINDOW, R.SEAM_WINDOW)
+        ret = np.clip(orig.astype(int) + 10, 0, 255).astype(np.uint8)    # kept area changed by 10 < seam_keep_mad
+        ret[464:560] = np.clip(stylise(orig)[464:560].astype(int) + 25, 0, 255)  # band visibly brighter than the kept art
+        # the legacy hard band leaves a tone step at the band edges, the feathered blend does not
+        mask = R.seam_mask({'joins': o['joins']}, o['band'])
+        geo = {'joins': o['joins'], 'kind': o['kind'], 'tiles': o['tiles']}
+        hard = I.composite_seam(orig, ret, mask, geo, o['band'], feather=False)
+        soft = I.composite_seam(orig, ret, mask, geo, o['band'], feather=True)
+        self.assertTrue(np.array_equal(soft[:465], orig[:465]) and np.array_equal(soft[559:], orig[559:]))
+        self.assertFalse(np.array_equal(hard[464], orig[464]))
+        self.assertGreater(np.abs(soft[511:513].astype(int) - orig[511:513]).mean(), 15)   # the repaint takes over at the join
+        edge = lambda c: max(max(e['grad_ratio'], e['step_ratio']) for e in I.band_edge_profiles(geo, c, o['band'], mask))
+        self.assertLess(edge(soft), edge(hard))
+        quiet(I.process, sid, save(self.ret + '_f', f'{sid}_seam.png', ret), accept=True, revision=False)
+        it = self.item(sid, 'seam')
+        self.assertEqual(it['status'], 'accepted', it['received'][-1]['failures'])
+        after, _ = A.mosaic(*o['window'], R.SEAM_WINDOW, R.SEAM_WINDOW)
+        self.assertTrue(np.array_equal(after, soft))
+        self.assertTrue(np.array_equal(after[464], orig[464]) and np.array_equal(after[559], orig[559]))  # band-edge pixels
+        self.assertTrue(np.array_equal(after[:464], orig[:464]) and np.array_equal(after[560:], orig[560:]))
 
     def test_cli(self):
         folder = save(self.ret, 'B001_0_0.png', self.good)

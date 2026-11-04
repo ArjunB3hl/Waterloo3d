@@ -1,6 +1,6 @@
 {
  "name": "Tiny Waterloo",
- "generated_utc": "2026-11-04T22:25:16Z",
+ "generated_utc": "2026-11-04T22:42:22Z",
  "frame_px": 1024,
  "lods_px": [
   256,
@@ -374,11 +374,11 @@
    "i": -1,
    "j": -3,
    "kind": "art",
-   "v": "b746bbb53be9",
+   "v": "0baf797ededc",
    "hv": "b1979a9d2d28",
    "lv": "87658cfaf8e6",
-   "art_version": "e242fa44d01f",
-   "batch": "S003",
+   "art_version": "433012ae0180",
+   "batch": "S002",
    "finish": "px512-q64s"
   },
   "-1_0": {
@@ -539,11 +539,11 @@
    "i": 0,
    "j": -3,
    "kind": "art",
-   "v": "de897469f30b",
+   "v": "0a221dfb5d34",
    "hv": "2ac8ae5a56c4",
    "lv": "4d69f6369a67",
-   "art_version": "897ea0c6a204",
-   "batch": "B010",
+   "art_version": "a7a476312088",
+   "batch": "S002",
    "finish": "px512-q64s"
   },
   "0_0": {
@@ -715,11 +715,11 @@
    "i": 3,
    "j": 0,
    "kind": "art",
-   "v": "081c7535f4f6",
+   "v": "72c75c4c9422",
    "hv": "974924347d04",
    "lv": "439fb274bc17",
-   "art_version": "45e9d3e52a23",
-   "batch": "B005",
+   "art_version": "f60ed5ccbeba",
+   "batch": "S001",
    "finish": "px512-q64s"
   },
   "3_1": {
@@ -770,11 +770,11 @@
    "i": 4,
    "j": 0,
    "kind": "art",
-   "v": "fb83642ea3bd",
+   "v": "ef03db21fcad",
    "hv": "a2e99a790c9c",
    "lv": "c6242ef8befe",
-   "art_version": "47928ee70ac4",
-   "batch": "B009",
+   "art_version": "0d90127d1d9e",
+   "batch": "S001",
    "finish": "px512-q64s"
   },
   "4_1": {

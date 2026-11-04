@@ -166,8 +166,8 @@
   "history": []
  },
  "3_0": {
-  "version": "45e9d3e52a23",
-  "batch": "B005",
+  "version": "f60ed5ccbeba",
+  "batch": "S001",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-image guided edit/style transfer; mask as reference image (no mask parameter); 5 reference images per canvas; one call per canvas; requested 1536 canvas, returned 1254x1254; seed/steps/guidance/strength unknown",
   "prompt_sha": "fd7a77733383",
@@ -177,12 +177,38 @@
    "cls": "74114b901eb8",
    "height": "501e6bd40d27"
   },
-  "accepted_utc": "2026-11-04T20:07:48Z",
+  "accepted_utc": "2026-11-04T22:40:16Z",
   "source_file": "art/returned/B005/B005_3_0.png",
   "source_sha256": "2264025108f45be1c8a84622fdb5818c6c0d8c6dc1b66430a54864c349f6fca9",
   "qa_verdict": "pass",
   "forced": false,
-  "history": []
+  "history": [
+   {
+    "version": "45e9d3e52a23",
+    "batch": "B005",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-image guided edit/style transfer; mask as reference image (no mask parameter); 5 reference images per canvas; one call per canvas; requested 1536 canvas, returned 1254x1254; seed/steps/guidance/strength unknown",
+    "prompt_sha": "fd7a77733383",
+    "reference_sha": "33c81d99f426",
+    "reference_files": {
+     "color2x": "5cf4aa48222a",
+     "cls": "74114b901eb8",
+     "height": "501e6bd40d27"
+    },
+    "accepted_utc": "2026-11-04T20:07:48Z",
+    "source_file": "art/returned/B005/B005_3_0.png",
+    "source_sha256": "2264025108f45be1c8a84622fdb5818c6c0d8c6dc1b66430a54864c349f6fca9",
+    "qa_verdict": "pass",
+    "forced": false
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S001/S001_seam.png",
+   "source_sha256": "1f7953e8fa4f665c8d9d51b5d9f4bdb43cd50e9bb1ca0c9ddacbbcc3e62f56ba",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam repair; tool regenerates the whole frame; composited with feathered band (seam_feather)",
+   "prompt_sha": "a3c909fef622"
+  }
  },
  "0_-2": {
   "version": "3b24a8d9b7fa",
@@ -420,8 +446,8 @@
   "history": []
  },
  "4_0": {
-  "version": "47928ee70ac4",
-  "batch": "B009",
+  "version": "0d90127d1d9e",
+  "batch": "S001",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
   "prompt_sha": "b1cd85e21f58",
@@ -431,12 +457,38 @@
    "cls": "52877ec9bab3",
    "height": "56d4bddf7f8d"
   },
-  "accepted_utc": "2026-11-04T21:01:14Z",
+  "accepted_utc": "2026-11-04T22:40:16Z",
   "source_file": "art/returned/B009/B009_4_0.png",
   "source_sha256": "4ab180aa3e9d2d182d1716ce202df18c7f0e6cbbf5d99e78ba8ca7b8e38e1032",
   "qa_verdict": "pass",
   "forced": false,
-  "history": []
+  "history": [
+   {
+    "version": "47928ee70ac4",
+    "batch": "B009",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+    "prompt_sha": "b1cd85e21f58",
+    "reference_sha": "c009b71da66c",
+    "reference_files": {
+     "color2x": "88cbc1b345a7",
+     "cls": "52877ec9bab3",
+     "height": "56d4bddf7f8d"
+    },
+    "accepted_utc": "2026-11-04T21:01:14Z",
+    "source_file": "art/returned/B009/B009_4_0.png",
+    "source_sha256": "4ab180aa3e9d2d182d1716ce202df18c7f0e6cbbf5d99e78ba8ca7b8e38e1032",
+    "qa_verdict": "pass",
+    "forced": false
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S001/S001_seam.png",
+   "source_sha256": "1f7953e8fa4f665c8d9d51b5d9f4bdb43cd50e9bb1ca0c9ddacbbcc3e62f56ba",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam repair; tool regenerates the whole frame; composited with feathered band (seam_feather)",
+   "prompt_sha": "a3c909fef622"
+  }
  },
  "3_1": {
   "version": "4d00a8d7e718",
@@ -458,8 +510,8 @@
   "history": []
  },
  "0_-3": {
-  "version": "897ea0c6a204",
-  "batch": "B010",
+  "version": "a7a476312088",
+  "batch": "S002",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
   "prompt_sha": "e35f6c96eb22",
@@ -469,12 +521,38 @@
    "cls": "14fb229ea523",
    "height": "bdf46dc0fc21"
   },
-  "accepted_utc": "2026-11-04T21:02:59Z",
+  "accepted_utc": "2026-11-04T22:41:21Z",
   "source_file": "art/returned/B010/B010_0_-3.png",
   "source_sha256": "81982b2113795f28102a44dd03dc3ba439cb1e5c1ffe116aeedce6ac3847a3ce",
   "qa_verdict": "pass",
   "forced": false,
-  "history": []
+  "history": [
+   {
+    "version": "897ea0c6a204",
+    "batch": "B010",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+    "prompt_sha": "e35f6c96eb22",
+    "reference_sha": "b974398af565",
+    "reference_files": {
+     "color2x": "b7931f4f622b",
+     "cls": "14fb229ea523",
+     "height": "bdf46dc0fc21"
+    },
+    "accepted_utc": "2026-11-04T21:02:59Z",
+    "source_file": "art/returned/B010/B010_0_-3.png",
+    "source_sha256": "81982b2113795f28102a44dd03dc3ba439cb1e5c1ffe116aeedce6ac3847a3ce",
+    "qa_verdict": "pass",
+    "forced": false
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S002/S002_seam.png",
+   "source_sha256": "90df63d4cb801b2a9bf7f69775264278f82a416d69e35abc2878ba89548f8845",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam repair; tool regenerates the whole frame; composited with feathered band (seam_feather)",
+   "prompt_sha": "6f9b6ad2e3b1"
+  }
  },
  "1_-3": {
   "version": "7230691aeb16",
@@ -515,8 +593,8 @@
   "history": []
  },
  "-1_-3": {
-  "version": "e242fa44d01f",
-  "batch": "S003",
+  "version": "433012ae0180",
+  "batch": "S002",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED: geometry 0.996 of reference; bottom seam x1.9 caused by accepted -1_-2's lawn patch at x 330-450 (rest of join x1.11-1.13); right seam lawn tone -4 L; seam packets queued",
   "prompt_sha": "6943c67d4d99",
@@ -526,7 +604,7 @@
    "cls": "d03c7dcba3b1",
    "height": "cbbbfca73637"
   },
-  "accepted_utc": "2026-11-04T22:24:17Z",
+  "accepted_utc": "2026-11-04T22:41:21Z",
   "source_file": "art/returned/B010/B010_-1_-3.png",
   "source_sha256": "9bd470531be537fc88058aceac073ba5233ecda088d4144303d7fb052a1e6f2f",
   "qa_verdict": "fail",
@@ -549,14 +627,39 @@
     "source_sha256": "9bd470531be537fc88058aceac073ba5233ecda088d4144303d7fb052a1e6f2f",
     "qa_verdict": "fail",
     "forced": true
+   },
+   {
+    "version": "e242fa44d01f",
+    "batch": "S003",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED: geometry 0.996 of reference; bottom seam x1.9 caused by accepted -1_-2's lawn patch at x 330-450 (rest of join x1.11-1.13); right seam lawn tone -4 L; seam packets queued",
+    "prompt_sha": "6943c67d4d99",
+    "reference_sha": "ecf602314110",
+    "reference_files": {
+     "color2x": "0101d0fefc30",
+     "cls": "d03c7dcba3b1",
+     "height": "cbbbfca73637"
+    },
+    "accepted_utc": "2026-11-04T22:24:17Z",
+    "source_file": "art/returned/B010/B010_-1_-3.png",
+    "source_sha256": "9bd470531be537fc88058aceac073ba5233ecda088d4144303d7fb052a1e6f2f",
+    "qa_verdict": "fail",
+    "forced": false,
+    "seam": {
+     "source_file": "art/returned/S003/S003_seam.png",
+     "source_sha256": "d4fa6f73295b0988d6f7c71210441c0aed0af573c74008baa6b43670cc8cdee8",
+     "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+     "settings_reported": "seam repair; whole-frame regeneration, band composited",
+     "prompt_sha": "3ef6369b15c1"
+    }
    }
   ],
   "seam": {
-   "source_file": "art/returned/S003/S003_seam.png",
-   "source_sha256": "d4fa6f73295b0988d6f7c71210441c0aed0af573c74008baa6b43670cc8cdee8",
+   "source_file": "art/returned/S002/S002_seam.png",
+   "source_sha256": "90df63d4cb801b2a9bf7f69775264278f82a416d69e35abc2878ba89548f8845",
    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
-   "settings_reported": "seam repair; whole-frame regeneration, band composited",
-   "prompt_sha": "3ef6369b15c1"
+   "settings_reported": "seam repair; tool regenerates the whole frame; composited with feathered band (seam_feather)",
+   "prompt_sha": "6f9b6ad2e3b1"
   }
  },
  "3_-2": {
