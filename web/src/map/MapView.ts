@@ -461,7 +461,7 @@ class MapView implements CameraControl {
     return {
       ...this.stats.summary(performance.now()),
       bitmaps: l.bitmaps, bitmapMB: Math.round((l.bytes / MB) * 10) / 10, budgetMB: Math.round(this.loader.budgetBytes / MB),
-      heightTiles: this.heightTiles.size, inflight: l.inflight, queued: l.queued, failed: l.failed,
+      heightTiles: this.heightTiles.size, inflight: l.inflight, queued: l.queued, deferred: l.deferred, failed: l.failed,
       tilesDrawn: this.lastDraw.tilesDrawn, heapMB: mem ? Math.round(mem.usedJSHeapSize / MB) : null,
       dpr: this.dpr, viewport: [this.w, this.h],
     };

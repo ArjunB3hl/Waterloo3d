@@ -14,7 +14,7 @@ export function createPerfHud(map: MapAPI): { el: HTMLElement; setVisible(v: boo
       `draw p95   ${p.drawP95Ms} ms`,
       `bitmaps    ${p.bitmaps}  ${p.bitmapMB} / ${p.budgetMB} MB`,
       `heights    ${p.heightTiles}`,
-      `requests   ${p.inflight} live  ${p.queued} queued  ${p.failed} failed`,
+      `requests   ${p.inflight} live  ${p.queued} queued  ${p.deferred ?? 0} deferred  ${p.failed} failed`,
       `tiles      ${p.tilesDrawn} drawn`,
       `heap       ${p.heapMB === null ? 'n/a' : `${p.heapMB} MB`}`,
       `dpr        ${p.dpr}   ${p.viewport[0]}x${p.viewport[1]}`,

@@ -20,6 +20,7 @@ export interface Resource {
   wantedFrame: number;       // last frame that asked for it
   usedFrame: number;         // last frame that drew it (LRU order)
   prefetch: boolean;         // every want() this frame was a speculative prefetch (not needed for drawing)
+  deferred: boolean;         // a queued prefetch held back because it would not fit in the byte budget (not pending work)
   arrivedAt: number;         // performance.now() when decoded (fade-in)
   attempts: number;          // failed attempts so far
   retryAt: number;           // performance.now() after which a failed resource may be fetched again
@@ -57,7 +58,7 @@ export class ResourceLoader {
   want(key: string, url: string, priority: number, decode?: ImageBitmapOptions, prefetch = false): Resource {
     let r = this.res.get(key);
     if (!r) {
-      r = { key, url, decode, state: 'queued', bitmap: null, bytes: 0, priority, wantedFrame: 0, usedFrame: 0, prefetch,
+      r = { key, url, decode, state: 'queued', bitmap: null, bytes: 0, priority, wantedFrame: 0, usedFrame: 0, prefetch, deferred: false,
         arrivedAt: 0, attempts: 0, retryAt: 0, abort: null, waiters: [] };
       this.res.set(key, r);
     }
@@ -65,6 +66,7 @@ export class ResourceLoader {
     const again = r.wantedFrame === this.frame;
     r.priority = again ? Math.min(r.priority, priority) : priority;
     r.prefetch = again ? r.prefetch && prefetch : prefetch;
+    if (!r.prefetch) r.deferred = false;   // needed for drawing now: real pending work again
     r.wantedFrame = this.frame;
     return r;
   }
@@ -112,13 +114,13 @@ export class ResourceLoader {
   }
 
   stats() {
-    let ready = 0, queued = 0, failed = 0;
+    let ready = 0, queued = 0, failed = 0, deferred = 0;
     for (const r of this.res.values()) {
       if (r.state === 'ready') ready++;
       else if (r.state === 'failed') failed++;
-      else if (r.state === 'queued') queued++;
+      else if (r.state === 'queued') { if (r.deferred) deferred++; else queued++; }
     }
-    return { bitmaps: ready, bytes: this.bytes, inflight: this.inflight, queued, failed };
+    return { bitmaps: ready, bytes: this.bytes, inflight: this.inflight, queued, failed, deferred };
   }
 
   private eligible(r: Resource, now: number): boolean {
@@ -137,9 +139,11 @@ export class ResourceLoader {
       if (r.prefetch && !r.waiters.length) {
         // a prefetch that would not fit would only be evicted again at the next endFrame
         const est = this.knownBytes.get(r.key) ?? (ready ? readyBytes / ready : 0);
-        if (committed + est > this.budgetBytes) continue;
+        r.deferred = committed + est > this.budgetBytes;
+        if (r.deferred) continue;
         committed += est;
       }
+      r.deferred = false;
       this.start(r);
     }
     // wake up for the earliest pending retry

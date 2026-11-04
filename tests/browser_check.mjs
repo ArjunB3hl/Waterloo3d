@@ -345,10 +345,10 @@ async function functionalChecks(browser) {
   });
 
   await check('settings: coverage toggle hides and restores the pending-area hatch', async () => {
-    // pending city tiles (-2,-1) and (-2,0) sit just west of campus
+    // pending city tiles (-4,-1), (-4,0), (-5,*) sit west of the published area (columns -3..7 are published)
     await page.keyboard.press('Escape');
-    await page.evaluate(() => { location.hash = '#-1536,-200,0.5'; });
-    await reach(page, [-1536, -200, 0.5], 1, 30000);
+    await page.evaluate(() => { location.hash = '#-3584,0,0.5'; });
+    await reach(page, [-3584, 0, 0.5], 1, 30000);
     await idle(page);
     const sample = () => page.evaluate(() => {
       const c = document.getElementById('map-base'), g = c.getContext('2d');

@@ -112,6 +112,7 @@ export interface PerfStats {
   heightTiles: number;             // decoded Float32 height tiles held
   inflight: number;                // fetches in flight (max 6)
   queued: number;                  // fetches waiting
+  deferred?: number;               // prefetches held back by the byte budget (not pending work)
   failed: number;                  // resources in a failed / retrying state
   tilesDrawn: number;              // artwork tiles drawn in the last base redraw
   heapMB: number | null;           // performance.memory.usedJSHeapSize when available
