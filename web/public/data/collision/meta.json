@@ -1,0 +1,171 @@
+{
+ "version": 1,
+ "generated_utc": "2026-11-04T13:32:11Z",
+ "scope": "published",
+ "cell_m": 2.0,
+ "chunk_cells": 256,
+ "chunk_m": 512.0,
+ "datum_m": 330.0,
+ "z_codec": {
+  "floor_m": -100.0,
+  "units_per_m": 100.0,
+  "formula": "z = (256*R + G) / units_per_m + floor_m  (metres rel. datum_m)"
+ },
+ "layout": "chunk (ix, iy) covers x in [ix*chunk_m, (ix+1)*chunk_m), y in [iy*chunk_m, (iy+1)*chunk_m); image row 0 = north edge; cell (col c, row r) centre x = ix*chunk_m + (c+0.5)*cell_m, y = (iy+1)*chunk_m - (r+0.5)*cell_m",
+ "files": {
+  "solid": "solid/{ix}_{iy}.png",
+  "ground": "ground/{ix}_{iy}.png"
+ },
+ "solid_png": {
+  "R": "solid top z high byte",
+  "G": "solid top z low byte",
+  "B": "canopy top above the cell ground z, 0.1 m units (0 = no canopy)",
+  "A": "kind bits"
+ },
+ "ground_png": {
+  "R": "terrain z high byte",
+  "G": "terrain z low byte",
+  "B": "255 = valid, 0 = outside terrain data"
+ },
+ "kind_bits": {
+  "building": 1,
+  "tree": 2,
+  "water": 4,
+  "valid": 8
+ },
+ "canopy_units_per_m": 10,
+ "tree_crown": "upper surface of the reference renderer crowns: ellipsoid radius r, vertical semi-axis 0.85 r, centre ground(tree) + 1.6 + 0.9 r, plus a 0.7 r blob offset by up to r/2 and raised 0.35 r (peaks ~ ground + 1.6 + 1.75..1.85 r); each cell stores the max over its area",
+ "sources": [
+  "buildings: Overture/OSM footprints + parts from data_cache/scene/scene.pkl (base z0 = min terrain under footprint, pitched roofs from prepare_tiles.roof_spec)",
+  "terrain: data_cache/terrain/dem.npz (bilinear)",
+  "trees: OSM trees + prepare_tiles.scatter_trees inferred trees (same set as the reference renderer)",
+  "water: Overture water areas / lines + land_use water_hazard + fountains"
+ ],
+ "chunks": {
+  "-1_-1": {
+   "zmax": 28.62,
+   "zmin": -2.14,
+   "v": "bc35732c9aa7"
+  },
+  "-1_-2": {
+   "zmax": 32.64,
+   "zmin": -2.23,
+   "v": "bc1f305f1dc4"
+  },
+  "-1_0": {
+   "zmax": 28.62,
+   "zmin": 2.86,
+   "v": "6f27443aa03b"
+  },
+  "-1_1": {
+   "zmax": 28.92,
+   "zmin": 6.88,
+   "v": "bc8047d63837"
+  },
+  "0_-1": {
+   "zmax": 39.92,
+   "zmin": -4.13,
+   "v": "0cc6c6a15a96"
+  },
+  "0_-2": {
+   "zmax": 32.64,
+   "zmin": -4.22,
+   "v": "b6a6e0760e38"
+  },
+  "0_0": {
+   "zmax": 83.89,
+   "zmin": 3.85,
+   "v": "e43f59f8885c"
+  },
+  "0_1": {
+   "zmax": 83.89,
+   "zmin": 6.84,
+   "v": "034936209959"
+  },
+  "1_-1": {
+   "zmax": 57.85,
+   "zmin": -5.2,
+   "v": "658ff2d73ca4"
+  },
+  "1_-2": {
+   "zmax": 72.09,
+   "zmin": -5.28,
+   "v": "72830e5bb75e"
+  },
+  "1_-3": {
+   "zmax": 48.31,
+   "zmin": -1.42,
+   "v": "4bb807366402"
+  },
+  "1_0": {
+   "zmax": 77.97,
+   "zmin": 4.85,
+   "v": "68729f57c53d"
+  },
+  "1_1": {
+   "zmax": 57.0,
+   "zmin": 2.87,
+   "v": "5eff35ff4cb6"
+  },
+  "2_-1": {
+   "zmax": 65.98,
+   "zmin": -5.24,
+   "v": "5d152a502e67"
+  },
+  "2_-2": {
+   "zmax": 66.97,
+   "zmin": -7.27,
+   "v": "bd00cd4f20ab"
+  },
+  "2_-3": {
+   "zmax": 36.48,
+   "zmin": -4.94,
+   "v": "5ea57d601d08"
+  },
+  "2_0": {
+   "zmax": 65.98,
+   "zmin": -6.15,
+   "v": "61c6d7ebb789"
+  },
+  "2_1": {
+   "zmax": 67.56,
+   "zmin": -6.16,
+   "v": "c354aa8eaf5b"
+  },
+  "3_-1": {
+   "zmax": 65.98,
+   "zmin": -10.23,
+   "v": "ddd967bdb13c"
+  },
+  "3_-2": {
+   "zmax": 49.03,
+   "zmin": -9.16,
+   "v": "94aeaf65b323"
+  },
+  "3_-3": {
+   "zmax": 66.86,
+   "zmin": -6.41,
+   "v": "6ca386155738"
+  },
+  "3_0": {
+   "zmax": 65.98,
+   "zmin": -12.19,
+   "v": "2f1985607471"
+  },
+  "4_-1": {
+   "zmax": 32.0,
+   "zmin": -11.16,
+   "v": "f066f0ec9084"
+  },
+  "4_-2": {
+   "zmax": 64.0,
+   "zmin": -8.13,
+   "v": "14ec1d2592aa"
+  },
+  "4_0": {
+   "zmax": 21.83,
+   "zmin": -13.2,
+   "v": "595ab726a929"
+  }
+ }
+}

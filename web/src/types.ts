@@ -86,10 +86,34 @@ export interface MapAPI {
   invalidate(): void;
   settings: Settings;
   onSettings(cb: (s: Settings) => void): () => void;
+  /** Merge a settings change, persist it (localStorage) and notify onSettings listeners. */
+  updateSettings(patch: Partial<Settings>): void;
+  /** false = ignore user pan input (drag, keys, inertia, double-click) e.g. while an actor steers the camera.
+   *  Zoom input (wheel, pinch, +/-) keeps working but is anchored at the screen centre. Default true. */
+  setInteractive(enabled: boolean): void;
+  /** Live performance counters (also shown by the performance HUD; used by tests). */
+  perf(): PerfStats;
   /** HUD status line / toast. */
   toast(msg: string): void;
   /** Element for module HUDs (actor HUD, collectibles); stays above canvases, below modal panels. */
   readonly hudRoot: HTMLElement;
+}
+
+export interface PerfStats {
+  fps: number;                     // frames drawn in the last second
+  frameP95Ms: number;              // p95 interval between consecutive animation frames (last second)
+  drawP95Ms: number;               // p95 CPU time spent drawing base + aux layers (last second)
+  bitmaps: number;                 // decoded ImageBitmaps held by the tile cache
+  bitmapMB: number;                // their estimated decoded size
+  budgetMB: number;                // cache budget
+  heightTiles: number;             // decoded Float32 height tiles held
+  inflight: number;                // fetches in flight (max 6)
+  queued: number;                  // fetches waiting
+  failed: number;                  // resources in a failed / retrying state
+  tilesDrawn: number;              // artwork tiles drawn in the last base redraw
+  heapMB: number | null;           // performance.memory.usedJSHeapSize when available
+  dpr: number;
+  viewport: [number, number];      // CSS px
 }
 
 export interface Settings {

@@ -1,0 +1,311 @@
+{
+ "version": 1,
+ "generated_utc": "2026-11-04T13:33:16Z",
+ "datum_m": 330.0,
+ "source": "pipeline/build_feathers.py (collision field + landmarks.json + scene areas)",
+ "coords": "x, y, z local ENU metres (z rel. datum_m); canvas = artwork px of (x, y, z); over = what lies directly below",
+ "feathers": [
+  {
+   "id": "feather-dana-porter",
+   "x": 35.3,
+   "y": -235.6,
+   "z": 45.9,
+   "label": "Dana Porter Library rooftop",
+   "over": "roof",
+   "canvas": [
+    388.3,
+    394.4
+   ],
+   "landmark_id": "dana-porter"
+  },
+  {
+   "id": "feather-slc",
+   "x": -202.8,
+   "y": 13.1,
+   "z": 19.0,
+   "label": "Student Life Centre rooftop",
+   "over": "roof",
+   "canvas": [
+    -665.8,
+    91.8
+   ],
+   "landmark_id": "slc"
+  },
+  {
+   "id": "feather-e5",
+   "x": 212.3,
+   "y": 118.7,
+   "z": 34.6,
+   "label": "Engineering 5 rooftop",
+   "over": "roof",
+   "canvas": [
+    542.4,
+    -528.0
+   ],
+   "landmark_id": "e5"
+  },
+  {
+   "id": "feather-e7",
+   "x": 259.2,
+   "y": 108.9,
+   "z": 23.8,
+   "label": "Pearl Sullivan Engineering Building rooftop",
+   "over": "roof",
+   "canvas": [
+    704.2,
+    -518.4
+   ],
+   "landmark_id": "e7"
+  },
+  {
+   "id": "feather-eit",
+   "x": 58.2,
+   "y": -40.2,
+   "z": 29.0,
+   "label": "Centre for Environmental and Information Technology rooftop",
+   "over": "roof",
+   "canvas": [
+    233.6,
+    -26.9
+   ],
+   "landmark_id": "eit"
+  },
+  {
+   "id": "feather-mc",
+   "x": -98.7,
+   "y": 28.1,
+   "z": 31.0,
+   "label": "Mathematics & Computer rooftop",
+   "over": "roof",
+   "canvas": [
+    -349.4,
+    -57.1
+   ],
+   "landmark_id": "mc"
+  },
+  {
+   "id": "feather-dc",
+   "x": 53.9,
+   "y": 72.0,
+   "z": 21.7,
+   "label": "William G. Davis Computer Research Centre rooftop",
+   "over": "roof",
+   "canvas": [
+    88.8,
+    -260.2
+   ],
+   "landmark_id": "dc"
+  },
+  {
+   "id": "feather-qnc",
+   "x": -121.6,
+   "y": -67.2,
+   "z": 33.1,
+   "label": "Mike & Ophelia Lazaridis Quantum Nano Centre rooftop",
+   "over": "roof",
+   "canvas": [
+    -311.6,
+    172.9
+   ],
+   "landmark_id": "qnc"
+  },
+  {
+   "id": "feather-waterloo-park",
+   "x": 827.9,
+   "y": -550.7,
+   "z": 8.9,
+   "label": "Waterloo Park",
+   "over": "ground",
+   "canvas": [
+    3298.4,
+    544.1
+   ],
+   "landmark_id": "waterloo-park"
+  },
+  {
+   "id": "feather-silver-lake",
+   "x": 1176.2,
+   "y": -641.4,
+   "z": -1.0,
+   "label": "Silver Lake",
+   "over": "water",
+   "canvas": [
+    4521.4,
+    486.2
+   ],
+   "landmark_id": "silver-lake"
+  },
+  {
+   "id": "feather-perimeter",
+   "x": 1218.2,
+   "y": -720.5,
+   "z": 12.9,
+   "label": "Perimeter Institute for Theoretical Physics rooftop",
+   "over": "roof",
+   "canvas": [
+    4748.5,
+    597.4
+   ],
+   "landmark_id": "perimeter"
+  },
+  {
+   "id": "feather-public-square",
+   "x": 1646.0,
+   "y": -897.7,
+   "z": -2.3,
+   "label": "Waterloo Public Square",
+   "over": "ground",
+   "canvas": [
+    6327.5,
+    682.8
+   ],
+   "landmark_id": "public-square"
+  },
+  {
+   "id": "feather-wpl-main",
+   "x": 1458.9,
+   "y": -660.7,
+   "z": 13.2,
+   "label": "Waterloo Public Library - Main rooftop",
+   "over": "roof",
+   "canvas": [
+    5450.7,
+    262.3
+   ],
+   "landmark_id": "wpl-main"
+  },
+  {
+   "id": "feather-laurier",
+   "x": 1032.0,
+   "y": 111.5,
+   "z": 43.1,
+   "label": "Laurier Library rooftop",
+   "over": "roof",
+   "canvas": [
+    3180.0,
+    -1208.8
+   ],
+   "landmark_id": "laurier"
+  },
+  {
+   "id": "feather-waterloo-park-1",
+   "x": 375.1,
+   "y": -579.3,
+   "z": 9.8,
+   "label": "Waterloo Park (1 of 4)",
+   "over": "tree",
+   "canvas": [
+    1879.4,
+    980.6
+   ]
+  },
+  {
+   "id": "feather-waterloo-park-2",
+   "x": 1175.1,
+   "y": -251.3,
+   "z": 14.0,
+   "label": "Waterloo Park (2 of 4)",
+   "over": "ground",
+   "canvas": [
+    4062.5,
+    -433.9
+   ]
+  },
+  {
+   "id": "feather-waterloo-park-3",
+   "x": 811.1,
+   "y": -183.3,
+   "z": 9.5,
+   "label": "Waterloo Park (3 of 4)",
+   "over": "ground",
+   "canvas": [
+    2815.6,
+    -276.8
+   ]
+  },
+  {
+   "id": "feather-waterloo-park-4",
+   "x": 591.1,
+   "y": -379.3,
+   "z": 10.6,
+   "label": "Waterloo Park (4 of 4)",
+   "over": "tree",
+   "canvas": [
+    2338.7,
+    346.7
+   ]
+  },
+  {
+   "id": "feather-silver-lake-1",
+   "x": 1029.5,
+   "y": -663.5,
+   "z": -0.9,
+   "label": "Silver Lake (1 of 2)",
+   "over": "water",
+   "canvas": [
+    4076.7,
+    657.2
+   ]
+  },
+  {
+   "id": "feather-silver-lake-2",
+   "x": 1313.5,
+   "y": -623.5,
+   "z": -0.3,
+   "label": "Silver Lake (2 of 2)",
+   "over": "water",
+   "canvas": [
+    4940.9,
+    330.6
+   ]
+  },
+  {
+   "id": "feather-arts-quad",
+   "x": 53.0,
+   "y": -302.3,
+   "z": 7.0,
+   "label": "Arts Quad",
+   "over": "ground",
+   "canvas": [
+    522.9,
+    625.0
+   ]
+  },
+  {
+   "id": "feather-graduate-house-green",
+   "x": 147.4,
+   "y": -219.5,
+   "z": 17.1,
+   "label": "Graduate House Green",
+   "over": "tree",
+   "canvas": [
+    729.0,
+    334.9
+   ]
+  },
+  {
+   "id": "feather-mathematics-3-green",
+   "x": -172.2,
+   "y": 197.5,
+   "z": 19.1,
+   "label": "Mathematics 3 Green",
+   "over": "tree",
+   "canvas": [
+    -782.9,
+    -351.9
+   ]
+  },
+  {
+   "id": "feather-alumni-field",
+   "x": 1432.0,
+   "y": 288.7,
+   "z": 0.8,
+   "label": "Alumni Field",
+   "over": "ground",
+   "canvas": [
+    4256.1,
+    -1838.8
+   ]
+  }
+ ]
+}

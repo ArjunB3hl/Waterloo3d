@@ -1,0 +1,98 @@
+"""Build web/public/data/search.json: one entry per unique street / trail / place name inside the City of Waterloo.
+
+Each entry carries a representative canvas point (where the camera jumps) and the tile key containing it.
+Point choice: if any part of the feature lies inside a published tile, the point is picked among those vertices,
+so a search jumps to artwork rather than to the pending area; otherwise among all of its in-city vertices.
+Whether an entry is covered or pending is decided by the viewer at runtime against manifest.json (so this file
+does not go stale when tiles are published), but re-running after publishing improves the chosen points.
+
+Usage: python pipeline/build_search.py      (needs data_cache/scene/scene.pkl and data_cache/terrain/dem.npz)
+"""
+import os, sys, json, pickle, math, time
+import numpy as np
+import shapely
+sys.path.insert(0, os.path.dirname(__file__))
+from world import cfg, ROOT, world_to_canvas, F
+from build_scene import DEM
+
+# Overture road classes grouped into the kinds shown next to search results.
+TRAIL_CLASSES = {'footway', 'path', 'cycleway', 'track', 'steps', 'bridleway', 'pedestrian'}
+# Named areas worth finding by name (parks, schools, water...). Parking lots, retail, residential blocks etc. are noise.
+PLACE_PREFIXES = ('park/', 'education/', 'cemetery/', 'golf/', 'protected/nature_reserve', 'horticulture/garden',
+                  'recreation/', 'campground/', 'pedestrian/', 'medical/hospital')
+WATER_CLASSES = {'lake', 'pond', 'river', 'basin', 'reservoir', 'water', 'stream'}
+DENSIFY_M = 25.0  # resample long road segments so the representative point is not limited to sparse vertices
+
+
+def densify(xy):
+    out = [xy[:1]]
+    for a, b in zip(xy[:-1], xy[1:]):
+        n = max(1, int(math.ceil(np.hypot(*(b - a)) / DENSIFY_M)))
+        t = np.arange(1, n + 1)[:, None] / n
+        out.append(a + (b - a) * t)
+    return np.concatenate(out)
+
+
+def road_kind(r):
+    if r['kind'] == 'rail': return 'rail'
+    return 'trail' if r['cls'] in TRAIL_CLASSES else 'street'
+
+
+def place_kind(a):
+    c = a['cls']
+    if a['layer'] == 'water' and c.split('/')[-1] in WATER_CLASSES: return 'water'
+    if a['layer'] == 'land_use' and c.startswith(PLACE_PREFIXES): return 'place'
+    return None
+
+
+def main():
+    S = pickle.load(open(os.path.join(ROOT, 'data_cache', 'scene', 'scene.pkl'), 'rb'))
+    city = shapely.from_wkb(S['boundary_wkb']).buffer(30.0)
+    shapely.prepare(city)
+    D = DEM(); datum = cfg()['projection']['datum_m']
+    published = set(json.load(open(os.path.join(ROOT, 'web', 'public', 'data', 'manifest.json')))['tiles'])
+
+    groups = {}  # name -> {'kind': str, 'pts': [Nx2 local metres]}
+    for r in S['roads']:
+        name = (r.get('name') or '').strip()
+        if name and len(r['xy']) >= 2:
+            g = groups.setdefault(name, {'kind': road_kind(r), 'pts': []})
+            if g['kind'] == 'trail' and road_kind(r) == 'street': g['kind'] = 'street'  # a name that is also a street is a street
+            g['pts'].append(densify(np.asarray(r['xy'], float)))
+    for a in S['areas']:
+        name = (a.get('name') or '').strip(); kind = place_kind(a)
+        if name and kind and name not in groups:
+            poly = shapely.Polygon(a['ring'])
+            if poly.is_valid and not poly.is_empty:
+                p = poly.representative_point()
+                groups[name] = {'kind': kind, 'pts': [np.array([[p.x, p.y]])]}
+
+    entries = []
+    for name, g in groups.items():
+        pts = np.concatenate(g['pts'])
+        pts = pts[shapely.contains_xy(city, pts[:, 0], pts[:, 1])]
+        if not len(pts): continue
+        z = D.sample(pts[:, 0], pts[:, 1]) - datum
+        c, _ = world_to_canvas(np.c_[pts, z])
+        keys = np.array([f'{int(math.floor(x / F()))}_{int(math.floor(y / F()))}' for x, y in c])
+        inside = np.isin(keys, list(published))
+        cand = c[inside] if inside.any() else c
+        k = keys[inside] if inside.any() else keys
+        best = int(np.argmin(((cand - cand.mean(0)) ** 2).sum(1)))  # vertex nearest the centroid lies on the feature
+        entries.append({'n': name, 'k': g['kind'], 'c': [round(float(cand[best, 0]), 1), round(float(cand[best, 1]), 1)], 't': str(k[best])})
+
+    entries.sort(key=lambda e: (e['t'] not in published, e['n'].lower()))
+    out = {'version': 1, 'generated_utc': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+           'comment': "n name, k kind (street|trail|rail|place|water), c canvas px of a representative point, t tile 'i_j'. "
+                      'Covered/pending status is resolved at runtime against manifest.tiles.',
+           'entries': entries}
+    path = os.path.join(ROOT, 'web', 'public', 'data', 'search.json')
+    with open(path, 'w') as f:
+        json.dump(out, f, separators=(',', ':'), ensure_ascii=False)
+    n_cov = sum(e['t'] in published for e in entries)
+    kinds = {k: sum(e['k'] == k for e in entries) for k in sorted({e['k'] for e in entries})}
+    print(f'search.json: {len(entries)} names ({n_cov} with a point in published tiles) {kinds}  {os.path.getsize(path) / 1024:.0f} KB')
+
+
+if __name__ == '__main__':
+    main()
