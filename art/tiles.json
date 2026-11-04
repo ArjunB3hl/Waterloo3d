@@ -813,5 +813,138 @@
   "qa_verdict": "pass",
   "forced": false,
   "history": []
+ },
+ "4_-2": {
+  "version": "9660969e9f1e",
+  "batch": "B014",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+  "prompt_sha": "1ae8ede25640",
+  "reference_sha": "2d0d88d6bd50",
+  "reference_files": {
+   "color2x": "cd5c21d10bb8",
+   "cls": "5892165d65ce",
+   "height": "dd006bcaafb3"
+  },
+  "accepted_utc": "2026-11-04T22:53:28Z",
+  "source_file": "art/returned/B014/B014_4_-2.png",
+  "source_sha256": "98bb7b1e29a22feae3a606b801cd34775495199fd8053afe154d463bf5da2fb9",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "3_-3": {
+  "version": "2fd7f1b3d4e2",
+  "batch": "B014",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+  "prompt_sha": "83eebb654feb",
+  "reference_sha": "a4091a0e8e5c",
+  "reference_files": {
+   "color2x": "c67646f4a7d5",
+   "cls": "af826f8135b3",
+   "height": "fa4baa40580c"
+  },
+  "accepted_utc": "2026-11-04T22:53:43Z",
+  "source_file": "art/returned/B014/B014_3_-3.png",
+  "source_sha256": "7df8d9d881fe4651c740cf0e2dfee7b332b75191ded312423074f48415f24d44",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "4_-3": {
+  "version": "9fbc0a394421",
+  "batch": "B014",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+  "prompt_sha": "c1bc997cf536",
+  "reference_sha": "b540ba9bdbeb",
+  "reference_files": {
+   "color2x": "ada8d5726973",
+   "cls": "2476a56eab02",
+   "height": "9e732c85390b"
+  },
+  "accepted_utc": "2026-11-04T22:53:58Z",
+  "source_file": "art/returned/B014/B014_4_-3.png",
+  "source_sha256": "30e27d9e28bacac4509891d3b60665b85a76258633dd484b1009d012bc81b87a",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "-2_-3": {
+  "version": "c2a409f04de4",
+  "batch": "B015",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED (reviewed): -3_-2 geometry-cell flags are false positives (all roads/kerbs/parking on class outlines at 2-4x); -3_-3 right-join colour step x2.16 (geometry exact, fit scale 1.000 / 0.10 deg) -> seam packet",
+  "prompt_sha": "ccf465ab9ad9",
+  "reference_sha": "9ad3cf65cd84",
+  "reference_files": {
+   "color2x": "e4732ef7729f",
+   "cls": "6e94fb9e9d8f",
+   "height": "ee561271b2fc"
+  },
+  "accepted_utc": "2026-11-04T22:55:15Z",
+  "source_file": "art/returned/B015/B015_-2_-3.png",
+  "source_sha256": "341576f880dbc9b2b7dd5e669a3fe71eadec40d188e04cc9777c8c708622b89e",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "-3_-2": {
+  "version": "a778000c6b78",
+  "batch": "B015",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED (reviewed): -3_-2 geometry-cell flags are false positives (all roads/kerbs/parking on class outlines at 2-4x); -3_-3 right-join colour step x2.16 (geometry exact, fit scale 1.000 / 0.10 deg) -> seam packet",
+  "prompt_sha": "7caa96c191e4",
+  "reference_sha": "e53917ab4c11",
+  "reference_files": {
+   "color2x": "1dd2e8f926fe",
+   "cls": "5cadfa15ae51",
+   "height": "de2d8a1efd9d"
+  },
+  "accepted_utc": "2026-11-04T22:55:29Z",
+  "source_file": "art/returned/B015/B015_-3_-2.png",
+  "source_sha256": "bfad4e660167bf3dbd578965d447e5895c7c80cf1816d33395fed542a490657b",
+  "qa_verdict": "fail",
+  "forced": true,
+  "history": []
+ },
+ "-3_-3": {
+  "version": "46c69f1dd13d",
+  "batch": "B015",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED (reviewed): -3_-2 geometry-cell flags are false positives (all roads/kerbs/parking on class outlines at 2-4x); -3_-3 right-join colour step x2.16 (geometry exact, fit scale 1.000 / 0.10 deg) -> seam packet",
+  "prompt_sha": "f48b72c748e7",
+  "reference_sha": "cfda957df696",
+  "reference_files": {
+   "color2x": "230b20ccdc74",
+   "cls": "4c911aff37bb",
+   "height": "cabf42b773a8"
+  },
+  "accepted_utc": "2026-11-04T22:55:45Z",
+  "source_file": "art/returned/B015/B015_-3_-3.png",
+  "source_sha256": "92fa009df70066ca3f2ec673aca664452516a8e223b6bcd067a09e1909deaf5a",
+  "qa_verdict": "fail",
+  "forced": true,
+  "history": []
+ },
+ "-3_1": {
+  "version": "b48e4d821b98",
+  "batch": "B015",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED (reviewed): -3_-2 geometry-cell flags are false positives (all roads/kerbs/parking on class outlines at 2-4x); -3_-3 right-join colour step x2.16 (geometry exact, fit scale 1.000 / 0.10 deg) -> seam packet",
+  "prompt_sha": "b8be00978e13",
+  "reference_sha": "f25feee99ebe",
+  "reference_files": {
+   "color2x": "d438862f8f52",
+   "cls": "87ed76098bf6",
+   "height": "c947cd50dd2d"
+  },
+  "accepted_utc": "2026-11-04T22:56:02Z",
+  "source_file": "art/returned/B015/B015_-3_1.png",
+  "source_sha256": "7e33813d57db1654c134ff995104ec15a8be772b107b8556a884c675e4eb0a02",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
  }
 }
