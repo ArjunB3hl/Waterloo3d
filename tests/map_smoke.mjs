@@ -49,17 +49,23 @@ async function waitFor(page, fn, arg, timeout = 15000) {
   return page.waitForFunction(fn, arg, { timeout, polling: 100 });
 }
 const view = (page) => page.evaluate(() => window.__tinyWaterloo.map.getView());
-/** Wait for the camera to settle (no view change for 400 ms). */
+/** Wait for the camera to settle: no view change across two consecutive 400 ms windows (software GL in headless
+ *  Chromium can stall single frames for a few hundred ms, so one quiet window is not proof the motion ended). */
 async function settle(page) {
-  let last = JSON.stringify(await view(page));
-  for (let k = 0; k < 40; k++) {
+  let last = JSON.stringify(await view(page)), quiet = 0;
+  for (let k = 0; k < 50 && quiet < 2; k++) {
     await page.waitForTimeout(400);
     const now = JSON.stringify(await view(page));
-    if (now === last) return JSON.parse(now);
+    quiet = now === last ? quiet + 1 : 0;
     last = now;
   }
   return JSON.parse(last);
 }
+/** Wait until the view reaches a known target [cx, cy, zoom?] (canvas px tolerance). */
+const reach = (page, t, tol = 1) => waitFor(page, ([x, y, z, e]) => {
+  const v = window.__tinyWaterloo.map.getView();
+  return Math.hypot(v.cx - x, v.cy - y) < e && (z === null || Math.abs(v.zoom - z) < 1e-3);
+}, [t[0], t[1], t[2] ?? null, tol], 10000);
 const idle = (page) => waitFor(page, () => { const p = window.__tinyWaterloo?.map?.perf(); return p && p.inflight === 0 && p.queued === 0 && p.bitmaps > 0; });
 
 /** Mean luminance of a block of the base canvas around a screen point (CSS px). */
@@ -143,11 +149,13 @@ try {
   await check('keyboard: arrows pan, 0 returns home', async () => {
     await page.focus('#stage');
     const before = await view(page);
-    await page.keyboard.down('ArrowRight'); await page.waitForTimeout(350); await page.keyboard.up('ArrowRight');
+    await page.keyboard.down('ArrowRight'); await page.waitForTimeout(600); await page.keyboard.up('ArrowRight');
     const after = await settle(page);
-    assert(after.cx > before.cx + 50, `cx ${before.cx} -> ${after.cx}`);
+    // distance depends on the frame rate (software GL here), so only the direction is asserted
+    assert(after.cx > before.cx + 20 && Math.abs(after.cy - before.cy) < 1, `cx ${before.cx} -> ${after.cx}`);
     await page.keyboard.press('0');
-    const home = await settle(page);
+    await reach(page, [0, 0]);
+    const home = await view(page);
     assert(Math.abs(home.cx) < 1 && Math.abs(home.cy) < 1, `home ${JSON.stringify(home)}`);
     return `home ${JSON.stringify(home)}`;
   });
@@ -156,8 +164,10 @@ try {
     // same-document navigation: arrives as a hashchange (animated), so wait for the camera to settle
     await page.goto(`${BASE}#1500,-300,0.8`);
     await waitFor(page, () => window.__tinyWaterloo?.map);
-    const v = await settle(page);
-    assert(Math.abs(v.cx - 1500) < 0.5 && Math.abs(v.cy + 300) < 0.5 && Math.abs(v.zoom - 0.8) < 1e-6, JSON.stringify(v));
+    await reach(page, [1500, -300, 0.8], 0.5);
+    await waitFor(page, () => location.hash === '#1500,-300,0.8');
+    await page.waitForTimeout(500);   // past the debounced hash write: the URL must still name the target view
+    assert(await page.evaluate(() => location.hash) === '#1500,-300,0.8', 'hash rewritten');
     await page.reload();
     await waitFor(page, () => window.__tinyWaterloo?.map);
     const v2 = await view(page);
@@ -167,7 +177,8 @@ try {
 
   await check('editing the hash (hashchange) moves the view', async () => {
     await page.evaluate(() => { location.hash = '#3300,575,1'; });
-    const v = await settle(page);
+    await reach(page, [3300, 575, 1]);
+    const v = await view(page);
     assert(Math.abs(v.cx - 3300) < 1 && Math.abs(v.cy - 575) < 1 && Math.abs(v.zoom - 1) < 1e-3, JSON.stringify(v));
   });
 
@@ -192,7 +203,7 @@ try {
   await check('landmark card selection animates there and opens the detail panel', async () => {
     await page.locator('.card', { hasText: 'Waterloo Park' }).click();
     const l = await page.evaluate(() => window.__tinyWaterloo.landmarks.find((x) => x.id === 'waterloo-park'));
-    await waitFor(page, (c) => { const v = window.__tinyWaterloo.map.getView(); return Math.hypot(v.cx - c[0], v.cy - c[1]) < 1; }, l.canvas, 8000);
+    await reach(page, [...l.canvas, l.zoom]);
     const v = await view(page);
     assert(Math.hypot(v.cx - l.canvas[0], v.cy - l.canvas[1]) < 1 && Math.abs(v.zoom - l.zoom) < 1e-3, `view ${JSON.stringify(v)} vs ${l.canvas}`);
     const title = await page.locator('#landmark-panel h2').textContent();
@@ -209,7 +220,7 @@ try {
     await page.locator('.strip-list').evaluate((el) => { el.scrollLeft = el.scrollWidth; });
     await page.locator('.card', { hasText: 'Laurel Creek' }).click();
     const l = await page.evaluate(() => window.__tinyWaterloo.landmarks.find((x) => x.id === 'laurel-creek'));
-    await waitFor(page, (c) => { const v = window.__tinyWaterloo.map.getView(); return Math.hypot(v.cx - c[0], v.cy - c[1]) < 1; }, l.canvas, 8000);
+    await reach(page, [...l.canvas, 0.3]);
     const v = await view(page);
     const toast = await page.locator('#toast').textContent();
     assert(/coming soon/i.test(toast), `toast ${toast}`);
@@ -256,6 +267,139 @@ try {
     const p = await page.evaluate(() => window.__tinyWaterloo.perf());
     for (const k of ['fps', 'frameP95Ms', 'bitmaps', 'bitmapMB', 'inflight', 'tilesDrawn', 'dpr', 'viewport']) assert(k in p, `missing ${k}`);
     return JSON.stringify(p);
+  });
+
+  await check('LOD choice: 256 px tiles when zoomed out, 1024 px when zoomed in, overview only below 0.07', async () => {
+    const seen = [];
+    const onReq = (r) => { const m = r.url().match(/\/data\/tiles\/(\d+)\//); if (m) seen.push(+m[1]); };
+    page.on('request', onReq);
+    const at = async (cx, cy, zoom) => {
+      seen.length = 0;
+      await page.evaluate((v) => window.__tinyWaterloo.map.setView(v), { cx, cy, zoom });
+      await idle(page);
+      await page.waitForTimeout(200);
+      return [...new Set(seen)];
+    };
+    const far = await at(3000, -600, 0.05);
+    const mid = await at(3000, -600, 0.2);
+    const near = await at(5200, -200, 0.9);
+    page.off('request', onReq);
+    assert(far.length === 0, `tile requests at zoom 0.05: ${far}`);
+    assert(mid.length && mid.every((l) => l === 256), `zoom 0.2 requested ${mid}`);
+    assert(near.length && near.every((l) => l === 1024), `zoom 0.9 requested ${near}`);
+    return `0.05: none, 0.2: ${mid}, 0.9: ${near}`;
+  });
+
+  await check('aux layers: packed heights + life drawn screen aligned; heightAt/getHeightTile/getLifeTile agree', async () => {
+    await page.evaluate(() => { window.__tinyWaterloo.map.setView({ cx: 300, cy: 200, zoom: 0.8 }); window.__tinyWaterloo.map.requestAuxLayers({ height: true, life: true }); });
+    await idle(page);
+    await page.waitForTimeout(300);
+    const r = await page.evaluate(async () => {
+      const map = window.__tinyWaterloo.map;
+      const hc = map.heightCanvas, lc = map.lifeCanvas, base = map.baseCanvas;
+      const hctx = hc.getContext('2d'), lctx = lc.getContext('2d');
+      const w = base.clientWidth, h = base.clientHeight;
+      const [ax, ay] = map.screenToCanvas(0, 0), [bx, by] = map.screenToCanvas(w, h), F = map.frame.F, loads = [];
+      for (let j = Math.floor(ay / F); j <= Math.floor(by / F); j++) for (let i = Math.floor(ax / F); i <= Math.floor(bx / F); i++) loads.push(map.getHeightTile(i, j));
+      await Promise.all(loads);
+      const life = await map.getLifeTile(0, 0);
+      // exact = same texel; edge = equals the texel one aux pixel away (tile edges are snapped to whole device px,
+      // so texel boundaries may shift by < 1 aux pixel); anything else is a misalignment
+      const eq = (a, b) => (Number.isNaN(a) && Number.isNaN(b)) || Math.abs(a - b) < 0.02;
+      const d = w / hc.width / map.getView().zoom;
+      let n = 0, match = 0, edge = 0, valid = 0, lifeNonZero = 0;
+      for (let y = 40; y < h - 40; y += 37) for (let x = 40; x < w - 40; x += 41) {
+        const hx = Math.floor((x / w) * hc.width), hy = Math.floor((y / h) * hc.height);
+        const px = hctx.getImageData(hx, hy, 1, 1).data;
+        const z = map.frame.decodeHeight(px[0], px[1], px[2]);
+        // sample heightAt at the centre of that aux pixel
+        const [cx, cy] = map.screenToCanvas((hx + 0.5) * w / hc.width, (hy + 0.5) * h / hc.height);
+        const z2 = map.heightAt(cx, cy);
+        const lp = lctx.getImageData(Math.floor((x / w) * lc.width), Math.floor((y / h) * lc.height), 1, 1).data;
+        if (lp[0] || lp[1] || lp[2]) lifeNonZero++;
+        n++;
+        if (!Number.isNaN(z)) valid++;
+        if (eq(z, z2)) match++;
+        else if ([[-d, 0], [d, 0], [0, -d], [0, d]].some(([ox, oy]) => eq(z, map.heightAt(cx + ox, cy + oy)))) edge++;
+      }
+      return { n, match, edge, valid, lifeNonZero, life: life && [life.width, life.height], sizes: [hc.width, hc.height, base.width, base.height] };
+    });
+    assert(r.valid > r.n * 0.8, `valid height texels ${r.valid}/${r.n}`);
+    assert(r.match >= r.n * 0.95 && r.match + r.edge === r.n, `heightCanvas vs heightAt: ${r.match} exact + ${r.edge} edge of ${r.n}`);
+    assert(r.lifeNonZero > 0, 'life canvas empty');
+    assert(r.life && r.life[0] === 1024, `life tile ${r.life}`);
+    await page.evaluate(() => window.__tinyWaterloo.map.requestAuxLayers({ height: false, life: false }));
+    return `heights ${r.match} exact + ${r.edge} at texel edges of ${r.n}, life px ${r.lifeNonZero}, canvases ${r.sizes}`;
+  });
+
+  await check('settings drive fx.setEnabled; desktop pointer drives fx.setFocus; M toggles minimap', async () => {
+    await page.evaluate(() => {
+      const fx = window.__tinyWaterloo.fx;
+      window.__fxCalls = { enabled: [], focus: [] };
+      fx.setEnabled = (e) => window.__fxCalls.enabled.push(e);
+      fx.setFocus = (x, y) => window.__fxCalls.focus.push([x, y]);
+    });
+    await page.click('button[aria-label="Settings"]');
+    await page.click('label[for="set-tiltShift"]');
+    await page.keyboard.press('Escape');
+    await page.mouse.move(400, 300);
+    await page.mouse.move(420, 310);
+    await page.focus('#stage');
+    await page.keyboard.press('m');
+    const r = await page.evaluate(() => ({ calls: window.__fxCalls, minimapHidden: document.querySelector('.minimap').hidden }));
+    await page.keyboard.press('m');
+    await page.click('button[aria-label="Settings"]');
+    await page.click('label[for="set-tiltShift"]');
+    await page.keyboard.press('Escape');
+    const off = r.calls.enabled.find((e) => e.tiltShift === false);
+    assert(off && off.life === true && typeof off.strength === 'number', `setEnabled calls ${JSON.stringify(r.calls.enabled)}`);
+    assert(r.calls.focus.some(([x, y]) => x === 420 && y === 310), `setFocus calls ${JSON.stringify(r.calls.focus)}`);
+    assert(r.minimapHidden, 'M did not hide the minimap');
+  });
+
+  await check('share copies the view URL and shows a toast', async () => {
+    await ctx.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: BASE });
+    await page.click('button[aria-label="Copy link to this view"]');
+    await waitFor(page, () => document.getElementById('toast').classList.contains('show'));
+    const [clip, hash, toast] = await page.evaluate(async () => [await navigator.clipboard.readText(), location.hash, document.getElementById('toast').textContent]);
+    assert(clip.endsWith(hash) && /^#-?\d+,-?\d+,/.test(hash), `clipboard ${clip} hash ${hash}`);
+    return `${toast}: ${clip}`;
+  });
+
+  await check('goose mode: Fly buttons call actor.start; map-only UI hidden and drag locked while active', async () => {
+    await page.evaluate(() => {
+      const a = window.__tinyWaterloo.actor;
+      window.__starts = [];
+      a.start = async (at) => { window.__starts.push(at ?? null); a.active = true; };
+      a.stop = () => { a.active = false; };
+    });
+    await page.click('.fly-btn');
+    await waitFor(page, () => document.getElementById('app').classList.contains('actor-active'));
+    assert(!(await page.locator('.fly-btn').isVisible()) && !(await page.locator('.strip').isVisible()), 'map-only UI still visible');
+    assert(await page.locator('#attribution').isVisible(), 'attribution hidden during gameplay');
+    const before = await view(page);
+    await page.mouse.move(640, 400); await page.mouse.down(); await page.mouse.move(400, 300, { steps: 6 }); await page.mouse.up();
+    await page.waitForTimeout(300);
+    const after = await view(page);
+    assert(after.cx === before.cx && after.cy === before.cy, 'drag panned while the actor was active');
+    await page.evaluate(() => window.__tinyWaterloo.actor.stop());
+    await waitFor(page, () => !document.getElementById('app').classList.contains('actor-active'));
+    await page.locator('.card', { hasText: 'Dana Porter' }).click();
+    await page.locator('#landmark-panel button', { hasText: 'Fly from here' }).click();
+    const starts = await page.evaluate(() => window.__starts);
+    const dp = await page.evaluate(() => window.__tinyWaterloo.landmarks.find((x) => x.id === 'dana-porter').canvas);
+    assert(starts[0] === null && starts[1]?.cx === dp[0] && starts[1]?.cy === dp[1], `start calls ${JSON.stringify(starts)}`);
+    await page.evaluate(() => window.__tinyWaterloo.actor.stop());
+    await waitFor(page, () => !document.getElementById('app').classList.contains('actor-active'));
+    return JSON.stringify(starts);
+  });
+
+  await check('reduced motion: camera jumps instead of animating', async () => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.evaluate(() => window.__tinyWaterloo.map.setView({ cx: -500, cy: 300, zoom: 1.2 }, { animate: true }));
+    const v = await view(page);
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    assert(v.cx === -500 && v.cy === 300 && v.zoom === 1.2, JSON.stringify(v));
   });
 
   await check('no console errors during the session', async () => {

@@ -55,7 +55,7 @@ export class Panels {
 
 export function buildSettings(body: HTMLElement, map: MapAPI): void {
   const toggles: [keyof Settings, string, string?][] = [
-    ['minimap', 'Minimap', 'M'],
+    ['minimap', 'Minimap', 'Keyboard shortcut: M'],
     ['life', 'Life on the map', 'Swaying trees and moving water'],
     ['labels', 'Landmark labels'],
     ['coverage', 'Coverage overlay', 'City boundary, pending areas and render badges'],

@@ -248,8 +248,16 @@ class MapView implements CameraControl {
     this.lastMoveT = performance.now();
     this.markDirty();
     for (const cb of this.viewL) cb({ ...c });
+    this.scheduleHashWrite();
+  }
+
+  /** Mirror the view into the URL (replaceState, debounced) once the camera has come to rest. */
+  private scheduleHashWrite(): void {
     clearTimeout(this.hashTimer);
-    this.hashTimer = window.setTimeout(() => history.replaceState(history.state, '', formatHash(this.view)), HASH_WRITE_DELAY_MS);
+    this.hashTimer = window.setTimeout(() => {
+      if (this.fly || this.smoothZoom || this.inertia || this.keyPan.dx || this.keyPan.dy) this.scheduleHashWrite();
+      else history.replaceState(history.state, '', formatHash(this.view));
+    }, HASH_WRITE_DELAY_MS);
   }
 
   /** Advance fly-to, smooth zoom, inertia and key panning by dt. Returns true while any is still running. */

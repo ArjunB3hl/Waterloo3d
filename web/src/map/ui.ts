@@ -123,8 +123,8 @@ export function createUI(map: MapAPI, deps: { fx: EffectsModule; actor: ActorMod
   // The actor owns its HUD and Land control; while it flies, map-drag-only UI is hidden and pan input is locked.
   let actorActive = false;
   function syncActor() {
-    if (actor.active === actorActive) return;
-    actorActive = actor.active;
+    if (!!actor.active === actorActive) return;
+    actorActive = !!actor.active;
     app.classList.toggle('actor-active', actorActive);
     map.setInteractive(!actorActive);
     minimap.setEnabled(!actorActive);
