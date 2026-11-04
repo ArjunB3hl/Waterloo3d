@@ -25,14 +25,32 @@ def sha(path):
     return hashlib.sha256(open(path, 'rb').read()).hexdigest()[:12]
 
 
+def finish_palette(f):
+    """Shared palette for every finished tile (per-tile palettes made colours step at seams). Built once from the
+    style-sample tile named in art_finish.palette_from and stored in art/ so later publishes are reproducible."""
+    path = os.path.join(ROOT, 'art', f"palette_{f['id']}.png")
+    if os.path.exists(path): return Image.open(path)
+    src = Image.open(os.path.join(ART, f"{f['palette_from']}.png")).convert('RGB').resize((F(), F()), Image.LANCZOS)
+    pal = _prefinish(src, f).quantize(colors=f['colors'], method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+    pal.save(path)
+    return pal
+
+
+def _prefinish(im, f):
+    small = im.resize((f['work_px'], f['work_px']), Image.BOX)
+    u = f.get('unsharp')
+    return small.filter(ImageFilter.UnsharpMask(radius=u['radius'], percent=u['percent'], threshold=u['threshold'])) if u else small
+
+
 def art_finish(im):
     """Pixel-art finish for accepted generated art (config/world.json 'art_finish'); deterministic for a given input."""
     f = cfg().get('art_finish')
     if not f: return im, None
-    small = im.resize((f['work_px'], f['work_px']), Image.BOX)
-    u = f.get('unsharp')
-    if u: small = small.filter(ImageFilter.UnsharpMask(radius=u['radius'], percent=u['percent'], threshold=u['threshold']))
-    q = small.quantize(colors=f['colors'], method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).convert('RGB')
+    small = _prefinish(im, f)
+    if f.get('palette_from'):
+        q = small.quantize(palette=finish_palette(f), dither=Image.Dither.NONE).convert('RGB')
+    else:
+        q = small.quantize(colors=f['colors'], method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).convert('RGB')
     return q.resize((F(), F()), Image.NEAREST), f['id']
 
 

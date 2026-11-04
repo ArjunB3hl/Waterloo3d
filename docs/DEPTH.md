@@ -257,21 +257,21 @@ WebGL2, at 1280 x 800 and dpr 1, plus one dpr 2 context. The simulation checks u
 frozen, so results do not depend on the software-GL frame rate. Test sites are searched in the collision data at run
 time.
 
-Results: **16 / 16 PASS** on each of the last two runs. The run before them had 15 checks, before the UI-button check was
-added, and passed 15 / 15. Where values vary, the ranges cover those three runs.
+Results: **16 / 16 PASS** (2026-11-04, 7x goose). The E5, slope and water rows are from that run; the other rows are
+from earlier 5x runs and their ranges (the 7x run: occlusion 81%, shadow 0.04-0.33 art px off).
 
 | Check | Measured |
 | --- | --- |
 | Start: active, HUD, map UI hidden, canvases | shadow canvas `multiply`, goose canvas `normal` |
 | Alignment, 3 points x 3 zooms | max **3.7e-8 px** (< 0.5 px) |
-| E5 wall | Hit after 1.6 s. Speed into the facade 11.5 to -0.4 m/s. Slid 22.1 m at 12.5 m/s. `solidTop - z` max -8.2 m (never above the goose). Closest building column 2.05 m (sphere 2 m). |
+| E5 wall | Hit after 1.5 s. Speed into the facade 11.5 to -0.4 m/s. Slid 20.6 m at 12.1 m/s. `solidTop - z` max -8.2 m (never above the goose). Closest building column 2.85 m (sphere 2.8 m). |
 | Trees | Densest wood at (-336, -144). 15 s in crowns, minimum speed **5.60 m/s (40%)**. Passed 46 m beyond the centre with no blocking contact. |
-| Steepest flyable slope | 8.9 degrees at (764, 540). Over 55.8 m the goose rose 4.86 m against 4.96 m of ground. Lowest point 2.05 m above the surface (hard floor 2.05 m). Deviation from the 2.3 m skim: max 0.25 m, mean 0.16 m. |
+| Steepest flyable slope | 9.6 degrees at (-272, -556). Over 55.8 m the goose rose 5.57 m against 5.49 m of ground. Lowest point 2.85 m above the surface (sphere 2.8 m). Deviation from the 3.1 m skim: max 0.25 m, mean 0.17 m. |
 | Occlusion | 88% occluded behind Dana Porter. Stipple 277 px, outline 264 px. 0% above the roof. |
 | Shadow | 0.06-0.15 artwork px from the sun-ray point on the lawn, roof and facade (threshold 0.75; receiver heights as in the table above) |
 | Feathers | Toast "Feather found: Dana Porter Library rooftop (1 of 24)". HUD 1/24. Saved once. |
 | Edge fence | Never left the flyable area (closest 48 px from the edge, the margin). Slid 46 m in 6 s. Toast shown. |
-| Water | Skims 0.94-0.96 m above the surface (2.3 m over land) |
+| Water | Skims 0.97-1.01 m above the surface (3.1 m over land) |
 | Keyboard | Holding A raises the heading in the live loop. L lands ("Landed. Feathers found: 1 of 24"). |
 | UI | The real "Fly as a goose" button starts the flight. Zoom 1.6 after the intro. |
 | Land button / Escape / restart | Both stop the flight. After a restart the goose draws (216-274 shaded px). |

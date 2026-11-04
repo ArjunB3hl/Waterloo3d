@@ -45,14 +45,15 @@
     "units_per_m": 100
   },
   "art_finish": {
-    "comment": "Deterministic pixel-art finish applied at publish time to accepted generated art (art/accepted keeps the original). Box-downscale to work_px, light unsharp mask, median-cut palette of `colors` without dithering, nearest-neighbour upscale to frame_px.",
-    "id": "px512-q64",
+    "comment": "Deterministic pixel-art finish applied at publish time to accepted generated art (art/accepted keeps the original). Box-downscale to work_px, light unsharp mask, median-cut palette of `colors` without dithering, nearest-neighbour upscale to frame_px. One shared palette (art/palette_<id>.png, built from the palette_from style-sample tile) is used for every tile so colours match across seams.",
+    "id": "px512-q64s",
     "work_px": 512,
     "colors": 64,
     "unsharp": {
       "radius": 1,
       "percent": 60,
       "threshold": 2
-    }
+    },
+    "palette_from": "0_0"
   }
 }

@@ -12,5 +12,62 @@
   "qa_verdict": "pass",
   "forced": false,
   "history": []
+ },
+ "0_-1": {
+  "version": "413064644d1f",
+  "batch": "B002",
+  "model_reported": "image_gen.imagegen (model name/version not exposed)",
+  "settings_reported": "reference-image style transfer/edit; mask as image guidance (0_-1, -1_0) / described as coordinates (-1_-1); no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown",
+  "prompt_sha": "18f25700d147",
+  "reference_sha": "d623172801fc",
+  "reference_files": {
+   "color2x": "6c926a046d10",
+   "cls": "c8312bb6177b",
+   "height": "5685e28cd8af"
+  },
+  "accepted_utc": "2026-11-04T17:40:30Z",
+  "source_file": "art/returned/B002/B002_0_-1.png",
+  "source_sha256": "276cab3ea102b7e7f5785466ae6f588d76d408aa27a0bbf0bda2e97156a25ad2",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "-1_0": {
+  "version": "b1f9da2630ef",
+  "batch": "B002",
+  "model_reported": "image_gen.imagegen (model name/version not exposed)",
+  "settings_reported": "reference-image style transfer/edit; mask as image guidance (0_-1, -1_0) / described as coordinates (-1_-1); no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown",
+  "prompt_sha": "a7b088eae0a2",
+  "reference_sha": "1281314db2af",
+  "reference_files": {
+   "color2x": "e970d6c507b6",
+   "cls": "2c507b65c7b2",
+   "height": "f60207ad0175"
+  },
+  "accepted_utc": "2026-11-04T17:40:35Z",
+  "source_file": "art/returned/B002/B002_-1_0.png",
+  "source_sha256": "9932bfddfb3625c0f26d91b7ce574ac2e5e306eee36c212ad3625145e0976067",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "-1_-1": {
+  "version": "4ec9ef911f56",
+  "batch": "B002",
+  "model_reported": "image_gen.imagegen (model name/version not exposed)",
+  "settings_reported": "reference-image style transfer/edit; mask as image guidance (0_-1, -1_0) / described as coordinates (-1_-1); no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown",
+  "prompt_sha": "b4cf23874bbc",
+  "reference_sha": "d229751d98da",
+  "reference_files": {
+   "color2x": "a48058406e95",
+   "cls": "d3fabe747d91",
+   "height": "6318a06c947b"
+  },
+  "accepted_utc": "2026-11-04T17:40:41Z",
+  "source_file": "art/returned/B002/B002_-1_-1.png",
+  "source_sha256": "c81f4f3cfc60c4605ecdee3659556641ff4aa62525573650635e41a2d323cbab",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
  }
 }

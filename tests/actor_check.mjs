@@ -10,6 +10,7 @@
 import { createRequire } from 'node:module';
 import { spawn } from 'node:child_process';
 import { mkdir } from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -23,6 +24,12 @@ const SHOTS = path.join(ROOT, 'docs', 'screenshots');
 const GL_ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'];
 const DANA_PORTER = [388.3, 409.0];   // landmarks.json canvas point (roof)
 const E5 = [542.4, -513.4];
+// goose collision sphere and land skim height, read from the sources (FLIGHT.radius / FLIGHT.clearance in flight.ts)
+const DIMS = readFileSync(path.join(ROOT, 'web', 'src', 'depth', 'gooseDims.ts'), 'utf8');
+const num = (re, src) => Number(src.match(re)[1]);
+const RADIUS = num(/GOOSE_BODY_RADIUS_M = ([\d.]+)/, DIMS) * num(/GOOSE_DISPLAY_SCALE = ([\d.]+)/, DIMS);
+const SKIM = RADIUS + num(/clearance: GOOSE_BODY_RADIUS_M \* GOOSE_SCALE \+ ([\d.]+)/,
+  readFileSync(path.join(ROOT, 'web', 'src', 'depth', 'flight.ts'), 'utf8'));
 
 let failures = 0;
 let occlusionPoint = null;   // found by the occlusion check, reused at dpr 2
@@ -160,7 +167,7 @@ async function main() {
     });
 
     await check('collision: flying into the Engineering 5 wall stops at it and slides along it (no penetration)', async () => {
-      const r = await page.evaluate(async (e5) => {
+      const r = await page.evaluate(async ([e5, R]) => {
         const T = window.__tinyWaterloo, D = T.actor.debug, at = window.__at, col = D.collision, F = T.map.frame;
         const roof = await at.surfaceWorld(e5[0], e5[1]);
         await col.ensureAround(roof[0], roof[1], 200);
@@ -202,7 +209,7 @@ async function main() {
         let maxAboveZ = -Infinity, clear = Infinity;
         for (const s of states) {
           maxAboveZ = Math.max(maxAboveZ, col.solidTop(s.x, s.y) - s.z);
-          clear = Math.min(clear, at.clearance(s, 2.5));
+          clear = Math.min(clear, at.clearance(s, R + 0.5));
         }
         // velocity into the facade (along -dir) before and after the first contact
         const intoSpeed = (list) => list.reduce((a, s) => a - (s.vx * dir[0] + s.vy * dir[1]), 0) / list.length;
@@ -211,18 +218,18 @@ async function main() {
         const slide = Math.abs((last.x - hit.x) * t[0] + (last.y - hit.y) * t[1]);
         const roofZ = col.solidTop(wall[0] - dir[0] * 3, wall[1] - dir[1] * 3);
         return { hitAt: first / 60, normal: n, dir, maxAboveZ, clear, before, after, slide, z: last.z, roofZ, speed: last.speed, hitKind: hit.kind };
-      }, E5);
+      }, [E5, RADIUS]);
       assert(!r.error, r.error);
       assert(r.hitKind === 'wall', `hit kind ${r.hitKind}`);
       assert(r.maxAboveZ < 0, `solidTop rose ${f2(r.maxAboveZ)} m above the goose`);
-      // the sweep tests 8 ring points on a 2 m sphere: between them a straight facade can come to 2 cos(22.5 deg) = 1.85 m
-      assert(r.clear >= 1.75, `came within ${f2(r.clear)} m of the facade (sphere radius 2 m)`);
+      // the sweep tests 8 ring points on the sphere: between them a straight facade can come to R cos(22.5 deg) = 0.92 R
+      assert(r.clear >= RADIUS * 0.875, `came within ${f2(r.clear)} m of the facade (sphere radius ${f2(RADIUS)} m)`);
       assert(r.after < 0.5, `still moving ${f2(r.after)} m/s into the facade after contact (was ${f2(r.before)})`);
       assert(r.slide > 8, `slid only ${f2(r.slide)} m along the wall`);
       assert(r.z < r.roofZ - 5, 'goose climbed over the building instead of hitting the facade');
       return `hit after ${f2(r.hitAt)} s, normal (${f2(r.normal[0])}, ${f2(r.normal[1])}) vs approach dir (${f2(r.dir[0])}, ${f2(r.dir[1])}); ` +
         `speed into the facade ${f2(r.before)} -> ${f2(r.after)} m/s, slid ${f2(r.slide)} m at ${f2(r.speed)} m/s, max solidTop-z ${f2(r.maxAboveZ)} m, ` +
-        `closest building column ${f2(r.clear)} m (sphere 2 m)`;
+        `closest building column ${f2(r.clear)} m (sphere ${f2(RADIUS)} m)`;
     });
 
     await check('trees: inside a crown the goose slows to ~40% but is not blocked', async () => {
@@ -276,7 +283,7 @@ async function main() {
     });
 
     await check('terrain: on the steepest flyable slope the altitude floor follows the ground (skims, never penetrates)', async () => {
-      const r = await page.evaluate(async () => {
+      const r = await page.evaluate(async (SKIM) => {
         const D = window.__tinyWaterloo.actor.debug, at = window.__at, col = D.collision;
         await col.ensure(-1200, -1500, 3500, 1200);
         const clearAlong = (x, y, ux, uy) => {
@@ -303,24 +310,24 @@ async function main() {
           }
         const { u } = best;
         const s0 = [best.x - u[0] * 32, best.y - u[1] * 32];
-        await D.teleport(s0[0], s0[1], col.ground(s0[0], s0[1]) + 2.3, Math.atan2(u[1], u[0]));
+        await D.teleport(s0[0], s0[1], col.ground(s0[0], s0[1]) + SKIM, Math.atan2(u[1], u[0]));
         const states = at.run(270, 1 / 60, { climb: -1 });   // dive: press against the floor while climbing the slope
         const gaps = states.map((s) => s.z - col.solidTop(s.x, s.y));
         const settled = gaps.slice(30);
         const first = states[30], last = states[states.length - 1];
         return {
-          site: best, minGap: Math.min(...gaps), maxDev: Math.max(...settled.map((g) => Math.abs(g - 2.3))),
-          meanDev: settled.reduce((a, g) => a + Math.abs(g - 2.3), 0) / settled.length,
+          site: best, minGap: Math.min(...gaps), maxDev: Math.max(...settled.map((g) => Math.abs(g - SKIM))),
+          meanDev: settled.reduce((a, g) => a + Math.abs(g - SKIM), 0) / settled.length,
           rise: last.z - first.z, groundRise: col.solidTop(last.x, last.y) - col.solidTop(first.x, first.y),
           dist: Math.hypot(last.x - first.x, last.y - first.y),
         };
-      });
+      }, SKIM);
       const deg = (Math.atan(r.site.sl) * 180) / Math.PI;
-      assert(r.minGap >= 2.0, `sphere (r 2 m) dipped to ${f2(r.minGap)} m above the ground`);
+      assert(r.minGap >= RADIUS, `sphere (r ${f2(RADIUS)} m) dipped to ${f2(r.minGap)} m above the ground`);
       assert(r.maxDev < 0.5 && r.meanDev < 0.25, `floor tracking deviation max ${f2(r.maxDev)} mean ${f2(r.meanDev)} m`);
       assert(Math.abs(r.rise - r.groundRise) < 0.5 && r.groundRise > 2, `rise ${f2(r.rise)} vs ground ${f2(r.groundRise)}`);
       return `slope ${f2(deg)} deg at (${r.site.x}, ${r.site.y}); over ${f2(r.dist)} m the goose rose ${f2(r.rise)} m vs ground ${f2(r.groundRise)} m; ` +
-        `height above ground min ${f2(r.minGap)} m, deviation from 2.3 m skim max ${f2(r.maxDev)} / mean ${f2(r.meanDev)} m`;
+        `height above ground min ${f2(r.minGap)} m, deviation from ${f2(SKIM)} m skim max ${f2(r.maxDev)} / mean ${f2(r.meanDev)} m`;
     });
 
     await check('occlusion: behind the Dana Porter tower the goose is mostly hidden and drawn as a stipple + outline', async () => {
@@ -516,7 +523,7 @@ async function main() {
       assert(r.n > 20, `only ${r.n} settled steps over water`);
       assert(r.min >= 0.85 && r.max < 1.3, `skim height over water ${f2(r.min)}..${f2(r.max)} m`);
       assert(r.walls === 0, 'water surface reported as a wall');
-      return `water at (${r.site.x}, ${r.site.y}): skims ${f2(r.min)}..${f2(r.max)} m above the surface (land: 2.3 m)`;
+      return `water at (${r.site.x}, ${r.site.y}): skims ${f2(r.min)}..${f2(r.max)} m above the surface (land: ${f2(SKIM)} m)`;
     });
 
     await check('flight screenshot over campus (banking turn, shadow, HUD)', async () => {

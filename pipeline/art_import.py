@@ -20,7 +20,7 @@ in the batch order and accepted immediately, so later tiles of the batch are sea
 Draft batches whose dependencies become accepted are rebuilt automatically. Returns for an item whose reference job
 (color2x/cls/height) changed since its packet was built are refused (rebuild and resend, or --force).
 """
-import os, sys, re, json, shutil, argparse, subprocess
+import math, os, sys, re, json, shutil, argparse, subprocess
 import numpy as np
 from PIL import Image, ImageDraw
 
@@ -141,11 +141,25 @@ def registration(ref, ret):
         D = np.array([[d1, d2] for *_xy, d1, d2, _p in blocks], float)
         M, *_ = np.linalg.lstsq(P, D, rcond=None)  # D = P @ M: M[0:2] linear part (transposed), M[2] translation
         resid = np.linalg.norm(D - P @ M, axis=1)
+        def confirmed(x, y):
+            # Repetitive parallel structure (rail lines, parking stripes) can make one 256 px correlation lock onto the wrong
+            # stripe. Only report a block when at least 2 of its four 128 px sub-blocks also disagree with the affine fit.
+            bad = 0
+            for sy in (y - 128, y):
+                for sx in (x - 128, x):
+                    a, b = er[sy:sy + 128, sx:sx + 128], et[sy:sy + 128, sx:sx + 128]
+                    if a.mean() < 2.0: continue
+                    sdx, sdy, sp = A.phase_correlate(a, b)
+                    pred = np.array([sx + 64 - 512, sy + 64 - 512, 1.0]) @ M
+                    if sp >= 0.06 and math.hypot(sdx - pred[0], sdy - pred[1]) > T['local_px']: bad += 1
+            return bad >= 2
+        flagged = [(x, y, d1, d2, r) for (x, y, d1, d2, _p), r in zip(blocks, resid) if r > T['local_px']]
         out.update({'scale': round(float(1 + (M[0, 0] + M[1, 1]) / 2), 4),
                     'rot_deg': round(float(np.degrees((M[0, 1] - M[1, 0]) / 2)), 3),
                     'max_resid': round(float(resid.max()), 2),
+                    'unconfirmed_blocks': [[int(x), int(y), round(float(r), 1)] for x, y, d1, d2, r in flagged if not confirmed(x, y)],
                     'displaced': [[int(x), int(y), round(float(d1), 1), round(float(d2), 1)]
-                                  for (x, y, d1, d2, _p), r in zip(blocks, resid) if r > T['local_px']]})
+                                  for x, y, d1, d2, r in flagged if confirmed(x, y)]})
     return out
 
 

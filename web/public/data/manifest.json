@@ -1,6 +1,6 @@
 {
  "name": "Tiny Waterloo",
- "generated_utc": "2026-11-04T17:03:18Z",
+ "generated_utc": "2026-11-04T17:43:21Z",
  "frame_px": 1024,
  "lods_px": [
   256,
@@ -351,12 +351,13 @@
   "-1_-1": {
    "i": -1,
    "j": -1,
-   "kind": "reference",
-   "v": "351732440382",
+   "kind": "art",
+   "v": "f02ed8c4d4ab",
    "hv": "86a6c0cf3f72",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "lv": "c598f567e9b7",
+   "art_version": "4ec9ef911f56",
+   "batch": "B002",
+   "finish": "px512-q64s"
   },
   "-1_-2": {
    "i": -1,
@@ -364,6 +365,7 @@
    "kind": "reference",
    "v": "f61f49ec9635",
    "hv": "19089bb5b2c7",
+   "lv": "dea0744fa524",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -374,6 +376,7 @@
    "kind": "reference",
    "v": "8d7d64816f20",
    "hv": "b1979a9d2d28",
+   "lv": "87658cfaf8e6",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -381,12 +384,13 @@
   "-1_0": {
    "i": -1,
    "j": 0,
-   "kind": "reference",
-   "v": "b30e7eb32005",
+   "kind": "art",
+   "v": "5344c399a2ee",
    "hv": "961c4926dd72",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "lv": "c4302fc84e1b",
+   "art_version": "b1f9da2630ef",
+   "batch": "B002",
+   "finish": "px512-q64s"
   },
   "-1_1": {
    "i": -1,
@@ -394,6 +398,7 @@
    "kind": "reference",
    "v": "1c579a71e775",
    "hv": "11a14f17a92b",
+   "lv": "990b621b8450",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -404,6 +409,7 @@
    "kind": "reference",
    "v": "a7b01ca60f4b",
    "hv": "b854e3bf9602",
+   "lv": "5384b7cd5647",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -414,6 +420,7 @@
    "kind": "reference",
    "v": "b078a86aef4f",
    "hv": "fff0a14bd886",
+   "lv": "b8f3fd82a848",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -424,6 +431,7 @@
    "kind": "reference",
    "v": "30d65b57a2a4",
    "hv": "7d6c5268f057",
+   "lv": "e56ea922f7ed",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -434,6 +442,7 @@
    "kind": "reference",
    "v": "a9b65b4693e8",
    "hv": "e93cbe7e56b6",
+   "lv": "62b9e47afeca",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -444,6 +453,7 @@
    "kind": "reference",
    "v": "6f2607c77041",
    "hv": "a8fdb844e828",
+   "lv": "9c8a964a8f87",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -454,6 +464,7 @@
    "kind": "reference",
    "v": "3d8d4481dec2",
    "hv": "de3858b10142",
+   "lv": "c059bf10f52a",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -464,6 +475,7 @@
    "kind": "reference",
    "v": "c3bb3b6d8afc",
    "hv": "acd9933aaf49",
+   "lv": "c88e156c56f1",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -474,6 +486,7 @@
    "kind": "reference",
    "v": "6fb75689cd28",
    "hv": "fae666fe023d",
+   "lv": "6d13e3ea02c6",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -484,6 +497,7 @@
    "kind": "reference",
    "v": "c2a3ee20a242",
    "hv": "37297e46ab84",
+   "lv": "0c723fc0238b",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -494,6 +508,7 @@
    "kind": "reference",
    "v": "e790427337ab",
    "hv": "36dacd62884b",
+   "lv": "5df6637db849",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -501,12 +516,13 @@
   "0_-1": {
    "i": 0,
    "j": -1,
-   "kind": "reference",
-   "v": "ac2c8c46494d",
+   "kind": "art",
+   "v": "5976343cd08b",
    "hv": "c31cc275ea44",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "lv": "43d1c58876fe",
+   "art_version": "413064644d1f",
+   "batch": "B002",
+   "finish": "px512-q64s"
   },
   "0_-2": {
    "i": 0,
@@ -514,6 +530,7 @@
    "kind": "reference",
    "v": "3c2a09ecea8b",
    "hv": "a23f80fdcc13",
+   "lv": "0d25054515c4",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -524,6 +541,7 @@
    "kind": "reference",
    "v": "d8f576cd1907",
    "hv": "ba61eac1973d",
+   "lv": "2ca862e8c7bb",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -532,11 +550,12 @@
    "i": 0,
    "j": 0,
    "kind": "art",
-   "v": "8251104a74b8",
+   "v": "26b3ba177a92",
    "hv": "577c6a2ada79",
+   "lv": "7bf45f2ebd58",
    "art_version": "bfd18a94f0c7",
    "batch": "B001",
-   "finish": "px512-q64"
+   "finish": "px512-q64s"
   },
   "0_1": {
    "i": 0,
@@ -544,6 +563,7 @@
    "kind": "reference",
    "v": "39a656349f20",
    "hv": "788d5e2b3c64",
+   "lv": "1e9c5380a42b",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -554,6 +574,7 @@
    "kind": "reference",
    "v": "e59aed87bba4",
    "hv": "dd1534334b2c",
+   "lv": "a37f70ac5545",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -564,6 +585,7 @@
    "kind": "reference",
    "v": "cc3b970a0dc0",
    "hv": "acb0a3636c3a",
+   "lv": "493592d51c4c",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -574,6 +596,7 @@
    "kind": "reference",
    "v": "7eb1d6a71b1d",
    "hv": "990a0a8c93e4",
+   "lv": "062fc0cb0c80",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -584,6 +607,7 @@
    "kind": "reference",
    "v": "d28e602a4e4f",
    "hv": "0547f4f39345",
+   "lv": "ba2f20660179",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -594,6 +618,7 @@
    "kind": "reference",
    "v": "0fef396d6cac",
    "hv": "517c3e39b4c5",
+   "lv": "04b596719d6c",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -604,6 +629,7 @@
    "kind": "reference",
    "v": "b6a4a647869d",
    "hv": "1b9dc379b0b4",
+   "lv": "221afe538329",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -614,6 +640,7 @@
    "kind": "reference",
    "v": "b4fc00c20367",
    "hv": "832994e4927e",
+   "lv": "b7d66b03479c",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -624,6 +651,7 @@
    "kind": "reference",
    "v": "1a183ea81cc6",
    "hv": "04a13251afca",
+   "lv": "2814406069b4",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -634,6 +662,7 @@
    "kind": "reference",
    "v": "318808b94cea",
    "hv": "53ac91589adc",
+   "lv": "48b0ec94683a",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -644,6 +673,7 @@
    "kind": "reference",
    "v": "3c427b2f2887",
    "hv": "dc6f2678f4bc",
+   "lv": "78df8bf480ef",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -654,6 +684,7 @@
    "kind": "reference",
    "v": "55074ac2216d",
    "hv": "5c732a140a03",
+   "lv": "04d6fea4e3e8",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -664,6 +695,7 @@
    "kind": "reference",
    "v": "6babe50315f8",
    "hv": "c43f9cd35ee5",
+   "lv": "a5fd5d1951ec",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -674,6 +706,7 @@
    "kind": "reference",
    "v": "0f78cc9783f2",
    "hv": "b0c7c6dfbe53",
+   "lv": "ebb77bc51268",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -684,6 +717,7 @@
    "kind": "reference",
    "v": "58d2462ede90",
    "hv": "e87421425714",
+   "lv": "87c55dc49229",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -694,6 +728,7 @@
    "kind": "reference",
    "v": "080fa6ab2d94",
    "hv": "e651df1c08a7",
+   "lv": "0c367f1babbb",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -704,6 +739,7 @@
    "kind": "reference",
    "v": "9e0e4eb39778",
    "hv": "4c284c13b6ea",
+   "lv": "31e9ddb1cdb1",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -714,6 +750,7 @@
    "kind": "reference",
    "v": "2f8e40e2c77a",
    "hv": "cbd7e1358736",
+   "lv": "25ccd74e7999",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -724,6 +761,7 @@
    "kind": "reference",
    "v": "053a198532d1",
    "hv": "b753f978bf2c",
+   "lv": "cd72f00841e8",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -734,6 +772,7 @@
    "kind": "reference",
    "v": "ce38c8892ec0",
    "hv": "da25f4b3164c",
+   "lv": "cbe3dce10bd2",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -744,6 +783,7 @@
    "kind": "reference",
    "v": "b652e84c1ed7",
    "hv": "3a47a178c53a",
+   "lv": "214a671809b9",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -754,6 +794,7 @@
    "kind": "reference",
    "v": "7e1a1cc1f09b",
    "hv": "77db3c1f7013",
+   "lv": "294c07dcfd8d",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -764,6 +805,7 @@
    "kind": "reference",
    "v": "b6ae65078188",
    "hv": "15909b7d6e44",
+   "lv": "a9655d170e6b",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -774,6 +816,7 @@
    "kind": "reference",
    "v": "1ed5128a94cd",
    "hv": "afa02757dc41",
+   "lv": "0a4ccd4e829b",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -784,6 +827,7 @@
    "kind": "reference",
    "v": "1c00ebe3376a",
    "hv": "561ac9d62c8c",
+   "lv": "a8dedef6c409",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -794,6 +838,7 @@
    "kind": "reference",
    "v": "f67dff9a8e7a",
    "hv": "e69147647c14",
+   "lv": "a0530fee053f",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -804,6 +849,7 @@
    "kind": "reference",
    "v": "4774f89d669a",
    "hv": "266cd07efa6b",
+   "lv": "1f6409bb5e12",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -814,6 +860,7 @@
    "kind": "reference",
    "v": "09637811959b",
    "hv": "37ccff3d91e5",
+   "lv": "4008a4f06c5a",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -824,6 +871,7 @@
    "kind": "reference",
    "v": "b6292a874ba2",
    "hv": "8d1af9571db9",
+   "lv": "e00f5ba18fae",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -834,6 +882,7 @@
    "kind": "reference",
    "v": "105a98ba597d",
    "hv": "a881fc38f2f8",
+   "lv": "6fafc379b429",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -844,6 +893,7 @@
    "kind": "reference",
    "v": "2f95eb240931",
    "hv": "2ce759d3a185",
+   "lv": "c6ebfee7a96b",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -854,6 +904,7 @@
    "kind": "reference",
    "v": "1e6b1d56e851",
    "hv": "a9cafca6e5c0",
+   "lv": "99268bb0b1f2",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -864,6 +915,7 @@
    "kind": "reference",
    "v": "82076908e734",
    "hv": "027213c0ff92",
+   "lv": "86f1977eb4ea",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -874,6 +926,7 @@
    "kind": "reference",
    "v": "440697f7348a",
    "hv": "6a0c8db40472",
+   "lv": "2fa49d225759",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -884,6 +937,7 @@
    "kind": "reference",
    "v": "acec47e1bba9",
    "hv": "0e251f9e4231",
+   "lv": "8b4db8765dd0",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -894,6 +948,7 @@
    "kind": "reference",
    "v": "878d0f9ef048",
    "hv": "b4b84b4588e1",
+   "lv": "d6ec1c2d12bd",
    "art_version": null,
    "batch": null,
    "finish": null
@@ -901,8 +956,8 @@
  },
  "counts": {
   "tiles": 55,
-  "art": 1,
-  "reference": 54
+  "art": 4,
+  "reference": 51
  },
  "attribution": [
   "\u00a9 OpenStreetMap contributors (ODbL) via Overture Maps Foundation",

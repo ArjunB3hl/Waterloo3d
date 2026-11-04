@@ -654,14 +654,14 @@
    "title": "Campus 2x2 patch - tiles 0_-1, -1_0, -1_-1 continuing the accepted style sample",
    "mode": "context",
    "frame": "square",
-   "status": "revision-needed",
+   "status": "complete",
    "depends_on": [
     "0_0"
    ],
    "blocked_by": [],
    "parent": null,
    "created_utc": "2026-11-04T13:28:36Z",
-   "updated_utc": "2026-11-04T17:23:23Z",
+   "updated_utc": "2026-11-04T17:40:41Z",
    "packet_rev": 3,
    "order": [
     "0_-1",
@@ -878,7 +878,7 @@
    ],
    "items": {
     "0_-1": {
-     "status": "received",
+     "status": "accepted",
      "return_filename": "B002_0_-1.png",
      "files": {
       "composition": "B002_context_0_-1.png",
@@ -939,6 +939,29 @@
        ],
        "qa_md": "art/returned/B002/QA_0_-1_276cab3e.md",
        "qa_png": "art/returned/B002/QA_0_-1_276cab3e.png"
+      },
+      {
+       "file": "B002_0_-1.png",
+       "stored": "art/returned/B002/B002_0_-1.png",
+       "sha256": "276cab3ea102b7e7f5785466ae6f588d76d408aa27a0bbf0bda2e97156a25ad2",
+       "utc": "2026-11-04T17:40:26Z",
+       "model_reported": "image_gen.imagegen (model name/version not exposed)",
+       "settings_reported": "reference-image style transfer/edit; mask as image guidance (0_-1, -1_0) / described as coordinates (-1_-1); no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [
+        {
+         "check": "size",
+         "detail": "returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)"
+        }
+       ],
+       "qa_md": "art/returned/B002/QA_0_-1_276cab3e.md",
+       "qa_png": "art/returned/B002/QA_0_-1_276cab3e.png"
       }
      ],
      "qa": {
@@ -963,6 +986,7 @@
         "scale": 1.0011,
         "rot_deg": -0.075,
         "max_resid": 4.6,
+        "unconfirmed_blocks": [],
         "displaced": []
        },
        "geometry": {
@@ -1436,10 +1460,15 @@
      },
      "prompt": "TASK - tile 0_-1\nEdit B002_context_0_-1.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.\nB002_mask_0_-1.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)\nMatch the finished style of B002_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B002_classes_0_-1.png (legend: B002_classes_legend.png) for surface types and B002_depth_0_-1.png for building heights.\n\nTHIS TILE SHOWS\n- William G. Davis Computer Research Centre (lower left, around x=141, y=794): DC - large brick-and-concrete research building with a stepped roofline\n- Pearl Sullivan Engineering Building (centre, around x=678, y=494): E7 - newer engineering building, glass and metal curtain walls\n- Engineering 5 (centre, around x=569, y=527): E5 - newer engineering building, glass and metal curtain walls\n- Centre for Environmental and Information Technology (lower left, around x=203, y=979): EIT - concrete and brick science/engineering block\n- Engineering 3 (lower centre, around x=529, y=899): campus building - follow the reference wall colour for its material\n- East Campus Hall (upper right, around x=800, y=249): campus building - follow the reference wall colour for its material\n- Carl A. Pollock Hall (lower right, around x=928, y=951): campus building - follow the reference wall colour for its material\n- Engineering 6 (right, around x=897, y=396): E6 - newer engineering building; follow the reference wall colour for its material\n- East Campus 4 (upper centre, around x=357, y=54): campus building - follow the reference wall colour for its material\n- Streets and paths crossing it: Path 2 East, Ring Road, Laurel Trail (Trans-Canada Trail), Transit Plaza Road, Path 3 East, Phillip Street\n\nOUTPUT\n- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B002_context_0_-1.png, named B002_0_-1.png. We cut the tile out ourselves.\n- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.",
      "prompt_sha": "18f25700d147",
-     "report_text": "B002 generation report\nTool: built-in image_gen.imagegen\nModel name: unknown (not exposed)\nModel version: unknown\nMode: reference-image style transfer/edit; mask supplied as image guidance for first two canvases and described as coordinates for third. Dedicated inpainting-mask control not exposed.\nTransparent background: false\nRequested output: 1536 x 1536, whole context canvas\nSeed: unknown\nSteps: unknown\nGuidance/strength: unknown\nQuality setting: unknown\nSuccessful generations: 3, one per tile. One earlier call was rejected before generation because it contained more than five input paths.\nGenerated in order: 0_-1, -1_0, -1_-1. Third canvas uses first two generated canvases as neighbour references.\nAll outputs below are unchanged original PNGs, copied byte for byte. No cropping, resizing, compositing or recompression performed.\nVisual review: full square campus compositions with consistent warm palette and no visible labels. Exact geometry, masked pixel preservation and seamless joins are unverified. Pipeline acceptance QA not run.\n\nB002_0_-1.png: 1254 x 1254 PNG; SHA256 276cab3ea102b7e7f5785466ae6f588d76d408aa27a0bbf0bda2e97156a25ad2\nB002_-1_0.png: 1254 x 1254 PNG; SHA256 9932bfddfb3625c0f26d91b7ce574ac2e5e306eee36c212ad3625145e0976067\nB002_-1_-1.png: 1254 x 1254 PNG; SHA256 c81f4f3cfc60c4605ecdee3659556641ff4aa62525573650635e41a2d323cbab\n"
+     "report_text": "B002 generation report\nTool: built-in image_gen.imagegen\nModel name: unknown (not exposed)\nModel version: unknown\nMode: reference-image style transfer/edit; mask supplied as image guidance for first two canvases and described as coordinates for third. Dedicated inpainting-mask control not exposed.\nTransparent background: false\nRequested output: 1536 x 1536, whole context canvas\nSeed: unknown\nSteps: unknown\nGuidance/strength: unknown\nQuality setting: unknown\nSuccessful generations: 3, one per tile. One earlier call was rejected before generation because it contained more than five input paths.\nGenerated in order: 0_-1, -1_0, -1_-1. Third canvas uses first two generated canvases as neighbour references.\nAll outputs below are unchanged original PNGs, copied byte for byte. No cropping, resizing, compositing or recompression performed.\nVisual review: full square campus compositions with consistent warm palette and no visible labels. Exact geometry, masked pixel preservation and seamless joins are unverified. Pipeline acceptance QA not run.\n\nB002_0_-1.png: 1254 x 1254 PNG; SHA256 276cab3ea102b7e7f5785466ae6f588d76d408aa27a0bbf0bda2e97156a25ad2\nB002_-1_0.png: 1254 x 1254 PNG; SHA256 9932bfddfb3625c0f26d91b7ce574ac2e5e306eee36c212ad3625145e0976067\nB002_-1_-1.png: 1254 x 1254 PNG; SHA256 c81f4f3cfc60c4605ecdee3659556641ff4aa62525573650635e41a2d323cbab\n",
+     "accepted": {
+      "file": "B002_0_-1.png",
+      "utc": "2026-11-04T17:40:30Z",
+      "forced": false
+     }
     },
     "-1_0": {
-     "status": "received",
+     "status": "accepted",
      "return_filename": "B002_-1_0.png",
      "files": {
       "composition": "B002_context_-1_0.png",
@@ -1504,6 +1533,33 @@
        ],
        "qa_md": "art/returned/B002/QA_-1_0_9932bfdd.md",
        "qa_png": "art/returned/B002/QA_-1_0_9932bfdd.png"
+      },
+      {
+       "file": "B002_-1_0.png",
+       "stored": "art/returned/B002/B002_-1_0.png",
+       "sha256": "9932bfddfb3625c0f26d91b7ce574ac2e5e306eee36c212ad3625145e0976067",
+       "utc": "2026-11-04T17:40:30Z",
+       "model_reported": "image_gen.imagegen (model name/version not exposed)",
+       "settings_reported": "reference-image style transfer/edit; mask as image guidance (0_-1, -1_0) / described as coordinates (-1_-1); no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [
+        {
+         "check": "size",
+         "detail": "returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)"
+        },
+        {
+         "check": "geometry-cells",
+         "detail": "2 cell(s) with weak agreement: [[512, 384, 0.26], [0, 640, -0.17]]"
+        }
+       ],
+       "qa_md": "art/returned/B002/QA_-1_0_9932bfdd.md",
+       "qa_png": "art/returned/B002/QA_-1_0_9932bfdd.png"
       }
      ],
      "qa": {
@@ -1528,6 +1584,7 @@
         "scale": 1.0013,
         "rot_deg": 0.013,
         "max_resid": 2.42,
+        "unconfirmed_blocks": [],
         "displaced": []
        },
        "geometry": {
@@ -1860,20 +1917,21 @@
        },
        "style": {
         "against": [
+         "0_-1",
          "0_0"
         ],
-        "hist": 0.2,
+        "hist": 0.175,
         "dE": {
-         "roof": 2.0,
-         "wall": 2.2,
-         "road": 1.6,
-         "path": 5.2,
-         "paved": 5.0,
-         "parking": 4.9,
-         "tree": 5.0,
-         "green": 3.2
+         "roof": 1.1,
+         "wall": 2.9,
+         "road": 1.9,
+         "path": 3.0,
+         "paved": 4.3,
+         "parking": 1.3,
+         "tree": 3.4,
+         "green": 2.5
         },
-        "dE_mean": 3.6
+        "dE_mean": 2.5
        },
        "seams": [
         {
@@ -1907,10 +1965,15 @@
      },
      "prompt": "TASK - tile -1_0\nEdit B002_context_-1_0.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.\nB002_mask_-1_0.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)\nMatch the finished style of B002_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B002_classes_-1_0.png (legend: B002_classes_legend.png) for surface types and B002_depth_-1_0.png for building heights.\n\nTHIS TILE SHOWS\n- Student Life Centre (upper centre, around x=362, y=163): SLC - the student centre; follow the reference wall colour for its material\n- Mike & Ophelia Lazaridis Quantum Nano Centre (upper right, around x=734, y=214): QNC - glass and metal curtain wall with a honeycomb-like facade pattern\n- Mathematics & Computer (upper right, around x=721, y=29): MC - long precast-concrete brutalist block with a repeated narrow window rhythm\n- Physical Activities Complex (upper left, around x=103, y=92): campus building - follow the reference wall colour for its material\n- St. Jerome's University (lower centre, around x=529, y=787): campus building - follow the reference wall colour for its material\n- Renison University College (lower left, around x=164, y=963): campus building - follow the reference wall colour for its material\n- Health Services (left, around x=323, y=555): campus building - follow the reference wall colour for its material\n- Biology 2 (upper right, around x=898, y=306): red-brown brick campus building\n- St. Jerome's University Residence Buildings (lower left, around x=329, y=863): campus building - follow the reference wall colour for its material\n- Streets and paths crossing it: Ring Road, University Campus Lane, Two Row Path, Path 2 East, Path 2 West, Alumni Lane\n\nOUTPUT\n- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B002_context_-1_0.png, named B002_-1_0.png. We cut the tile out ourselves.\n- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.",
      "prompt_sha": "a7b088eae0a2",
-     "report_text": "B002 generation report\nTool: built-in image_gen.imagegen\nModel name: unknown (not exposed)\nModel version: unknown\nMode: reference-image style transfer/edit; mask supplied as image guidance for first two canvases and described as coordinates for third. Dedicated inpainting-mask control not exposed.\nTransparent background: false\nRequested output: 1536 x 1536, whole context canvas\nSeed: unknown\nSteps: unknown\nGuidance/strength: unknown\nQuality setting: unknown\nSuccessful generations: 3, one per tile. One earlier call was rejected before generation because it contained more than five input paths.\nGenerated in order: 0_-1, -1_0, -1_-1. Third canvas uses first two generated canvases as neighbour references.\nAll outputs below are unchanged original PNGs, copied byte for byte. No cropping, resizing, compositing or recompression performed.\nVisual review: full square campus compositions with consistent warm palette and no visible labels. Exact geometry, masked pixel preservation and seamless joins are unverified. Pipeline acceptance QA not run.\n\nB002_0_-1.png: 1254 x 1254 PNG; SHA256 276cab3ea102b7e7f5785466ae6f588d76d408aa27a0bbf0bda2e97156a25ad2\nB002_-1_0.png: 1254 x 1254 PNG; SHA256 9932bfddfb3625c0f26d91b7ce574ac2e5e306eee36c212ad3625145e0976067\nB002_-1_-1.png: 1254 x 1254 PNG; SHA256 c81f4f3cfc60c4605ecdee3659556641ff4aa62525573650635e41a2d323cbab\n"
+     "report_text": "B002 generation report\nTool: built-in image_gen.imagegen\nModel name: unknown (not exposed)\nModel version: unknown\nMode: reference-image style transfer/edit; mask supplied as image guidance for first two canvases and described as coordinates for third. Dedicated inpainting-mask control not exposed.\nTransparent background: false\nRequested output: 1536 x 1536, whole context canvas\nSeed: unknown\nSteps: unknown\nGuidance/strength: unknown\nQuality setting: unknown\nSuccessful generations: 3, one per tile. One earlier call was rejected before generation because it contained more than five input paths.\nGenerated in order: 0_-1, -1_0, -1_-1. Third canvas uses first two generated canvases as neighbour references.\nAll outputs below are unchanged original PNGs, copied byte for byte. No cropping, resizing, compositing or recompression performed.\nVisual review: full square campus compositions with consistent warm palette and no visible labels. Exact geometry, masked pixel preservation and seamless joins are unverified. Pipeline acceptance QA not run.\n\nB002_0_-1.png: 1254 x 1254 PNG; SHA256 276cab3ea102b7e7f5785466ae6f588d76d408aa27a0bbf0bda2e97156a25ad2\nB002_-1_0.png: 1254 x 1254 PNG; SHA256 9932bfddfb3625c0f26d91b7ce574ac2e5e306eee36c212ad3625145e0976067\nB002_-1_-1.png: 1254 x 1254 PNG; SHA256 c81f4f3cfc60c4605ecdee3659556641ff4aa62525573650635e41a2d323cbab\n",
+     "accepted": {
+      "file": "B002_-1_0.png",
+      "utc": "2026-11-04T17:40:35Z",
+      "forced": false
+     }
     },
     "-1_-1": {
-     "status": "revision-needed",
+     "status": "accepted",
      "return_filename": "B002_-1_-1.png",
      "files": {
       "composition": "B002_context_-1_-1.png",
@@ -1977,10 +2040,33 @@
        ],
        "qa_md": "art/returned/B002/QA_-1_-1_c81f4f3c.md",
        "qa_png": "art/returned/B002/QA_-1_-1_c81f4f3c.png"
+      },
+      {
+       "file": "B002_-1_-1.png",
+       "stored": "art/returned/B002/B002_-1_-1.png",
+       "sha256": "c81f4f3cfc60c4605ecdee3659556641ff4aa62525573650635e41a2d323cbab",
+       "utc": "2026-11-04T17:40:35Z",
+       "model_reported": "image_gen.imagegen (model name/version not exposed)",
+       "settings_reported": "reference-image style transfer/edit; mask as image guidance (0_-1, -1_0) / described as coordinates (-1_-1); no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [
+        {
+         "check": "size",
+         "detail": "returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)"
+        }
+       ],
+       "qa_md": "art/returned/B002/QA_-1_-1_c81f4f3c.md",
+       "qa_png": "art/returned/B002/QA_-1_-1_c81f4f3c.png"
       }
      ],
      "qa": {
-      "verdict": "fail",
+      "verdict": "pass",
       "metrics": {
        "size": {
         "returned": [
@@ -2001,14 +2087,14 @@
         "scale": 1.002,
         "rot_deg": 0.119,
         "max_resid": 41.08,
-        "displaced": [
+        "unconfirmed_blocks": [
          [
           640,
           256,
-          39.0,
-          -21.0
+          41.1
          ]
-        ]
+        ],
+        "displaced": []
        },
        "geometry": {
         "ref": 0.828,
@@ -2291,22 +2377,45 @@
        },
        "style": {
         "against": [
+         "-1_0",
+         "0_-1",
          "0_0"
         ],
-        "hist": 0.33,
+        "hist": 0.227,
         "dE": {
-         "roof": 6.1,
-         "wall": 4.8,
-         "road": 3.8,
-         "path": 9.2,
-         "paved": 8.4,
-         "parking": 7.5,
-         "tree": 11.6,
-         "green": 14.6
+         "roof": 3.9,
+         "wall": 4.7,
+         "road": 1.9,
+         "path": 5.8,
+         "paved": 7.2,
+         "parking": 3.4,
+         "tree": 8.1,
+         "green": 11.0
         },
-        "dE_mean": 8.2
+        "dE_mean": 5.8
        },
-       "seams": [],
+       "seams": [
+        {
+         "grad_ratio": 1.11,
+         "step_ratio": 1.003,
+         "cross_mean": 26.13,
+         "interior_mean": 23.54,
+         "worst": [],
+         "side": "right",
+         "neighbour": "0_-1",
+         "bad": false
+        },
+        {
+         "grad_ratio": 0.968,
+         "step_ratio": 1.23,
+         "cross_mean": 27.2,
+         "interior_mean": 28.09,
+         "worst": [],
+         "side": "bottom",
+         "neighbour": "-1_0",
+         "bad": false
+        }
+       ],
        "keep": {
         "dx": 0.5,
         "dy": 0.24,
@@ -2318,7 +2427,12 @@
      },
      "prompt": "TASK - tile -1_-1\nEdit B002_context_-1_-1.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.\nB002_mask_-1_-1.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)\nMatch the finished style of B002_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B002_classes_-1_-1.png (legend: B002_classes_legend.png) for surface types and B002_depth_-1_-1.png for building heights.\nPaint this tile after 0_-1 and -1_0: where its border shows the underdrawing of 0_-1 / -1_0, match what you painted for those tiles earlier in this conversation.\n\nTHIS TILE SHOWS\n- William G. Davis Computer Research Centre (lower right, around x=926, y=719): DC - large brick-and-concrete research building with a stepped roofline\n- Mathematics & Computer (lower centre, around x=669, y=960): MC - long precast-concrete brutalist block with a repeated narrow window rhythm\n- Student Life Centre (lower left, around x=220, y=995): SLC - the student centre; follow the reference wall colour for its material\n- General Services Complex (right, around x=755, y=573): campus building - follow the reference wall colour for its material\n- B.C. Matthews Hall (lower left, around x=90, y=724): campus building - follow the reference wall colour for its material\n- Chemistry 2 (lower right, around x=928, y=948): campus building - follow the reference wall colour for its material\n- Mathematics 3 (lower centre, around x=492, y=734): campus building - follow the reference wall colour for its material\n- Commisary (centre, around x=673, y=437): campus building - follow the reference wall colour for its material\n- Energy Research Centre (centre, around x=357, y=638): campus building - follow the reference wall colour for its material\n- Streets and paths crossing it: Ring Road, Columbia Street West, Laurel Trail (Trans-Canada Trail), Path 3 East, William Tutte Way, Alumni Lane\n\nOUTPUT\n- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B002_context_-1_-1.png, named B002_-1_-1.png. We cut the tile out ourselves.\n- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.",
      "prompt_sha": "b4cf23874bbc",
-     "report_text": "B002 generation report\nTool: built-in image_gen.imagegen\nModel name: unknown (not exposed)\nModel version: unknown\nMode: reference-image style transfer/edit; mask supplied as image guidance for first two canvases and described as coordinates for third. Dedicated inpainting-mask control not exposed.\nTransparent background: false\nRequested output: 1536 x 1536, whole context canvas\nSeed: unknown\nSteps: unknown\nGuidance/strength: unknown\nQuality setting: unknown\nSuccessful generations: 3, one per tile. One earlier call was rejected before generation because it contained more than five input paths.\nGenerated in order: 0_-1, -1_0, -1_-1. Third canvas uses first two generated canvases as neighbour references.\nAll outputs below are unchanged original PNGs, copied byte for byte. No cropping, resizing, compositing or recompression performed.\nVisual review: full square campus compositions with consistent warm palette and no visible labels. Exact geometry, masked pixel preservation and seamless joins are unverified. Pipeline acceptance QA not run.\n\nB002_0_-1.png: 1254 x 1254 PNG; SHA256 276cab3ea102b7e7f5785466ae6f588d76d408aa27a0bbf0bda2e97156a25ad2\nB002_-1_0.png: 1254 x 1254 PNG; SHA256 9932bfddfb3625c0f26d91b7ce574ac2e5e306eee36c212ad3625145e0976067\nB002_-1_-1.png: 1254 x 1254 PNG; SHA256 c81f4f3cfc60c4605ecdee3659556641ff4aa62525573650635e41a2d323cbab\n"
+     "report_text": "B002 generation report\nTool: built-in image_gen.imagegen\nModel name: unknown (not exposed)\nModel version: unknown\nMode: reference-image style transfer/edit; mask supplied as image guidance for first two canvases and described as coordinates for third. Dedicated inpainting-mask control not exposed.\nTransparent background: false\nRequested output: 1536 x 1536, whole context canvas\nSeed: unknown\nSteps: unknown\nGuidance/strength: unknown\nQuality setting: unknown\nSuccessful generations: 3, one per tile. One earlier call was rejected before generation because it contained more than five input paths.\nGenerated in order: 0_-1, -1_0, -1_-1. Third canvas uses first two generated canvases as neighbour references.\nAll outputs below are unchanged original PNGs, copied byte for byte. No cropping, resizing, compositing or recompression performed.\nVisual review: full square campus compositions with consistent warm palette and no visible labels. Exact geometry, masked pixel preservation and seamless joins are unverified. Pipeline acceptance QA not run.\n\nB002_0_-1.png: 1254 x 1254 PNG; SHA256 276cab3ea102b7e7f5785466ae6f588d76d408aa27a0bbf0bda2e97156a25ad2\nB002_-1_0.png: 1254 x 1254 PNG; SHA256 9932bfddfb3625c0f26d91b7ce574ac2e5e306eee36c212ad3625145e0976067\nB002_-1_-1.png: 1254 x 1254 PNG; SHA256 c81f4f3cfc60c4605ecdee3659556641ff4aa62525573650635e41a2d323cbab\n",
+     "accepted": {
+      "file": "B002_-1_-1.png",
+      "utc": "2026-11-04T17:40:41Z",
+      "forced": false
+     }
     }
    },
    "packet": {
