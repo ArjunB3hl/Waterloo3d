@@ -503,7 +503,9 @@ def seam_profiles(geo, rgb):
     for jn in geo['joins']:
         at = jn['at']
         if jn['axis'] == 'vertical':
-            half = slice(0, at) if geo['kind'] != 'junction' else (slice(0, at) if jn['tiles'][0] == geo['tiles'][0] else slice(at, None))
+            # a plain vertical pair spans the whole window height (only a 2x2 junction splits each join in halves); measuring
+            # rows 0..511 only missed Silver Lake (S001) and the rail kink (S004) in the lower half
+            half = slice(None) if geo['kind'] != 'junction' else (slice(0, at) if jn['tiles'][0] == geo['tiles'][0] else slice(at, None))
             a, b = rgb[half, :at], rgb[half, at:]
             r = A.seam_metrics(a, b, 'vertical')
         else:

@@ -1,6 +1,6 @@
 {
  "name": "Tiny Waterloo",
- "generated_utc": "2026-11-04T21:08:54Z",
+ "generated_utc": "2026-11-04T22:25:16Z",
  "frame_px": 1024,
  "lods_px": [
   256,
@@ -363,22 +363,22 @@
    "i": -1,
    "j": -2,
    "kind": "art",
-   "v": "76049a438ee0",
+   "v": "7c534c6d28d2",
    "hv": "19089bb5b2c7",
    "lv": "dea0744fa524",
-   "art_version": "637e1ddaab20",
-   "batch": "B006",
+   "art_version": "971e2f939d4e",
+   "batch": "S003",
    "finish": "px512-q64s"
   },
   "-1_-3": {
    "i": -1,
    "j": -3,
    "kind": "art",
-   "v": "b403a1209b86",
+   "v": "b746bbb53be9",
    "hv": "b1979a9d2d28",
    "lv": "87658cfaf8e6",
-   "art_version": "7793cffcc39a",
-   "batch": "B010",
+   "art_version": "e242fa44d01f",
+   "batch": "S003",
    "finish": "px512-q64s"
   },
   "-1_0": {
@@ -780,13 +780,13 @@
   "4_1": {
    "i": 4,
    "j": 1,
-   "kind": "reference",
-   "v": "d161ffec7bc7",
+   "kind": "art",
+   "v": "d5319100a548",
    "hv": "a53f81d907c9",
    "lv": "c32ca9cc01f0",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "art_version": "fc702eb84f9b",
+   "batch": "B013",
+   "finish": "px512-q64s"
   },
   "5_-1": {
    "i": 5,
@@ -824,13 +824,13 @@
   "5_0": {
    "i": 5,
    "j": 0,
-   "kind": "reference",
-   "v": "d681c9e89da4",
+   "kind": "art",
+   "v": "3c161f3c5d1f",
    "hv": "9fedf389f81f",
    "lv": "9f292b4ac4df",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "art_version": "f0657877b25d",
+   "batch": "B013",
+   "finish": "px512-q64s"
   },
   "5_1": {
    "i": 5,
@@ -846,13 +846,13 @@
   "6_-1": {
    "i": 6,
    "j": -1,
-   "kind": "reference",
-   "v": "3d078dfafb85",
+   "kind": "art",
+   "v": "4c5e761bc8f0",
    "hv": "2e07001e69ae",
    "lv": "3fdbb019a610",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "art_version": "659119ee958e",
+   "batch": "B013",
+   "finish": "px512-q64s"
   },
   "6_-2": {
    "i": 6,
@@ -956,8 +956,8 @@
  },
  "counts": {
   "tiles": 55,
-  "art": 32,
-  "reference": 23
+  "art": 35,
+  "reference": 20
  },
  "attribution": [
   "\u00a9 OpenStreetMap contributors (ODbL) via Overture Maps Foundation",

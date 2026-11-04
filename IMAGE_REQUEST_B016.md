@@ -1,10 +1,6 @@
 # Image request B016 - Uptown east and south - tiles 7_-1, 7_0, 5_1, 6_1, 7_1
 
-> **DRAFT - do not send yet.** Waiting for tiles from B013 (6_-1, 6_0, 5_0, 4_1) to be accepted. This packet is rebuilt
-> automatically when `art_import.py <batch> --accept` accepts the last of them (or run `python3 pipeline/art_request.py build B016`);
-> the current files are placeholders - do not attach them.
-
-Packet revision 2, built 2026-11-04T20:54:29Z. Status: `draft`.
+Packet revision 3, built 2026-11-04T22:26:41Z. Status: `requested`.
 
 ## What to do (for the user)
 
@@ -266,21 +262,21 @@ Send back the original file and the model/settings note as before.
 | File | Size | Purpose | Tiles | Defines composition | sha256 |
 |---|---|---|---|---|---|
 | `B016_style_0_0.png` | 1024x1024 | STYLE: finished, accepted artwork of neighbouring tile 0_0 - match its palette, pixel size, outlines, windows, trees and light exactly | 0_0 | no | `bfd18a94f0c7` |
-| `B016_contact_sheet.png` | 2048x1592 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | 4_1, 5_0, 5_1, 6_-1, 6_0, 6_1, 7_-1, 7_0, 7_1 | no | `f8469ac936e9` |
-| `B016_context_7_-1.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 7_-1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 7_-1 | yes | `f80b11a4c722` |
-| `B016_mask_7_-1.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 7_-1 | no | `cd2249b035c0` |
+| `B016_contact_sheet.png` | 2048x1592 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | 4_1, 5_0, 5_1, 6_-1, 6_1, 7_-1, 7_0, 7_1 | no | `ccf41082f33c` |
+| `B016_context_7_-1.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 7_-1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 7_-1 | yes | `2f95a1a98cfd` |
+| `B016_mask_7_-1.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 7_-1 | no | `2b8b41a6ce32` |
 | `B016_classes_7_-1.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | 7_-1 | no | `417f75d3521e` |
 | `B016_depth_7_-1.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | 7_-1 | no | `7b54440cd71d` |
-| `B016_context_7_0.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 7_0 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 7_0 | yes | `40264bad079b` |
-| `B016_mask_7_0.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 7_0 | no | `cd2249b035c0` |
+| `B016_context_7_0.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 7_0 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 7_0 | yes | `bfcca67f7348` |
+| `B016_mask_7_0.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 7_0 | no | `2531215eb04a` |
 | `B016_classes_7_0.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | 7_0 | no | `ff4caed7e686` |
 | `B016_depth_7_0.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | 7_0 | no | `d0f73a05f9e0` |
-| `B016_context_5_1.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 5_1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 5_1 | yes | `d4c3197b5850` |
-| `B016_mask_5_1.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 5_1 | no | `cd2249b035c0` |
+| `B016_context_5_1.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 5_1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 5_1 | yes | `de96c4bb83ff` |
+| `B016_mask_5_1.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 5_1 | no | `6ccc61cc7d7b` |
 | `B016_classes_5_1.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | 5_1 | no | `65d6eed4ca9a` |
 | `B016_depth_5_1.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | 5_1 | no | `ff50a9df364c` |
-| `B016_context_6_1.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 6_1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 6_1 | yes | `e173a6accbdf` |
-| `B016_mask_6_1.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 6_1 | no | `cd2249b035c0` |
+| `B016_context_6_1.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 6_1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 6_1 | yes | `3a1f83462703` |
+| `B016_mask_6_1.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 6_1 | no | `2531215eb04a` |
 | `B016_classes_6_1.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | 6_1 | no | `9b9e47a3b08b` |
 | `B016_depth_6_1.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | 6_1 | no | `bd0c8f8bd35d` |
 | `B016_context_7_1.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 7_1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 7_1 | yes | `2b84db78d92d` |
