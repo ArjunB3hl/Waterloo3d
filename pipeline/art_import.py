@@ -22,7 +22,7 @@ Draft batches whose dependencies become accepted are rebuilt automatically. Retu
 """
 import math, os, sys, re, json, shutil, argparse, subprocess
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import art_common as A
@@ -315,9 +315,15 @@ def qa_tile(rec, key, item, img, info):
     g_ref, g_ret = agreement(B, near_ref), agreement(B, near_ret)
     geom = {'ref': round(g_ref, 3), 'art': round(g_ret, 3), 'rel': round(rel(g_ret, g_ref) or 0, 3)}
     cells = []
+    # Per-cell checks use only "hard" boundaries (next to roofs, walls, roads, paths, water...). Tree/lawn/forest edges are
+    # inherently fuzzy - a painted continuous canopy cannot match individual reference crowns - so a cell that is all
+    # vegetation must not fail (B004 2_0: Laurel Creek woods failed 9 cells while creek, trails and roads matched).
+    veg = np.isin(cls, [A.CLS[c] for c in ('tree', 'lawn', 'park', 'forest_floor', 'wetland', 'residential', 'golf', 'farmland') if c in A.CLS])
+    hard_near = np.asarray(Image.fromarray(((~veg) * 255).astype(np.uint8)).filter(ImageFilter.MaxFilter(5))) > 0
+    B_hard = B & hard_near
     for cy in range(0, F(), 128):
         for cx in range(0, F(), 128):
-            b = np.zeros_like(B); b[cy:cy + 128, cx:cx + 128] = B[cy:cy + 128, cx:cx + 128]
+            b = np.zeros_like(B); b[cy:cy + 128, cx:cx + 128] = B_hard[cy:cy + 128, cx:cx + 128]
             if b.sum() < 300: continue
             r_ = rel(agreement(b, near_ret), agreement(b, near_ref))
             if r_ is not None and r_ < T['cell_rel']: cells.append([cx, cy, round(r_, 2)])

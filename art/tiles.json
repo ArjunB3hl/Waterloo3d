@@ -107,5 +107,43 @@
   "qa_verdict": "pass",
   "forced": false,
   "history": []
+ },
+ "2_-1": {
+  "version": "15f7e5cf0ef8",
+  "batch": "B004",
+  "model_reported": "image_gen.imagegen (model name/version not exposed)",
+  "settings_reported": "reference-image style transfer/edit; masks as image guidance; no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown; 2_0 used generated 2_-1 as northern neighbour reference",
+  "prompt_sha": "c94306d0e98b",
+  "reference_sha": "91597c54fab1",
+  "reference_files": {
+   "color2x": "45d6d865d3d5",
+   "cls": "b549565f2b0a",
+   "height": "149f4873cbba"
+  },
+  "accepted_utc": "2026-11-04T19:28:39Z",
+  "source_file": "art/returned/B004/B004_2_-1.png",
+  "source_sha256": "1f0afa9e40a8fe0567ca1ec5d6fbed0dacd2cde715b6db4e9823dc544e9d25c5",
+  "qa_verdict": "fail",
+  "forced": true,
+  "history": []
+ },
+ "2_0": {
+  "version": "7042466bb900",
+  "batch": "B004",
+  "model_reported": "image_gen.imagegen (model name/version not exposed)",
+  "settings_reported": "reference-image style transfer/edit; masks as image guidance; no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown; 2_0 used generated 2_-1 as northern neighbour reference",
+  "prompt_sha": "bf76b1c99b96",
+  "reference_sha": "80c3f33166c3",
+  "reference_files": {
+   "color2x": "2f50997a9824",
+   "cls": "e39d29893ad7",
+   "height": "b3ffebdcf37c"
+  },
+  "accepted_utc": "2026-11-04T19:28:45Z",
+  "source_file": "art/returned/B004/B004_2_0.png",
+  "source_sha256": "d375f96017befffd0988e12699cadf1af2a89fc2b44365f84b647d8e0b1b8daa",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
  }
 }

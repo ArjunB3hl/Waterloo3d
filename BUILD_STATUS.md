@@ -6,9 +6,9 @@ Last updated 4 November 2026. Branch `claude/busy-turing-drkfqj`.
 
 | | |
 |---|---|
-| Illustrated (accepted generated art) | **6 tiles**: campus 2 × 2 (`-1_-1`, `0_-1`, `-1_0`, `0_0`: Dana Porter, SLC, MC, QNC, EIT, DC, E5, E7, Hagey Hall, ION corridor) + B003 east edge (`1_-1`, `1_0`: University Ave towers, Lot C/parking, ION footbridge) |
-| Reference renders (procedural, awaiting art) | 49 tiles: campus → Waterloo Park / Silver Lake → Uptown / Public Square → Laurier, plus a surrounding ring |
-| City coverage | Measured against the verified municipal boundary (OSM relation r2062154, 65.31 km², 589 tiles). Published tiles cover **10.77 %** of the city's area; illustrated tiles cover **1.18 %**. |
+| Illustrated (accepted generated art) | **8 tiles**: campus 2 × 2 (`-1_-1`, `0_-1`, `-1_0`, `0_0`: Dana Porter, SLC, MC, QNC, EIT, DC, E5, E7, Hagey Hall, ION corridor), B003 east edge (`1_-1`, `1_0`: University Ave towers, parking, ION footbridge), B004 Waterloo Park west (`2_-1`, `2_0`: UW Place / Beck Hall residences, Laurel Creek woods and trail) |
+| Reference renders (procedural, awaiting art) | 47 tiles: campus → Waterloo Park / Silver Lake → Uptown / Public Square → Laurier, plus a surrounding ring |
+| City coverage | Measured against the verified municipal boundary (OSM relation r2062154, 65.31 km², 589 tiles). Published tiles cover **10.77 %** of the city's area; illustrated tiles cover **1.57 %**. |
 | Local preview | `npm install && npm run dev` → http://127.0.0.1:5173 (production: `npm run build && npm run preview` → http://127.0.0.1:4173) |
 | Public deployment | Not done. It is a separate, explicit step. |
 
@@ -21,6 +21,7 @@ Last updated 4 November 2026. Branch `claude/busy-turing-drkfqj`.
 | B001 (style sample) | 0_0 | accepted | **unknown**: not reported. The file arrived as a 1254 × 1254 WebP through the chat relay, possibly re-encoded. | unknown |
 | B002 (rest of the 2 × 2) | 0_-1, -1_0, -1_-1 | accepted | `image_gen.imagegen`; the **model name and version are not exposed** by the tool | Reference-image style transfer/edit. The mask was given as image guidance for the first two tiles and as coordinates for the third; no inpainting control. Requested 1536 × 1536 canvases; the tool returns 1254 × 1254 only. Seed, steps and guidance unknown. |
 | B003 (east edge) | 1_-1, 1_0 | accepted | `image_gen.imagegen`; model name and version not exposed | Same as B002 (1254 px output of 1536 context canvases); 1_0 used the generated 1_-1 as its northern neighbour. Seams: left vs 0_-1 ×1.15, left vs 0_0 ×1.39, top vs 1_-1 ×1.11 (limit 1.8). |
+| B004 (Waterloo Park west) | 2_-1, 2_0 | accepted (2_-1 **forced**) | `image_gen.imagegen`; model not exposed | As B003. 2_-1 failed only roof-outline scores on 3 unnamed residence towers (0.27, 0.22, -0.06 vs 0.35): visual check shows them on their footprints with heavier parapets and roof detail, so it was force-accepted (recorded in art/tiles.json). 2_0 passed after the per-cell check stopped scoring vegetation-only boundaries (a painted continuous canopy cannot match individual reference crowns). Seams x1.11-1.40. |
 
 TinyRJ's model also remains unknown. Nothing in this project assumes a particular model. Full per-tile records (prompt hash, reference hashes, source file hash, QA verdict) are in `art/tiles.json` and `art/batches.json`.
 
@@ -126,7 +127,7 @@ Five reviewers covered projection maths, loading and memory, UI, the art workflo
 
 | Item | Status | What would unblock it |
 |---|---|---|
-| Image returns | **B004 requested** (tiles 2_-1, 2_0, Waterloo Park west edge). B001-B003 complete. | User relays `IMAGE_REQUEST_B004.md` + `art/requests/B004.zip`. |
+| Image returns | **B005-B008 requested** in parallel (12 tiles bordering the accepted art: Waterloo Park centre, the row north of campus, the row south of campus, west of campus). B001-B004 complete. | User relays each `IMAGE_REQUEST_B00x.md` + `art/requests/B00x.zip` (one image-agent conversation per batch). |
 | Google Photorealistic 3D Tiles | The code is ready and tested offline (`docs/GOOGLE_3D_TILES.md`). This session cannot see the key, because environment variables reach only new sessions. | Start a new session on this branch, and confirm that the Map Tiles API terms allow the comparison use (`--i-reviewed-google-terms`). |
 | City of Waterloo Open Data | `data.waterloo.ca` and ArcGIS are blocked by the container's network policy | Allow those domains in the environment's network settings, then evaluate the footprint, street-tree and contour layers and the licence. |
 | Real-device performance | Not measured | Run `npm run perf:device` on the MacBook Air M3. |

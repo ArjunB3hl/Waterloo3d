@@ -1,6 +1,6 @@
 # Image request B001R1 - Revision of B001: 0_0
 
-Packet revision 1, built 2026-11-04T16:55:41Z. Status: `requested`.
+Packet revision 1, built 2026-11-04T16:55:41Z. Status: `superseded` (not sent - B001 was accepted directly).
 
 ## What to do (for the user)
 
