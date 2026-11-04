@@ -202,7 +202,8 @@
     "cls": "road"
    },
    "dz_m": 0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & Bricker Avenue",
@@ -225,7 +226,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & Bridgeport Road West & Caroline Street North",
@@ -248,7 +250,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & Cardill Crescent",
@@ -271,7 +274,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & Central Street",
@@ -294,7 +298,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & Columbia Street West",
@@ -317,7 +322,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & Dorset Street",
@@ -340,7 +346,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & Dupont Street West",
@@ -363,7 +370,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & Erb Street West",
@@ -386,7 +394,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.02,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & Ezra Avenue",
@@ -409,7 +418,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & Hickory Street West",
@@ -432,7 +442,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & Princess Street",
@@ -455,7 +466,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & Seagram Drive",
@@ -478,7 +490,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & Spring Street West",
@@ -501,7 +514,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Albert Street & University Avenue West",
@@ -524,7 +538,8 @@
     "cls": "wall"
    },
    "dz_m": 52.62,
-   "pass": false
+   "pass": false,
+   "occluded": true
   },
   {
    "junction": "Albert Street & Young Street West",
@@ -547,7 +562,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Alexandra Avenue & Caroline Street South",
@@ -570,7 +586,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Alexandra Avenue & Euclid Avenue",
@@ -593,7 +610,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Alexandra Avenue & Menno Street",
@@ -616,7 +634,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Alexandra Avenue & Short Street",
@@ -639,7 +658,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Algonquin Drive & Iroquois Place",
@@ -662,7 +682,8 @@
     "cls": "road"
    },
    "dz_m": 0.05,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Allen Street East & Allen Street West & King Street South",
@@ -685,7 +706,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Allen Street East & Dodds Lane",
@@ -708,7 +730,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Allen Street East & Herbert Street",
@@ -731,7 +754,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Allen Street East & Mary Street",
@@ -754,7 +778,8 @@
     "cls": "road"
    },
    "dz_m": 0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Allen Street East & Willow Street",
@@ -777,7 +802,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Allen Street West & Caroline Street South",
@@ -800,7 +826,8 @@
     "cls": "roof"
    },
    "dz_m": 56.86,
-   "pass": false
+   "pass": false,
+   "occluded": true
   },
   {
    "junction": "Allen Street West & Freemont Street",
@@ -823,7 +850,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Allen Street West & Park Street",
@@ -846,7 +874,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Allen Street West & York Street",
@@ -869,7 +898,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Alvin Street & Mackay Crescent",
@@ -892,7 +922,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Alvin Street & Marshall Street",
@@ -915,7 +946,8 @@
     "cls": "road"
    },
    "dz_m": 0.02,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Ambulance & Taxi Access & University Campus Lane",
@@ -938,7 +970,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Austin Drive & Cardill Crescent",
@@ -961,7 +994,8 @@
     "cls": "road"
    },
    "dz_m": 0.02,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Avondale Avenue North & Erb Street West",
@@ -984,7 +1018,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Avondale Avenue North & Father David Bauer Drive",
@@ -1007,7 +1042,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Avondale Avenue South & Dawson Street",
@@ -1030,7 +1066,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Avondale Avenue South & Erb Street West",
@@ -1053,7 +1090,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Balsam Street & Hazel Street",
@@ -1076,7 +1114,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Balsam Street & Hemlock Street",
@@ -1099,7 +1138,8 @@
     "cls": "roof"
    },
    "dz_m": 21.16,
-   "pass": false
+   "pass": false,
+   "occluded": true
   },
   {
    "junction": "Balsam Street & Larch Street",
@@ -1122,7 +1162,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Barrel Yards Bouldevard & Barrel Yards Boulevard & Merchant Avenue",
@@ -1145,7 +1186,8 @@
     "cls": "roof"
    },
    "dz_m": 41.82,
-   "pass": false
+   "pass": false,
+   "occluded": true
   },
   {
    "junction": "Barrel Yards Bouldevard & Erb Street West & Menno Street",
@@ -1168,7 +1210,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Barrel Yards Boulevard & Father David Bauer Drive",
@@ -1191,7 +1234,8 @@
     "cls": "roof"
    },
    "dz_m": 76.49,
-   "pass": false
+   "pass": false,
+   "occluded": true
   },
   {
    "junction": "Batavia Place & Columbia Street West",
@@ -1214,7 +1258,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Beech Street & Hazel Street",
@@ -1237,7 +1282,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Beech Street & State Court & State Street",
@@ -1260,7 +1306,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Bricker Avenue & Clayfield Avenue",
@@ -1283,7 +1330,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Bricker Avenue & King Street North",
@@ -1306,7 +1354,10 @@
     "cls": "major_road"
    },
    "dz_m": 33.16,
-   "pass": false
+   "pass": false,
+   "occluded": false,
+   "full_res_dz_m": -0.0,
+   "edge_of_height_block": true
   },
   {
    "junction": "Bridgeport Road East & Bridgeport Road West & King Street North",
@@ -1329,7 +1380,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Bridgeport Road East & Devitt Avenue North",
@@ -1352,7 +1404,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Bridgeport Road East & Laurel Street",
@@ -1375,7 +1428,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.02,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Bridgeport Road East & Moore Avenue North",
@@ -1398,7 +1452,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Bridgeport Road East & Peppler Street",
@@ -1421,7 +1476,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.02,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Bridgeport Road East & Regina Street North",
@@ -1444,7 +1500,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Bridgeport Road East & Weber Street North",
@@ -1467,7 +1524,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Bridgeport Road West & Dorset Street",
@@ -1490,7 +1548,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Brighton Street & Elgin Crescent",
@@ -1513,7 +1572,8 @@
     "cls": "road"
    },
    "dz_m": 0.04,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Brighton Street & Marshall Street",
@@ -1536,7 +1596,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Brighton Street & Noecker Street",
@@ -1559,7 +1620,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Caroline Street North & Caroline Street South & Erb Street West",
@@ -1582,7 +1644,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Caroline Street North & Dupont Street West",
@@ -1605,7 +1668,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.04,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Caroline Street South & Father David Bauer Drive",
@@ -1628,7 +1692,8 @@
     "cls": "road"
    },
    "dz_m": 0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Caroline Street South & Fire Route",
@@ -1651,7 +1716,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Caroline Street South & Freemont Street",
@@ -1674,7 +1740,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Caroline Street South & Fullerton Street",
@@ -1697,7 +1764,8 @@
     "cls": "road"
    },
    "dz_m": 0.04,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Caroline Street South & John Street West",
@@ -1720,7 +1788,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Caroline Street South & Norman Street",
@@ -1743,7 +1812,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Caroline Street South & William Street West",
@@ -1766,7 +1836,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Caroline Street South & Willis Way",
@@ -1789,7 +1860,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Carter Avenue & Marshall Street",
@@ -1812,7 +1884,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Central Street & Dorset Street",
@@ -1835,7 +1908,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Central Street & Fountain Street",
@@ -1858,7 +1932,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Central Street & King Street North",
@@ -1881,7 +1956,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Clayfield Avenue & Ezra Avenue",
@@ -1904,7 +1980,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Columbia Street West & Hagey Boulevard",
@@ -1927,7 +2004,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Columbia Street West & Hagey Boulevard & North Campus Road",
@@ -1950,7 +2028,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.02,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Columbia Street West & Hazel Street",
@@ -1973,7 +2052,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Columbia Street West & Lester Street",
@@ -1996,7 +2076,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Columbia Street West & Phillip Street",
@@ -2019,7 +2100,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Dawson Street & Dunbar Road South",
@@ -2042,7 +2124,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Dawson Street & Euclid Avenue",
@@ -2065,7 +2148,8 @@
     "cls": "road"
    },
    "dz_m": 0.02,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Dawson Street & Menno Street",
@@ -2088,7 +2172,8 @@
     "cls": "road"
    },
    "dz_m": 0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Dawson Street & Wells Lane",
@@ -2111,7 +2196,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Devitt Avenue North & Devitt Avenue South & Erb Street East",
@@ -2134,7 +2220,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Dominion Lane & Dupont Street West",
@@ -2157,7 +2244,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Dominion Lane & Erb Street West",
@@ -2180,7 +2268,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Dorset Street & Princess Street West",
@@ -2203,7 +2292,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Dorset Street & Spring Street West",
@@ -2226,7 +2316,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Dorset Street & Young Street West",
@@ -2249,7 +2340,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Dunbar Road North & Dunbar Road South & Erb Street West",
@@ -2272,7 +2364,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.05,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Dupont Street East & Dupont Street West & King Street North",
@@ -2295,7 +2388,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Dupont Street East & Peppler Street",
@@ -2318,7 +2412,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Dupont Street East & Regina Street North",
@@ -2341,7 +2436,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Elgin Crescent & Noecker Street",
@@ -2364,7 +2460,8 @@
     "cls": "road"
    },
    "dz_m": -0.02,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Elgin Crescent & Regina Street North",
@@ -2387,7 +2484,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Elgin Street & King Street North",
@@ -2410,7 +2508,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Elgin Street & Peppler Street",
@@ -2433,7 +2532,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Elgin Street & Regina Street North",
@@ -2456,7 +2556,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Ellis Crescent North & Lincoln Road",
@@ -2479,7 +2580,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Erb Street East & Erb Street West & King Street North & King Street South",
@@ -2502,7 +2604,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Erb Street East & Gillen Street",
@@ -2525,7 +2628,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Erb Street East & Hughes Lane",
@@ -2548,7 +2652,8 @@
     "cls": "roof"
    },
    "dz_m": 11.74,
-   "pass": false
+   "pass": false,
+   "occluded": true
   },
   {
    "junction": "Erb Street East & Moore Avenue North & Moore Avenue South",
@@ -2571,7 +2676,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Erb Street East & Peppler Street",
@@ -2594,7 +2700,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Erb Street East & Regina Street North & Regina Street South",
@@ -2617,7 +2724,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Erb Street East & Tweed Street",
@@ -2640,7 +2748,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.02,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Erb Street East & Willow Street",
@@ -2663,7 +2772,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Erb Street West & Euclid Avenue",
@@ -2686,7 +2796,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Erb Street West & Father David Bauer Drive",
@@ -2709,7 +2820,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Erb Street West & Roslin Avenue South & Sunshine Avenue",
@@ -2732,7 +2844,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.02,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Erb Street West & Wells Lane",
@@ -2755,7 +2868,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Euclid Avenue & William Street West",
@@ -2778,7 +2892,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Ezra Avenue & King Street North",
@@ -2801,7 +2916,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Father David Bauer Drive & Merchant Avenue",
@@ -2824,7 +2940,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Fir Street & Hickory Street West & Spruce Street",
@@ -2847,7 +2964,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Fir Street & State Street",
@@ -2870,7 +2988,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Fountain Street & Spring Street West",
@@ -2893,7 +3012,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Fountain Street & Young Street West",
@@ -2916,7 +3036,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Fullerton Street & Park Street",
@@ -2939,7 +3060,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "George Street & Herbert Street",
@@ -2962,7 +3084,8 @@
     "cls": "road"
    },
    "dz_m": 0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "George Street & King Street South",
@@ -2985,7 +3108,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "George Street & Willow Street",
@@ -3008,7 +3132,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hagey Boulevard & Wes Graham Way",
@@ -3031,7 +3156,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hawthorn Street & Hickory Street West",
@@ -3054,7 +3180,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hazel Street & Hickory Street West",
@@ -3077,7 +3204,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hazel Street & High Street",
@@ -3100,7 +3228,8 @@
     "cls": "road"
    },
    "dz_m": 0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hazel Street & MidCampus Drive & University Avenue West",
@@ -3123,7 +3252,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hemlock Street & Hickory Street West",
@@ -3146,7 +3276,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hemlock Street & University Avenue West",
@@ -3169,7 +3300,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Herbert Street & William Street East",
@@ -3192,7 +3324,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hickory Street East & Hickory Street West & King Street North",
@@ -3215,7 +3348,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hickory Street East & Regina Street North",
@@ -3238,7 +3372,8 @@
     "cls": "roof"
    },
    "dz_m": 66.95,
-   "pass": false
+   "pass": false,
+   "occluded": true
   },
   {
    "junction": "Hickory Street West & Larch Street",
@@ -3261,7 +3396,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hickory Street West & Lester Street",
@@ -3284,7 +3420,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hickory Street West & State Street",
@@ -3307,7 +3444,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hickory Street West & Sunview Street",
@@ -3330,7 +3468,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hughes Lane & Laurel Trail",
@@ -3353,7 +3492,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hughes Lane & William Street East",
@@ -3376,7 +3516,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Hughes Lane & Willis Way",
@@ -3399,7 +3540,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Iroquois Place & Longfellow Drive",
@@ -3422,7 +3564,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "James Street & King Street North",
@@ -3445,7 +3588,8 @@
     "cls": "roof"
    },
    "dz_m": 60.91,
-   "pass": false
+   "pass": false,
+   "occluded": true
   },
   {
    "junction": "John Street East & John Street West & King Street South",
@@ -3468,7 +3612,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "John Street East & King Street South",
@@ -3491,7 +3636,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "John Street West & Park Street",
@@ -3514,7 +3660,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "King Street North & Lodge Street",
@@ -3537,7 +3684,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.04,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "King Street North & Marshall Street",
@@ -3560,7 +3708,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "King Street North & Noecker Street",
@@ -3583,7 +3732,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.02,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "King Street North & Princess Street East & Princess Street West",
@@ -3606,7 +3756,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "King Street North & Spring Street East & Spring Street West",
@@ -3629,7 +3780,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "King Street North & University Avenue East & University Avenue West",
@@ -3652,7 +3804,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "King Street North & Young Street East & Young Street West",
@@ -3675,7 +3828,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "King Street South & Kuntz Lane",
@@ -3698,7 +3852,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "King Street South & William Street East & William Street West",
@@ -3721,7 +3876,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "King Street South & Willis Way",
@@ -3744,7 +3900,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Kuntz Lane & William Street West",
@@ -3767,7 +3924,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Laurel Street & Moore Avenue North",
@@ -3790,7 +3948,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Laurel Street & Peppler Street",
@@ -3813,7 +3972,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Laurel Street & Tweed Street",
@@ -3836,7 +3996,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Laurel Trail & Regina Street South",
@@ -3859,7 +4020,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Lester Street & Seagram Drive",
@@ -3882,7 +4044,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Lester Street & University Avenue West",
@@ -3905,7 +4068,8 @@
     "cls": "wall"
    },
    "dz_m": 38.2,
-   "pass": false
+   "pass": false,
+   "occluded": true
   },
   {
    "junction": "Lincoln Road & Weber Street North",
@@ -3928,7 +4092,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Lions Court & The Lions Gate",
@@ -3951,7 +4116,8 @@
     "cls": "road"
    },
    "dz_m": 0.04,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Lodge Street & Regina Street North",
@@ -3974,7 +4140,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Lodge Street & Weber Street North",
@@ -3997,7 +4164,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Longfellow Drive & Mohawk Avenue",
@@ -4020,7 +4188,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Longfellow Drive & Shakespeare Drive & Shakespeare Place",
@@ -4043,7 +4212,8 @@
     "cls": "road"
    },
    "dz_m": 0.02,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Longfellow Drive & Tennyson Place",
@@ -4066,7 +4236,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Longfellow Drive & Westmount Road North",
@@ -4089,7 +4260,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Mackay Crescent & Weber Street North",
@@ -4112,7 +4284,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Maple Court & State Court",
@@ -4135,7 +4308,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Maple Court & University Avenue West",
@@ -4158,7 +4332,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Marshall Street & Regina Street North",
@@ -4181,7 +4356,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Marshall Street & Weber Street North",
@@ -4204,7 +4380,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Noecker Street & Peppler Street",
@@ -4227,7 +4404,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Noecker Street & Regina Street North",
@@ -4250,7 +4428,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Noecker Street & Weber Street North",
@@ -4273,7 +4452,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Norman Street & Park Street",
@@ -4296,7 +4476,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "North Campus Road & Ring Road",
@@ -4319,7 +4500,8 @@
     "cls": "road"
    },
    "dz_m": -0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Old Post Road & Post Horn Place",
@@ -4342,7 +4524,8 @@
     "cls": "road"
    },
    "dz_m": 0.03,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Old Post Road & Westmount Road North",
@@ -4365,7 +4548,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Park Street & William Street West",
@@ -4388,7 +4572,8 @@
     "cls": "road"
    },
    "dz_m": 0.02,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Path 1 West & Ring Road",
@@ -4411,7 +4596,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Peppler Street & Princess Street East",
@@ -4434,7 +4620,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Peppler Street & Young Street East",
@@ -4457,7 +4644,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Phillip Street & Transit Plaza Road",
@@ -4480,7 +4668,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Phillip Street & University Avenue West",
@@ -4503,7 +4692,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Princess Street East & Regina Street North",
@@ -4526,7 +4716,8 @@
     "cls": "road"
    },
    "dz_m": 0.04,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Regina Street North & Spring Street East",
@@ -4549,7 +4740,8 @@
     "cls": "road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Regina Street North & University Avenue East",
@@ -4572,7 +4764,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Regina Street North & Young Street East",
@@ -4595,7 +4788,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Regina Street South & William Street East",
@@ -4618,7 +4812,8 @@
     "cls": "road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Regina Street South & Willis Way",
@@ -4641,7 +4836,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Residence Road & Villages Road",
@@ -4664,7 +4860,8 @@
     "cls": "road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Rev Road & Villages Road",
@@ -4687,7 +4884,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Ring Road & Seagram Drive & University Avenue West",
@@ -4710,7 +4908,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Ring Road & Transit Plaza Road & William Tutte Way",
@@ -4733,7 +4932,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Ring Road & Villages Road",
@@ -4756,7 +4956,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Seagram Drive & University Avenue West",
@@ -4779,7 +4980,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Sunview Street & University Avenue West",
@@ -4802,7 +5004,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "The Lions Gate & Westmount Road North",
@@ -4825,7 +5028,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "University Avenue East & Weber Street North",
@@ -4848,7 +5052,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "University Avenue West & Westmount Road North",
@@ -4871,7 +5076,8 @@
     "cls": "major_road"
    },
    "dz_m": 0.01,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "University Campus Lane & Westmount Road North",
@@ -4894,7 +5100,8 @@
     "cls": "major_road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "Villages Road & West Culdesac",
@@ -4917,7 +5124,8 @@
     "cls": "road"
    },
    "dz_m": -0.0,
-   "pass": true
+   "pass": true,
+   "occluded": false
   },
   {
    "junction": "William Street East & Willow Street",
@@ -4940,7 +5148,8 @@
     "cls": "rail"
    },
    "dz_m": 0.04,
-   "pass": false
+   "pass": true,
+   "occluded": false
   }
  ],
  "poi_vs_footprint": [

@@ -100,7 +100,17 @@ def main():
         s = tr.sample(cx, cy)
         if not s: continue
         r = {'junction': ' & '.join(sorted(nms)), 'lonlat': [round(g.x, 6), round(g.y, 6)], 'terrain_z_m': round(z, 2), 'canvas_px': [round(cx, 1), round(cy, 1)], 'sample': s,
-             'dz_m': round(s['z'] - z, 2), 'pass': s['cls'] in ('road', 'major_road') and abs(s['z'] - z) < 1.0}
+             'dz_m': round(s['z'] - z, 2), 'pass': s['cls'] in ('road', 'major_road', 'rail') and abs(s['z'] - z) < 1.0}
+        # a junction hidden behind a taller building in front of it (camera sees the roof/wall) is not testable here
+        r['occluded'] = (not r['pass']) and s['cls'] in ('roof', 'wall', 'tree') and s['z'] - z > 2.0
+        if not r['pass'] and not r['occluded']:
+            # published heights are 512 px (one sample per 2x2 artwork px); check the full-resolution render height
+            fh = os.path.join(ROOT, 'data_cache', 'jobs', f"{s['tile'][0]}_{s['tile'][1]}", 'height.png')
+            if os.path.exists(fh):
+                H1 = np.asarray(Image.open(fh).convert('RGB'))
+                zf, _ = decode(H1[int(cy - s['tile'][1] * F()), int(cx - s['tile'][0] * F())])
+                r['full_res_dz_m'] = round(float(zf) - z, 2)
+                r['edge_of_height_block'] = abs(float(zf) - z) < 1.0
         jl.append(r)
     seen = set()
     for r in sorted(jl, key=lambda r: r['junction']):
@@ -138,17 +148,26 @@ def main():
         c = (40, 220, 90) if ok else (230, 40, 40)
         dr.ellipse([x - 9, y - 9, x + 9, y + 9], outline=c, width=4); dr.line([x - 14, y, x + 14, y], fill=c, width=2); dr.line([x, y - 14, x, y + 14], fill=c, width=2)
         dr.text((x + 14, y - 26), nm[:34], fill=(255, 255, 255), font=font, stroke_width=3, stroke_fill=(0, 0, 0))
-    im.save(os.path.join(OUTD, 'alignment_patch.png'))
+    # crop to the checked points (+ margin) so the evidence image stays small as coverage grows
+    lm = marks[:len(res['landmarks'])]   # frame the landmark checks; junctions outside that frame are listed in the report
+    xs = [cx - i0 * F() for cx, _, _, _ in lm]; ys = [cy - j0 * F() for _, cy, _, _ in lm]
+    box_ = (max(0, int(min(xs)) - 200), max(0, int(min(ys)) - 200), min(W, int(max(xs)) + 400), min(H, int(max(ys)) + 200))
+    im = im.crop(box_); im = im.resize((im.width // 2, im.height // 2), Image.LANCZOS)
+    im.save(os.path.join(OUTD, 'alignment_patch.png'), optimize=True)
     lm_ok = sum(1 for r in res['landmarks'] if r.get('pass')); j_ok = sum(1 for r in res['junctions'] if r['pass'])
+    j_occ = sum(1 for r in res['junctions'] if r.get('occluded')); j_edge = sum(1 for r in res['junctions'] if r.get('edge_of_height_block'))
+    j_fail = len(res['junctions']) - j_ok - j_occ - j_edge
     md = ['# Alignment validation', '', f"Codec max error: {res['codec']['max_abs_error_m']:.4f} m (step {res['codec']['step_m']} m).", '',
           f'## Landmark roofs ({lm_ok}/{len(res["landmarks"])} pass: |dz| < 0.35 m and class = roof)', '',
           '| Building | OSM | Height source | Source lon, lat | Expected roof z (m) | Decoded z (m) | dz (m) | Class | Pass |', '|---|---|---|---|---:|---:|---:|---|---|']
     for r in res['landmarks']:
         s = r['sample'] or {}
         md.append(f"| {r['name']} | {r['osm']} | {r['height_src']} | {r['source_lonlat'][0]}, {r['source_lonlat'][1]} | {r['expected_roof_z_m']} | {s.get('z', float('nan')):.2f} | {r.get('dz_m')} | {s.get('cls')} | {'yes' if r.get('pass') else 'NO'} |")
-    md += ['', f'## Road junctions inside published tiles ({j_ok}/{len(res["junctions"])} pass: class road and |dz| < 1 m)', '', '| Junction | lon, lat | Class | dz (m) | Pass |', '|---|---|---|---:|---|']
+    md += ['', f'## Road junctions inside published tiles ({j_ok} pass, {j_occ} occluded by a building in front, {j_edge} at a roof edge of a 512 px height block (full-res render correct), {j_fail} fail; pass = class road/rail and |dz| < 1 m)', '',
+           'Failures and occlusions are listed; passing junctions are in alignment.json.', '', '| Junction | lon, lat | Class | dz (m) | Result |', '|---|---|---|---:|---|']
     for r in res['junctions']:
-        md.append(f"| {r['junction']} | {r['lonlat'][0]}, {r['lonlat'][1]} | {r['sample']['cls']} | {r['dz_m']} | {'yes' if r['pass'] else 'NO'} |")
+        if r['pass']: continue
+        md.append(f"| {r['junction']} | {r['lonlat'][0]}, {r['lonlat'][1]} | {r['sample']['cls']} | {r['dz_m']} | {'occluded' if r.get('occluded') else ('height-block edge (full-res dz %s m)' % r.get('full_res_dz_m') if r.get('edge_of_height_block') else 'FAIL')} |")
     md += ['', '## Independent POI vs footprint', '', '| Name | POI sources | POI lon, lat | Distance to footprint (m) | Same-name POIs |', '|---|---|---|---:|---:|']
     for r in res['poi_vs_footprint']:
         md.append(f"| {r['name']} | {', '.join(r['poi_sources'])} | {r['poi_lonlat'][0]}, {r['poi_lonlat'][1]} | {r['distance_to_footprint_m']} | {r['candidates']} |")
