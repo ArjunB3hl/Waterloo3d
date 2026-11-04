@@ -82,6 +82,7 @@ class MapView implements CameraControl {
   private readonly viewL = new Set<Listener<ViewState>>();
   private readonly settingsL = new Set<Listener<Settings>>();
   private hashTimer = 0;
+  private ownHash = location.hash;       // last hash this view wrote (or adopted from navigation)
   private toastTimer = 0;
 
   constructor(private readonly root: HTMLElement, readonly manifest: Manifest) {
@@ -116,6 +117,7 @@ class MapView implements CameraControl {
     new ResizeObserver(() => this.measure()).observe(root);
     addEventListener('resize', () => this.measure());   // devicePixelRatio changes (browser zoom, moving screens)
     addEventListener('hashchange', () => {
+      this.ownHash = location.hash;
       const v = parseHash(location.hash);
       if (v && formatHash(v) !== formatHash(this.view)) this.setView(v, true);
     });
@@ -255,8 +257,11 @@ class MapView implements CameraControl {
   private scheduleHashWrite(): void {
     clearTimeout(this.hashTimer);
     this.hashTimer = window.setTimeout(() => {
-      if (this.fly || this.smoothZoom || this.inertia || this.keyPan.dx || this.keyPan.dy) this.scheduleHashWrite();
-      else history.replaceState(history.state, '', formatHash(this.view));
+      if (this.fly || this.smoothZoom || this.inertia || this.keyPan.dx || this.keyPan.dy) { this.scheduleHashWrite(); return; }
+      // a hash navigation whose hashchange has not been handled yet wins over our pending write
+      if (location.hash !== this.ownHash) return;
+      this.ownHash = formatHash(this.view);
+      history.replaceState(history.state, '', this.ownHash);
     }, HASH_WRITE_DELAY_MS);
   }
 
@@ -427,6 +432,8 @@ class MapView implements CameraControl {
       this.markDirty();
     } catch (e) {
       console.warn('overview unavailable; zoomed-out view will load individual tiles', e);
+      this.renderer.setOverview(null);
+      this.markDirty();
     }
   }
 

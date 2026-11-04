@@ -59,7 +59,6 @@ export function attachInput(stage: HTMLElement, cam: CameraControl): void {
 
   stage.addEventListener('pointerdown', (e) => {
     if (e.pointerType === 'mouse' && e.button !== 0) return;
-    if ((e.target as HTMLElement).closest('#hud')) return;   // actor HUD controls handle their own input
     const p = local(e);
     pointers.set(e.pointerId, p);
     if (e.target === stage || (e.target as HTMLElement).tagName === 'CANVAS') stage.focus({ preventScroll: true });

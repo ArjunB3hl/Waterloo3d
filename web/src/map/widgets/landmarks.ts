@@ -62,13 +62,13 @@ export function createLandmarks(map: MapAPI, landmarks: Landmark[], actor: Actor
   for (const l of landmarks) {
     const covered = l.status === 'covered';
     const card = h('button', {
-      class: `card${covered ? '' : ' pending'}`, type: 'button', role: 'listitem',
+      class: `card${covered ? '' : ' pending'}`, type: 'button',
       'aria-label': `${l.name}, ${l.category}${covered ? '' : ', coming soon'}`,
       onclick: () => select(l, card),
     }, h('span', { class: 'card-badge', 'aria-hidden': 'true' }, l.short ?? l.name.slice(0, 3)),
        h('span', { class: 'card-text' }, h('span', { class: 'card-name' }, l.name), h('span', { class: 'card-cat' }, covered ? l.category : 'Coming soon')));
     cards.set(l.id, card);
-    list.append(card);
+    list.append(h('div', { role: 'listitem', class: 'strip-item' }, card));
   }
   const toggle = h('button', { class: 'strip-toggle', type: 'button', 'aria-controls': 'strip-list', 'aria-expanded': String(!collapsed) },
     h('span', {}, 'Landmarks'), icon('chevron'));

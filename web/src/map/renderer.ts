@@ -40,6 +40,7 @@ export class MapRenderer {
   private readonly pending = new Set<string>();      // city tiles without artwork yet
   private readonly lods: number[];
   private overview: ImageBitmap | null = null;
+  private overviewFailed = false;
   private hatch: CanvasPattern | null = null;
 
   constructor(private readonly m: Manifest, private readonly cov: CoverageInfo | null, private readonly loader: ResourceLoader) {
@@ -49,7 +50,8 @@ export class MapRenderer {
     for (const [i, j] of cov?.city_tiles ?? []) if (!this.published.has(tileKey(i, j))) this.pending.add(tileKey(i, j));
   }
 
-  setOverview(b: ImageBitmap): void { this.overview = b; }
+  /** The decoded overview, or null if it could not be loaded (zoomed-out views then fall back to 256 px tiles). */
+  setOverview(b: ImageBitmap | null): void { this.overview = b; this.overviewFailed = !b; }
 
   tile(i: number, j: number): TileEntry | undefined { return this.published.get(tileKey(i, j)); }
   isPending(i: number, j: number): boolean { return this.pending.has(tileKey(i, j)); }
@@ -89,7 +91,8 @@ export class MapRenderer {
 
     ctx.imageSmoothingEnabled = view.zoom < PIXELATED_ZOOM;
     ctx.imageSmoothingQuality = p.moving ? 'low' : 'high';
-    const useOverview = view.zoom < OVERVIEW_ZOOM && this.overview;
+    // while the overview is still loading, wait for it rather than fetching every tile at 256 px
+    const useOverview = view.zoom < OVERVIEW_ZOOM && !this.overviewFailed;
     const lod = this.lodFor(this.F * s);
 
     for (let j = range.j0; j <= range.j1; j++) {
@@ -97,6 +100,7 @@ export class MapRenderer {
         const t = this.tile(i, j);
         if (!t) continue;
         const x0 = X(i * this.F), y0 = Y(j * this.F), dw = X((i + 1) * this.F) - x0, dh = Y((j + 1) * this.F) - y0;
+        result.tilesDrawn++;
         if (useOverview) { this.drawOverviewCrop(ctx, i, j, x0, y0, dw, dh); continue; }
         const want = this.loader.want(`a:${i}_${j}@${lod}`, this.artUrl(t, lod), this.priority(i, j, view));
         if (want.state === 'ready') {
@@ -113,7 +117,6 @@ export class MapRenderer {
             ctx.fillRect(x0, y0, dw, dh);
           }
         }
-        result.tilesDrawn++;
       }
     }
     if (!useOverview) this.prefetchRing(view, w, h, lod);

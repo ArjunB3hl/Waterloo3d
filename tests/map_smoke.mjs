@@ -290,6 +290,20 @@ try {
     return `0.05: none, 0.2: ${mid}, 0.9: ${near}`;
   });
 
+  await check('about panel opens from the attribution footer; whole-city overview view', async () => {
+    await page.evaluate(() => window.__tinyWaterloo.map.setView({ cx: -4500, cy: -3500, zoom: 0.045 }));
+    await idle(page);
+    await page.waitForTimeout(300);
+    await page.screenshot({ path: path.join(SHOTS, 'map_city.png') });
+    await page.click('#attribution button');
+    assert(await page.locator('#about-panel').isVisible(), 'about hidden');
+    const text = await page.locator('#about-panel').textContent();
+    for (const s of ['reference render', 'OpenStreetMap', 'Overture', 'Mapzen', 'OGL-Canada']) assert(text.toLowerCase().includes(s.toLowerCase()), `about lacks ${s}`);
+    await page.screenshot({ path: path.join(SHOTS, 'map_about.png') });
+    await page.keyboard.press('Escape');
+    assert(!(await page.locator('#about-panel').isVisible()), 'Escape did not close about');
+  });
+
   await check('aux layers: packed heights + life drawn screen aligned; heightAt/getHeightTile/getLifeTile agree', async () => {
     await page.evaluate(() => { window.__tinyWaterloo.map.setView({ cx: 300, cy: 200, zoom: 0.8 }); window.__tinyWaterloo.map.requestAuxLayers({ height: true, life: true }); });
     await idle(page);
@@ -402,6 +416,69 @@ try {
     assert(v.cx === -500 && v.cy === 300 && v.zoom === 1.2, JSON.stringify(v));
   });
 
+  await check('loader: LRU closes bitmaps beyond the byte budget; requests that leave the view are aborted', async () => {
+    // slow down 1024 px tiles so a request is still in flight when the "view" moves on
+    await page.route(/\/data\/tiles\/1024\/[0-9-]+_-2\.webp/, async (route) => { await new Promise((r) => setTimeout(r, 1500)); await route.continue().catch(() => {}); });
+    const aborted = [];
+    const onFail = (r) => { if (/_-2\.webp/.test(r.url())) aborted.push(r.failure()?.errorText); };
+    page.on('requestfailed', onFail);
+    const r = await page.evaluate(async () => {
+      const { ResourceLoader } = await import('/src/map/loader.ts');
+      const m = window.__tinyWaterloo.map.manifest;
+      const url = (i, j) => `data/tiles/1024/${i}_${j}.webp?v=${m.tiles[`${i}_${j}`].v}&test=1`;
+      const L = new ResourceLoader(2, 9 * 1024 * 1024, () => {});    // room for two 4 MB bitmaps
+      const frame = async (keys) => {
+        L.beginFrame();
+        const rs = keys.map(([i, j]) => L.want(`${i}_${j}`, url(i, j), 0));
+        L.endFrame();
+        for (let k = 0; k < 100 && rs.some((x) => x.state !== 'ready'); k++) await new Promise((res) => setTimeout(res, 30));
+        L.beginFrame(); for (const x of rs) if (x.state === 'ready') L.use(x); L.endFrame();
+        return rs;
+      };
+      const first = await frame([[0, 0], [1, 0]]);
+      const second = await frame([[2, 0], [3, 0]]);   // over budget: first frame's bitmaps are least recently used
+      const s1 = L.stats();
+      const closed = first.map((x) => x.bitmap.width === 0);   // ImageBitmap.close() zeroes width
+      const kept = second.map((x) => x.bitmap.width);
+      // cancellation: ask for a slow tile, then move on before it arrives
+      L.beginFrame(); const slow = L.want('slow', url(0, -2), 0); L.endFrame();
+      await new Promise((res) => setTimeout(res, 200));
+      const wasLoading = slow.state === 'loading';
+      L.beginFrame(); L.want('other', url(1, -1), 0); L.endFrame();
+      await new Promise((res) => setTimeout(res, 300));
+      return { s1, closed, kept, wasLoading, slowGone: !L.peek('slow') && slow.state !== 'ready' };
+    });
+    await page.waitForTimeout(200);
+    page.off('requestfailed', onFail);
+    await page.unroute(/\/data\/tiles\/1024\/[0-9-]+_-2\.webp/);
+    assert(r.s1.bitmaps === 2 && r.s1.bytes <= 9 * 1024 * 1024, `after eviction ${JSON.stringify(r.s1)}`);
+    assert(r.closed.every(Boolean) && r.kept.every((w) => w === 1024), `closed ${r.closed} kept ${r.kept}`);
+    assert(r.wasLoading && r.slowGone, `slow request ${JSON.stringify(r)}`);
+    assert(aborted.length >= 1, 'no aborted request observed');
+    return `kept 2 bitmaps ${(r.s1.bytes / 1048576).toFixed(0)} MB, evicted+closed 2, aborted: ${aborted[0]}`;
+  });
+
+  await check('frame loop: idle when nothing changes; invalidate() emits frames with baseDirty=false', async () => {
+    await idle(page);
+    const r = await page.evaluate(async () => {
+      const map = window.__tinyWaterloo.map, frames = [];
+      const off = map.on('frame', (f) => frames.push(f.baseDirty));
+      await new Promise((res) => setTimeout(res, 1500));
+      const idleFrames = frames.length;
+      // an animating module keeps calling invalidate() from its frame callback
+      let n = 0;
+      const off2 = map.on('frame', () => { if (++n < 10) map.invalidate(); });
+      frames.length = 0;
+      map.invalidate();
+      await new Promise((res) => setTimeout(res, 800));
+      off(); off2();
+      return { idleFrames, frames };
+    });
+    assert(r.idleFrames === 0, `${r.idleFrames} frames while idle`);
+    assert(r.frames.length >= 10 && r.frames.every((d) => d === false), `invalidate frames ${JSON.stringify(r.frames)}`);
+    return `idle 0 frames; ${r.frames.length} invalidated frames, none redrew the base`;
+  });
+
   await check('no console errors during the session', async () => {
     assert(errors.length === 0, errors.join(' | '));
   });
@@ -434,7 +511,7 @@ try {
   });
 
   // ------------------------------------------------------------------ phone layout
-  await check('phone width (390 px): controls usable, no horizontal overflow', async () => {
+  await check('phone width (390 px): controls usable, no horizontal overflow, bottom sheet, pinch zoom', async () => {
     const c3 = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, hasTouch: true, isMobile: true });
     const p3 = await c3.newPage();
     const errs = trackErrors(p3);
@@ -454,6 +531,19 @@ try {
     const sheet = await p3.locator('#landmark-panel').boundingBox();
     assert(sheet && Math.abs(sheet.y + sheet.height - 844) < 2 && sheet.width >= 389, `sheet ${JSON.stringify(sheet)}`);
     await p3.screenshot({ path: path.join(SHOTS, 'map_phone_sheet.png') });
+    // two-finger pinch (real touch events through CDP): spreading fingers zooms in about their midpoint
+    await p3.keyboard.press('Escape');
+    const cdp = await c3.newCDPSession(p3);
+    const touch = (type, pts) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: pts.map(([x, y], id) => ({ x, y, id })) });
+    const z0 = (await view(p3)).zoom;
+    const mid = await p3.evaluate(() => window.__tinyWaterloo.map.screenToCanvas(195, 300));
+    await touch('touchStart', [[165, 300], [225, 300]]);
+    for (let k = 1; k <= 8; k++) { await touch('touchMove', [[165 - 10 * k, 300], [225 + 10 * k, 300]]); await p3.waitForTimeout(16); }
+    await touch('touchEnd', []);
+    const z1 = (await settle(p3)).zoom;
+    const midAfter = await p3.evaluate(() => window.__tinyWaterloo.map.screenToCanvas(195, 300));
+    assert(z1 > z0 * 2, `pinch zoom ${z0} -> ${z1}`);
+    assert(Math.hypot(midAfter[0] - mid[0], midAfter[1] - mid[1]) < 3, `pinch midpoint drifted ${midAfter} vs ${mid}`);
     assert(!errs.length, errs.join(' | '));
     await c3.close();
   });

@@ -61,8 +61,8 @@ export function createUI(map: MapAPI, deps: { fx: EffectsModule; actor: ActorMod
   const button = (name: string, label: string, onclick: (e: Event) => void, extra: Record<string, string> = {}) =>
     h('button', { class: 'icon-btn', type: 'button', 'aria-label': label, title: label, onclick, ...extra }, icon(name));
   const share = async () => {
+    // built from the live view (the address bar catches up once the camera rests)
     const url = `${location.origin}${location.pathname}${location.search}${formatHash(map.getView())}`;
-    history.replaceState(history.state, '', url);
     try { await navigator.clipboard.writeText(url); map.toast('Link to this view copied'); }
     catch { map.toast(`Copy this link: ${url}`); }
   };

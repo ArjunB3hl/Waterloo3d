@@ -83,6 +83,7 @@ export class CollisionField {
   private lastKey = NaN;
   private lastChunk: Chunk | undefined;
   private sawMissing = false;   // set by probe() during one sweep
+  private solidTrees = true;    // sweep option: tree crowns block the sphere (false = trees are soft / passable)
 
   readonly meta: CollisionMeta;
   private readonly baseUrl: string;
@@ -264,9 +265,11 @@ export class CollisionField {
    * Move a sphere of `radius` metres from `from` to `to`, sampling at <= `step` m (default and maximum 1 m).
    * The first contact is refined by bisection. Unloaded chunks are free space (result.missing = true) unless the
    * chunk's precomputed zmax proves the sphere passes above everything in it.
+   * `opts.trees = false` ignores tree crowns entirely (soft vegetation the actor flies through); default true.
    */
-  sweep(from: Vec3, to: Vec3, radius = 0, step = 1): SweepResult {
+  sweep(from: Vec3, to: Vec3, radius = 0, step = 1, opts: { trees?: boolean } = {}): SweepResult {
     this.sawMissing = false;
+    this.solidTrees = opts.trees ?? true;
     const dx = to[0] - from[0], dy = to[1] - from[1], dz = to[2] - from[2];
     const len = Math.hypot(dx, dy, dz);
     const n = Math.max(1, Math.ceil(len / Math.min(1, Math.max(0.05, step))));
@@ -330,7 +333,7 @@ export class CollisionField {
         const s = this.solidTop(qx, qy);
         if (s !== s) { this.sawMissing ||= !this.isLoaded(qx, qy); continue; }
         if (z < s && this.kind(qx, qy) & KIND_BUILDING) return P_WALL;
-        if (z < this.canopyTop(qx, qy)) tree = true;
+        if (this.solidTrees && z < this.canopyTop(qx, qy)) tree = true;
       }
     }
     // centre column: the bottom of the sphere must stay above the surface directly below
@@ -338,7 +341,7 @@ export class CollisionField {
     if (s !== s) { this.sawMissing ||= !this.isLoaded(x, y); return P_NONE; }
     if (this.kind(x, y) & KIND_BUILDING && bottom < s) return P_ROOF;
     if (tree) return P_TREE_SIDE;
-    if (bottom < this.canopyTop(x, y)) return P_TREE_TOP;
+    if (this.solidTrees && bottom < this.canopyTop(x, y)) return P_TREE_TOP;
     if (bottom < s) return P_GROUND;
     return P_NONE;
   }
