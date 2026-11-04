@@ -1,0 +1,144 @@
+# Build status
+
+Last updated 4 November 2026. Branch `claude/busy-turing-drkfqj`.
+
+## Checkpoint 1: illustrated campus 2 × 2 is complete
+
+| | |
+|---|---|
+| Illustrated (accepted generated art) | **4 tiles**: `-1_-1`, `0_-1`, `-1_0`, `0_0`, i.e. the University of Waterloo campus core (Dana Porter, SLC, MC, QNC, EIT, DC, E5, E7, Hagey Hall, ION corridor) |
+| Reference renders (procedural, awaiting art) | 51 tiles: campus → Waterloo Park / Silver Lake → Uptown / Public Square → Laurier, plus a surrounding ring |
+| City coverage | Measured against the verified municipal boundary (OSM relation r2062154, 65.31 km², 589 tiles). Published tiles cover **10.77 %** of the city's area; illustrated tiles cover **0.78 %**. |
+| Local preview | `npm install && npm run dev` → http://127.0.0.1:5173 (production: `npm run build && npm run preview` → http://127.0.0.1:4173) |
+| Public deployment | Not done. It is a separate, explicit step. |
+
+![Campus 2x2 artwork](docs/review/campus_2x2_art.png)
+
+## Image generation: what was reported
+
+| Batch | Tiles | Status | Model reported | Settings reported |
+|---|---|---|---|---|
+| B001 (style sample) | 0_0 | accepted | **unknown**: not reported. The file arrived as a 1254 × 1254 WebP through the chat relay, possibly re-encoded. | unknown |
+| B002 (rest of the 2 × 2) | 0_-1, -1_0, -1_-1 | accepted | `image_gen.imagegen`; the **model name and version are not exposed** by the tool | Reference-image style transfer/edit. The mask was given as image guidance for the first two tiles and as coordinates for the third; no inpainting control. Requested 1536 × 1536 canvases; the tool returns 1254 × 1254 only. Seed, steps and guidance unknown. |
+
+TinyRJ's model also remains unknown. Nothing in this project assumes a particular model. Full per-tile records (prompt hash, reference hashes, source file hash, QA verdict) are in `art/tiles.json` and `art/batches.json`.
+
+**Service costs.** None have been reported by the user or the image agent, so costs are unknown.
+
+**Finishing.** Accepted art keeps its original in `art/accepted/`. At publish time a deterministic pixel-art finish is applied (`config/world.json → art_finish`): box-downscale to 512 px, a light unsharp mask, one **shared 64-colour palette** taken from the B001 style sample (`art/palette_px512-q64s.png`), then a nearest-neighbour upscale. Finished LODs are stored as lossless WebP.
+
+## Measured results
+
+### Geographic grounding and alignment (`pipeline/validate_alignment.py`, `docs/validation/alignment.md`)
+- Height codec round trip: max error 0.005 m (step 0.01 m).
+- **Landmark roofs, 7/7 pass.** At Dana Porter Library, SLC, E5, E6, E7, EIT and MC, the published height decodes to the source roof height within 0.004 m, and the class at the roof point is "roof". Inverse projection back to the ground position is accurate to ≤ 0.004 m.
+- **Road junctions, 207 in published tiles:** 197 pass (class road/rail, |dz| < 1 m). 9 are occluded by taller buildings in front of them (not testable from this camera). 1 sits on a roof edge of a 512 px height block (the full-resolution render is correct). **0 fail.**
+- Independent POI check: Overture Places matched E5 at 0 m. Two other POIs sit 533 m and 867 m from their buildings, which are errors in the POI data, so POIs are not used for geometry.
+
+### Artwork QA (`pipeline/art_import.py`, `art/returned/*/QA_*.md`)
+
+| Tile | Global shift | Camera (scale / rotation) | Geometry vs reference | Join vs accepted neighbours |
+|---|---|---|---|---|
+| 0_0 | 0.3 px | 1.0004 / 0.007° | 0.97 | (first tile) |
+| 0_-1 | 1.0 px | 1.0011 / −0.075° | 1.07 | bottom seam ×1.29 (limit 1.8) |
+| -1_0 | 0.8 px | 1.0013 / 0.013° | 0.90 | right seam ×1.41 |
+| -1_-1 | 0.9 px | 1.002 / 0.119° | 1.12 | seams pass |
+
+Seam review of the finished 2 × 2 (`docs/review/campus_2x2_seams.png`). At the 512 px working resolution, the colour step across each seam divided by the step between neighbouring lines is 1.06, 1.33, 0.94 and 0.97 for the four edge halves, against 0.89–1.15 on interior control lines. Visually, roads, rails, paths and buildings continue across every edge and the centre junction.
+
+QA thresholds were adjusted after the first real returns, with the evidence recorded in `pipeline/art_import.py`:
+- The block-displacement limit went from 8 px to 10 px. B001 measured 9.1 px with otherwise excellent geometry.
+- A block now counts as displaced only when 2 of its 4 sub-blocks agree. A false 41 px "displacement" on -1_-1 came from repetitive rail and parking stripes.
+
+### Depth and moving objects (`tests/actor_check.mjs`, `docs/DEPTH.md`)
+- Camera alignment of the three.js goose with the map is within 0.5 px at three known points.
+- **Occlusion:** a goose behind the Dana Porter tower is drawn as a stippled silhouette (occluded fraction > 0.5).
+- **Shadow:** the sun-projected shadow lands on lawn and on roof at the expected projected points.
+- **Collision response**, defined explicitly in `docs/DEPTH.md`:
+  - The Engineering 5 wall stops the goose and it slides along it, with no penetration.
+  - Tree canopy slows the goose but does not block it.
+  - On the steepest published slope, the altitude floor follows the terrain.
+- Collision field accuracy (`tests/test_collision.py`): roof cells within 0.5 m of the source 93.3 %, ground 99.2 %, trees 99.9 %.
+
+### Interaction (`tests/browser_check.mjs`, 14/14 through the normal UI)
+Checked:
+- load, drag pan, wheel zoom (0.00 px drift under the cursor);
+- minimap jump, landmark card jump, street search;
+- share URL → reload restores the view exactly;
+- life, tilt-shift and coverage toggles, and settings persistence;
+- a **forced tile failure recovering automatically**;
+- goose flight start and land, with attribution visible during flight.
+
+### Performance
+
+These numbers are from the container, **not** the MacBook Air M3: headless Chromium with SwiftShader, which emulates the GPU on the CPU (`docs/perf_container.json`).
+
+| 1280 × 800, dpr 1 | Effects on | Effects off | CPU raster, effects off |
+|---|---|---|---|
+| First tile drawn | 640 ms | 126 ms | — |
+| Panning frame rate | 3.3 fps | 11.7 fps | 39.1 fps (p95 frame 35.6 ms) |
+| App's own map draw p95 | 2.7 ms | 1.0 ms | 4.5 ms |
+| Decoded tile cache after 60 s | 206 MB / 220 budget | 94 MB | 94 MB |
+| JS heap | 3.0 MB | 2.6 MB | — |
+
+The map's own JavaScript costs 1–5 ms per frame. The remaining frame time is software rasterisation, so these frame rates say little about a real GPU.
+
+**Real-device measurement is pending.** Run `npm run perf:device` on the MacBook and paste back the JSON (`docs/PERF_ON_DEVICE.md`).
+
+### Test suites (all run one at a time, all passing)
+- `npm run build`
+- `map_smoke` 25/25
+- `fx_check` 17/17
+- `actor_check` 16/16
+- `depth_selfcheck`
+- `test_collision` 9/9
+- `test_art_import` 9/9
+- `browser_check` 14/14
+- `test_google3d_pipeline`
+
+## Independent review
+
+Five reviewers covered projection maths, loading and memory, UI, the art workflow and data. Each finding was checked by two skeptics. **33 findings, 27 confirmed, 27 fixed.** Notable fixes:
+- The prefetch ring was being evicted and refetched every frame.
+- Shadow and occlusion blinked out for one frame at tile crossings.
+- Flight keys stuck down when released inside a panel.
+- The import crashed on a near-square image.
+- Microsoft ML heights were mislabelled as OSM heights.
+- Inferred trees were scattered onto water and parking.
+- Bridge and tunnel level spans were ignored.
+- The ground texture was misregistered by half a texel against the 3D scene.
+- A stale life-mask cache key.
+
+## Inferred or approximate geometry (labelled in the data)
+
+| What | How | Where it is labelled |
+|---|---|---|
+| Building heights | Building parts by source: `ms_ml_height` 46,343 (Microsoft ML estimate), `class_default` 25,791 (default by class), `osm_levels` 8,048 (levels × storey height), `osm_height` 34 (explicit OSM height) | `height_src` per part; landmark cards show "Approximate" |
+| Pitched roofs | Gable or hip inferred for small near-rectangular houses without `roof:shape` | `roof.inferred` in render jobs |
+| Trees | 8,472 OSM trees, 1,026 interpolated along tree rows, plus a deterministic scatter in woods, parks and residential areas (kept off water, pitches, parking and rail) | `inferred_<class>` |
+| Terrain | CDEM via AWS Terrain Tiles, about 20 m effective resolution | `DATA_SOURCES.md` |
+| Landmark text | Editorial summaries. The reference URLs could not be fetched from the container. | `description_source` in `landmarks.json` |
+
+## Pending inputs and blockers
+
+| Item | Status | What would unblock it |
+|---|---|---|
+| Image returns | **None outstanding.** B001 and B002 are complete. | The next batch is prepared from the stage-2 tiles (see below). |
+| Google Photorealistic 3D Tiles | The code is ready and tested offline (`docs/GOOGLE_3D_TILES.md`). This session cannot see the key, because environment variables reach only new sessions. | Start a new session on this branch, and confirm that the Map Tiles API terms allow the comparison use (`--i-reviewed-google-terms`). |
+| City of Waterloo Open Data | `data.waterloo.ca` and ArcGIS are blocked by the container's network policy | Allow those domains in the environment's network settings, then evaluate the footprint, street-tree and contour layers and the licence. |
+| Real-device performance | Not measured | Run `npm run perf:device` on the MacBook Air M3. |
+| Landmark text verification | uwaterloo.ca, wlu.ca and others are blocked | Allow those domains, or verify the text manually. |
+
+## Scaling estimate from the tested sample
+
+- **Per tile:** about 1 generation. B001 and B002 needed no retakes: 4 of 4 were accepted, one after a QA threshold recalibration. Seam repairs: 0 so far.
+- **Full city: 589 tiles.** With context-margin generation, budget about 1.2–1.5 generations per tile (≈ 700–900), plus occasional seam repairs (≤ 1,102 edges and 514 junctions in the worst case).
+- **Storage per finished tile:** about 0.40 MB artwork (three LODs), 0.12 MB heights, 0.05 MB class map, 0.02 MB life mask, plus collision. The current 55-tile sample is 23.7 MB in `web/public/data`. The **full city would be about 400 MB**, so before going citywide, move published tiles to object storage or Git LFS rather than plain git.
+- **Reference rendering:** about 3 s per tile in the container (software WebGL), so the whole city is about 30 minutes plus preparation.
+
+## Remaining milestones
+
+1. **Stage 2 artwork:** campus → Waterloo Park → Uptown (51 reference tiles), as resumable batches B003 and onward of 3–4 tiles each, grown outward from the accepted patch so every request has accepted neighbours in its margins.
+2. Height audit with Google 3D Tiles (new session) → correct the worst `ms_ml_height` and `class_default` buildings around landmarks.
+3. Real-device performance pass on the M3; tune cache budgets and tilt-shift resolution if needed.
+4. Later, tracked separately: multiplayer, racing, more vehicles, seasonal artwork, missions.
