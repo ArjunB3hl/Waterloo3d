@@ -145,13 +145,6 @@ export function createUI(map: MapAPI, deps: { fx: EffectsModule; actor: ActorMod
     if (e.key === '/' && !actorActive) { e.preventDefault(); search.focus(); }
     else if (e.key === 'm' || e.key === 'M') map.updateSettings({ minimap: !map.settings.minimap });
   });
-
-  // Tests and the perf tooling read window.__tinyWaterloo.perf(); main.ts publishes that object right after
-  // createUI returns, so attach once the current task has finished.
-  queueMicrotask(() => {
-    const hook = (window as { __tinyWaterloo?: Record<string, unknown> }).__tinyWaterloo;
-    if (hook) hook.perf = () => map.perf();
-  });
 }
 
 /** Compass: needle toward the on-screen direction of geographic north (+y in local ENU) for the fixed camera. */

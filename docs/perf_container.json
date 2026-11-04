@@ -1,0 +1,491 @@
+{
+  "WARNING": "Measured in a headless Chromium with SwiftShader (software GPU emulation on the CPU) inside a Linux container. These numbers are NOT from a MacBook Air M3 and say little about real GPU frame rates - see docs/PERF_ON_DEVICE.md.",
+  "environment": {
+    "browser": "Chromium 153.0.8010.12 headless",
+    "gl": "swiftshader = ANGLE SwiftShader (software WebGL2 + GPU-path 2D canvas); cpu-raster = --disable-gpu (2D map canvas rasterised on the CPU; Chromium still offers WebGL2 through its SwiftShader fallback, but these runs have effects off)",
+    "cpus": 4,
+    "cpuModel": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "memGB": 16,
+    "server": "vite preview (production build) on http://127.0.0.1:5190/",
+    "measured_utc": "2026-11-04T16:29:24.745Z",
+    "session_seconds": 60
+  },
+  "method": {
+    "load": "Fresh browser context (cold HTTP cache) per run. firstArtworkTileDrawn = first map frame with a redrawn base canvas after the first tile bitmap decoded; allVisibleTilesLoaded = first animation frame with no request in flight or queued (visible tiles plus the prefetch ring), measured from navigation start.",
+    "panning": "Mouse drags (10 move events of up to 60 px each) toward successive stops across the stage-2 area with wheel zoom in/out at each stop, for 60 s. mapFrameIntervalMs = intervals between map frame events inside drags; rafIntervalMs = requestAnimationFrame intervals inside drags; appFrameP95Ms / appDrawP95Ms = the app's own perf() p95 over the last second, sampled after each drag. mapFramesPerS can be limited by the Playwright input rate (inputMovesPerS).",
+    "memory": "tileBitmapsMB is the tile cache's own decoded-size count; heightTilesMB = Float32 height tiles; canvases2dMB = base, aux and overlay canvases; fxGpuEstimateMB is a rough upper bound for the effects canvas and textures. jsHeapMB from CDP Performance.getMetrics (precise); performanceMemoryMB is the app's performance.memory reading (coarse, bucketed by Chromium)."
+  },
+  "runs": [
+    {
+      "config": {
+        "width": 1280,
+        "height": 800,
+        "dpr": 1,
+        "effects": true,
+        "gl": "swiftshader",
+        "fx": {
+          "webgl2": true,
+          "life": true,
+          "tilt": true,
+          "blurScale": 1
+        }
+      },
+      "load_ms": {
+        "firstArtworkTileDrawn": 639.7,
+        "firstBitmapDecoded": 603.4,
+        "allVisibleTilesLoaded": 603.4,
+        "appHookReady": 202.5,
+        "domContentLoaded": 32.1,
+        "tileRequests": 12,
+        "tileKB": 497
+      },
+      "panning": {
+        "drags": 6,
+        "dragSeconds": 19.3,
+        "inputMovesPerS": 3.1,
+        "mapFramesPerS": 3.3,
+        "mapFrameIntervalMs": {
+          "n": 57,
+          "median": 374.1,
+          "p95": 604.1,
+          "max": 711
+        },
+        "rafIntervalMs": {
+          "n": 58,
+          "median": 373.7,
+          "p95": 608.6,
+          "max": 711.7
+        },
+        "appFrameP95Ms": {
+          "n": 2,
+          "median": 183.3,
+          "p95": 183.3,
+          "max": 183.3
+        },
+        "appDrawP95Ms": {
+          "n": 6,
+          "median": 2.7,
+          "p95": 9.3,
+          "max": 9.3
+        }
+      },
+      "after_session": {
+        "seconds": 60,
+        "memory": {
+          "tileBitmapsMB": 206,
+          "tileBitmaps": 173,
+          "budgetMB": 220,
+          "heightTilesMB": 10,
+          "heightTiles": 10,
+          "canvases2dMB": 15.6,
+          "fxGpuEstimateMB": 27.3
+        },
+        "jsHeapMB": {
+          "usedMB": 3,
+          "totalMB": 5.1
+        },
+        "jsHeapAfterGcMB": {
+          "usedMB": 2.3,
+          "totalMB": 3.3
+        },
+        "performanceMemoryMB": 10,
+        "peakTileBitmapsMB": 206,
+        "failedRequests": 0
+      },
+      "console_errors": 0,
+      "wall_s": 69
+    },
+    {
+      "config": {
+        "width": 1280,
+        "height": 800,
+        "dpr": 1,
+        "effects": false,
+        "gl": "swiftshader",
+        "fx": {
+          "webgl2": true,
+          "life": false,
+          "tilt": false,
+          "blurScale": 1
+        }
+      },
+      "load_ms": {
+        "firstArtworkTileDrawn": 125.6,
+        "firstBitmapDecoded": 125.2,
+        "allVisibleTilesLoaded": 158.6,
+        "appHookReady": 86.7,
+        "domContentLoaded": 25,
+        "tileRequests": 12,
+        "tileKB": 497
+      },
+      "panning": {
+        "drags": 10,
+        "dragSeconds": 8.6,
+        "inputMovesPerS": 11.7,
+        "mapFramesPerS": 11.7,
+        "mapFrameIntervalMs": {
+          "n": 90,
+          "median": 85.1,
+          "p95": 243.8,
+          "max": 332.8
+        },
+        "rafIntervalMs": {
+          "n": 94,
+          "median": 82.1,
+          "p95": 243.8,
+          "max": 332.8
+        },
+        "appFrameP95Ms": {
+          "n": 10,
+          "median": 150,
+          "p95": 200,
+          "max": 200
+        },
+        "appDrawP95Ms": {
+          "n": 10,
+          "median": 0.9,
+          "p95": 1,
+          "max": 1
+        }
+      },
+      "after_session": {
+        "seconds": 60,
+        "memory": {
+          "tileBitmapsMB": 94,
+          "tileBitmaps": 64,
+          "budgetMB": 220,
+          "heightTilesMB": 0,
+          "heightTiles": 0,
+          "canvases2dMB": 7.8,
+          "fxGpuEstimateMB": 12.1
+        },
+        "jsHeapMB": {
+          "usedMB": 2.6,
+          "totalMB": 3.6
+        },
+        "jsHeapAfterGcMB": {
+          "usedMB": 2.2,
+          "totalMB": 3.3
+        },
+        "performanceMemoryMB": 10,
+        "peakTileBitmapsMB": 94,
+        "failedRequests": 0
+      },
+      "console_errors": 0,
+      "wall_s": 62
+    },
+    {
+      "config": {
+        "width": 1440,
+        "height": 900,
+        "dpr": 2,
+        "effects": true,
+        "gl": "swiftshader",
+        "fx": {
+          "webgl2": true,
+          "life": true,
+          "tilt": true,
+          "blurScale": 0.5
+        }
+      },
+      "load_ms": {
+        "firstArtworkTileDrawn": 163.6,
+        "firstBitmapDecoded": 159.6,
+        "allVisibleTilesLoaded": 14918.3,
+        "appHookReady": 113.5,
+        "domContentLoaded": 27,
+        "tileRequests": 12,
+        "tileKB": 1244
+      },
+      "panning": {
+        "drags": 4,
+        "dragSeconds": 41.2,
+        "inputMovesPerS": 1,
+        "mapFramesPerS": 1,
+        "mapFrameIntervalMs": {
+          "n": 38,
+          "median": 1011.9,
+          "p95": 2117.7,
+          "max": 2376.3
+        },
+        "rafIntervalMs": {
+          "n": 38,
+          "median": 1016.9,
+          "p95": 2121.7,
+          "max": 2381.6
+        },
+        "appFrameP95Ms": {
+          "n": 0
+        },
+        "appDrawP95Ms": {
+          "n": 4,
+          "median": 1.2,
+          "p95": 12.9,
+          "max": 12.9
+        }
+      },
+      "after_session": {
+        "seconds": 60,
+        "memory": {
+          "tileBitmapsMB": 189,
+          "tileBitmaps": 63,
+          "budgetMB": 220,
+          "heightTilesMB": 6,
+          "heightTiles": 6,
+          "canvases2dMB": 79.1,
+          "fxGpuEstimateMB": 138.4
+        },
+        "jsHeapMB": {
+          "usedMB": 2.3,
+          "totalMB": 4.6
+        },
+        "jsHeapAfterGcMB": {
+          "usedMB": 2.2,
+          "totalMB": 3.1
+        },
+        "performanceMemoryMB": 10,
+        "peakTileBitmapsMB": 189,
+        "failedRequests": 0
+      },
+      "console_errors": 0,
+      "wall_s": 80
+    },
+    {
+      "config": {
+        "width": 1440,
+        "height": 900,
+        "dpr": 2,
+        "effects": false,
+        "gl": "swiftshader",
+        "fx": {
+          "webgl2": true,
+          "life": false,
+          "tilt": false,
+          "blurScale": 1
+        }
+      },
+      "load_ms": {
+        "firstArtworkTileDrawn": 129.5,
+        "firstBitmapDecoded": 128.9,
+        "allVisibleTilesLoaded": 262.3,
+        "appHookReady": 96.7,
+        "domContentLoaded": 30,
+        "tileRequests": 12,
+        "tileKB": 1244
+      },
+      "panning": {
+        "drags": 10,
+        "dragSeconds": 29.7,
+        "inputMovesPerS": 3.4,
+        "mapFramesPerS": 3.4,
+        "mapFrameIntervalMs": {
+          "n": 91,
+          "median": 256.2,
+          "p95": 329.3,
+          "max": 9974.9
+        },
+        "rafIntervalMs": {
+          "n": 99,
+          "median": 253.8,
+          "p95": 329.3,
+          "max": 9973.8
+        },
+        "appFrameP95Ms": {
+          "n": 7,
+          "median": 233.3,
+          "p95": 249.9,
+          "max": 249.9
+        },
+        "appDrawP95Ms": {
+          "n": 10,
+          "median": 0.7,
+          "p95": 1.5,
+          "max": 1.5
+        }
+      },
+      "after_session": {
+        "seconds": 60,
+        "memory": {
+          "tileBitmapsMB": 120,
+          "tileBitmaps": 48,
+          "budgetMB": 220,
+          "heightTilesMB": 0,
+          "heightTiles": 0,
+          "canvases2dMB": 39.6,
+          "fxGpuEstimateMB": 59.7
+        },
+        "jsHeapMB": {
+          "usedMB": 2.8,
+          "totalMB": 3.6
+        },
+        "jsHeapAfterGcMB": {
+          "usedMB": 2.2,
+          "totalMB": 3.1
+        },
+        "performanceMemoryMB": 10,
+        "peakTileBitmapsMB": 120,
+        "failedRequests": 0
+      },
+      "console_errors": 0,
+      "wall_s": 63
+    },
+    {
+      "config": {
+        "width": 1280,
+        "height": 800,
+        "dpr": 1,
+        "effects": false,
+        "gl": "cpu-raster",
+        "fx": {
+          "webgl2": true,
+          "life": false,
+          "tilt": false,
+          "blurScale": 1
+        }
+      },
+      "load_ms": {
+        "firstArtworkTileDrawn": 242.3,
+        "firstBitmapDecoded": 241.8,
+        "allVisibleTilesLoaded": 393.6,
+        "appHookReady": 184.3,
+        "domContentLoaded": 35.4,
+        "tileRequests": 12,
+        "tileKB": 497
+      },
+      "panning": {
+        "drags": 15,
+        "dragSeconds": 4,
+        "inputMovesPerS": 37.6,
+        "mapFramesPerS": 39.1,
+        "mapFrameIntervalMs": {
+          "n": 141,
+          "median": 25.4,
+          "p95": 35.6,
+          "max": 56.5
+        },
+        "rafIntervalMs": {
+          "n": 188,
+          "median": 21,
+          "p95": 32.9,
+          "max": 56.4
+        },
+        "appFrameP95Ms": {
+          "n": 15,
+          "median": 33.4,
+          "p95": 66.6,
+          "max": 66.6
+        },
+        "appDrawP95Ms": {
+          "n": 15,
+          "median": 0.6,
+          "p95": 4.5,
+          "max": 4.5
+        }
+      },
+      "after_session": {
+        "seconds": 60,
+        "memory": {
+          "tileBitmapsMB": 94,
+          "tileBitmaps": 64,
+          "budgetMB": 220,
+          "heightTilesMB": 0,
+          "heightTiles": 0,
+          "canvases2dMB": 7.8,
+          "fxGpuEstimateMB": 12.1
+        },
+        "jsHeapMB": {
+          "usedMB": 3.6,
+          "totalMB": 6.8
+        },
+        "jsHeapAfterGcMB": {
+          "usedMB": 2.3,
+          "totalMB": 3.3
+        },
+        "performanceMemoryMB": 10,
+        "peakTileBitmapsMB": 94,
+        "failedRequests": 0
+      },
+      "console_errors": 0,
+      "wall_s": 61
+    },
+    {
+      "config": {
+        "width": 1440,
+        "height": 900,
+        "dpr": 2,
+        "effects": false,
+        "gl": "cpu-raster",
+        "fx": {
+          "webgl2": true,
+          "life": false,
+          "tilt": false,
+          "blurScale": 1
+        }
+      },
+      "load_ms": {
+        "firstArtworkTileDrawn": 243.1,
+        "firstBitmapDecoded": 242.5,
+        "allVisibleTilesLoaded": 558.9,
+        "appHookReady": 174.5,
+        "domContentLoaded": 27.8,
+        "tileRequests": 12,
+        "tileKB": 1244
+      },
+      "panning": {
+        "drags": 12,
+        "dragSeconds": 7,
+        "inputMovesPerS": 17.1,
+        "mapFramesPerS": 17.3,
+        "mapFrameIntervalMs": {
+          "n": 109,
+          "median": 59.2,
+          "p95": 75.8,
+          "max": 95
+        },
+        "rafIntervalMs": {
+          "n": 236,
+          "median": 30.1,
+          "p95": 41.4,
+          "max": 65.1
+        },
+        "appFrameP95Ms": {
+          "n": 12,
+          "median": 150,
+          "p95": 166.7,
+          "max": 166.7
+        },
+        "appDrawP95Ms": {
+          "n": 12,
+          "median": 1.4,
+          "p95": 60.2,
+          "max": 60.2
+        }
+      },
+      "after_session": {
+        "seconds": 60,
+        "memory": {
+          "tileBitmapsMB": 126,
+          "tileBitmaps": 72,
+          "budgetMB": 220,
+          "heightTilesMB": 0,
+          "heightTiles": 0,
+          "canvases2dMB": 39.6,
+          "fxGpuEstimateMB": 59.7
+        },
+        "jsHeapMB": {
+          "usedMB": 4.2,
+          "totalMB": 7.1
+        },
+        "jsHeapAfterGcMB": {
+          "usedMB": 2.3,
+          "totalMB": 3.3
+        },
+        "performanceMemoryMB": 10,
+        "peakTileBitmapsMB": 126,
+        "failedRequests": 0
+      },
+      "console_errors": 0,
+      "wall_s": 63
+    }
+  ]
+}

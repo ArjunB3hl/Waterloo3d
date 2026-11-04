@@ -31,6 +31,16 @@ function palette(cls) {
   return 'commercial';
 }
 
+// OSM colour tags are often pure web colours ("red", "#ff0000"). Blend a tagged colour toward the palette tone and cap its
+// saturation so it reads as a material hint (brick, render, glass) rather than paint.
+function muteTag(tag, base, k = 0.45) {
+  if (!tag) return base;
+  const mix = tag.map((v, i) => base[i] * (1 - k) + v * k);
+  const c = new THREE.Color(mix[0] / 255, mix[1] / 255, mix[2] / 255), hsl = {};
+  c.getHSL(hsl); c.setHSL(hsl.h, Math.min(hsl.s, 0.38), Math.min(Math.max(hsl.l, 0.35), 0.82));
+  return [c.r * 255, c.g * 255, c.b * 255];
+}
+
 function parseColor(s) {
   if (!s) return null;
   try { const c = new THREE.Color(s); return [c.r * 255, c.g * 255, c.b * 255]; } catch { return null; }
@@ -117,8 +127,8 @@ function ensureCCW(ring) {
 function addBuilding(batch, b, kinds) {
   const kind = palette(b.cls);
   const [cx, cy] = b.parts[0].ring[0];
-  const fc = parseColor(b.facade_color);
-  const wall = lin(fc || WALL[kind][Math.floor(hash(cx, cy, 1) * WALL[kind].length)]);
+  const base = WALL[kind][Math.floor(hash(cx, cy, 1) * WALL[kind].length)];
+  const wall = lin(muteTag(parseColor(b.facade_color), base));
   for (const p of b.parts) {
     const storey = HOUSE.has(b.cls) ? 3.0 : 3.6;
     const ring = ensureCCW(p.ring);
@@ -127,7 +137,7 @@ function addBuilding(batch, b, kinds) {
     const eave = p.roof ? top - p.roof.rise : top;
     const rc = parseColor(p.roof_color);
     const pal = p.roof ? ROOF.pitched : ROOF.flat;
-    const roofCol = lin(rc || pal[Math.floor(hash(cx, cy, 2) * pal.length)]);
+    const roofCol = lin(muteTag(rc, pal[Math.floor(hash(cx, cy, 2) * pal.length)], 0.6));
     let u = 0;
     for (let i = 0; i < ring.length; i++) u = batch.wallQuad(ring[i], ring[(i + 1) % ring.length], z0, eave, wall, u, storey);
     for (const h of p.holes || []) {

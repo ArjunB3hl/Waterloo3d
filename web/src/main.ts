@@ -15,7 +15,7 @@ async function boot() {
   stage.insertBefore(actor.element, document.getElementById('labels'));
   const landmarks: Landmark[] = await fetch('data/landmarks.json').then((r) => (r.ok ? r.json() : [])).catch(() => []);
   createUI(map, { fx, actor, landmarks, ui: document.getElementById('ui')!, attribution: document.getElementById('attribution')! });
-  (window as any).__tinyWaterloo = { map, fx, actor, landmarks }; // test hook (read-only use in tests/)
+  (window as any).__tinyWaterloo = { map, fx, actor, landmarks, perf: () => map.perf() }; // test hook (read-only use in tests/)
 }
 
 boot().catch((e) => {

@@ -209,17 +209,26 @@ export class MapRenderer {
 
     const r = this.range(view, w, h, 0);
     ctx.textBaseline = 'middle';
-    if (p.coverage && tileCss >= 170) {
+    if (p.coverage) {
+      let refs = 0, shown = 0;
       for (let j = r.j0; j <= r.j1; j++) for (let i = r.i0; i <= r.i1; i++) {
         const x0 = sx(i * this.F), y0 = sy(j * this.F);
         if (this.pending.has(tileKey(i, j))) {
+          if (tileCss < 170) continue;
           ctx.font = `600 13px ${UI_FONT}`; ctx.textAlign = 'center';
           ctx.fillStyle = 'rgba(214, 206, 194, 0.55)';
           ctx.fillText('Coming soon', x0 + tileCss / 2, y0 + tileCss / 2);
-        } else if (tileCss >= 300 && this.tile(i, j)?.kind === 'reference') {
-          // small badge pinned to the tile's bottom-left corner (travels with the map like a stamp on the sheet)
-          this.pill(ctx, 'Reference render - artwork pending', x0 + 8, y0 + tileCss - 30, 0.55);
+        } else if (this.tile(i, j)) {
+          shown++;
+          if (this.tile(i, j)!.kind === 'reference') refs++;
         }
+      }
+      // One status chip for the view instead of a badge per tile (per-tile badges cluttered labels).
+      if (refs > 0) {
+        const msg = refs === shown ? 'Reference renders - artwork pending' : `${refs} of ${shown} tiles in view are reference renders`;
+        ctx.font = `600 12px ${UI_FONT}`; ctx.textAlign = 'left';
+        const tw = ctx.measureText(msg).width;
+        this.pill(ctx, msg, w - tw - 36, h - 62, 0.7);
       }
     }
     for (const f of base.failed) {

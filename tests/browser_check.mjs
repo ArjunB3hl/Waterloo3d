@@ -476,8 +476,8 @@ function stats(xs) {
   return { n: s.length, median: q(0.5), p95: q(0.95), max: r1(s[s.length - 1]) };
 }
 
-async function perfRun(browser, { width, height, dpr, effects }) {
-  const label = `${width}x${height} dpr ${dpr}, effects ${effects ? 'on' : 'off'}`;
+async function perfRun(browser, { width, height, dpr, effects, gl }) {
+  const label = `${width}x${height} dpr ${dpr}, effects ${effects ? 'on' : 'off'}, ${gl}`;
   const { ctx, page, errors } = await newPage(browser, { width, height, dpr });
   // effects off from the first frame (stored settings, as if the user had switched them off on an earlier visit),
   // so the load timings belong to the configuration too
@@ -487,7 +487,7 @@ async function perfRun(browser, { width, height, dpr, effects }) {
   const t0 = Date.now();
   await page.goto(BASE);
   await booted(page);
-  await idle(page, 120000);
+  await waitFor(page, () => window.__qa.t.allVisible, undefined, 120000);
   const load = await page.evaluate(() => {
     const nav = performance.getEntriesByType('navigation')[0];
     const tiles = performance.getEntriesByType('resource').filter((e) => /\/tiles\//.test(e.name));
@@ -518,8 +518,9 @@ async function perfRun(browser, { width, height, dpr, effects }) {
       stop = (stop + 1) % TOUR.length;
       continue;
     }
-    const k = Math.min(1, 420 / Math.hypot(dx, dy));
-    const steps = 30;
+    // few, long moves: under software GL each move waits for a frame, and the tour must still cover the area in time
+    const k = Math.min(1, 600 / Math.hypot(dx, dy));
+    const steps = 10;
     const [sx, sy] = await freePoint(page, cx + (dx * k) / 2, cy + (dy * k) / 2);
     await page.mouse.move(sx, sy);
     await page.evaluate(() => { window.__qa.dragging = true; window.__qa.frames = []; window.__qa.raf = []; });
@@ -546,7 +547,7 @@ async function perfRun(browser, { width, height, dpr, effects }) {
   const dragMs = drags.reduce((s, d) => s + d.ms, 0);
   const frameCount = drags.reduce((s, d) => s + d.frames.length, 0);
   const result = {
-    config: { width, height, dpr, effects, fx: { webgl2: fxState.webgl2, life: fxState.life, tilt: fxState.tilt, blurScale: fxState.blurScale } },
+    config: { width, height, dpr, effects, gl, fx: { webgl2: fxState.webgl2, life: fxState.life, tilt: fxState.tilt, blurScale: fxState.blurScale } },
     load_ms: {
       firstArtworkTileDrawn: r1(load.firstTileDrawn ?? NaN), firstBitmapDecoded: r1(load.firstBitmap ?? NaN),
       allVisibleTilesLoaded: r1(load.allVisible ?? NaN), appHookReady: r1(load.hook ?? NaN), domContentLoaded: r1(load.domContentLoaded ?? NaN),
@@ -559,7 +560,7 @@ async function perfRun(browser, { width, height, dpr, effects }) {
       appDrawP95Ms: stats(samples.map((s) => s.drawP95Ms).filter((x) => x > 0)),
     },
     after_session: {
-      seconds: SESSION_S, memory: mem, jsHeapMB: heap, jsHeapAfterGcMB: heapGC,
+      seconds: SESSION_S, memory: mem, jsHeapMB: heap, jsHeapAfterGcMB: heapGC, performanceMemoryMB: after.heapMB,
       peakTileBitmapsMB: Math.max(...samples.map((s) => s.bitmapMB), after.bitmapMB), failedRequests: after.failed,
     },
     console_errors: errors.length,
@@ -581,14 +582,24 @@ try {
   if (RUN_FUNCTIONAL) await functionalChecks(browser);
   if (RUN_PERF) {
     const runs = [];
-    for (const vp of [{ width: 1280, height: 800, dpr: 1 }, { width: 1440, height: 900, dpr: 2 }]) {
-      for (const effects of [true, false]) runs.push(await perfRun(browser, { ...vp, effects }));
+    const viewports = [{ width: 1280, height: 800, dpr: 1 }, { width: 1440, height: 900, dpr: 2 }];
+    for (const vp of viewports) {
+      for (const effects of [true, false]) runs.push(await perfRun(browser, { ...vp, effects, gl: 'swiftshader' }));
     }
+    // Baseline without the GPU path: --disable-gpu rasterises the 2D map canvas on the CPU. Run with effects off, it
+    // shows the map core's own cost apart from SwiftShader's.
+    const cpuBrowser = await chromium.launch({ args: ['--disable-gpu'] });
+    try {
+      for (const vp of viewports) runs.push(await perfRun(cpuBrowser, { ...vp, effects: false, gl: 'cpu-raster' }));
+    } finally { await cpuBrowser.close(); }
     const out = {
       WARNING: 'Measured in a headless Chromium with SwiftShader (software GPU emulation on the CPU) inside a Linux container. ' +
         'These numbers are NOT from a MacBook Air M3 and say little about real GPU frame rates - see docs/PERF_ON_DEVICE.md.',
       environment: {
-        browser: `Chromium ${browser.version()} headless`, gl: 'ANGLE SwiftShader (software)', cpus: os.cpus().length,
+        browser: `Chromium ${browser.version()} headless`,
+        gl: 'swiftshader = ANGLE SwiftShader (software WebGL2 + GPU-path 2D canvas); cpu-raster = --disable-gpu (2D map canvas rasterised on the CPU; ' +
+          'Chromium still offers WebGL2 through its SwiftShader fallback, but these runs have effects off)',
+        cpus: os.cpus().length,
         cpuModel: os.cpus()[0]?.model, memGB: Math.round(os.totalmem() / 2 ** 30), server: `vite preview (production build) on ${BASE}`,
         measured_utc: new Date().toISOString(), session_seconds: SESSION_S,
       },
@@ -596,12 +607,13 @@ try {
         load: 'Fresh browser context (cold HTTP cache) per run. firstArtworkTileDrawn = first map frame with a redrawn base canvas after the ' +
           'first tile bitmap decoded; allVisibleTilesLoaded = first animation frame with no request in flight or queued (visible tiles ' +
           'plus the prefetch ring), measured from navigation start.',
-        panning: 'Mouse drags (30 move events each) toward successive stops across the stage-2 area with wheel zoom in/out at each stop, ' +
+        panning: 'Mouse drags (10 move events of up to 60 px each) toward successive stops across the stage-2 area with wheel zoom in/out at each stop, ' +
           `for ${SESSION_S} s. mapFrameIntervalMs = intervals between map frame events inside drags; rafIntervalMs = requestAnimationFrame ` +
           'intervals inside drags; appFrameP95Ms / appDrawP95Ms = the app\'s own perf() p95 over the last second, sampled after each drag. ' +
           'mapFramesPerS can be limited by the Playwright input rate (inputMovesPerS).',
         memory: 'tileBitmapsMB is the tile cache\'s own decoded-size count; heightTilesMB = Float32 height tiles; canvases2dMB = base, aux and ' +
-          'overlay canvases; fxGpuEstimateMB is a rough upper bound for the effects canvas and textures. JS heap from CDP Performance.getMetrics.',
+          'overlay canvases; fxGpuEstimateMB is a rough upper bound for the effects canvas and textures. jsHeapMB from CDP ' +
+          'Performance.getMetrics (precise); performanceMemoryMB is the app\'s performance.memory reading (coarse, bucketed by Chromium).',
       },
       runs,
     };
