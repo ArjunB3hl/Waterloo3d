@@ -2585,6 +2585,278 @@
     "zip": "art/requests/B001R1.zip",
     "zip_sha256": "eb846b8ee9b5453ab8d40716db50d80170592a571929e0562c2a10678b6607a4"
    }
+  },
+  "B003": {
+   "id": "B003",
+   "kind": "patch",
+   "title": "Campus east edge toward Waterloo Park - tiles 1_-1, 1_0",
+   "mode": "context",
+   "frame": "square",
+   "status": "requested",
+   "depends_on": [
+    "0_0",
+    "0_-1"
+   ],
+   "blocked_by": [],
+   "parent": null,
+   "created_utc": "2026-11-04T18:25:45Z",
+   "updated_utc": "2026-11-04T18:26:25Z",
+   "packet_rev": 2,
+   "order": [
+    "1_-1",
+    "1_0"
+   ],
+   "style_from": "0_0",
+   "shared_files": [
+    "B003_style_0_0.png",
+    "B003_contact_sheet.png",
+    "B003_classes_legend.png"
+   ],
+   "attachments": [
+    {
+     "file": "B003_style_0_0.png",
+     "purpose": "STYLE: finished, accepted artwork of neighbouring tile 0_0 - match its palette, pixel size, outlines, windows, trees and light exactly",
+     "tiles": [
+      "0_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "bfd18a94f0c795a075713d7f7e3cb3de3a1f28fb784b4a9929d587c97da04c58"
+    },
+    {
+     "file": "B003_contact_sheet.png",
+     "purpose": "CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels",
+     "tiles": [
+      "0_-1",
+      "0_0",
+      "1_-1",
+      "1_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1080
+     ],
+     "sha256": "2b301ed7e51920a2188775cebb8091adfbb08d382d4306d1f40639c67c05f289"
+    },
+    {
+     "file": "B003_context_1_-1.png",
+     "purpose": "COMPOSITION + CANVAS TO EDIT (1536x1536): tile 1_-1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin",
+     "tiles": [
+      "1_-1"
+     ],
+     "defines_composition": true,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "fe19bbe36aba6995a5e7a1c26cc6c0104c99bb5dee5fee9091a959a5f0c92c19"
+    },
+    {
+     "file": "B003_mask_1_-1.png",
+     "purpose": "EDIT MASK: white = paint, black = keep (finished neighbour art)",
+     "tiles": [
+      "1_-1"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "46fa38d1d7044746a27560d748819c23d5d50a98c805e73f3fd5ffa2028fb5a6"
+    },
+    {
+     "file": "B003_classes_1_-1.png",
+     "purpose": "SEMANTIC MAP (same framing as the composition): colour = surface type, see legend",
+     "tiles": [
+      "1_-1"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "ff16f66234e05bbce779c32e6d8c80ae97e0b546955396c8be25af228da5e8b4"
+    },
+    {
+     "file": "B003_depth_1_-1.png",
+     "purpose": "HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more",
+     "tiles": [
+      "1_-1"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "68c2090d2e89cd5cbf7cab4b48cef6605bc50b0dc40c4402fd24f7bf470b8012"
+    },
+    {
+     "file": "B003_context_1_0.png",
+     "purpose": "COMPOSITION + CANVAS TO EDIT (1536x1536): tile 1_0 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin",
+     "tiles": [
+      "1_0"
+     ],
+     "defines_composition": true,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "8708a9277c936df7ad67d74a4c17207b6cabe17eed6290e79c4fd3936af47966"
+    },
+    {
+     "file": "B003_mask_1_0.png",
+     "purpose": "EDIT MASK: white = paint, black = keep (finished neighbour art)",
+     "tiles": [
+      "1_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "4aa71b138e65a0371df3d936840a547d56fd71a342be9689a3b7ecc53275d0e0"
+    },
+    {
+     "file": "B003_classes_1_0.png",
+     "purpose": "SEMANTIC MAP (same framing as the composition): colour = surface type, see legend",
+     "tiles": [
+      "1_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "053b9c22689a73d760b6a6d1221a149d2de65ef36e9ca6648e9d3a321777da96"
+    },
+    {
+     "file": "B003_depth_1_0.png",
+     "purpose": "HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more",
+     "tiles": [
+      "1_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "52c3ea2205722ab81d8a9489ab9c84460b5cde03d69acc0ad3e34b6684962115"
+    },
+    {
+     "file": "B003_classes_legend.png",
+     "purpose": "LEGEND for the semantic maps",
+     "tiles": [
+      "1_-1",
+      "1_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      760,
+      664
+     ],
+     "sha256": "13c2fb0c536fa3be59bd712ff99c623258f1e63a02f83c6fd0b288b0619d3b2b"
+    }
+   ],
+   "items": {
+    "1_-1": {
+     "status": "requested",
+     "return_filename": "B003_1_-1.png",
+     "files": {
+      "composition": "B003_context_1_-1.png",
+      "mask": "B003_mask_1_-1.png",
+      "classes": "B003_classes_1_-1.png",
+      "depth": "B003_depth_1_-1.png"
+     },
+     "output": {
+      "mode": "context",
+      "frame": "square",
+      "width": 1536,
+      "height": 1536,
+      "crop": [
+       256,
+       256,
+       1280,
+       1280
+      ],
+      "canvas_origin": [
+       768,
+       -1280
+      ]
+     },
+     "reference": {
+      "color2x": "51eb09f82e5f",
+      "cls": "82e04e5f11af",
+      "height": "4b5594a9de6c",
+      "composition": "fe19bbe36aba",
+      "neighbours": {
+       "0_-1": "413064644d1f",
+       "2_-1": "reference",
+       "1_-2": "reference",
+       "1_0": "reference"
+      }
+     },
+     "model_reported": "unknown",
+     "settings_reported": "unknown",
+     "received": [],
+     "qa": null,
+     "prompt": "TASK - tile 1_-1\nEdit B003_context_1_-1.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.\nB003_mask_1_-1.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)\nMatch the finished style of B003_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B003_classes_1_-1.png (legend: B003_classes_legend.png) for surface types and B003_depth_1_-1.png for building heights.\n\nTHIS TILE SHOWS\n- Wilmot Court (lower centre, around x=665, y=791): campus building - follow the reference wall colour for its material\n- Wellesley Court (right, around x=858, y=600): campus building - follow the reference wall colour for its material\n- Claudette Millar Hall (lower right, around x=929, y=876): campus building - follow the reference wall colour for its material\n- Waterloo Central Supermarket (upper right, around x=792, y=183): campus building - follow the reference wall colour for its material\n- Elora House (upper centre, around x=356, y=111): campus building - follow the reference wall colour for its material\n- Carl A. Pollock Hall (lower left, around x=48, y=986): campus building - follow the reference wall colour for its material\n- Hespeler House (upper centre, around x=539, y=94): campus building - follow the reference wall colour for its material\n- Blair House (upper left, around x=207, y=31): campus building - follow the reference wall colour for its material\n- Eby Hall (lower right, around x=992, y=756): campus building - follow the reference wall colour for its material\n- Streets and paths crossing it: University Avenue West, Phillip Street, Laurel Trail (Trans-Canada Trail), Path 2 East, Ring Road, Lester Street\n\nOUTPUT\n- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B003_context_1_-1.png, named B003_1_-1.png. We cut the tile out ourselves.\n- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.",
+     "prompt_sha": "98f24c061d94"
+    },
+    "1_0": {
+     "status": "requested",
+     "return_filename": "B003_1_0.png",
+     "files": {
+      "composition": "B003_context_1_0.png",
+      "mask": "B003_mask_1_0.png",
+      "classes": "B003_classes_1_0.png",
+      "depth": "B003_depth_1_0.png"
+     },
+     "output": {
+      "mode": "context",
+      "frame": "square",
+      "width": 1536,
+      "height": 1536,
+      "crop": [
+       256,
+       256,
+       1280,
+       1280
+      ],
+      "canvas_origin": [
+       768,
+       -256
+      ]
+     },
+     "reference": {
+      "color2x": "74d88f54c883",
+      "cls": "7bae85f55273",
+      "height": "07b933268a0a",
+      "composition": "8708a9277c93",
+      "neighbours": {
+       "0_0": "bfd18a94f0c7",
+       "2_0": "reference",
+       "1_-1": "reference",
+       "1_1": "reference"
+      }
+     },
+     "model_reported": "unknown",
+     "settings_reported": "unknown",
+     "received": [],
+     "qa": null,
+     "prompt": "TASK - tile 1_0\nEdit B003_context_1_0.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.\nB003_mask_1_0.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)\nMatch the finished style of B003_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B003_classes_1_0.png (legend: B003_classes_legend.png) for surface types and B003_depth_1_0.png for building heights.\nPaint this tile after 1_-1: where its border shows the underdrawing of 1_-1, match what you painted for that tile earlier in this conversation.\n\nTHIS TILE SHOWS\n- Douglas Wright Engineering Building (upper left, around x=102, y=176): campus building - follow the reference wall colour for its material\n- Carl A. Pollock Hall (upper left, around x=78, y=25): campus building - follow the reference wall colour for its material\n- South Campus Hall (left, around x=22, y=441): brick building at the south edge of the campus core\n- Streets and paths crossing it: University Avenue West, Ring Road, Seagram Drive, Laurel Trail (Trans-Canada Trail), Two Row Path, Path 1 East\n\nOUTPUT\n- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B003_context_1_0.png, named B003_1_0.png. We cut the tile out ourselves.\n- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.",
+     "prompt_sha": "24a55dbbcbe6"
+    }
+   },
+   "packet": {
+    "md": "IMAGE_REQUEST_B003.md",
+    "dir": "art/requests/B003",
+    "zip": "art/requests/B003.zip",
+    "zip_sha256": "f7f26aa2ae397d1c86917f435fb01a09d79e1f6ec4e838f07673c859887dcb95"
+   }
   }
  }
 }

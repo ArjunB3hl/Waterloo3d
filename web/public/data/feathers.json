@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generated_utc": "2026-11-04T16:39:27Z",
+ "generated_utc": "2026-11-04T18:24:53Z",
  "datum_m": 330.0,
  "source": "pipeline/build_feathers.py (collision field + landmarks.json + scene areas)",
  "coords": "x, y, z local ENU metres (z rel. datum_m); canvas = artwork px of (x, y, z); over = what lies directly below",

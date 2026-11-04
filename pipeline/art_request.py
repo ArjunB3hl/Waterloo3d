@@ -204,7 +204,11 @@ def build_batch(bid, tiles=None, depends=None, frame='square', mode=None, title=
     plan.setdefault('kind', 'patch'); plan.setdefault('depends_on', [])
     plan['mode'] = mode or plan.get('mode', 'context')
     plan['title'] = title or plan.get('title', f'Tiles {", ".join(plan["tiles"])}')
-    plan.setdefault('style_from', next((t for t in plan['depends_on']), None))
+    if not plan.get('style_from'):
+        # Style reference: first dependency, else the accepted tile the shared finish palette was built from (the style sample).
+        accepted = A.load_tiles_meta()
+        sample = (A.cfg().get('art_finish') or {}).get('palette_from') if hasattr(A, 'cfg') else None
+        plan['style_from'] = next((t for t in plan['depends_on']), None) or (sample if sample in accepted else next(iter(sorted(accepted)), None))
     for t in plan['tiles'] + plan['depends_on']:
         if not A.has_reference(t): raise SystemExit(f'tile {t} has no reference job in data_cache/jobs (run prepare_tiles/render first)')
     old = batch_record(bid)
