@@ -55,11 +55,12 @@ async function serverUp() {
   try { return (await fetch(BASE)).ok; } catch { return false; }
 }
 async function startServer() {
-  if (await serverUp()) return null;
+  // vite preview serves web/dist from disk, so a rebuild also applies to a server that is already running
   if (args.includes('--build') || !existsSync(path.join(ROOT, 'web', 'dist', 'index.html'))) {
     const b = spawnSync('npm', ['run', 'build'], { cwd: ROOT, stdio: 'inherit' });
     if (b.status !== 0) throw new Error('npm run build failed');
   }
+  if (await serverUp()) return null;
   const proc = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort'], { cwd: ROOT, stdio: 'ignore', detached: true });
   for (let k = 0; k < 80; k++) {
     if (await serverUp()) return proc;
@@ -177,6 +178,12 @@ const openSettings = async (page) => {
   await page.locator('#settings-panel').waitFor({ state: 'visible' });
 };
 const toggleSetting = (page, key) => page.click(`label[for="set-${key}"]`);
+/** Home button (campus 2x2 framed: centre (0, 0)). */
+async function goHome(page) {
+  await page.click('button[aria-label^="Home view"]');
+  await reach(page, [0, 0], 1, 30000);
+  await idle(page);
+}
 /** Wait until the effects compositor has drawn at least two more frames (so debug flags reflect current settings). */
 const fxFrames = (page, n = 2) => page.evaluate((n) => new Promise((res) => {
   const fx = window.__tinyWaterloo.fx, start = fx.debug.frames;
@@ -239,8 +246,9 @@ async function functionalChecks(browser) {
     const target = [4500, 300];   // Silver Lake area
     const mx = box.x + ((target[0] - x0) / (x1 - x0)) * box.width, my = box.y + ((target[1] - y0) / (y1 - y0)) * box.height;
     await page.mouse.click(mx, my);
-    const v = await settle(page);
     const expect = [x0 + ((mx - box.x) / box.width) * (x1 - x0), y0 + ((my - box.y) / box.height) * (y1 - y0)];
+    await reach(page, expect, 5, 30000).catch(() => {});   // animated: report the error below if it never arrives
+    const v = await settle(page);
     const err = Math.hypot(v.cx - expect[0], v.cy - expect[1]);
     assert(err < 5, `view (${r1(v.cx)}, ${r1(v.cy)}) expected (${r1(expect[0])}, ${r1(expect[1])})`);
     return `view (${r1(v.cx)}, ${r1(v.cy)}), expected (${r1(expect[0])}, ${r1(expect[1])}), error ${err.toFixed(2)} px`;
@@ -296,9 +304,7 @@ async function functionalChecks(browser) {
   });
 
   await check('settings: life toggle switches the animation off and on', async () => {
-    await page.keyboard.press('0');            // home view: canopy and water in view
-    await reach(page, [0, 0], 1, 30000);
-    await idle(page);
+    await goHome(page);                        // canopy and water in view
     await openSettings(page);
     await fxFrames(page);
     const on = await page.evaluate(() => window.__tinyWaterloo.fx.debug.life);
@@ -321,6 +327,7 @@ async function functionalChecks(browser) {
     const sharp = () => page.evaluate(() => window.__tinyWaterloo.fx.debug);
     // shot of the top band (blurred with tilt-shift on, sharp with it off)
     const band = async () => page.screenshot({ clip: { x: 0, y: 80, width: 1280, height: 100 } });
+    await openSettings(page);
     const d0 = await sharp();
     const b0 = await band();
     await toggleSetting(page, 'tiltShift');
@@ -378,8 +385,7 @@ async function functionalChecks(browser) {
   });
 
   await check('fly as a goose: starts, HUD visible, attribution visible, Land returns to the map', async () => {
-    await page.keyboard.press('0');
-    await reach(page, [0, 0], 1, 30000);
+    await goHome(page);
     await page.click('.fly-btn');
     await waitFor(page, () => window.__tinyWaterloo.actor.active && document.getElementById('app').classList.contains('actor-active'), undefined, 60000);
     await page.locator('.goose-hud').waitFor({ state: 'visible', timeout: 60000 });
@@ -473,6 +479,9 @@ function stats(xs) {
 async function perfRun(browser, { width, height, dpr, effects }) {
   const label = `${width}x${height} dpr ${dpr}, effects ${effects ? 'on' : 'off'}`;
   const { ctx, page, errors } = await newPage(browser, { width, height, dpr });
+  // effects off from the first frame (stored settings, as if the user had switched them off on an earlier visit),
+  // so the load timings belong to the configuration too
+  if (!effects) await page.addInitScript(() => localStorage.setItem('tinyWaterloo.settings.v1', JSON.stringify({ life: false, tiltShift: false })));
   const cdp = await ctx.newCDPSession(page);
   await cdp.send('Performance.enable');
   const t0 = Date.now();
@@ -485,19 +494,12 @@ async function perfRun(browser, { width, height, dpr, effects }) {
     return { ...window.__qa.t, domContentLoaded: nav?.domContentLoadedEventEnd, tileRequests: tiles.length,
       tileKB: Math.round(tiles.reduce((s, e) => s + (e.transferSize || e.encodedBodySize || 0), 0) / 1024) };
   });
-  if (!effects) {
-    // effects off through the normal UI
-    await openSettings(page);
-    await toggleSetting(page, 'life');
-    await toggleSetting(page, 'tiltShift');
-    await page.keyboard.press('Escape');
-  }
   await page.waitForTimeout(500);
   const fxState = await page.evaluate(() => ({ ...window.__tinyWaterloo.fx.debug }));
 
   // ---- scripted session: drag toward each tour stop, zoom in and out at each stop
   const drags = [];
-  let samples = [];
+  const samples = [];
   const until = Date.now() + SESSION_S * 1000;
   const cx = width / 2, cy = height / 2;
   let stop = 1, moves = 0;
@@ -532,7 +534,6 @@ async function perfRun(browser, { width, height, dpr, effects }) {
     samples.push(await perf(page));
     await page.waitForTimeout(150);
   }
-  const sessionS = SESSION_S;
   await idle(page, 120000).catch(() => {});
   const after = await perf(page);
   const mem = await memoryEstimate(page);
@@ -558,7 +559,7 @@ async function perfRun(browser, { width, height, dpr, effects }) {
       appDrawP95Ms: stats(samples.map((s) => s.drawP95Ms).filter((x) => x > 0)),
     },
     after_session: {
-      seconds: sessionS, memory: mem, jsHeapMB: heap, jsHeapAfterGcMB: heapGC,
+      seconds: SESSION_S, memory: mem, jsHeapMB: heap, jsHeapAfterGcMB: heapGC,
       peakTileBitmapsMB: Math.max(...samples.map((s) => s.bitmapMB), after.bitmapMB), failedRequests: after.failed,
     },
     console_errors: errors.length,

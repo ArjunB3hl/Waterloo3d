@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tiny Waterloo device benchmark</title>
+<style>
+  :root { color-scheme: light dark; --bg: #f4f1ec; --fg: #1d1f23; --muted: #5d6168; --line: #d7d2ca; --accent: #c86a1a; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #17191c; --fg: #ece8e1; --muted: #a3a7ad; --line: #34383e; --accent: #e8892f; } }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  body { display: grid; grid-template-rows: auto 1fr; }
+  header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--line); }
+  h1 { font-size: 15px; margin: 0 12px 0 0; }
+  label { color: var(--muted); }
+  button { font: inherit; padding: 6px 14px; border-radius: 6px; border: 1px solid var(--line); background: transparent; color: var(--fg); cursor: pointer; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button:disabled { opacity: 0.5; cursor: default; }
+  #status { color: var(--muted); }
+  main { position: relative; min-height: 0; }
+  iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  #out { position: absolute; inset: 0; margin: 0; padding: 16px; overflow: auto; background: var(--bg); white-space: pre-wrap; font: 12px/1.4 ui-monospace, Menlo, monospace; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Tiny Waterloo device benchmark</h1>
+  <label>Seconds per pass <select id="secs"><option>30</option><option selected>60</option></select></label>
+  <button id="run" class="primary" type="button">Run benchmark</button>
+  <button id="copy" type="button" disabled>Copy results</button>
+  <span id="status" role="status" aria-live="polite">Close other tabs, plug in the charger, then press Run. Keep this window in front.</span>
+</header>
+<main>
+  <pre id="out" hidden></pre>
+</main>
+<script>
+// Loads the production app in a same-origin iframe twice (effects on, then off), measures load timings, then drives the
+// camera along a scripted tour of the stage-2 area (campus -> Laurier -> Waterloo Park -> Silver Lake -> Uptown) through
+// map.setView every animation frame, zooming in and out at each stop. Records requestAnimationFrame intervals, the app's
+// own perf() counters and memory. The camera is scripted (not mouse input), so input handling is not included; the
+// manual drag check in docs/PERF_ON_DEVICE.md covers that.
+const SETTINGS_KEY = 'tinyWaterloo.settings.v1';
+const TOUR = [[0, 0], [3180, -1194], [3298, 575], [4521, 493], [6328, 694], [5249, -745], [1800, -700], [0, 0]];
+const PAN_CSS_PX_PER_S = 900;     // screen speed of the scripted pan
+const TRAVEL_ZOOM = 0.45, STOP_ZOOM = 1.1, ZOOM_S = 1.2;
+
+const $ = (id) => document.getElementById(id);
+const status = (t) => { $('status').textContent = t; };
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const r1 = (x) => Math.round(x * 10) / 10;
+function stats(xs) {
+  if (!xs.length) return { n: 0 };
+  const s = [...xs].sort((a, b) => a - b), q = (f) => r1(s[Math.min(s.length - 1, Math.floor(s.length * f))]);
+  return { n: s.length, median: q(0.5), p95: q(0.95), p99: q(0.99), max: r1(s[s.length - 1]) };
+}
+
+function gpuName() {
+  try {
+    const gl = document.createElement('canvas').getContext('webgl2');
+    const ext = gl && gl.getExtension('WEBGL_debug_renderer_info');
+    return gl ? String(gl.getParameter(ext ? ext.UNMASKED_RENDERER_WEBGL : gl.RENDERER)) : 'no WebGL2';
+  } catch { return 'unknown'; }
+}
+
+/** Load the app in a fresh iframe with the given effect settings; resolve with its window once tiles are idle. */
+async function loadApp(effects) {
+  const stored = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify({ ...stored, life: effects, tiltShift: effects, perfHud: false }));
+  document.querySelector('iframe')?.remove();
+  const frame = document.createElement('iframe');
+  frame.title = 'Tiny Waterloo under test';
+  frame.src = `/?bench=${Date.now()}`;
+  $('out').before(frame);
+  await new Promise((r) => frame.addEventListener('load', r, { once: true }));
+  const win = frame.contentWindow;
+  const t = {};
+  await new Promise((resolve, reject) => {
+    const give = setTimeout(() => reject(new Error('app did not finish loading tiles within 60 s')), 60000);
+    (function poll() {
+      const map = win.__tinyWaterloo && win.__tinyWaterloo.map;
+      if (map) {
+        const p = map.perf();
+        if (!t.firstBitmap && p.bitmaps > 0) t.firstBitmap = win.performance.now();
+        if (p.bitmaps > 0 && p.inflight === 0 && p.queued === 0 && p.failed === 0) {
+          t.allVisible = win.performance.now(); clearTimeout(give); resolve(); return;
+        }
+      }
+      win.requestAnimationFrame(poll);
+    })();
+  });
+  const tiles = win.performance.getEntriesByType('resource').filter((e) => /\/tiles\//.test(e.name));
+  return {
+    win,
+    load: {
+      firstBitmapDecodedMs: r1(t.firstBitmap), allVisibleTilesLoadedMs: r1(t.allVisible),
+      domContentLoadedMs: r1(win.performance.getEntriesByType('navigation')[0]?.domContentLoadedEventEnd ?? NaN),
+      tileRequests: tiles.length, tileKBTransferred: Math.round(tiles.reduce((s, e) => s + (e.transferSize || 0), 0) / 1024),
+    },
+  };
+}
+
+/** Camera position along the tour at time t (seconds): pan between stops, zoom in and out at each stop. */
+function tourPlan() {
+  const legs = [];
+  for (let k = 0; k + 1 < TOUR.length; k++) {
+    const [a, b] = [TOUR[k], TOUR[k + 1]];
+    const dist = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    legs.push({ kind: 'pan', a, b, dur: dist / (PAN_CSS_PX_PER_S / TRAVEL_ZOOM) });
+    legs.push({ kind: 'zoom', a: b, dur: 2 * ZOOM_S });
+  }
+  const total = legs.reduce((s, l) => s + l.dur, 0);
+  return (t) => {
+    let u = t % total;
+    for (const l of legs) {
+      if (u > l.dur) { u -= l.dur; continue; }
+      const f = u / l.dur;
+      if (l.kind === 'pan') return { cx: l.a[0] + (l.b[0] - l.a[0]) * f, cy: l.a[1] + (l.b[1] - l.a[1]) * f, zoom: TRAVEL_ZOOM, panning: true };
+      const z = f < 0.5 ? f * 2 : 2 - f * 2;            // in, then out
+      return { cx: l.a[0], cy: l.a[1], zoom: TRAVEL_ZOOM * Math.pow(STOP_ZOOM / TRAVEL_ZOOM, z), panning: false };
+    }
+    return { cx: 0, cy: 0, zoom: TRAVEL_ZOOM, panning: false };
+  };
+}
+
+async function drive(win, seconds) {
+  const T = win.__tinyWaterloo, map = T.map;
+  const at = tourPlan();
+  const pan = [], zoom = [], samples = [];
+  let peakMB = 0;
+  await new Promise((resolve) => {
+    const t0 = win.performance.now();
+    let last = t0, lastSample = t0;
+    (function step(now) {
+      const t = (now - t0) / 1000;
+      const v = at(t);
+      if (now !== t0) (v.panning ? pan : zoom).push(now - last);
+      last = now;
+      map.setView({ cx: v.cx, cy: v.cy, zoom: v.zoom });
+      if (now - lastSample > 500) {
+        lastSample = now;
+        const p = map.perf();
+        samples.push(p);
+        peakMB = Math.max(peakMB, p.bitmapMB);
+      }
+      if (t < seconds) win.requestAnimationFrame(step); else resolve();
+    })(t0);
+  });
+  map.setView({ cx: 0, cy: 0, zoom: 0.375 });
+  await sleep(2500);
+  const p = map.perf(), mem = win.performance.memory;
+  const fps = (xs) => r1(xs.length / (xs.reduce((s, x) => s + x, 0) / 1000));
+  const slow = (xs) => r1((100 * xs.filter((x) => x > 25).length) / Math.max(1, xs.length));
+  return {
+    panning: { fps: fps(pan), frameMs: stats(pan), percentFramesOver25ms: slow(pan) },
+    zooming: { fps: fps(zoom), frameMs: stats(zoom), percentFramesOver25ms: slow(zoom) },
+    appDrawP95Ms: stats(samples.map((s) => s.drawP95Ms).filter((x) => x > 0)),
+    memory: {
+      tileBitmapsMB: p.bitmapMB, peakTileBitmapsMB: peakMB, budgetMB: p.budgetMB, heightTiles: p.heightTiles,
+      jsHeapUsedMB: mem ? r1(mem.usedJSHeapSize / 2 ** 20) : 'n/a (Chrome only)',
+    },
+    failedRequests: p.failed,
+    fx: { webgl2: T.fx.debug.webgl2, life: T.fx.debug.life, tilt: T.fx.debug.tilt, blurScale: T.fx.debug.blurScale },
+  };
+}
+
+$('run').addEventListener('click', async () => {
+  const seconds = Number($('secs').value);
+  const original = localStorage.getItem(SETTINGS_KEY);
+  $('run').disabled = true; $('copy').disabled = true; $('out').hidden = true;
+  const result = {
+    measured: new Date().toISOString(), userAgent: navigator.userAgent, gpu: gpuName(),
+    devicePixelRatio: devicePixelRatio, viewportCss: [innerWidth, innerHeight - document.querySelector('header').offsetHeight],
+    screen: [screen.width, screen.height], cpuThreads: navigator.hardwareConcurrency, deviceMemoryGB: navigator.deviceMemory ?? 'n/a',
+    secondsPerPass: seconds, runs: [],
+  };
+  try {
+    for (const effects of [true, false]) {
+      status(`Effects ${effects ? 'on' : 'off'}: loading...`);
+      const { win, load } = await loadApp(effects);
+      status(`Effects ${effects ? 'on' : 'off'}: touring for ${seconds} s - keep this window in front...`);
+      result.runs.push({ effects, load, ...(await drive(win, seconds)) });
+    }
+    status('Done. Press "Copy results" and paste them back.');
+  } catch (e) {
+    result.error = String(e && e.message || e);
+    status(`Stopped: ${result.error}`);
+  } finally {
+    if (original === null) localStorage.removeItem(SETTINGS_KEY); else localStorage.setItem(SETTINGS_KEY, original);
+    document.querySelector('iframe')?.remove();
+    $('out').textContent = JSON.stringify(result, null, 2);
+    $('out').hidden = false;
+    $('run').disabled = false; $('copy').disabled = false;
+  }
+});
+
+$('copy').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText($('out').textContent); status('Copied to the clipboard.'); }
+  catch { status('Copy failed: select the text below and copy it by hand.'); }
+});
+</script>
+</body>
+</html>

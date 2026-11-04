@@ -149,7 +149,7 @@ try {
   await check('keyboard: arrows pan, 0 returns home', async () => {
     await page.focus('#stage');
     const before = await view(page);
-    await page.keyboard.down('ArrowRight'); await page.waitForTimeout(600); await page.keyboard.up('ArrowRight');
+    await page.keyboard.down('ArrowRight'); await page.waitForTimeout(1500); await page.keyboard.up('ArrowRight');
     const after = await settle(page);
     // distance depends on the frame rate (software GL here), so only the direction is asserted
     assert(after.cx > before.cx + 20 && Math.abs(after.cy - before.cy) < 1, `cx ${before.cx} -> ${after.cx}`);
@@ -186,7 +186,6 @@ try {
     const box = await page.locator('.minimap-canvas').boundingBox();
     const tx = box.x + box.width * 0.3, ty = box.y + box.height * 0.3;
     await page.mouse.click(tx, ty);
-    const v = await settle(page);
     // expected canvas point under the click, from the same mapping the minimap uses (bounds of all tiles + 0.5 tile)
     const expect = await page.evaluate(() => {
       const m = window.__tinyWaterloo.map.manifest, F = m.frame_px;
@@ -195,6 +194,9 @@ try {
       const y0 = Math.min(...t.map((a) => a[1])) * F - F / 2, y1 = (Math.max(...t.map((a) => a[1])) + 1) * F + F / 2;
       return [x0 + 0.3 * (x1 - x0), y0 + 0.3 * (y1 - y0)];
     });
+    // the jump is animated and software-GL frames can stall, so wait for arrival (the assert below reports a miss)
+    await reach(page, expect, 400).catch(() => {});
+    const v = await settle(page);
     const err = Math.hypot(v.cx - expect[0], v.cy - expect[1]);
     assert(err < 400, `view ${JSON.stringify(v)} expected ~${expect.map(Math.round)}`);
     return `view (${v.cx.toFixed(0)}, ${v.cy.toFixed(0)}) expected (${expect.map(Math.round)})`;
@@ -275,7 +277,10 @@ try {
     page.on('request', onReq);
     const at = async (cx, cy, zoom) => {
       seen.length = 0;
-      await page.evaluate((v) => window.__tinyWaterloo.map.setView(v), { cx, cy, zoom });
+      await page.evaluate((v) => new Promise((res) => {
+        window.__tinyWaterloo.map.setView(v);
+        requestAnimationFrame(() => requestAnimationFrame(res));
+      }), { cx, cy, zoom });
       await idle(page);
       await page.waitForTimeout(200);
       return [...new Set(seen)];
@@ -384,8 +389,10 @@ try {
     await page.evaluate(() => {
       const a = window.__tinyWaterloo.actor;
       window.__starts = [];
-      a.start = async (at) => { window.__starts.push(at ?? null); a.active = true; };
-      a.stop = () => { a.active = false; };
+      let on = false;
+      Object.defineProperty(a, 'active', { configurable: true, get: () => on });
+      a.start = async (at) => { window.__starts.push(at ?? null); on = true; };
+      a.stop = () => { on = false; };
     });
     await page.click('.fly-btn');
     await waitFor(page, () => document.getElementById('app').classList.contains('actor-active'));
@@ -405,6 +412,7 @@ try {
     assert(starts[0] === null && starts[1]?.cx === dp[0] && starts[1]?.cy === dp[1], `start calls ${JSON.stringify(starts)}`);
     await page.evaluate(() => window.__tinyWaterloo.actor.stop());
     await waitFor(page, () => !document.getElementById('app').classList.contains('actor-active'));
+    await page.evaluate(() => { const a = window.__tinyWaterloo.actor; delete a.active; delete a.start; delete a.stop; });
     return JSON.stringify(starts);
   });
 
@@ -462,6 +470,15 @@ try {
     await idle(page);
     const r = await page.evaluate(async () => {
       const map = window.__tinyWaterloo.map, frames = [];
+      // effects animate by design (life steps at 8 Hz, tilt-shift eases / retries its focus), so measure with them off
+      const { life, tiltShift } = map.settings;
+      map.updateSettings({ life: false, tiltShift: false });
+      // let the frames caused by the change itself drain (slow under software GL): wait for 600 ms without a frame
+      await new Promise((res) => {
+        let last = performance.now();
+        const offQuiet = map.on('frame', () => { last = performance.now(); });
+        (function poll() { if (performance.now() - last > 600) { offQuiet(); res(); } else setTimeout(poll, 100); })();
+      });
       const off = map.on('frame', (f) => frames.push(f.baseDirty));
       await new Promise((res) => setTimeout(res, 1500));
       const idleFrames = frames.length;
@@ -472,6 +489,7 @@ try {
       map.invalidate();
       await new Promise((res) => setTimeout(res, 800));
       off(); off2();
+      map.updateSettings({ life, tiltShift });
       return { idleFrames, frames };
     });
     assert(r.idleFrames === 0, `${r.idleFrames} frames while idle`);

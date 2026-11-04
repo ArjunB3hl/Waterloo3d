@@ -10,7 +10,8 @@
     "preview": "vite preview --host 127.0.0.1 --port 4173",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "render:refs": "node render/render_refs.mjs",
-    "test:browser": "node tests/browser_check.mjs"
+    "test:browser": "node tests/browser_check.mjs",
+    "perf:device": "npm run build && node tests/perf_device_server.mjs"
   },
   "devDependencies": {
     "@types/three": "0.186.0",
