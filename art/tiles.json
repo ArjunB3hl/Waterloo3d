@@ -946,5 +946,119 @@
   "qa_verdict": "pass",
   "forced": false,
   "history": []
+ },
+ "7_-1": {
+  "version": "018893e84fee",
+  "batch": "B016",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. 7_1 FORCED (reviewed): 3 weak geometry cells are window-grid/road-dash false positives; construction lot painted as lawn left as-is (spans the 6_1 join)",
+  "prompt_sha": "4adf3163ee18",
+  "reference_sha": "2f95a1a98cfd",
+  "reference_files": {
+   "color2x": "3dca97a114c7",
+   "cls": "734f33229e82",
+   "height": "ecefd98186be"
+  },
+  "accepted_utc": "2026-11-04T23:31:18Z",
+  "source_file": "art/returned/B016/B016_7_-1.png",
+  "source_sha256": "a02634704d9ec827247aef2dea195fdeca787cc880fa8594608f530ecf398ab1",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "7_0": {
+  "version": "be203eb98e7e",
+  "batch": "B016",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. 7_1 FORCED (reviewed): 3 weak geometry cells are window-grid/road-dash false positives; construction lot painted as lawn left as-is (spans the 6_1 join)",
+  "prompt_sha": "fb5d8e10a122",
+  "reference_sha": "bfcca67f7348",
+  "reference_files": {
+   "color2x": "621c2d1d0867",
+   "cls": "73bf3dceb7ab",
+   "height": "0981da382acc"
+  },
+  "accepted_utc": "2026-11-04T23:31:33Z",
+  "source_file": "art/returned/B016/B016_7_0.png",
+  "source_sha256": "de481f6f1e783c8a3ccb851579634a5f0310b96e1c550ca865e9a37fd21f5537",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "5_1": {
+  "version": "f40b562d253e",
+  "batch": "B016",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. 7_1 FORCED (reviewed): 3 weak geometry cells are window-grid/road-dash false positives; construction lot painted as lawn left as-is (spans the 6_1 join)",
+  "prompt_sha": "180f0efeac6f",
+  "reference_sha": "de96c4bb83ff",
+  "reference_files": {
+   "color2x": "3e0763abf146",
+   "cls": "9cba051e9b71",
+   "height": "443b95e601c8"
+  },
+  "accepted_utc": "2026-11-04T23:31:47Z",
+  "source_file": "art/returned/B016/B016_5_1.png",
+  "source_sha256": "4da7d0b75f6340377eb95d7336a7bd6a7150f121b5bc8e8d6453b75e09d26d68",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "6_1": {
+  "version": "38a0001d4972",
+  "batch": "B016",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. 7_1 FORCED (reviewed): 3 weak geometry cells are window-grid/road-dash false positives; construction lot painted as lawn left as-is (spans the 6_1 join)",
+  "prompt_sha": "2058fa4c22ca",
+  "reference_sha": "3a1f83462703",
+  "reference_files": {
+   "color2x": "f98fa3df693c",
+   "cls": "a070e48ae5c4",
+   "height": "f83ab326297b"
+  },
+  "accepted_utc": "2026-11-04T23:32:02Z",
+  "source_file": "art/returned/B016/B016_6_1.png",
+  "source_sha256": "df2221dc6f416fadf6874171152a6a4712567255ae6ca88a3b895494935265fa",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "7_1": {
+  "version": "7dacfb677660",
+  "batch": "B016",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. 7_1 FORCED (reviewed): 3 weak geometry cells are window-grid/road-dash false positives; construction lot painted as lawn left as-is (spans the 6_1 join)",
+  "prompt_sha": "97e6ec805955",
+  "reference_sha": "2b84db78d92d",
+  "reference_files": {
+   "color2x": "e6aa701343c7",
+   "cls": "84a9b3823999",
+   "height": "63436b8d2f39"
+  },
+  "accepted_utc": "2026-11-04T23:32:18Z",
+  "source_file": "art/returned/B016/B016_7_1.png",
+  "source_sha256": "aaa9a52a6eb974f9033cfc4d9457ae7282af1db26e7b77e0d40bbf1b0dd4d1f5",
+  "qa_verdict": "fail",
+  "forced": true,
+  "history": []
+ },
+ "5_-1": {
+  "version": "ffd1094c4944",
+  "batch": "B013R1",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown; revision of 5_-1 removing the invented church",
+  "prompt_sha": "930787ff3055",
+  "reference_sha": "1d81f3fb3156",
+  "reference_files": {
+   "color2x": "f36a6bb9c461",
+   "cls": "4093816f1809",
+   "height": "3a92ea652785"
+  },
+  "accepted_utc": "2026-11-04T23:33:28Z",
+  "source_file": "art/returned/B013R1/B013R1_5_-1.png",
+  "source_sha256": "ea850548fefb167e2366f5996a02ffcae56726ee04d6c9f13e978e010121ae5a",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
  }
 }

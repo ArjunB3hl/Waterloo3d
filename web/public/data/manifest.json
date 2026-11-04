@@ -1,6 +1,6 @@
 {
  "name": "Tiny Waterloo",
- "generated_utc": "2026-11-04T22:57:01Z",
+ "generated_utc": "2026-11-04T23:34:19Z",
  "frame_px": 1024,
  "lods_px": [
   256,
@@ -791,13 +791,13 @@
   "5_-1": {
    "i": 5,
    "j": -1,
-   "kind": "reference",
-   "v": "064a3807f398",
+   "kind": "art",
+   "v": "f92f862e4409",
    "hv": "abb809aef091",
    "lv": "3b1dbdd38c0b",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "art_version": "ffd1094c4944",
+   "batch": "B013R1",
+   "finish": "px512-q64s"
   },
   "5_-2": {
    "i": 5,
@@ -835,13 +835,13 @@
   "5_1": {
    "i": 5,
    "j": 1,
-   "kind": "reference",
-   "v": "87c223fcd5b0",
+   "kind": "art",
+   "v": "1ad19bc02171",
    "hv": "71ea61ef449c",
    "lv": "347da6feeb36",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "art_version": "f40b562d253e",
+   "batch": "B016",
+   "finish": "px512-q64s"
   },
   "6_-1": {
    "i": 6,
@@ -890,24 +890,24 @@
   "6_1": {
    "i": 6,
    "j": 1,
-   "kind": "reference",
-   "v": "7f1f08e0810f",
+   "kind": "art",
+   "v": "6037a16dcee9",
    "hv": "ff2fb6bbe6e1",
    "lv": "ec06e6d24677",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "art_version": "38a0001d4972",
+   "batch": "B016",
+   "finish": "px512-q64s"
   },
   "7_-1": {
    "i": 7,
    "j": -1,
-   "kind": "reference",
-   "v": "85858247a3f3",
+   "kind": "art",
+   "v": "5f9333fb9ba8",
    "hv": "e499e19ab9b8",
    "lv": "b777c00f4476",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "art_version": "018893e84fee",
+   "batch": "B016",
+   "finish": "px512-q64s"
   },
   "7_-2": {
    "i": 7,
@@ -934,30 +934,30 @@
   "7_0": {
    "i": 7,
    "j": 0,
-   "kind": "reference",
-   "v": "2210a34a4f58",
+   "kind": "art",
+   "v": "15b95622fa22",
    "hv": "3da74790c68b",
    "lv": "844d7fdb1e57",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "art_version": "be203eb98e7e",
+   "batch": "B016",
+   "finish": "px512-q64s"
   },
   "7_1": {
    "i": 7,
    "j": 1,
-   "kind": "reference",
-   "v": "377df1a76046",
+   "kind": "art",
+   "v": "e41805059f24",
    "hv": "83e0e8e09b6e",
    "lv": "3afbe92d3ef6",
-   "art_version": null,
-   "batch": null,
-   "finish": null
+   "art_version": "7dacfb677660",
+   "batch": "B016",
+   "finish": "px512-q64s"
   }
  },
  "counts": {
   "tiles": 55,
-  "art": 42,
-  "reference": 13
+  "art": 48,
+  "reference": 7
  },
  "attribution": [
   "\u00a9 OpenStreetMap contributors (ODbL) via Overture Maps Foundation",
