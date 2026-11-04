@@ -10,18 +10,18 @@
 // surface), particles.ts, hud.ts. Design notes and measured test results: docs/DEPTH.md.
 import type { Vec3 } from '../frame';
 import type { ActorModule, FrameInfo, MapAPI, ViewState } from '../types';
-import { ActorRenderer, type GooseAttitude, type Viewport } from './actorRenderer';
+import type { GooseAttitude, Viewport } from './actorRenderer';
 import { CollisionField } from './collision';
 import { type Feather, FeatherProgress, feathersNear, loadFeathers } from './feathers';
 import { FLIGHT, Flight, type FlightInput, GOOSE_SCALE, type HitInfo, NO_INPUT, type StepEvents } from './flight';
-import { GOOSE_WINGSPAN_M } from './goose';
+import { GOOSE_WINGSPAN_M } from './gooseDims';
 import { HeightWindow } from './heightWindow';
 import { FlightHud, type FeatherMarker } from './hud';
-import { ShadowRenderer } from './shadowRenderer';
+import type { Renderers } from './renderers';
 
 const COLLECT_RADIUS_M = 10;
-const MIN_FLIGHT_ZOOM = 0.9;          // below this the camera zooms in to FLIGHT_ZOOM on take-off
-const FLIGHT_ZOOM = 1.25;
+const MIN_FLIGHT_ZOOM = 1;            // below this the camera zooms in to FLIGHT_ZOOM on take-off
+const FLIGHT_ZOOM = 1.6;              // goose ~30 CSS px long: readable, with ~230 m of map ahead on a laptop
 const FOLLOW_TAU_S = 0.35;            // camera smoothing
 const LEAD_S = 0.6;                   // camera looks ahead along the velocity
 const INTRO_TIMEOUT_MS = 3200;
@@ -59,10 +59,16 @@ export interface ActorDebug {
   occludedFraction(): number;
   /** Alpha-weighted centroid of the shadow on screen, CSS px (renders first). */
   shadowCentreScreen(): { x: number; y: number; pixels: number } | null;
+  /** A world point on the sun ray through the centroid of the goose's light-pass silhouette (renders first). */
+  shadowRay(): Vec3 | null;
   /** World point -> screen CSS px through the three.js render camera and the blit mapping. */
   projectToScreen(x: number, y: number, z: number): [number, number];
+  /** Screen pixels of the last actor render by class (renders first). */
+  stippleStats(): { fill: number; outline: number; rim: number; shaded: number };
   /** Height-window sample at canvas px (NaN = unknown). */
   windowHeight(cx: number, cy: number): number;
+  /** Whether the goose may fly at this world point (published artwork with collision data). */
+  inside(x: number, y: number, z: number): boolean;
   readonly collision: CollisionField | null;
 }
 
@@ -84,7 +90,7 @@ class GooseActor implements Actor {
   private readonly unsubscribe: () => void;
   private data: Data | null = null;
   private dataLoad: Promise<Data> | null = null;
-  private gl: { actor: ActorRenderer; shadow: ShadowRenderer } | null = null;
+  private gl: Renderers | null = null;
   private flight: Flight | null = null;
   private hud: FlightHud | null = null;
   private starting: Promise<void> | null = null;
@@ -174,7 +180,7 @@ class GooseActor implements Actor {
 
   private async takeOff(at?: { cx: number; cy: number }): Promise<void> {
     const data = await this.loadData();
-    this.ensureGl(data);
+    await this.ensureGl(data);
     const flight = this.flight!;
     const start = await this.startPoint(at, data.col);
     flight.teleport(start[0], start[1], start[2], screenUpHeading(this.map));
@@ -213,19 +219,16 @@ class GooseActor implements Actor {
     return this.dataLoad;
   }
 
-  /** Create both renderers, the flight model and the HUD on first use (no GL contexts until someone flies). */
-  private ensureGl(data: Data): void {
+  /**
+   * Create both renderers, the flight model and the HUD on first use: no GL contexts (and no three.js download) until
+   * someone flies.
+   */
+  private async ensureGl(data: Data): Promise<void> {
+    if (this.gl) return;
+    const { createRenderers } = await import('./renderers');
     if (this.gl) return;
     const f = this.map.frame;
-    let actor: ActorRenderer | null = null;
-    try {
-      actor = new ActorRenderer(this.actorCanvas, f, this.heights, GOOSE_SCALE);
-      const shadow = new ShadowRenderer(this.shadowCanvas, f, this.heights, actor.goose, SHADOW_RADIUS_M);
-      this.gl = { actor, shadow };
-    } catch (e) {
-      actor?.dispose();
-      throw new Error(`WebGL 2 is not available (${(e as Error)?.message ?? e})`);
-    }
+    this.gl = createRenderers(this.actorCanvas, this.shadowCanvas, f, this.heights, GOOSE_SCALE, SHADOW_RADIUS_M);
     // fence orientations: the canvas x and y axes on the ground (tile edges run along them)
     const r = f.right, u = f.up, ul = Math.hypot(u[0], u[1]);
     const fences: [number, number][] = [[r[0], r[1]], [u[0] / ul, u[1] / ul]];
@@ -390,7 +393,7 @@ class GooseActor implements Actor {
   }
 
   private readonly onKey = (e: KeyboardEvent) => {
-    if (e.ctrlKey || e.metaKey || e.altKey || isTyping(e.target)) return;
+    if (e.ctrlKey || e.metaKey || e.altKey || inControls(e.target)) return;
     const key = KEYS[e.key.toLowerCase()];
     if (!key) return;
     e.preventDefault();
@@ -451,12 +454,25 @@ class GooseActor implements Actor {
         this.draw(vp);
         return gl.shadow.readCentroid(vp);
       },
+      shadowRay: () => {
+        const { gl } = need();
+        this.draw(viewport());
+        const p = gl.shadow.readLightCentroid();
+        return p ? [p.x, p.y, p.z] : null;
+      },
       projectToScreen: (x, y, z) => {
         const { gl } = need();
         this.draw(viewport());
         return this.map.canvasToScreen(...gl.actor.projectToCanvas(x, y, z));
       },
+      stippleStats: () => {
+        const { gl } = need();
+        const vp = viewport();
+        this.draw(vp);
+        return gl.actor.readBlit(vp);
+      },
       windowHeight: (cx, cy) => this.heights.sample(cx, cy),
+      inside: (x, y, z) => !!this.data && this.inside(this.data.col, x, y, z),
       get collision() { return data()?.col ?? null; },
     };
   }
@@ -476,9 +492,9 @@ const canvasPx = (c: { cx: number; cy: number }): [number, number] => [c.cx, c.c
 
 function clamp(v: number, limit: number): number { return Math.max(-limit, Math.min(limit, v)); }
 
-function isTyping(t: EventTarget | null): boolean {
-  const el = t as HTMLElement | null;
-  return !!el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName));
+/** Keys aimed at a form control or an open map panel (e.g. settings during flight) are not flight input. */
+function inControls(t: EventTarget | null): boolean {
+  return t instanceof Element && (!!t.closest('#ui, input, textarea, select') || (t as HTMLElement).isContentEditable);
 }
 
 async function withTimeout(p: Promise<unknown>, ms: number): Promise<void> {

@@ -14,10 +14,10 @@
 //  - The published-artwork boundary is a fence: motion across it is projected onto the fence (slide) and reported.
 import type { Vec3 } from '../frame';
 import { type CollisionField, KIND_BUILDING, KIND_WATER } from './collision';
-import { GOOSE_BODY_RADIUS_M } from './goose';
+import { GOOSE_BODY_RADIUS_M, GOOSE_DISPLAY_SCALE } from './gooseDims';
 
-/** Display scale of the goose model (real size x 5 reads at map scale: ~18 artwork px long at zoom 1). */
-export const GOOSE_SCALE = 5;
+/** Display scale of the goose model: real size x 5 reads at map scale (~18 artwork px long). */
+export const GOOSE_SCALE = GOOSE_DISPLAY_SCALE;
 
 export const FLIGHT = {
   cruise: 14,                 // m/s
@@ -41,6 +41,8 @@ export const FLIGHT = {
 const SPEED_TAU = 0.6, CANOPY_TAU = 0.25, VZ_TAU = 0.3, TURN_TAU = 0.12, BANK_TAU = 0.2, FLOOR_TAU = 0.1;
 const MAX_BANK = 0.6;           // rad at full turn input
 const WALL_YAW_RATE = 3;        // rad/s the heading swings toward a wall's tangent while scraping it
+const WALL_ROLL = 1.15;         // rad: roll the wall-side wing up while scraping (keeps the 3.9 m half-span out of the facade)
+const WALL_ROLL_TAU = 0.35;
 const SLIDE_ITERATIONS = 3;
 
 export interface FlightInput {
@@ -62,6 +64,7 @@ export interface FlightState {
   heading: number;        // facing, radians counter-clockwise from east
   turn: number;           // smoothed turn input
   bank: number;           // roll, radians (+ = right wing down)
+  wallRoll: number;       // extra roll away from a wall being scraped (decays after contact)
   pitch: number;          // radians (+ = nose up)
   flapPhase: number;
   flapAmount: number;
@@ -80,7 +83,7 @@ const wrapAngle = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
 
 export class Flight {
   readonly state: FlightState = {
-    x: 0, y: 0, z: 0, vx: 0, vy: 0, vz: 0, heading: 0, turn: 0, bank: 0, pitch: 0, flapPhase: 0, flapAmount: 0.6,
+    x: 0, y: 0, z: 0, vx: 0, vy: 0, vz: 0, heading: 0, turn: 0, bank: 0, wallRoll: 0, pitch: 0, flapPhase: 0, flapAmount: 0.6,
     inCanopy: false, overWater: false, surface: NaN, time: 0, lastHit: null, waiting: false,
   };
 
@@ -99,7 +102,7 @@ export class Flight {
     const s = this.state;
     Object.assign(s, {
       x, y, z, heading, vx: Math.cos(heading) * speed, vy: Math.sin(heading) * speed, vz: 0,
-      turn: 0, bank: 0, pitch: 0, time: 0, lastHit: null, waiting: false,
+      turn: 0, bank: 0, wallRoll: 0, pitch: 0, time: 0, lastHit: null, waiting: false,
     });
     this.updateSurface();
   }
@@ -124,7 +127,8 @@ export class Flight {
     // steering: smoothed turn input -> yaw rate and a visual bank into the turn
     s.turn = relax(s.turn, clamp(input.turn, -1, 1), dt, TURN_TAU);
     s.heading = wrapAngle(s.heading + s.turn * FLIGHT.turnRate * dt);
-    s.bank = relax(s.bank, -s.turn * MAX_BANK, dt, BANK_TAU);
+    s.wallRoll = relax(s.wallRoll, 0, dt, WALL_ROLL_TAU);
+    s.bank = relax(s.bank, -s.turn * MAX_BANK + s.wallRoll, dt, BANK_TAU);
 
     // soft trees: a crown around the body slows the goose
     const canopy = col.canopyTop(s.x, s.y);
@@ -180,6 +184,9 @@ export class Flight {
       const tangent = Math.abs(wrapAngle(t1 - s.heading)) < Math.abs(wrapAngle(t2 - s.heading)) ? t1 : t2;
       const diff = wrapAngle(tangent - s.heading);
       if (Math.abs(diff) < (75 * Math.PI) / 180) s.heading = wrapAngle(s.heading + clamp(diff, -WALL_YAW_RATE * dt, WALL_YAW_RATE * dt));
+      // n points from the wall to the goose; along the goose's right vector > 0 means the wall is on its left
+      const side = nx * Math.sin(s.heading) - ny * Math.cos(s.heading);
+      if (Math.abs(side * WALL_ROLL) > Math.abs(s.wallRoll)) s.wallRoll = side * WALL_ROLL;
       const info: HitInfo = { kind: 'wall', x: p[0], y: p[1], z: p[2], normal: [nx, ny, 0], time: s.time };
       s.lastHit = info;
       ev.wall ??= info;

@@ -37,6 +37,8 @@ export class Compositor {
   private readonly life: Texture;
   private readonly prepTarget: RenderTarget;
   private readonly blurTarget: RenderTarget;
+  /** Inputs of the blur currently held in blurTarget ('' = none / stale). */
+  private blurKey = '';
 
   /** Throws when WebGL2 is unavailable or the shaders fail to build. */
   constructor(readonly canvas: HTMLCanvasElement) {
@@ -81,12 +83,16 @@ export class Compositor {
     gl.disable(gl.BLEND);
 
     const tilt = p.tilt;
-    let cocLimit = 1;
-    if (tilt) {
+    // The blur depends only on the base / height textures and the focus uniforms. Life steps (12 per second while
+    // idle) change neither, so they reuse the previous blur and only run the final pass.
+    const blurKey = tilt ? `${W}x${H}:${tilt.blurScale}:${tilt.depth}:${tilt.row}:${tilt.coc}` : '';
+    if (p.upload || blurKey !== this.blurKey) this.blurKey = '';
+    if (tilt && !this.blurKey) {
+      this.blurKey = blurKey;
       const bw = Math.max(1, Math.round(W * tilt.blurScale)), bh = Math.max(1, Math.round(H * tilt.blurScale));
       this.prepTarget.resize(bw, bh);
       this.blurTarget.resize(bw, bh);
-      cocLimit = Math.max(1, tilt.coc[0] * tilt.blurScale);
+      const cocLimit = Math.max(1, tilt.coc[0] * tilt.blurScale);
 
       this.prepTarget.bind();
       gl.useProgram(this.prep.handle);

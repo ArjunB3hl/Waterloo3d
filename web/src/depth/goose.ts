@@ -11,11 +11,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 
-export const GOOSE_WINGSPAN_M = 1.6;
-/** Recommended uniform scale so the goose reads at map scale (actor may pick 4-6). */
-export const GOOSE_DISPLAY_SCALE = 5;
-/** Radius of a sphere around the origin that encloses the body (wings excluded), real size, for collision sweeps. */
-export const GOOSE_BODY_RADIUS_M = 0.4;
+export { GOOSE_BODY_RADIUS_M, GOOSE_DISPLAY_SCALE, GOOSE_WINGSPAN_M } from './gooseDims';
 
 export interface GoosePose {
   /** 0 = wings spread for flight, 1 = folded along the body (walking, swimming, perched). */

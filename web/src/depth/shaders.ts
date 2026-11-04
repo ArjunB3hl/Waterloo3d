@@ -61,6 +61,19 @@ float surfaceHeight(vec2 c) {
 bool known(float h) { return h > HEIGHT_UNKNOWN + 1.0; }
 `;
 
+/** A renderer's R32F texture over the height window (nearest, no mipmaps), registered for uploads. */
+export function heightTexture(win: HeightWindow): THREE.DataTexture {
+  const tex = new THREE.DataTexture(win.array, win.texels, win.texels, THREE.RedFormat, THREE.FloatType);
+  tex.minFilter = tex.magFilter = THREE.NearestFilter;
+  tex.generateMipmaps = false;
+  tex.flipY = false;
+  tex.unpackAlignment = 4;
+  tex.colorSpace = THREE.NoColorSpace;
+  tex.needsUpdate = true;
+  win.register(tex);
+  return tex;
+}
+
 /** sRGB hex -> components, untouched by three's colour management (we shade directly in the artwork's sRGB space). */
 export function srgb(hex: number): THREE.Vector3 {
   return new THREE.Vector3(((hex >> 16) & 255) / 255, ((hex >> 8) & 255) / 255, (hex & 255) / 255);

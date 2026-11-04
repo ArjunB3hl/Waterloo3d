@@ -11,16 +11,17 @@ import type { Frame } from '../frame';
 import { QUAD_VERTEX, type Viewport } from './actorRenderer';
 import type { Goose } from './goose';
 import type { HeightWindow } from './heightWindow';
-import { FRAME_GLSL, frameUniforms, srgb, type FrameUniforms } from './shaders';
+import { FRAME_GLSL, frameUniforms, heightTexture, srgb, type FrameUniforms } from './shaders';
 
 const LIGHT_TEXELS = 128;
 const LIGHT_STANDOFF_M = 60;
 const SHADOW_TONE = 0x8c9ec7;            // multiplied over the artwork: a cool, translucent blue-grey
 const SHADOW_BIAS_M = 0.15;
+const SIZE = new THREE.Vector2();        // scratch (canvas size checks, no per-frame allocation)
 
 export class ShadowRenderer {
   readonly renderer: THREE.WebGLRenderer;
-  readonly lightCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 2 * LIGHT_STANDOFF_M);
+  readonly lightCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 2 * LIGHT_STANDOFF_M);   // fitted per frame
   private readonly lightScene = new THREE.Scene();
   private readonly depth: THREE.WebGLRenderTarget;
   private readonly uniforms: FrameUniforms;
@@ -49,7 +50,7 @@ export class ShadowRenderer {
     goose.shadow.matrixAutoUpdate = false;
     this.lightScene.add(goose.shadow);
 
-    this.uniforms = frameUniforms(frame, heights, heights.createTexture());
+    this.uniforms = frameUniforms(frame, heights, heightTexture(heights));
     this.material = new THREE.ShaderMaterial({
       uniforms: {
         ...this.uniforms,
@@ -59,9 +60,10 @@ export class ShadowRenderer {
         uGoose: { value: new THREE.Vector3() },
         uSun: { value: this.sun },
         uTone: { value: srgb(SHADOW_TONE) },
-        uBias: { value: SHADOW_BIAS_M / (2 * LIGHT_STANDOFF_M - 1) },
+        uBias: { value: 0 },
       },
       depthTest: false, depthWrite: false, transparent: true, blending: THREE.NoBlending,
+      side: THREE.DoubleSide,                            // the quad's y flip (canvas y down) reverses its winding
       vertexShader: QUAD_VERTEX,
       fragmentShader: /* glsl */ `
         ${FRAME_GLSL}
@@ -113,15 +115,19 @@ export class ShadowRenderer {
   render(vp: Viewport, surfaceBelow: number, artPerTexel: number): void {
     const r = this.renderer, f = this.frame, g = this.goose.group.position;
     if (r.getPixelRatio() !== vp.dpr) r.setPixelRatio(vp.dpr);
-    const size = r.getSize(new THREE.Vector2());
+    const size = r.getSize(SIZE);
     if (size.x !== vp.width || size.y !== vp.height) r.setSize(vp.width, vp.height, false);
 
-    // light camera: looks down the sun ray at the goose, frustum just around it
+    // light camera: looks down the sun ray at the goose, frustum just around it and deep enough to reach the
+    // lowest receiver (t1 metres along the ray below the goose)
     const L = this.lightCamera, R = this.radius;
+    const t1 = Math.max(0, (g.z - surfaceBelow) / this.sun.z);
     L.up.set(0, 0, 1);
     L.position.copy(g).addScaledVector(this.sun, LIGHT_STANDOFF_M);
     L.lookAt(g);
     L.left = -R; L.right = R; L.top = R; L.bottom = -R;
+    L.near = LIGHT_STANDOFF_M - R - 1;
+    L.far = LIGHT_STANDOFF_M + t1 + R + 1;
     L.updateProjectionMatrix();
     L.updateMatrixWorld(true);
     this.goose.shadow.matrix.copy(this.goose.group.matrixWorld);
@@ -131,7 +137,6 @@ export class ShadowRenderer {
     r.render(this.lightScene, L);
 
     // receiver quad: bounding square of the goose's shadow ray from the goose down to the lowest receiver
-    const t1 = Math.max(0, (g.z - surfaceBelow) / this.sun.z);
     const a = f.worldToCanvas(g.x, g.y, g.z);
     const b = f.worldToCanvas(g.x - this.sun.x * t1, g.y - this.sun.y * t1, g.z - this.sun.z * t1);
     const m = (R / f.mpp) * 1.2 + 2 * artPerTexel;
@@ -145,6 +150,7 @@ export class ShadowRenderer {
     u.uViewport.value.set(vp.width, vp.height);
     u.uLightVP.value.multiplyMatrices(L.projectionMatrix, L.matrixWorldInverse);
     u.uGoose.value.copy(g);
+    u.uBias.value = SHADOW_BIAS_M / (L.far - L.near);   // depth is linear in an orthographic light
     this.uniforms.uWinOrigin.value.set(this.heights.originX, this.heights.originY);
     r.setRenderTarget(null);
     r.clear(true, true, false);
@@ -179,6 +185,23 @@ export class ShadowRenderer {
         sum += a; sx += a * X; sy += a * Y; n++;
       }
     return n ? { x: sx / sum / d, y: sy / sum / d, pixels: n } : null;
+  }
+
+  /**
+   * World point on the light ray through the centroid of the goose's silhouette in the last light pass (the shadow's
+   * "centre ray"; test / debug only). Read from the light target's colour attachment, independent of the receiver pass.
+   */
+  readLightCentroid(): THREE.Vector3 | null {
+    const n = LIGHT_TEXELS, px = new Uint8Array(n * n * 4);
+    this.renderer.readRenderTargetPixels(this.depth, 0, 0, n, n, px);
+    let sx = 0, sy = 0, c = 0;
+    for (let k = 0; k < n * n; k++) if (px[k * 4 + 3]) { sx += (k % n) + 0.5; sy += Math.floor(k / n) + 0.5; c++; }
+    if (!c) return null;
+    // texel centroid -> light NDC -> world (on the plane through the goose perpendicular to the sun)
+    const L = this.lightCamera, g = this.goose.group.position;
+    const ndc = new THREE.Vector3((sx / c / n) * 2 - 1, (sy / c / n) * 2 - 1, 0);
+    const p = ndc.unproject(L);
+    return p.addScaledVector(this.sun, this.sun.dot(g.clone().sub(p)));
   }
 
   dispose(): void {

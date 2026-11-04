@@ -56,9 +56,6 @@ interface Chunk {
   used: number;         // LRU clock
 }
 
-const RING = 8;
-const RING_DX = Array.from({ length: RING }, (_, k) => Math.cos((k / RING) * Math.PI * 2));
-const RING_DY = Array.from({ length: RING }, (_, k) => Math.sin((k / RING) * Math.PI * 2));
 const NORMAL_RING = 24;           // directions used to estimate a side normal after a hit
 const REFINE_STEPS = 5;           // bisection after a hit: 1 m / 2^5 ~ 3 cm contact precision
 
@@ -325,16 +322,22 @@ export class CollisionField {
   private probe(x: number, y: number, z: number, r: number): number {
     if (this.passesAbove(x, y, z - r, r)) return P_NONE;
     const bottom = z - r;
-    // ring columns at the sphere's equator: any column taller than the centre height touches the side of the sphere
+    // columns under the sphere's equator disc: any column taller than the centre height touches the side of the sphere.
+    // Every cell overlapping the disc is tested at its point nearest the centre (exact for the column model; sampling a
+    // ring of points instead lets a cell corner slip between two samples to well inside the radius).
     let tree = false;
     if (r > 0) {
-      for (let k = 0; k < RING; k++) {
-        const qx = x + RING_DX[k] * r, qy = y + RING_DY[k] * r;
-        const s = this.solidTop(qx, qy);
-        if (s !== s) { this.sawMissing ||= !this.isLoaded(qx, qy); continue; }
-        if (z < s && this.kind(qx, qy) & KIND_BUILDING) return P_WALL;
-        if (this.solidTrees && z < this.canopyTop(qx, qy)) tree = true;
-      }
+      const c = this.cell, r2 = r * r, cc = Math.floor(x / c), cr = Math.floor(y / c);
+      for (let gc = Math.floor((x - r) / c); gc <= Math.floor((x + r) / c); gc++)
+        for (let gr = Math.floor((y - r) / c); gr <= Math.floor((y + r) / c); gr++) {
+          if (gc === cc && gr === cr) continue;            // the centre column is tested below (roof / ground contact)
+          const qx = Math.min(Math.max(x, gc * c), (gc + 1) * c - 1e-6), qy = Math.min(Math.max(y, gr * c), (gr + 1) * c - 1e-6);
+          if ((qx - x) * (qx - x) + (qy - y) * (qy - y) >= r2) continue;
+          const s = this.solidTop(qx, qy);
+          if (s !== s) { this.sawMissing ||= !this.isLoaded(qx, qy); continue; }
+          if (z < s && this.kind(qx, qy) & KIND_BUILDING) return P_WALL;
+          if (this.solidTrees && z < this.canopyTop(qx, qy)) tree = true;
+        }
     }
     // centre column: the bottom of the sphere must stay above the surface directly below
     const s = this.solidTop(x, y);

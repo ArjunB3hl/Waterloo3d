@@ -101,6 +101,7 @@ field.kind(x, y);         // KIND_BUILDING | KIND_TREE | KIND_WATER | KIND_VALID
 field.isLoaded(x, y); field.covers(x, y); field.stats();
 
 const r = field.sweep(from, to, radius);   // Vec3 from/to in metres, sphere radius in metres, steps <= 1 m
+field.sweep(from, to, radius, 1, { trees: false });   // soft vegetation: tree crowns never block (the goose actor)
 // r.hit: 'none' | 'building' | 'ground' | 'tree'
 // r.point: last non-penetrating position (bisection-refined to ~3 cm); r.t in [0, 1]
 // r.normal: (0,0,1) for ground, roofs and canopy tops; horizontal outward normal for walls and crown sides; 0 for 'none'
@@ -110,9 +111,10 @@ const r = field.sweep(from, to, radius);   // Vec3 from/to in metres, sphere rad
 Contact rules (sphere of radius r at centre p, tested at <= 1 m steps):
 
 1. Fast reject: every chunk under the sphere is listed and its `zmax` < p.z - r -> free (no decode needed).
-2. Ring of 8 columns at distance r: a building column taller than p.z touches the sphere's side -> wall.
+2. Every column whose cell overlaps the sphere's equator disc (tested at the cell point nearest p, so exact for the
+   column model): a building column taller than p.z touches the sphere's side -> wall.
 3. Centre column: building and p.z - r < solidTop -> roof (or wall, if the sphere was not above that column at the
-   previous free sample, e.g. a point-sized probe flying into a facade); a ring crown column taller than p.z -> tree side;
+   previous free sample, e.g. a point-sized probe flying into a facade); a disc crown column taller than p.z -> tree side;
    p.z - r < canopyTop -> canopy top; p.z - r < ground -> ground.
 4. After the first hit, 5 bisection steps refine the contact; side normals come from a 24-direction occupancy ring
    around the contact (within ~10 degrees of the true facade normal in the Dana Porter test).

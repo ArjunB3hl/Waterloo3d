@@ -60,7 +60,9 @@
 }
 
 @media (max-width: 640px) {
-  .gh-bar { top: auto; bottom: calc(100px + env(safe-area-inset-bottom)); max-width: calc(100vw - 2 * var(--gap)); font-size: 12px; }
+  /* phones: toolbar above the touch pad, the pad above the two-line attribution footer */
+  .gh-bar { top: auto; bottom: calc(128px + env(safe-area-inset-bottom)); max-width: calc(100vw - 2 * var(--gap)); font-size: 12px; }
+  .gh-pad { bottom: calc(60px + env(safe-area-inset-bottom)); }
   .gh-label { display: none; }
   .gh-stat { padding-right: 8px; }
   .gh-pad { grid-template-columns: repeat(4, 1fr) 0 1fr 1fr; gap: 6px; }

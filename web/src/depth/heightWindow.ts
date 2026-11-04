@@ -6,8 +6,9 @@
 // no occlusion and no shadow there (never an invented surface).
 //
 // Every renderer gets its own R32F DataTexture over the same array (one GL context cannot sample another's texture);
-// flush() re-uploads them at most once per frame, only after the contents changed.
-import * as THREE from 'three';
+// flush() re-uploads them at most once per frame, only after the contents changed. No three.js at runtime here: this
+// module is part of the always-loaded actor shell.
+import type { DataTexture } from 'three';
 import type { MapAPI } from '../types';
 
 export const HEIGHT_UNKNOWN = -10000;
@@ -22,7 +23,7 @@ export class HeightWindow {
   private centre: [number, number] | null = null;
   private generation = 0;      // bumps on every recentre so late tile loads for an old window are dropped
   private dirty = false;
-  private readonly textures = new Set<THREE.DataTexture>();
+  private readonly textures = new Set<DataTexture>();
   private readonly tilePx: number;
   private readonly tileTexels: number;
   private readonly loaded = new Set<string>();
@@ -36,18 +37,11 @@ export class HeightWindow {
   /** Tile (i, j) currently at the window centre, or null before the first centreOn(). */
   get centreTile(): [number, number] | null { return this.centre; }
 
-  /** A texture over the window for one renderer (R32F, nearest, no mipmaps). Disposed by release(). */
-  createTexture(): THREE.DataTexture {
-    const tex = new THREE.DataTexture(this.ensureData(), this.texels, this.texels, THREE.RedFormat, THREE.FloatType);
-    tex.minFilter = tex.magFilter = THREE.NearestFilter;
-    tex.generateMipmaps = false;
-    tex.flipY = false;
-    tex.unpackAlignment = 4;
-    tex.colorSpace = THREE.NoColorSpace;
-    tex.needsUpdate = true;
-    this.textures.add(tex);
-    return tex;
-  }
+  /** The window's current array (textures are created over it by shaders.ts heightTexture()). */
+  get array(): Float32Array { return this.ensureData(); }
+
+  /** Track a renderer's texture over the array: re-uploaded by flush(), re-pointed and freed by release(). */
+  register(tex: DataTexture): void { this.textures.add(tex); }
 
   /**
    * Centre the window on the tile containing canvas px (cx, cy). Returns a promise that settles once the window's

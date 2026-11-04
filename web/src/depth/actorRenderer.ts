@@ -16,7 +16,7 @@ import type { ViewState } from '../types';
 import { createGoose, type Goose } from './goose';
 import type { HeightWindow } from './heightWindow';
 import { Particles } from './particles';
-import { FRAME_GLSL, frameUniforms, srgb, type FrameUniforms } from './shaders';
+import { FRAME_GLSL, frameUniforms, heightTexture, srgb, type FrameUniforms } from './shaders';
 
 export const RT_TEXELS = 64;
 export const OCCLUSION_BIAS_M = 0.3;
@@ -27,6 +27,7 @@ const HIDDEN_FILL = 0xf3a646;
 const HIDDEN_OUTLINE = 0xfff4e0;
 const RIM = 0x2a221c;
 const RIM_ALPHA = 0.45;
+const SIZE = new THREE.Vector2();        // scratch (canvas size checks, no per-frame allocation)
 
 export interface GooseAttitude {
   x: number; y: number; z: number;
@@ -62,7 +63,7 @@ export class ActorRenderer {
       minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter, generateMipmaps: false, depthBuffer: true,
       type: THREE.UnsignedByteType, format: THREE.RGBAFormat, colorSpace: THREE.NoColorSpace,
     });
-    this.uniforms = frameUniforms(frame, heights, heights.createTexture());
+    this.uniforms = frameUniforms(frame, heights, heightTexture(heights));
     const sun = new THREE.Vector3(...frame.sun);
 
     // goose with flat sun-lit tones: swap each Lambert material for a shader material of the same plumage colour
@@ -89,6 +90,7 @@ export class ActorRenderer {
         uFill: { value: srgb(HIDDEN_FILL) }, uOutline: { value: srgb(HIDDEN_OUTLINE) }, uRim: { value: srgb(RIM) },
       },
       depthTest: false, depthWrite: false, transparent: true, blending: THREE.NoBlending,
+      side: THREE.DoubleSide,                            // the quad's y flip (canvas y down) reverses its winding
       vertexShader: QUAD_VERTEX,
       fragmentShader: /* glsl */ `
         uniform sampler2D uRT;
@@ -171,6 +173,34 @@ export class ActorRenderer {
     return { visible, hidden };
   }
 
+  /**
+   * Classify the actor canvas pixels drawn in the last render (read back right after render(); test / debug only):
+   * stipple fill and outline of the hidden goose, the rim, and normally shaded goose pixels.
+   */
+  readBlit(vp: Viewport): { fill: number; outline: number; rim: number; shaded: number } {
+    const gl = this.renderer.getContext(), d = vp.dpr;
+    const W = Math.round(vp.width * d), H = Math.round(vp.height * d);
+    const sx = (this.rect.x0 - vp.view.cx) * vp.view.zoom + vp.width / 2, sy = (this.rect.y0 - vp.view.cy) * vp.view.zoom + vp.height / 2;
+    const side = this.rect.size * vp.view.zoom;
+    const x0 = Math.max(0, Math.floor(sx * d)), x1 = Math.min(W, Math.ceil((sx + side) * d));
+    const y0 = Math.max(0, Math.floor(sy * d)), y1 = Math.min(H, Math.ceil((sy + side) * d));
+    const out = { fill: 0, outline: 0, rim: 0, shaded: 0 };
+    if (x1 <= x0 || y1 <= y0) return out;
+    const px = new Uint8Array((x1 - x0) * (y1 - y0) * 4);
+    gl.readPixels(x0, H - y1, x1 - x0, y1 - y0, gl.RGBA, gl.UNSIGNED_BYTE, px);
+    const near = (k: number, hex: number) =>
+      Math.abs(px[k] - ((hex >> 16) & 255)) < 3 && Math.abs(px[k + 1] - ((hex >> 8) & 255)) < 3 && Math.abs(px[k + 2] - (hex & 255)) < 3;
+    for (let k = 0; k < px.length; k += 4) {
+      const a = px[k + 3];
+      if (!a) continue;
+      if (a < 250) out.rim++;
+      else if (near(k, HIDDEN_FILL)) out.fill++;
+      else if (near(k, HIDDEN_OUTLINE)) out.outline++;
+      else out.shaded++;
+    }
+    return out;
+  }
+
   dispose(): void {
     this.goose.dispose();
     this.particles.dispose();
@@ -188,7 +218,7 @@ export class ActorRenderer {
   private layout(a: GooseAttitude, vp: Viewport): void {
     const r = this.renderer;
     if (r.getPixelRatio() !== vp.dpr) r.setPixelRatio(vp.dpr);
-    const size = r.getSize(new THREE.Vector2());
+    const size = r.getSize(SIZE);
     if (size.x !== vp.width || size.y !== vp.height) r.setSize(vp.width, vp.height, false);
 
     const g = this.goose;

@@ -1,10 +1,9 @@
 // Browser check for the effects compositor (web/src/fx): tilt-shift focus/blur, life animation masks and rate,
 // reduced motion, zoom-out auto-disable, WebGL2 fallback, context loss and render cost.
-// Starts Vite on port 5182 (or reuses a server already there), drives Chromium (software GL) via Playwright and
+// Starts Vite on port 5182 without HMR (or reuses a server already there), drives Chromium (software GL) via Playwright and
 // writes docs/screenshots/fx_tiltshift_{on,off}.png (1280x800, dsf 1).
 // Run: node tests/fx_check.mjs
 import { createRequire } from 'node:module';
-import { spawn } from 'node:child_process';
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -37,14 +36,17 @@ async function serverUp() {
   try { return (await fetch(BASE)).ok; } catch { return false; }
 }
 
+/** Start Vite programmatically with HMR off: other modules are edited concurrently during development and a
+ *  hot reload in the middle of a check would invalidate it. Returns a close function (null if a server was reused). */
 async function startServer() {
   if (await serverUp()) return null;
-  const proc = spawn('npx', ['vite', '--port', String(PORT), '--strictPort'], { cwd: ROOT, stdio: 'ignore', detached: true });
-  for (let k = 0; k < 60; k++) {
-    if (await serverUp()) return proc;
-    await new Promise((r) => setTimeout(r, 250));
-  }
-  throw new Error('vite did not start');
+  const { createServer } = await import('vite');
+  const server = await createServer({
+    configFile: path.join(ROOT, 'vite.config.ts'), root: path.join(ROOT, 'web'), logLevel: 'error',
+    server: { port: PORT, strictPort: true, hmr: false },
+  });
+  await server.listen();
+  return () => server.close();
 }
 
 function trackErrors(page) {
@@ -96,6 +98,13 @@ async function pairWithoutBaseRedraw(page, a, b, gap = 250) {
   }
   throw new Error('base canvas kept redrawing');
 }
+
+/** Set the zoom and wait until a frame at that zoom has been composed. */
+const zoomTo = (page, zoom) => page.evaluate((z) => new Promise((res) => {
+  const { map } = window.__tinyWaterloo;
+  const off = map.on('frame', (f) => { if (f.view.zoom === z) { off(); setTimeout(res, 50); } });
+  map.setView({ zoom: z });
+}), zoom);
 
 /** Hide DOM / overlay layers above the fx canvas so analysis screenshots see only the composed map. */
 const mapOnly = (page, on) => page.evaluate((hide) => {
@@ -180,9 +189,12 @@ const renderCost = (page, n = 20) => page.evaluate(async (count) => {
   const px = new Uint8Array(4);
   const sync = () => gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px);
   const f = await new Promise((res) => { const off = map.on('frame', (x) => { off(); res(x); }); map.invalidate(); });
-  const run = (dirty) => {
+  // dirty: base redrawn (pan / zoom / tile arrival); moveFocus: focus easing (blur recomputed, no upload);
+  // neither: a life step (the cached blur is reused)
+  const run = (dirty, moveFocus = false) => {
     const ts = [];
     for (let k = 0; k < count; k++) {
+      if (moveFocus) fx.setFocus(640, 200 + 20 * k);
       const t0 = performance.now();
       fx.render({ ...f, baseDirty: dirty, time: f.time + k * 125 });
       sync();
@@ -192,11 +204,14 @@ const renderCost = (page, n = 20) => page.evaluate(async (count) => {
     return { median: ts[ts.length >> 1], p95: ts[Math.floor(ts.length * 0.95)] };
   };
   sync();
-  return { noUpload: run(false), upload: run(true), cpuSubmitMs: fx.debug.renderMs, blurScale: fx.debug.blurScale, base: [map.baseCanvas.width, map.baseCanvas.height] };
+  const noUpload = run(false), upload = run(true), focus = run(false, true);
+  fx.setFocus(null, null);
+  return { noUpload, upload, focus, cpuSubmitMs: fx.debug.renderMs, blurScale: fx.debug.blurScale, base: [map.baseCanvas.width, map.baseCanvas.height] };
 }, n);
-const fmt = (c) => `no upload median ${c.noUpload.median.toFixed(1)} ms / p95 ${c.noUpload.p95.toFixed(1)}; with base upload median ${c.upload.median.toFixed(1)} / p95 ${c.upload.p95.toFixed(1)}`;
+const ms = (r) => `median ${r.median.toFixed(1)} / p95 ${r.p95.toFixed(1)} ms`;
+const fmt = (c) => `step frame ${ms(c.noUpload)}; focus moving ${ms(c.focus)}; base redrawn (upload) ${ms(c.upload)}`;
 
-const server = await startServer();
+const stopServer = await startServer();
 await mkdir(SHOTS, { recursive: true });
 const browser = await chromium.launch({ args: GL_ARGS });
 const numbers = {};
@@ -366,15 +381,13 @@ try {
 
   await check('zoomed far out: blur auto-disables (>40 tiles), then fx hides below the aux zoom', async () => {
     await settings(page, { tiltShift: true, life: true });
-    await page.evaluate(() => window.__tinyWaterloo.map.setView({ zoom: 0.18 }));
-    await page.waitForTimeout(500);
+    await zoomTo(page, 0.18);
     const mid = await fxDebug(page);
-    await page.evaluate(() => window.__tinyWaterloo.map.setView({ zoom: 0.12 }));
-    await page.waitForTimeout(500);
+    await zoomTo(page, 0.12);
     const far = await fxDebug(page);
-    await page.evaluate(() => window.__tinyWaterloo.map.setView({ zoom: 0.08 }));
+    await zoomTo(page, 0.08);
     await idle(page);
-    await page.waitForTimeout(500);
+    await baseQuiet(page);
     const farther = await fxDebug(page);
     const base = await page.evaluate(() => window.__tinyWaterloo.map.baseCanvas.style.visibility);
     await keep(page, 'far', await page.screenshot());
@@ -449,7 +462,7 @@ try {
   });
 } finally {
   await browser.close();
-  if (server) process.kill(-server.pid);
+  await stopServer?.();
 }
 
 console.log(`\nnumbers: ${JSON.stringify(numbers)}`);
