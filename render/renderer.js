@@ -207,6 +207,7 @@ const VS = `
   }`;
 function heightMaterial(job) {
   return new THREE.ShaderMaterial({
+    side: THREE.DoubleSide, // data passes must not depend on triangle winding
     uniforms: { floorM: { value: job.heights.floor_m }, units: { value: job.heights.units_per_m } },
     vertexShader: VS,
     fragmentShader: `uniform float floorM; uniform float units; varying vec3 vW;
@@ -216,6 +217,7 @@ function heightMaterial(job) {
 }
 function classMaterial(id, tex) {
   return new THREE.ShaderMaterial({
+    side: THREE.DoubleSide, // data passes must not depend on triangle winding
     uniforms: { id: { value: id }, tex: { value: tex || null } },
     defines: tex ? { USE_UV: '' } : {},
     vertexShader: VS,
