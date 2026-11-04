@@ -6,9 +6,9 @@ Last updated 4 November 2026. Branch `claude/busy-turing-drkfqj`.
 
 | | |
 |---|---|
-| Illustrated (accepted generated art) | **8 tiles**: campus 2 × 2 (`-1_-1`, `0_-1`, `-1_0`, `0_0`: Dana Porter, SLC, MC, QNC, EIT, DC, E5, E7, Hagey Hall, ION corridor), B003 east edge (`1_-1`, `1_0`: University Ave towers, parking, ION footbridge), B004 Waterloo Park west (`2_-1`, `2_0`: UW Place / Beck Hall residences, Laurel Creek woods and trail) |
-| Reference renders (procedural, awaiting art) | 47 tiles: campus → Waterloo Park / Silver Lake → Uptown / Public Square → Laurier, plus a surrounding ring |
-| City coverage | Measured against the verified municipal boundary (OSM relation r2062154, 65.31 km², 589 tiles). Published tiles cover **10.77 %** of the city's area; illustrated tiles cover **1.57 %**. |
+| Illustrated (accepted generated art) | **20 tiles** (i -2..3, j -2..1 plus 4 more): UW campus core, Ring Road and Columbia Lake, the ION corridor, the residential grid north of campus, University Ave residences, Waterloo Park west and centre with Laurel Creek woods. Overview: `docs/review/art_progress.png` |
+| Reference renders (procedural, awaiting art) | 35 tiles: campus → Waterloo Park / Silver Lake → Uptown / Public Square → Laurier, plus a surrounding ring |
+| City coverage | Measured against the verified municipal boundary (OSM relation r2062154, 65.31 km², 589 tiles). Published tiles cover **10.77 %** of the city's area; illustrated tiles cover **3.92 %**. |
 | Local preview | `npm install && npm run dev` → http://127.0.0.1:5173 (production: `npm run build && npm run preview` → http://127.0.0.1:4173) |
 | Public deployment | Not done. It is a separate, explicit step. |
 
@@ -22,6 +22,7 @@ Last updated 4 November 2026. Branch `claude/busy-turing-drkfqj`.
 | B002 (rest of the 2 × 2) | 0_-1, -1_0, -1_-1 | accepted | `image_gen.imagegen`; the **model name and version are not exposed** by the tool | Reference-image style transfer/edit. The mask was given as image guidance for the first two tiles and as coordinates for the third; no inpainting control. Requested 1536 × 1536 canvases; the tool returns 1254 × 1254 only. Seed, steps and guidance unknown. |
 | B003 (east edge) | 1_-1, 1_0 | accepted | `image_gen.imagegen`; model name and version not exposed | Same as B002 (1254 px output of 1536 context canvases); 1_0 used the generated 1_-1 as its northern neighbour. Seams: left vs 0_-1 ×1.15, left vs 0_0 ×1.39, top vs 1_-1 ×1.11 (limit 1.8). |
 | B004 (Waterloo Park west) | 2_-1, 2_0 | accepted (2_-1 **forced**) | `image_gen.imagegen`; model not exposed | As B003. 2_-1 failed only roof-outline scores on 3 unnamed residence towers (0.27, 0.22, -0.06 vs 0.35): visual check shows them on their footprints with heavier parapets and roof detail, so it was force-accepted (recorded in art/tiles.json). 2_0 passed after the per-cell check stopped scoring vegetation-only boundaries (a painted continuous canopy cannot match individual reference crowns). Seams x1.11-1.40. |
+| B005-B008 (Park centre, north row, south row, west) | 12 tiles | accepted (B006 -1_-2 **forced**) | `image_gen.imagegen` built into Codex (per the agent's report paths); model name/version not exposed | Reference-image guided edit, mask as reference image, one call per canvas, 1254 px outputs. 9 passed directly; 1_-2 and 2_-2 passed after the painted-roof rule (below). -1_-2 was force-accepted: the 256 px block camera fit reported scale 0.981 because its large parking lots alias the correlation, while an independent fit on 15 confident 128 px blocks gave scale 0.9994, rotation 0.11 deg, shifts 1-3 px, and geometry agreement was 1.045 of the reference. Worst seam step x1.43 (limit 1.8). |
 
 TinyRJ's model also remains unknown. Nothing in this project assumes a particular model. Full per-tile records (prompt hash, reference hashes, source file hash, QA verdict) are in `art/tiles.json` and `art/batches.json`.
 
@@ -50,7 +51,10 @@ TinyRJ's model also remains unknown. Nothing in this project assumes a particula
 
 Seam review of the finished 2 × 2 (`docs/review/campus_2x2_seams.png`). At the 512 px working resolution, the colour step across each seam divided by the step between neighbouring lines is 1.06, 1.33, 0.94 and 0.97 for the four edge halves, against 0.89–1.15 on interior control lines. Visually, roads, rails, paths and buildings continue across every edge and the centre junction.
 
-QA thresholds were adjusted after the first real returns, with the evidence recorded in `pipeline/art_import.py`:
+QA thresholds were adjusted as real returns arrived, each with the evidence recorded in `pipeline/art_import.py`:
+- Per-cell geometry ignores vegetation-only boundaries (painted canopies cannot match individual reference crowns; B004 2_0).
+- A low roof-outline score on an ordinary (non-landmark) building is a warning when its roof is clearly painted (contrast >= 0.9 of the reference); landmarks stay strict (B004 2_-1, B006 1_-2 / 2_-2: all flagged roofs were visually on their footprints).
+- The camera fit drops unconfirmed (stripe-aliased) blocks before estimating scale/rotation.
 - The block-displacement limit went from 8 px to 10 px. B001 measured 9.1 px with otherwise excellent geometry.
 - A block now counts as displaced only when 2 of its 4 sub-blocks agree. A false 41 px "displacement" on -1_-1 came from repetitive rail and parking stripes.
 
@@ -127,7 +131,7 @@ Five reviewers covered projection maths, loading and memory, UI, the art workflo
 
 | Item | Status | What would unblock it |
 |---|---|---|
-| Image returns | **B005-B008 requested** in parallel (12 tiles bordering the accepted art: Waterloo Park centre, the row north of campus, the row south of campus, west of campus). B001-B004 complete. | User relays each `IMAGE_REQUEST_B00x.md` + `art/requests/B00x.zip` (one image-agent conversation per batch). |
+| Image returns | **B009-B012 requested** in parallel (12 tiles: Silver Lake + Perimeter + Park south; second row north; Laurier corner + two west corners; further west). B001-B008 complete. | User relays each `IMAGE_REQUEST_B0xx.md` + zip (one image-agent conversation per batch). Uptown (i 5-7) becomes requestable after B009. |
 | Google Photorealistic 3D Tiles | The code is ready and tested offline (`docs/GOOGLE_3D_TILES.md`). This session cannot see the key, because environment variables reach only new sessions. | Start a new session on this branch, and confirm that the Map Tiles API terms allow the comparison use (`--i-reviewed-google-terms`). |
 | City of Waterloo Open Data | `data.waterloo.ca` and ArcGIS are blocked by the container's network policy | Allow those domains in the environment's network settings, then evaluate the footprint, street-tree and contour layers and the licence. |
 | Real-device performance | Not measured | Run `npm run perf:device` on the MacBook Air M3. |

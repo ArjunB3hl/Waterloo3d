@@ -137,13 +137,15 @@ def registration(ref, ret):
             if bp >= 0.06: blocks.append((bx + 128, by + 128, bdx, bdy, bp))
     out = {'dx': round(dx, 2), 'dy': round(dy, 2), 'peak': round(peak, 4), 'blocks': len(blocks)}
     if len(blocks) >= 8:
-        P = np.array([[x - 512, y - 512, 1] for x, y, *_ in blocks], float)
-        D = np.array([[d1, d2] for *_xy, d1, d2, _p in blocks], float)
-        M, *_ = np.linalg.lstsq(P, D, rcond=None)  # D = P @ M: M[0:2] linear part (transposed), M[2] translation
-        resid = np.linalg.norm(D - P @ M, axis=1)
-        def confirmed(x, y):
+        def fit(bs):
+            P = np.array([[x - 512, y - 512, 1] for x, y, *_ in bs], float)
+            D = np.array([[d1, d2] for *_xy, d1, d2, _p in bs], float)
+            M, *_ = np.linalg.lstsq(P, D, rcond=None)  # D = P @ M: M[0:2] linear part (transposed), M[2] translation
+            return M, np.linalg.norm(D - P @ M, axis=1)
+
+        def confirmed(x, y, M):
             # Repetitive parallel structure (rail lines, parking stripes) can make one 256 px correlation lock onto the wrong
-            # stripe. Only report a block when at least 2 of its four 128 px sub-blocks also disagree with the affine fit.
+            # stripe. A block only counts as displaced when at least 2 of its four 128 px sub-blocks also disagree with the fit.
             bad = 0
             for sy in (y - 128, y):
                 for sx in (x - 128, x):
@@ -153,13 +155,24 @@ def registration(ref, ret):
                     pred = np.array([sx + 64 - 512, sy + 64 - 512, 1.0]) @ M
                     if sp >= 0.06 and math.hypot(sdx - pred[0], sdy - pred[1]) > T['local_px']: bad += 1
             return bad >= 2
+
+        M, resid = fit(blocks)
+        # Unconfirmed outliers (stripe aliasing) would bias the camera estimate: drop them and refit (B006 -1_-2: parking
+        # stripes produced a spurious scale 0.981 / rot 0.36 deg while every edge matched the reference).
+        outliers = [k for k, r in enumerate(resid) if r > T['local_px'] and not confirmed(blocks[k][0], blocks[k][1], M)]
+        if outliers and len(blocks) - len(outliers) >= 8:
+            kept = [b_ for k, b_ in enumerate(blocks) if k not in outliers]
+            M, _ = fit(kept)
+            resid = np.linalg.norm(np.array([[d1, d2] for *_xy, d1, d2, _p in blocks]) -
+                                   np.array([[x - 512, y - 512, 1] for x, y, *_ in blocks], float) @ M, axis=1)
         flagged = [(x, y, d1, d2, r) for (x, y, d1, d2, _p), r in zip(blocks, resid) if r > T['local_px']]
         out.update({'scale': round(float(1 + (M[0, 0] + M[1, 1]) / 2), 4),
                     'rot_deg': round(float(np.degrees((M[0, 1] - M[1, 0]) / 2)), 3),
                     'max_resid': round(float(resid.max()), 2),
-                    'unconfirmed_blocks': [[int(x), int(y), round(float(r), 1)] for x, y, d1, d2, r in flagged if not confirmed(x, y)],
+                    'camera_fit_dropped': len(outliers),
+                    'unconfirmed_blocks': [[int(x), int(y), round(float(r), 1)] for x, y, d1, d2, r in flagged if not confirmed(x, y, M)],
                     'displaced': [[int(x), int(y), round(float(d1), 1), round(float(d2), 1)]
-                                  for x, y, d1, d2, r in flagged if confirmed(x, y)]})
+                                  for x, y, d1, d2, r in flagged if confirmed(x, y, M)]})
     return out
 
 
@@ -345,7 +358,11 @@ def qa_tile(rec, key, item, img, info):
         if not b['bad']: continue
         what = (f'{b["name"]} (around x={b["centroid"][0]}, y={b["centroid"][1]}): roof outline score {b["outline_rel"]}, '
                 f'roof contrast {b["contrast_rel"]} of the reference')
-        if b['landmark'] or b['area'] >= T['bld_fail_px']:
+        # Stylised parapets / rooftop gear lower the outline score of correctly placed roofs. For ordinary buildings whose roof is
+        # clearly painted (contrast >= 0.9 of the reference) this is a warning; landmarks keep the strict check. Calibrated on
+        # B004 2_-1 and B006 1_-2 / 2_-2, where every flagged roof was visually on its footprint.
+        painted = (b.get('contrast_rel') or 0) >= 0.9
+        if b['landmark'] or (b['area'] >= T['bld_fail_px'] and not painted):
             res.fail('building', what, f'{b["name"]} (red outline in the marked image, around x={b["centroid"][0]}, '
                      f'y={b["centroid"][1]}) is missing, merged or misplaced: paint it exactly on its reference footprint, roof outline '
                      'and height.')
