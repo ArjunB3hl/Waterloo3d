@@ -62,6 +62,12 @@ def main():
         finish = None
         if os.path.exists(accepted):
             src = Image.open(accepted).convert('RGB'); kind = 'art'
+            painted_on = art_meta.get(d, {}).get('reference_files') or {}
+            now = {k: sha(os.path.join(jd, f'{k}.png')) for k in painted_on if os.path.exists(os.path.join(jd, f'{k}.png'))}
+            stale = [k for k, v in painted_on.items() if now.get(k) != v]
+            if stale:
+                print(f'warning: accepted art {d} was painted on a different reference ({", ".join(stale)} changed since); '
+                      'its height/class/life layers may no longer match the artwork - re-request the tile', file=sys.stderr)
             if src.size != (F(), F()): src = src.resize((F(), F()), Image.LANCZOS)
             src, finish = art_finish(src)
         else:
@@ -84,7 +90,8 @@ def main():
         life_mask(cls).save(os.path.join(OUT, 'life', f'{d}.png'), optimize=True)
         meta = art_meta.get(d, {})
         tiles[d] = {'i': i, 'j': j, 'kind': kind, 'v': sha(os.path.join(OUT, 'tiles', '1024', f'{d}.webp')),
-                    'hv': sha(os.path.join(OUT, 'heights', f'{d}.png')), 'art_version': meta.get('version'), 'batch': meta.get('batch'), 'finish': finish}
+                    'hv': sha(os.path.join(OUT, 'heights', f'{d}.png')), 'lv': sha(os.path.join(OUT, 'life', f'{d}.png')),
+                    'art_version': meta.get('version'), 'batch': meta.get('batch'), 'finish': finish}
     # overview: 64 px per tile
     ov = cfg()['tiles']['overview_px_per_tile']
     ii = [t['i'] for t in tiles.values()]; jj = [t['j'] for t in tiles.values()]

@@ -16,7 +16,7 @@ All coordinates are the map's local ENU metres (x east, y north, z up, z relativ
 ## Regenerating
 
 ```sh
-python3 pipeline/build_collision.py        # chunks under the published tiles (~17 s, 25 chunks, 2 MB)
+python3 pipeline/build_collision.py        # chunks under the published tiles (51 chunks, about 4 MB, for the 55 published tiles)
 python3 pipeline/build_collision.py --all  # whole-city tile plan from coverage.json (~4 min, 372 chunks, 32 MB)
 python3 pipeline/build_feathers.py         # needs the collision chunks; deterministic
 python3 tests/test_collision.py            # Python checks against scene.pkl + DEM + rendered height tiles
@@ -81,9 +81,9 @@ the chunk), `v` = content hash (cache-busting `?v=`).
 ### Accuracy (measured, see Verification)
 
 - Dana Porter Library tower: 197 cells inside the footprint, max |solid - (z0 + top)| = 0.0027 m.
-- Against the published height tiles (every texel of all 24 tiles reconstructed to a world point): roof pixels median
-  error 0.000 m, 93.8% within 0.5 m (the rest are footprint-edge cells); ground pixels 99.0% within 0.5 m; tree pixels
-  99.9% at or under the stored canopy top.
+- Against the published height tiles (every texel of all 55 tiles reconstructed to a world point; `tests/test_collision.py`
+  on 2026-11-04): roof pixels median error 0.000 m, 93.3% within 0.5 m (the rest are footprint-edge cells); ground pixels
+  99.2% within 0.5 m; tree pixels 99.9% at or under the stored canopy top.
 
 ## `collision.ts` - `CollisionField`
 
@@ -120,7 +120,7 @@ Contact rules (sphere of radius r at centre p, tested at <= 1 m steps):
    around the contact (within ~10 degrees of the true facade normal in the Dana Porter test).
 
 A hit at `t = 0` means the start position is already in contact. Recommended actor radius: `GOOSE_BODY_RADIUS_M` times
-the display scale (e.g. 0.4 m x 5 = 2 m). Cost: ~0.03 ms per 15 m sweep with radius 1.5 m (measured in Node in the build container), so dozens per frame
+the display scale (e.g. 0.4 m x 7 = 2.8 m). Cost: ~0.03 ms per 15 m sweep with radius 1.5 m (measured in Node in the build container), so dozens per frame
 are affordable.
 
 Memory is bounded by `maxChunks` (least recently used chunk evicted on insert); keep `ensure()` boxes small. Failed

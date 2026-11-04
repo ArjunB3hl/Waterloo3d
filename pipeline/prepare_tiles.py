@@ -10,6 +10,7 @@ from PIL import Image, ImageDraw
 import shapely
 from shapely.geometry import box, Polygon
 from shapely.strtree import STRtree
+from shapely.ops import substring
 sys.path.insert(0, os.path.dirname(__file__))
 from world import cfg, ROOT, canvas_to_world, world_to_canvas, F, mpp, camera_record
 from classes import CLS, GROUND_COLORS, area_class, road_style
@@ -59,12 +60,38 @@ def dem_crop(bb):
     return z[iy0:iy1 + 1, ix0:ix1 + 1], x0 + ix0 * st, y0 + iy0 * st, st
 
 
+def texel_bbox(bb):
+    """Grow bb (local metres) to whole ground texels, keeping its north-west corner: the texture then spans exactly the
+    bbox the renderer maps its UVs over (renderer.js buildTerrain: uv = (x - gx0) / (gx1 - gx0))."""
+    W = int(math.ceil((bb[2] - bb[0]) / RES - 1e-9)); H = int(math.ceil((bb[3] - bb[1]) / RES - 1e-9))
+    return (bb[0], bb[3] - H * RES, bb[0] + W * RES, bb[3])
+
+
+def road_pieces(r):
+    """[(xy, level)] drawable pieces of a road: split at its linear-referenced level / tunnel spans (build_scene
+    level_spans). Tunnels are dropped; roads below ground level are dropped, rail below ground is kept (open cuts)."""
+    spans = r.get('spans') or [[0.0, 1.0, r['level'], False]]
+    whole = len(spans) == 1 and spans[0][0] <= 0 and spans[0][1] >= 1
+    line = None if whole else shapely.LineString(r['xy'])
+    out = []
+    for a, b, level, tunnel in spans:
+        if tunnel or (level < 0 and r['kind'] != 'rail'): continue
+        if whole: out.append((r['xy'], level)); continue
+        g = substring(line, a, b, normalized=True)
+        if g.geom_type != 'LineString' or g.length <= 0: continue
+        out.append((np.asarray(g.coords)[:, :2], level))
+    return out
+
+
 def draw_ground(S, idx, bb, footprints):
-    """Rasterize top-down ground colour + class textures for region bb (local metres)."""
-    W = int(math.ceil((bb[2] - bb[0]) / RES)); H = int(math.ceil((bb[3] - bb[1]) / RES))
+    """Rasterize top-down ground colour + class textures for region bb (local metres, texel aligned - see texel_bbox).
+
+    Texel (p, q) covers x in [bb0 + p RES, +RES), y in (bb3 - (q + 1) RES, bb3 - q RES]. PIL puts integer coordinates at
+    pixel centres, so world coordinates map to (x - bb0) / RES - 0.5."""
+    W = int(round((bb[2] - bb[0]) / RES)); H = int(round((bb[3] - bb[1]) / RES))
     col = Image.new('RGB', (W, H), GROUND_COLORS['lawn']); cls = Image.new('L', (W, H), CLS['lawn'])
     dc = ImageDraw.Draw(col); dk = ImageDraw.Draw(cls)
-    tf = lambda xy: [((x - bb[0]) / RES, (bb[3] - y) / RES) for x, y in xy]
+    tf = lambda xy: [((x - bb[0]) / RES - 0.5, (bb[3] - y) / RES - 0.5) for x, y in xy]
     q = box(*bb)
     # areas, drawn by priority
     ais = [k for k in idx.atree.query(q)]
@@ -75,40 +102,54 @@ def draw_ground(S, idx, bb, footprints):
         if c: items.append((c[2], k, c))
     for _, k, (gname, cid, _) in sorted(items):
         a = S['areas'][k]
-        dc.polygon(tf(a['ring']), fill=GROUND_COLORS[gname]); dk.polygon(tf(a['ring']), fill=cid)
-        for h in a['holes']:
-            dc.polygon(tf(h), fill=GROUND_COLORS['lawn']); dk.polygon(tf(h), fill=CLS['lawn'])
+        if not a['holes']:
+            dc.polygon(tf(a['ring']), fill=GROUND_COLORS[gname]); dk.polygon(tf(a['ring']), fill=cid)
+            continue
+        # holes mean "this area is absent here": composite through a mask so whatever was drawn beneath shows through
+        pr = tf(a['ring'])
+        x0 = max(0, int(math.floor(min(p[0] for p in pr))) - 1); y0 = max(0, int(math.floor(min(p[1] for p in pr))) - 1)
+        x1 = min(W, int(math.ceil(max(p[0] for p in pr))) + 2); y1 = min(H, int(math.ceil(max(p[1] for p in pr))) + 2)
+        if x1 <= x0 or y1 <= y0: continue
+        m = Image.new('L', (x1 - x0, y1 - y0), 0); dm = ImageDraw.Draw(m)
+        sh = lambda pts: [(x - x0, y - y0) for x, y in pts]
+        dm.polygon(sh(pr), fill=255)
+        for h in a['holes']: dm.polygon(sh(tf(h)), fill=0)
+        col.paste(GROUND_COLORS[gname], (x0, y0, x1, y1), m); cls.paste(cid, (x0, y0, x1, y1), m)
     # water lines (streams)
     if idx.ltree is not None:
         for k in idx.ltree.query(q):
             l = S['lines'][k]
             w = max(1, int(l['w'] / RES))
             dc.line(tf(l['xy']), fill=GROUND_COLORS['water'], width=w, joint='curve'); dk.line(tf(l['xy']), fill=CLS['water'], width=w, joint='curve')
-    # roads: casing pass then fill pass, by width ascending so big roads on top
-    rs = [S['roads'][k] for k in idx.rtree.query(q)]
-    rs = [r for r in rs if r['level'] >= 0 or r['kind'] == 'rail']
-    styled = [(road_style(r), r) for r in rs]
-    styled = [(s, r) for s, r in styled if s]
-    styled.sort(key=lambda t: t[0]['z'])
-    for s, r in styled:
-        if s.get('casing'):
-            w = max(1, int((r['w'] + 1.2) / RES))
-            dc.line(tf(r['xy']), fill=s['casing'], width=w, joint='curve')
-    for s, r in styled:
-        w = max(1, int(r['w'] / RES))
-        dc.line(tf(r['xy']), fill=GROUND_COLORS[s['ground']], width=w, joint='curve')
-        dk.line(tf(r['xy']), fill=CLS[s['ground']], width=w, joint='curve')
-        for x, y in r['xy'][[0, -1]] if s['ground'] in ('road', 'major_road') else []:
-            rr = r['w'] / 2 / RES; px, py = tf([(x, y)])[0]
-            dc.ellipse([px - rr, py - rr, px + rr, py + rr], fill=GROUND_COLORS[s['ground']]); dk.ellipse([px - rr, py - rr, px + rr, py + rr], fill=CLS[s['ground']])
-    # centre line markings on major roads (dashed)
-    for s, r in styled:
-        if s['ground'] == 'major_road' and r['w'] >= 9:
-            ln = shapely.LineString(r['xy'])
-            n = int(ln.length / 3)
-            for k in range(0, n, 2):
-                a_ = ln.interpolate(k * 3); b_ = ln.interpolate(min(ln.length, k * 3 + 1.8))
-                dc.line(tf([(a_.x, a_.y), (b_.x, b_.y)]), fill=(236, 226, 196), width=max(1, int(0.25 / RES)))
+    # roads, one level at a time from the lowest up (bridges over what they cross); within a level casing pass then
+    # fill pass, by class order so big roads are on top
+    pieces = []
+    for k in idx.rtree.query(q):
+        r = S['roads'][k]; st = road_style(r)
+        if not st: continue
+        for xy, level in road_pieces(r): pieces.append((level, st['z'], st, r, xy))
+    pieces.sort(key=lambda t: (t[0], t[1]))
+    for level in sorted({p[0] for p in pieces}):
+        grp = [p for p in pieces if p[0] == level]
+        for _, _, s, r, xy in grp:
+            if s.get('casing'):
+                w = max(1, int((r['w'] + 1.2) / RES))
+                dc.line(tf(xy), fill=s['casing'], width=w, joint='curve')
+        for _, _, s, r, xy in grp:
+            w = max(1, int(r['w'] / RES))
+            dc.line(tf(xy), fill=GROUND_COLORS[s['ground']], width=w, joint='curve')
+            dk.line(tf(xy), fill=CLS[s['ground']], width=w, joint='curve')
+            for x, y in xy[[0, -1]] if s['ground'] in ('road', 'major_road') else []:
+                rr = r['w'] / 2 / RES; px, py = tf([(x, y)])[0]
+                dc.ellipse([px - rr, py - rr, px + rr, py + rr], fill=GROUND_COLORS[s['ground']]); dk.ellipse([px - rr, py - rr, px + rr, py + rr], fill=CLS[s['ground']])
+        # centre line markings on major roads (dashed)
+        for _, _, s, r, xy in grp:
+            if s['ground'] == 'major_road' and r['w'] >= 9:
+                ln = shapely.LineString(xy)
+                n = int(ln.length / 3)
+                for k in range(0, n, 2):
+                    a_ = ln.interpolate(k * 3); b_ = ln.interpolate(min(ln.length, k * 3 + 1.8))
+                    dc.line(tf([(a_.x, a_.y), (b_.x, b_.y)]), fill=(236, 226, 196), width=max(1, int(0.25 / RES)))
     # building footprints on ground class map (so wall bases do not show lawn) - drawn as pavement apron
     for ring_ in footprints:
         dk.polygon(tf(ring_), fill=CLS['paved'])
@@ -127,8 +168,22 @@ def scatter_trees(S, idx, bb, footprints_union):
     road_buf = []
     for k in idx.rtree.query(q):
         r = S['roads'][k]
-        if r['kind'] == 'road' and r['cls'] not in ('footway', 'path', 'cycleway', 'steps'):
+        if (r['kind'] == 'road' and r['cls'] not in ('footway', 'path', 'cycleway', 'steps')) or r['kind'] == 'rail':
             road_buf.append(shapely.LineString(r['xy']).buffer(r['w'] / 2 + 1.5))
+    # surfaces drawn on top of parks / woods where no tree can stand: water, pools, pitches, tracks, parking, plazas,
+    # platforms (separate polygons over the park) and streams
+    excl = []
+    for k in idx.atree.query(q):
+        a = S['areas'][k]; c = area_class(a['layer'], a['cls'])
+        if c and (c[0] in ('water', 'pool', 'pitch', 'track', 'parking') or a['cls'].split('/')[-1] in ('plaza', 'pedestrian', 'platform')):
+            pg = shapely.Polygon(a['ring'], a['holes'])
+            if pg.is_valid and not pg.is_empty: excl.append(pg)
+    if idx.ltree is not None:
+        for k in idx.ltree.query(q):
+            l = S['lines'][k]
+            if len(l['xy']) >= 2: excl.append(shapely.LineString(l['xy']).buffer(l['w'] / 2 + 1.0))
+    excl_union = shapely.unary_union(excl) if excl else None
+    if excl_union is not None: shapely.prepare(excl_union)
     for k in idx.atree.query(q):
         a = S['areas'][k]
         c = a['cls'].split('/')[-1]
@@ -155,6 +210,7 @@ def scatter_trees(S, idx, bb, footprints_union):
         for rb in road_buf:
             if not ok.any(): break
             ok &= ~shapely.intersects(rb, P)
+        if excl_union is not None and ok.any(): ok &= ~shapely.intersects(excl_union, P)
         for (x, y), o in zip(cand, ok):
             if o: out.append([float(x), float(y), 2.4 + 2.4 * hash01(x, y, 3), 'inferred_' + c])
     return out
@@ -203,7 +259,7 @@ def main():
         dz, _, _, _ = dem_crop(bb0)
         datum = cfg()['projection']['datum_m']
         tmin, tmax = float(dz.min() - datum), float(dz.max() - datum)
-        gbb = tile_region(i, j, tmin - 4, tmax + 4, 30)          # ground texture region
+        gbb = texel_bbox(tile_region(i, j, tmin - 4, tmax + 4, 30))   # ground texture region (whole texels)
         bbb = tile_region(i, j, tmin - 4, tmax + 130, 130)       # buildings / shadow casters
         q = box(*bbb)
         bsel = [k for k in idx.btree.query(q)]

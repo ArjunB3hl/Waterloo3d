@@ -50,18 +50,27 @@ export class HeightWindow {
   centreOn(cx: number, cy: number): Promise<void> {
     const [i, j] = this.map.frame.tileOf(cx, cy);
     if (this.centre && this.centre[0] === i && this.centre[1] === j) return Promise.resolve();
+    const prev = this.data ? this.centre : null;
     this.centre = [i, j];
     const gen = ++this.generation;
     this.originX = (i - 1) * this.tilePx;
     this.originY = (j - 1) * this.tilePx;
+    // Never leave the window blank for a frame: blocks the previous window already held are shifted into place, and
+    // tiles that are decoded already are copied synchronously; only the rest stay unknown until their load lands.
+    const kept = prev ? this.shift(i - prev[0], j - prev[1]) : (this.ensureData().fill(HEIGHT_UNKNOWN), new Set<string>());
     this.loaded.clear();
-    this.ensureData().fill(HEIGHT_UNKNOWN);
+    for (const k of kept) this.loaded.add(k);
     this.dirty = true;
     // the 3 x 3 window, then a low-priority ring so the next recentre usually finds its tiles decoded already
     const jobs: Promise<void>[] = [];
     for (let dj = -1; dj <= 1; dj++)
-      for (let di = -1; di <= 1; di++)
-        jobs.push(this.map.getHeightTile(i + di, j + dj).then((t) => { if (t && gen === this.generation) this.copy(t, di + 1, dj + 1); }, () => {}));
+      for (let di = -1; di <= 1; di++) {
+        const col = di + 1, row = dj + 1;
+        if (this.loaded.has(`${col}_${row}`)) continue;
+        const now = this.map.peekHeightTile?.(i + di, j + dj);
+        if (now) { this.copy(now, col, row); continue; }
+        jobs.push(this.map.getHeightTile(i + di, j + dj).then((t) => { if (t && gen === this.generation) this.copy(t, col, row); }, () => {}));
+      }
     const all = Promise.all(jobs).then(() => {
       if (gen !== this.generation) return;
       for (let dj = -2; dj <= 2; dj++)
@@ -69,6 +78,29 @@ export class HeightWindow {
           if (Math.max(Math.abs(di), Math.abs(dj)) === 2) void this.map.getHeightTile(i + di, j + dj).catch(() => null);
     });
     return all;
+  }
+
+  /**
+   * Move the window contents by (dI, dJ) tiles: block (c + dI, r + dJ) of the old window becomes block (c, r).
+   * Blocks with no old counterpart (or whose old copy never loaded) are reset to unknown. Returns the loaded blocks.
+   */
+  private shift(dI: number, dJ: number): Set<string> {
+    const data = this.ensureData(), n = this.tileTexels, W = this.texels, N = this.tilesAcross;
+    const kept = new Set<string>();
+    // iterate so that every source block is read before it is overwritten (sources lie at +dI / +dJ)
+    const cs = dI >= 0 ? [0, 1, 2] : [2, 1, 0], rs = dJ >= 0 ? [0, 1, 2] : [2, 1, 0];
+    for (const r of rs)
+      for (const c of cs) {
+        const sc = c + dI, sr = r + dJ;
+        const ok = sc >= 0 && sr >= 0 && sc < N && sr < N && this.loaded.has(`${sc}_${sr}`);
+        for (let y = 0; y < n; y++) {
+          const dst = (r * n + y) * W + c * n;
+          if (ok) data.copyWithin(dst, (sr * n + y) * W + sc * n, (sr * n + y) * W + sc * n + n);
+          else data.fill(HEIGHT_UNKNOWN, dst, dst + n);
+        }
+        if (ok) kept.add(`${c}_${r}`);
+      }
+    return kept;
   }
 
   /** CPU sample (same addressing as the shader): z at canvas px or NaN when unknown. */

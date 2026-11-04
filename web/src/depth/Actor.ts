@@ -141,6 +141,7 @@ class GooseActor implements Actor {
     removeEventListener('keydown', this.onKey);
     removeEventListener('keyup', this.onKey);
     removeEventListener('blur', this.onBlur);
+    removeEventListener('focusin', this.onFocusIn);
     this.hud?.show(false);
     this.hud?.setMarkers([]);
     if (this.gl) { this.gl.actor.particles.clear(); this.gl.actor.clear(); this.gl.shadow.clear(); }
@@ -195,6 +196,7 @@ class GooseActor implements Actor {
     addEventListener('keydown', this.onKey);
     addEventListener('keyup', this.onKey);
     addEventListener('blur', this.onBlur);
+    addEventListener('focusin', this.onFocusIn);
     this.map.setInteractive(false);
     this.hud!.show(true);
     // keep keyboard focus off buttons (Space flaps; it must not press "Land")
@@ -393,16 +395,19 @@ class GooseActor implements Actor {
   }
 
   private readonly onKey = (e: KeyboardEvent) => {
-    if (e.ctrlKey || e.metaKey || e.altKey || inControls(e.target)) return;
     const key = KEYS[e.key.toLowerCase()];
     if (!key) return;
-    e.preventDefault();
+    // a release always ends the hold, wherever focus went meanwhile (e.g. into a panel opened mid-flight)
     if (e.type === 'keyup') { this.keys.delete(key); return; }
+    if (e.ctrlKey || e.metaKey || e.altKey || inControls(e.target)) return;
+    e.preventDefault();
     if (key === 'land') { this.stop(); return; }
     this.keys.add(key);
   };
 
   private readonly onBlur = () => this.keys.clear();
+  /** Focus moved into the UI (search, panels, buttons): stop steering with keys held from before. */
+  private readonly onFocusIn = (e: FocusEvent) => { if (inControls(e.target)) this.keys.clear(); };
 
   // ------------------------------------------------------------------ debug hooks
 

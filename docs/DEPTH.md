@@ -49,7 +49,7 @@ The render target is not the whole screen. It is a 64 x 64 texel square around t
 
 - Texel size: `artPerTexel = max(1 artwork px, 1 device px)`, so at zoom >= 1 / dpr it is exactly one artwork pixel.
 - The square is anchored on that texel grid in canvas coordinates, so goose pixels line up with artwork pixels.
-- At zoom 1.6 the square covers 64 artwork px (18.75 m). The 5x goose has a 7.9 m wingspan, about 27 artwork px.
+- At zoom 1.6 the square covers 64 artwork px (18.75 m). The 7x goose has an 11.2 m wingspan, about 38 artwork px.
 
 The blit is a quad over the square in canvas px, placed on screen with the map's own transform
 (`(c - view.c) * zoom + size / 2`). It uses `texelFetch`, so sampling is nearest-neighbour.
@@ -61,8 +61,8 @@ SLC landmark, at zooms 0.7, 1.6 and 2.5. The goose was teleported near, not on, 
 
 ## Pixel-art look
 
-The goose is scaled **5x** (`GOOSE_DISPLAY_SCALE`). Real size would be about 5 artwork px long. At 5x it is about 18 px
-long, roughly 30 CSS px at the take-off zoom of 1.6.
+The goose is scaled **7x** (`GOOSE_DISPLAY_SCALE`). Real size would be about 5 artwork px across the wings. At 7x it is
+about 25 artwork px long, roughly 40 CSS px at the take-off zoom of 1.6.
 
 The plumage Lambert materials are replaced by shader materials with the same sRGB colours. Each facet's normal comes from
 screen derivatives (flat shading). The shader quantises `dot(n, sun_enu)` into three flat tones (light 1.06, mid 0.88,
@@ -117,7 +117,7 @@ and 11.3 m behind the tower's visible surface, at a free spot found by searching
 `DepthTexture`.
 
 - The light camera is orthographic, looks down `-sun_enu` at the goose and is fitted tightly around it: half-size is
-  1.25 x half the scaled wingspan (5 m).
+  1.25 x half the scaled wingspan (7 m).
 - Near and far are fitted each frame so the depth range reaches the lowest possible receiver.
 - Orthographic depth is linear, so the 0.15 m bias is converted with `far - near`.
 
@@ -177,7 +177,7 @@ See `docs/screenshots/actor_shadow_roof.png`.
 
 Buildings, roofs and terrain are solid. Trees are soft. Water can be skimmed. All rules live in `flight.ts`:
 
-1. **Sweep:** each sub-step sweeps a sphere of radius **2 m** (body radius 0.4 m x 5) with
+1. **Sweep:** each sub-step sweeps a sphere of radius **2.8 m** (body radius 0.4 m x 7) with
    `CollisionField.sweep(from, to, r, 1, { trees: false })`. A collide-and-slide loop runs up to 3 iterations per
    sub-step.
 2. **Wall hit** (horizontal normal):

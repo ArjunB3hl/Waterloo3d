@@ -37,7 +37,8 @@ both look right side by side in the viewer. New batches use the same commands, e
    copy the agent's model/settings note into `<batch>_report.txt` (`Model: ...` on one line, other `key: value` lines
    become the settings).
 3. **Check.** `python3 pipeline/art_import.py B001 ~/Downloads/B001` runs QA only and writes
-   `art/returned/B001/QA_<tile>.md` and `QA_<tile>.png` (reference | returned | edge overlay). Read the report and its
+   `art/returned/B001/QA_<tile>_<sha8>.md` and `.png` for each returned file (reference | returned | edge overlay);
+   `QA_<tile>.md` / `.png` are copies of the latest. Read the report and its
    human-review checklist.
 4. **Accept.** `python3 pipeline/art_import.py B001 ~/Downloads/B001 --accept` copies passing tiles to
    `art/accepted/<i>_<j>.png`, writes `art/tiles.json`, and runs `pipeline/publish_tiles.py`, which regenerates the
@@ -47,7 +48,8 @@ both look right side by side in the viewer. New batches use the same commands, e
 5. **Revise.** A QA failure sets the item to `revision-needed` and creates `IMAGE_REQUEST_<batch>R<n>.md` with the
    previous output, an annotated copy (red = missing building, yellow = displaced or disagreeing area, red bar =
    visible join) and the exact corrections. That packet is relayed and imported the same way:
-   `art_import.py B001R1 <folder> --accept`. Accepting a revision also marks the parent item accepted.
+   `art_import.py B001R1 <folder> --accept`. Accepting a revision also marks the item accepted in every batch up its
+   parent chain (B001R2 -> B001R1 -> B001).
 6. **Repair seams.** If a join between accepted tiles shows, run `python3 pipeline/art_request.py seam --pair 0_0:1_0`
    (vertical or horizontal edge neighbours) or `seam --quad -1_-1` (the 2x2 junction whose top-left tile is given). The
    packet is a 1024 window centred on the join, a band mask (white = repaint, 96 px wide by default, `--band`), the
@@ -68,7 +70,7 @@ reported is stored as `unknown`.
 | attachments | `art/requests/<batch>/<batch>_<role>_<tile>.png`, roles: `ref`, `context`, `mask`, `classes`, `depth`, `style`, `contact_sheet`, `classes_legend`; seams: `window`, `mask`, `ref`, `marked`; revisions add `previous` and `marked` |
 | returned | `<batch>_<i>_<j>.png` (seams: `<batch>_seam.png`). JPEG/WebP are accepted. Suffixes after a separator (`B001_0_0 (1).png`, `B001_0_0_v2.png`) still match |
 | originals kept | `art/returned/<batch>/<original name>` (renamed `_r2`, `_r3`... if a different file has the same name) |
-| QA | `art/returned/<batch>/QA_<item>.md`, `QA_<item>.png` |
+| QA | `art/returned/<batch>/QA_<item>_<sha8>.md` / `.png` per returned file; `QA_<item>.md` / `.png` = latest |
 | accepted | `art/accepted/<i>_<j>.png` (1024x1024 RGB PNG) |
 
 ## Attachments
@@ -153,8 +155,13 @@ ends with a human-review checklist for them.
 
 Imports are idempotent. A file whose sha256 is already in the item's `received` list is skipped, so re-running an
 import on the same folder does nothing new. A revised file, even under the same name, is processed as a new version
-(`--reprocess` forces QA again). `--accept` without new files accepts items whose latest received file passed. A
-rebuilt packet keeps the receive and QA history of its items and increments `packet_rev`. Do not rebuild a packet that
+(`--reprocess` forces QA again). Several new returns of one item in a folder are processed oldest first (file
+modification time), so the newest is the item's latest. `--accept` without new files accepts items whose latest
+received file passed. A failure whose revision packet was never built (an interrupted run) gets its packet on the next
+run. A rebuilt packet keeps the receive and QA history of its items, including the accepted items it no longer
+requests, and increments `packet_rev`. Every item records sha256[:12] of its reference job files (color2x, cls,
+height); if they changed since the packet was built, import and accept refuse the item until the packet is rebuilt and
+resent (or `--force`), and `publish_tiles.py` warns when accepted art sits on a changed reference job. Do not rebuild a packet that
 has already been sent unless you resend it: the kept-margin check compares against the current packet files.
 
 ## Self-test

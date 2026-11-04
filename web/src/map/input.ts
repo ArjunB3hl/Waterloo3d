@@ -94,6 +94,7 @@ export function attachInput(stage: HTMLElement, cam: CameraControl): void {
     stage.classList.remove('dragging');
     if (pinch) {
       if (pointers.size < 2) pinch = null;
+      else startPinch();   // a third contact was down: rebase distance and anchor on the pair now pinching
       if (pointers.size === 1) { const [[id, p]] = [...pointers]; startDrag(id, p.x, p.y); drag!.moved = true; }
       return;
     }

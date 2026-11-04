@@ -27,7 +27,7 @@ export const FLIGHT = {
   climbRate: 6,               // m/s (W / Up)
   diveRate: 9,                // m/s (S / Down)
   flapClimb: 9,               // m/s (Space)
-  radius: GOOSE_BODY_RADIUS_M * GOOSE_SCALE,   // 2 m collision sphere around the scaled body
+  radius: GOOSE_BODY_RADIUS_M * GOOSE_SCALE,   // 2.8 m collision sphere around the scaled body (0.4 m x 7)
   clearance: GOOSE_BODY_RADIUS_M * GOOSE_SCALE + 0.3,   // soft floor above roofs / ground
   waterRadius: 0.8,           // smaller sphere while skimming water
   waterClearance: 1.0,

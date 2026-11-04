@@ -19,6 +19,7 @@ export interface Resource {
   priority: number;          // lower = sooner
   wantedFrame: number;       // last frame that asked for it
   usedFrame: number;         // last frame that drew it (LRU order)
+  prefetch: boolean;         // every want() this frame was a speculative prefetch (not needed for drawing)
   arrivedAt: number;         // performance.now() when decoded (fade-in)
   attempts: number;          // failed attempts so far
   retryAt: number;           // performance.now() after which a failed resource may be fetched again
@@ -38,6 +39,8 @@ export class ResourceLoader {
   private bytes = 0;
   private wakeTimer = 0;
   private wakeAt = Infinity;
+  /** Decoded size of resources seen before (estimates what a prefetch would cost before fetching it again). */
+  private readonly knownBytes = new Map<string, number>();
 
   /** onChange: something arrived / failed / became retryable; the owner should redraw (which calls want() again). */
   constructor(private readonly maxConcurrent: number, public budgetBytes: number, private readonly onChange: () => void) {
@@ -46,16 +49,22 @@ export class ResourceLoader {
 
   beginFrame(): void { this.frame++; }
 
-  /** Register interest in a resource for this frame. Returns it (possibly not ready yet). */
-  want(key: string, url: string, priority: number, decode?: ImageBitmapOptions): Resource {
+  /**
+   * Register interest in a resource for this frame. Returns it (possibly not ready yet). prefetch = speculative
+   * request (not drawn this frame): it is only fetched while its decoded size fits in the byte budget, so an
+   * over-budget view never evicts and refetches its prefetch ring frame after frame.
+   */
+  want(key: string, url: string, priority: number, decode?: ImageBitmapOptions, prefetch = false): Resource {
     let r = this.res.get(key);
     if (!r) {
-      r = { key, url, decode, state: 'queued', bitmap: null, bytes: 0, priority, wantedFrame: 0, usedFrame: 0, arrivedAt: 0,
-        attempts: 0, retryAt: 0, abort: null, waiters: [] };
+      r = { key, url, decode, state: 'queued', bitmap: null, bytes: 0, priority, wantedFrame: 0, usedFrame: 0, prefetch,
+        arrivedAt: 0, attempts: 0, retryAt: 0, abort: null, waiters: [] };
       this.res.set(key, r);
     }
     // several callers may want the same resource in one frame: keep the most urgent priority
-    r.priority = r.wantedFrame === this.frame ? Math.min(r.priority, priority) : priority;
+    const again = r.wantedFrame === this.frame;
+    r.priority = again ? Math.min(r.priority, priority) : priority;
+    r.prefetch = again ? r.prefetch && prefetch : prefetch;
     r.wantedFrame = this.frame;
     return r;
   }
@@ -83,6 +92,7 @@ export class ResourceLoader {
   load(key: string, url: string, priority: number, decode?: ImageBitmapOptions): Promise<ImageBitmap | null> {
     const r = this.want(key, url, priority, decode);
     r.usedFrame = this.frame;
+    r.prefetch = false;
     if (r.state === 'ready') return Promise.resolve(r.bitmap);
     const p = new Promise<ImageBitmap | null>((resolve) => r.waiters.push(resolve));
     this.pump();
@@ -119,8 +129,17 @@ export class ResourceLoader {
     if (this.inflight >= this.maxConcurrent) return;
     const now = performance.now();
     const candidates = [...this.res.values()].filter((r) => this.eligible(r, now)).sort((a, b) => a.priority - b.priority);
+    let ready = 0, readyBytes = 0;
+    for (const r of this.res.values()) if (r.state === 'ready') { ready++; readyBytes += r.bytes; }
+    let committed = this.bytes;
     for (const r of candidates) {
       if (this.inflight >= this.maxConcurrent) break;
+      if (r.prefetch && !r.waiters.length) {
+        // a prefetch that would not fit would only be evicted again at the next endFrame
+        const est = this.knownBytes.get(r.key) ?? (ready ? readyBytes / ready : 0);
+        if (committed + est > this.budgetBytes) continue;
+        committed += est;
+      }
       this.start(r);
     }
     // wake up for the earliest pending retry
@@ -148,6 +167,8 @@ export class ResourceLoader {
       r.bitmap = bmp; r.bytes = bmp.width * bmp.height * 4; r.state = 'ready'; r.arrivedAt = performance.now();
       r.usedFrame = this.frame;
       this.bytes += r.bytes;
+      if (this.knownBytes.size > 4096) this.knownBytes.clear();
+      this.knownBytes.set(r.key, r.bytes);
       this.settle(r, bmp);
     } catch (e) {
       if (ctrl.signal.aborted) return;
@@ -168,10 +189,15 @@ export class ResourceLoader {
     for (const fn of w) fn(b);
   }
 
-  /** Close least recently drawn bitmaps until under budget. Bitmaps drawn this frame are never evicted. */
+  /**
+   * Close least recently drawn bitmaps until under budget. Bitmaps drawn this frame are never evicted; bitmaps
+   * nobody wants any more go before ones still wanted (e.g. the prefetch ring).
+   */
   private evict(): void {
     if (this.bytes <= this.budgetBytes) return;
-    const ready = [...this.res.values()].filter((r) => r.state === 'ready' && r.usedFrame < this.frame).sort((a, b) => a.usedFrame - b.usedFrame);
+    const wanted = (r: Resource) => (r.wantedFrame === this.frame ? 1 : 0);
+    const ready = [...this.res.values()].filter((r) => r.state === 'ready' && r.usedFrame < this.frame)
+      .sort((a, b) => wanted(a) - wanted(b) || a.usedFrame - b.usedFrame);
     for (const r of ready) {
       if (this.bytes <= this.budgetBytes) break;
       r.bitmap!.close();

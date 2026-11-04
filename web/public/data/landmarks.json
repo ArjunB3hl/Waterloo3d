@@ -42,7 +42,7 @@
   ],
   "canvas": [
    -665.7,
-   97.4
+   114.8
   ],
   "zoom": 1.0,
   "description": "The Student Life Centre is the central student building on main campus, with food outlets, student services, lounges and meeting rooms, and a busy route between residences and classes.",
@@ -140,7 +140,7 @@
   ],
   "canvas": [
    233.5,
-   -12.1
+   14.0
   ],
   "zoom": 1.0,
   "description": "The Centre for Environmental and Information Technology (EIT) connects the engineering and science sides of the campus core, near Mathematics & Computer and the Davis Centre.",
@@ -159,7 +159,7 @@
   "height_source": "OSM building:levels x storey height (approximation)",
   "description_source": "editorial summary (not fetched/verified online from build environment)",
   "status": "covered",
-  "tile": "0_-1"
+  "tile": "0_0"
  },
  {
   "id": "mc",
@@ -172,7 +172,7 @@
   ],
   "canvas": [
    -349.5,
-   -51.3
+   -42.6
   ],
   "zoom": 1.0,
   "description": "Mathematics & Computer (MC) is the home of the Faculty of Mathematics, a long concrete building on the western side of the campus core.",
@@ -204,7 +204,7 @@
   ],
   "canvas": [
    88.9,
-   -254.4
+   -245.7
   ],
   "zoom": 1.0,
   "description": "The Davis Centre houses the Cheriton School of Computer Science and a large study library; its stepped roofline is visible north of Ring Road.",
@@ -236,7 +236,7 @@
   ],
   "canvas": [
    -311.7,
-   187.6
+   231.0
   ],
   "zoom": 1.0,
   "description": "The Quantum-Nano Centre brings together quantum information and nanotechnology research next to the main campus green.",

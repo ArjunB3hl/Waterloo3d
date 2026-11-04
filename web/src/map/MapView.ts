@@ -137,6 +137,7 @@ class MapView implements CameraControl {
       canvasToScreen: (cx, cy) => [(cx - this.view.cx) * this.view.zoom + this.w / 2, (cy - this.view.cy) * this.view.zoom + this.h / 2],
       heightAt: (cx, cy) => this.heightAt(cx, cy),
       getHeightTile: (i, j) => this.getHeightTile(i, j),
+      peekHeightTile: (i, j) => this.heightTiles.get(tileKey(i, j)) ?? null,
       getLifeTile: (i, j) => {
         const t = this.renderer.tile(i, j);
         return t ? this.loader.load(this.renderer.lifeKey(i, j, this.frame.F), this.renderer.lifeUrl(t), 0, RAW_DECODE) : Promise.resolve(null);
@@ -441,7 +442,7 @@ class MapView implements CameraControl {
     const next = mergeSettings(this.settings, patch);
     if (JSON.stringify(next) === JSON.stringify(this.settings)) return;
     this.settings = next;
-    saveSettings(next);
+    saveSettings(patch);
     this.sizeAux();
     this.markDirty();
     for (const cb of this.settingsL) cb(next);

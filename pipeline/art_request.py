@@ -173,14 +173,20 @@ def save_batch(rec):
 
 
 def merge_items(old, new):
-    """Keep receive/QA history of items when a packet is rebuilt (e.g. a draft refreshed after its dependency)."""
+    """Keep receive/QA history of items when a packet is rebuilt (e.g. a draft refreshed after its dependency).
+
+    old/new are whole batch records. Items of the old record that the rebuild no longer requests (accepted ones) are kept
+    unchanged, so their receive/QA/accept history stays in batches.json; only new['order'] (the to-do list) is re-sent."""
     if not old: return new
-    for t, it in new.items():
-        o = old.get('items', {}).get(t)
+    old_items = old.get('items', {})
+    for t, it in new['items'].items():
+        o = old_items.get(t)
         if not o: continue
         for k in ('received', 'model_reported', 'settings_reported', 'qa', 'revision_batch', 'accepted'):
             if k in o: it[k] = o[k]
         if o['status'] not in ('draft', 'requested'): it['status'] = o['status']
+    for t, o in old_items.items():
+        if t not in new['items'] and o.get('status') == 'accepted': new['items'][t] = o
     return new
 
 
@@ -509,7 +515,8 @@ def build_seam(pair=None, quad=None, band=SEAM_BAND):
     item = {'status': 'requested', 'return_filename': f'{sid}_seam.png', 'files': {'composition': f_win, 'mask': f_mask},
             'output': {'mode': 'seam', 'width': SEAM_WINDOW, 'height': SEAM_WINDOW, 'window': [x0, y0], 'band': band,
                        'kind': geo['kind'], 'joins': geo['joins'], 'tiles': geo['tiles']},
-            'reference': {'composition': pk.sha(f_win)[:12], 'tiles': {t: tiles_meta.get(t, {}).get('version') for t in geo['tiles']}},
+            'reference': {'composition': pk.sha(f_win)[:12], 'tiles': {t: tiles_meta.get(t, {}).get('version') for t in geo['tiles']},
+                          'jobs': {t: A.reference_hashes(t) for t in geo['tiles']}},
             'before': prof, 'prompt': prompt, 'prompt_sha': A.sha_text(prompt)[:12],
             'model_reported': 'unknown', 'settings_reported': 'unknown', 'received': [], 'qa': None}
     rec = {'id': sid, 'kind': 'seam', 'title': f'Seam repair - {geo["kind"]} join of ' + ', '.join(geo['tiles']), 'mode': 'seam',
@@ -601,7 +608,10 @@ def build_revision(parent_id, fixes):
                 if role in files: c = c.replace(name, files[role])
             corrections.append(c.replace('the marked image', files.get('marked', 'the marked image')))
         items[key] = {'status': 'requested', 'return_filename': ret, 'files': files, 'output': o,
-                      'reference': dict(pit['reference'], composition=pk.sha(files['composition'])[:12]),
+                      # the revision packet is rendered from the current reference jobs: record their hashes, not the parent's
+                      'reference': dict(pit['reference'], composition=pk.sha(files['composition'])[:12],
+                                        **({'jobs': {t: A.reference_hashes(t) for t in o['tiles']}} if o['mode'] == 'seam'
+                                           else A.reference_hashes(key))),
                       'model_reported': 'unknown', 'settings_reported': 'unknown', 'received': [], 'qa': None,
                       'revision_of': {'batch': parent_id, 'corrections': corrections}}
         if o['mode'] == 'seam': items[key]['before'] = pit.get('before')

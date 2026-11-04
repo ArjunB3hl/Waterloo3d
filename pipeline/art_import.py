@@ -10,13 +10,15 @@ as "B001_0_0 (1).png" are tolerated) and that has not been processed before (by 
   3. QA: global translation (phase correlation of edge maps), block displacement + scale/rotation (camera change),
      geometry agreement of class-map boundaries with image edges (tile, cells, every visible roof, landmarks),
      shadow side, colour style vs accepted tiles, seams against accepted neighbours, kept-margin drift;
-  4. art/returned/<batch>/QA_<item>.md + QA_<item>.png (reference | returned | edge overlay) are written and
+  4. art/returned/<batch>/QA_<item>_<sha8>.md + .png per returned file (reference | returned | edge overlay; QA_<item>.md/.png
+     are copies of the latest) are written and
      batches.json is updated: received (QA pass) or revision-needed (QA fail, with reasons); failures also get a focused
      revision packet <batch>R<n> (IMAGE_REQUEST_<batch>R<n>.md) unless --no-revision.
 --accept copies passing items to art/accepted/<i>_<j>.png (seams: composites the band into the accepted tiles), writes
 art/tiles.json and runs pipeline/publish_tiles.py; QA failures are never accepted unless --force. Items are processed
 in the batch order and accepted immediately, so later tiles of the batch are seam-checked against earlier ones.
-Draft batches whose dependencies become accepted are rebuilt automatically.
+Draft batches whose dependencies become accepted are rebuilt automatically. Returns for an item whose reference job
+(color2x/cls/height) changed since its packet was built are refused (rebuild and resend, or --force).
 """
 import os, sys, re, json, shutil, argparse, subprocess
 import numpy as np
@@ -64,6 +66,9 @@ def match_files(rec, folder):
         stem = os.path.splitext(name)[0].lower()
         key = next((k for s, k in expected.items() if stem == s or (stem.startswith(s) and not stem[len(s)].isalnum())), None)
         (found.setdefault(key, []).append(p) if key else unmatched.append(name))
+    # oldest first, so the newest return of an item is processed last and becomes its 'latest' (a browser re-download
+    # 'X (1).png' sorts before 'X.png' by name)
+    for v in found.values(): v.sort(key=lambda p: (os.path.getmtime(p), os.path.basename(p)))
     return found, unmatched
 
 
@@ -247,15 +252,20 @@ def cut_tile(item, img, info, res):
         res.fail('size', f'{W}x{H} has aspect {W / H:.3f}, expected {cw}x{ch} ({cw / ch:.3f})',
                  f'Return exactly {cw}x{ch} px (or a larger image with the same aspect ratio) - do not crop or pad.')
         return None, None
-    k = W / cw
+    kx, ky = W / cw, H / ch; k = min(kx, ky)
     res.metrics['size'] = {'returned': [W, H], 'expected': [cw, ch], 'k': round(k, 4)}
+    if o['mode'] == 'tile' and W != H:
+        res.fail('size', f'{W}x{H} is not square', f'Return exactly {F()}x{F()} px (or a larger square) - do not crop or pad.')
+        return None, None
     if o['mode'] == 'tile' and W < F():
         res.fail('size', f'{W}x{H} is smaller than {F()}x{F()}', f'Return {F()}x{F()} px (or larger, square).')
         return None, None
     if k < 1:
         res.warn('size', f'returned {W}x{H} < requested {cw}x{ch}: tile upscaled x{1 / k:.2f} (reduced detail)')
     x0, y0, x1, y1 = o['crop']
-    tile = np.asarray(A.resample_square(img, F(), box=(x0 * k, y0 * k, x1 * k, y1 * k)))
+    # scale each axis on its own (the aspect may be off by up to 1%) and keep the box inside the image
+    box = (min(W, x0 * kx), min(H, y0 * ky), min(W, x1 * kx), min(H, y1 * ky))
+    tile = np.asarray(A.resample_square(img, F(), box=box))
     full = np.asarray(img if (W, H) == (cw, ch) else img.resize((cw, ch), Image.BOX if k >= 1 else Image.LANCZOS))
     return tile, full
 
@@ -491,7 +501,8 @@ def write_report(rec, key, entry, res, tile_or_win, ov, ref_img, out_dir):
         sheet.paste(panel(im, W), (n * W, head))
         d.text((n * W + 12, 10), nm, font=A.font(18, True), fill=(255, 255, 255))
     d.text((W * len(imgs) - 170, 10), res.verdict.upper(), font=A.font(20, True), fill=(90, 220, 110) if res.verdict == 'pass' else (255, 80, 80))
-    png = os.path.join(out_dir, f'QA_{key}.png'); sheet.save(png, optimize=True)
+    tag = f'{key}_{entry["sha256"][:8]}'   # one report per returned file; QA_<item>.* is a copy of the latest
+    png = os.path.join(out_dir, f'QA_{tag}.png'); sheet.save(png, optimize=True)
     L = [f'# QA {rec["id"]} / {key}: **{res.verdict.upper()}**', '',
          f'- File: `{entry["file"]}` (stored as `{entry["stored"]}`), sha256 `{entry["sha256"][:12]}`, {entry["format"]} {entry["size"][0]}x{entry["size"][1]}',
          f'- Imported {entry["utc"]}; model reported: {entry["model_reported"]}; settings: {entry["settings_reported"]}',
@@ -539,9 +550,12 @@ def write_report(rec, key, entry, res, tile_or_win, ov, ref_img, out_dir):
           '- [ ] Materials: concrete / brick / glass match the real buildings; trees and lawns look like late summer',
           '- [ ] Light: sun from the lower left, shadows toward the upper right, same as neighbouring tiles',
           '- [ ] No text, labels, borders or vignettes; frame filled edge to edge']
-    md = os.path.join(out_dir, f'QA_{key}.md')
+    md = os.path.join(out_dir, f'QA_{tag}.md')
     with open(md, 'w') as f:
         f.write('\n'.join(L) + '\n')
+    shutil.copyfile(png, os.path.join(out_dir, f'QA_{key}.png'))
+    with open(os.path.join(out_dir, f'QA_{key}.md'), 'w') as f:
+        f.write('\n'.join(L).replace(f'`{os.path.basename(png)}`', f'`{os.path.basename(png)}` (latest copy: `QA_{key}.png`)') + '\n')
     return md, png
 
 
@@ -553,7 +567,9 @@ def accept_tile(rec, key, item, tile, entry, forced):
     prev = meta.get(t)
     meta[t] = {'version': A.sha_file(path)[:12], 'batch': rec['id'], 'model_reported': entry['model_reported'],
                'settings_reported': entry['settings_reported'], 'prompt_sha': item['prompt_sha'],
-               'reference_sha': item['reference']['composition'], 'accepted_utc': A.utc_now(), 'source_file': entry['stored'],
+               'reference_sha': item['reference']['composition'],
+               'reference_files': {k: item['reference'][k] for k in A.REFERENCE_FILES if k in item['reference']},
+               'accepted_utc': A.utc_now(), 'source_file': entry['stored'],
                'source_sha256': entry['sha256'], 'qa_verdict': entry['verdict'], 'forced': forced,
                'history': ((prev or {}).get('history', []) + [{k: v for k, v in prev.items() if k != 'history'}]) if prev else []}
     A.save_tiles_meta(meta)
@@ -596,6 +612,55 @@ def batch_status(rec):
     return rec['status'] if rec['status'] in ('draft', 'requested') else 'requested'
 
 
+def run_qa(rec, key, item, stored):
+    """Decode + QA one stored return. Returns (res, info, cut, ov, ref_img); never raises for a bad image."""
+    cut = ov = None
+    try:
+        img, info = A.read_image(stored)
+    except ValueError as e:
+        res = Result(); res.fail('decode', str(e), 'Send the original PNG file (not a screenshot or a link).')
+        info = {'format': '?', 'size': [0, 0]}; img = None
+    if img is not None:
+        try:
+            if item['output']['mode'] == 'seam':
+                res, cut, ov = qa_seam(item, img, info)
+            else:
+                res, cut, ov = qa_tile(rec, key, item, img, info)
+        except (ValueError, OSError) as e:   # e.g. PIL refusing a crop box: record it as this file's failure
+            res = Result(); cut = ov = None
+            res.fail('size', f'{img.width}x{img.height}: {type(e).__name__}: {e}',
+                     f'Return exactly {item["output"]["width"]}x{item["output"]["height"]} px (or a larger image with the same '
+                     'aspect ratio) - do not crop or pad.')
+    if item['output']['mode'] == 'seam':
+        ref_img = A.mosaic(*item['output']['window'], R.SEAM_WINDOW, R.SEAM_WINDOW, use_accepted=False)[0]
+    else:
+        ref_img = A.reference_rgb(key) if A.has_reference(key) else np.zeros((F(), F(), 3), np.uint8)
+    return res, info, cut, ov, ref_img
+
+
+def make_fix(item, res, cut, ov):
+    if cut is None: prev = marked = None
+    elif 'B' in ov: prev, marked = cut, marked_image(cut, ov, res)
+    else: prev, marked = ov['win'], R.seam_marked(ov['win'], ov['geo'], item['output']['band'], ov['after'])
+    return {'prev': prev, 'marked': marked, 'corrections': [f['fix'] for f in res.failures]}
+
+
+def stored_path(entry):
+    return os.path.join(A.ROOT, entry['stored']) if not os.path.isabs(entry['stored']) else entry['stored']
+
+
+def resolve_parents(batches, rec, key, bid):
+    """A revision resolves the item in every batch up its parent chain (B001R2 -> B001R1 -> B001)."""
+    seen, pid = {rec['id']}, rec.get('parent')
+    while pid and pid not in seen and pid in batches['batches']:
+        seen.add(pid)
+        prec = batches['batches'][pid]
+        p = prec['items'].get(key)
+        if p and p['status'] != 'accepted': p['status'] = 'accepted'; p['accepted'] = {'via': bid, 'utc': A.utc_now()}
+        prec['status'] = batch_status(prec)
+        pid = prec.get('parent')
+
+
 # ----------------------------------------------------------------------------------------------- main flow
 def process(bid, folder, accept=False, force=False, only=None, model=None, settings=None, reprocess=False,
             publish=True, revision=True):
@@ -615,27 +680,23 @@ def process(bid, folder, accept=False, force=False, only=None, model=None, setti
         todo = [p for p in found.get(key, []) if reprocess or A.sha_file(p) not in seen]
         for p in found.get(key, []):
             if p not in todo: print(f'  {key}: {os.path.basename(p)} already processed (sha256 match) - skipped')
+        changed = A.reference_changes(key, item)
+        if changed and (todo or accept) and item['status'] != 'accepted':
+            msg = (f'  {key}: the reference changed since packet rev {rec.get("packet_rev", "?")} was built '
+                   f'({"; ".join(changed)})')
+            if not force:
+                print(msg + ' - not imported/accepted. Rebuild and resend the packet, or pass --force to QA against the '
+                      'current reference.')
+                continue
+            print(msg + ' - continuing because of --force')
         for p in todo:
             stored, sha = store_original(bid, p)
             entry = {'file': os.path.basename(p), 'stored': A.rel(stored), 'sha256': sha, 'utc': A.utc_now(),
                      'model_reported': report['model'], 'settings_reported': report['settings']}
-            try:
-                img, info = A.read_image(stored)
-            except ValueError as e:
-                res = Result(); res.fail('decode', str(e), 'Send the original PNG file (not a screenshot or a link).')
-                info = {'format': '?', 'size': [0, 0]}; img = None
+            res, info, cut, ov, ref_img = run_qa(rec, key, item, stored)
+            if changed: res.warn('reference', 'reference changed since the packet was built: ' + '; '.join(changed))
             entry.update({'format': info['format'], 'size': info['size']})
             if info.get('embedded_text'): entry['embedded_metadata'] = info['embedded_text']
-            ov = None; cut = None
-            if img is not None:
-                if item['output']['mode'] == 'seam':
-                    res, cut, ov = qa_seam(item, img, info)
-                    ref_img = A.mosaic(*item['output']['window'], R.SEAM_WINDOW, R.SEAM_WINDOW, use_accepted=False)[0]
-                else:
-                    res, cut, ov = qa_tile(rec, key, item, img, info)
-                    ref_img = A.reference_rgb(key)
-            else:
-                ref_img = A.reference_rgb(key) if A.has_reference(key) else np.zeros((F(), F(), 3), np.uint8)
             entry.update({'verdict': res.verdict, 'failures': res.failures, 'warnings': res.warnings})
             md, png = write_report(rec, key, entry, res, cut, ov, ref_img, out_dir)
             entry.update({'qa_md': A.rel(md), 'qa_png': A.rel(png)})
@@ -647,31 +708,43 @@ def process(bid, folder, accept=False, force=False, only=None, model=None, setti
             print(f'  {key}: {entry["file"]} -> QA {res.verdict.upper()}' + ''.join(f'\n      - {f["check"]}: {f["detail"]}' for f in res.failures)
                   + ''.join(f'\n      ~ {w["check"]}: {w["detail"]}' for w in res.warnings) + f'\n      report: {A.rel(md)}')
             if res.verdict == 'fail' and revision:
-                if cut is None: prev = marked = None
-                elif 'B' in ov: prev, marked = cut, marked_image(cut, ov, res)
-                else: prev, marked = ov['win'], R.seam_marked(ov['win'], ov['geo'], item['output']['band'], ov['after'])
-                fixes[key] = {'prev': prev, 'marked': marked, 'corrections': [f['fix'] for f in res.failures]}
+                fixes[key] = make_fix(item, res, cut, ov)
+            else:
+                fixes.pop(key, None)   # a later passing return supersedes an earlier failure in the same run
             save(batches, rec)
         # accept the latest received version if it passed (or with --force)
         last = item['received'][-1] if item['received'] else None
         if accept and last and item['status'] != 'accepted' and (last['verdict'] == 'pass' or force):
-            img, info = A.read_image(os.path.join(A.ROOT, last['stored']) if not os.path.isabs(last['stored']) else last['stored'])
+            try:
+                img, info = A.read_image(stored_path(last))
+            except ValueError as e:
+                print(f'  {key}: cannot decode {last["file"]} ({e}) - not accepted'); continue
             if item['output']['mode'] == 'seam':
                 _r, comp, _o = qa_seam(item, img, info)
                 accepted += accept_seam(rec, item, comp, last, forced=last['verdict'] != 'pass')
             else:
-                tile, _full = cut_tile(item, img, info, Result())
+                try:
+                    tile, _full = cut_tile(item, img, info, Result())
+                except (ValueError, OSError) as e:
+                    tile = None; print(f'  {key}: {type(e).__name__}: {e}')
                 if tile is None: print(f'  {key}: cannot cut a tile from {last["file"]} - not accepted'); continue
                 accepted += accept_tile(rec, key, item, tile, last, forced=last['verdict'] != 'pass')
             item['status'] = 'accepted'; item['accepted'] = {'file': last['file'], 'utc': A.utc_now(), 'forced': last['verdict'] != 'pass'}
             if fixes.pop(key, None): print(f'  {key}: accepted with --force; no revision packet')
             print(f'  {key}: ACCEPTED' + (' (forced despite QA failure)' if last['verdict'] != 'pass' else ''))
-            if rec.get('parent'):  # a revision resolves the parent's item too
-                p = batches['batches'][rec['parent']]['items'].get(key)
-                if p: p['status'] = 'accepted'; p['accepted'] = {'via': bid, 'utc': A.utc_now()}
-                batches['batches'][rec['parent']]['status'] = batch_status(batches['batches'][rec['parent']])
+            resolve_parents(batches, rec, key, bid)
             save(batches, rec)
     if not any(found.values()) and not accept: print(f'  no files for {bid} in {folder}')
+    if revision:
+        # resume: a failure saved by an earlier run that stopped before its revision packet was built
+        for key in rec['order']:
+            if (only and key not in only) or key in fixes: continue
+            it = rec['items'][key]
+            last = it['received'][-1] if it['received'] else None
+            if (it['status'] == 'revision-needed' and last and last['verdict'] == 'fail' and not it.get('revision_batch')
+                    and (force or not A.reference_changes(key, it))):
+                res, _info, cut, ov, _ref = run_qa(rec, key, it, stored_path(last))
+                if res.verdict == 'fail': fixes[key] = make_fix(it, res, cut, ov)
     if fixes:
         rid = R.build_revision(bid, fixes)
         batches = A.load_batches(); rec = batches['batches'][bid]

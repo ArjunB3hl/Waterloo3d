@@ -4,7 +4,7 @@ import { h } from './dom';
 
 export function createPerfHud(map: MapAPI): { el: HTMLElement; setVisible(v: boolean): void } {
   const pre = h('pre', {});
-  const el = h('div', { class: 'perf-hud panel-chrome', role: 'status', 'aria-label': 'Performance statistics', hidden: true }, pre);
+  const el = h('div', { class: 'perf-hud panel-chrome', role: 'region', 'aria-live': 'off', 'aria-label': 'Performance statistics', hidden: true }, pre);
   let timer = 0;
   const refresh = () => {
     const p = map.perf();

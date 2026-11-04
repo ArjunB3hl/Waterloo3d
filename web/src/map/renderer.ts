@@ -4,7 +4,10 @@
 import type { CoverageInfo, Manifest, TileEntry, ViewState } from '../types';
 import { MAX_FAST_RETRIES, type Resource, ResourceLoader } from './loader';
 
-/** Below this zoom the whole published area is drawn from overview.webp (64 px per tile). */
+/**
+ * Below this many device px per canvas px (zoom x dpr) the whole published area is drawn from overview.webp
+ * (64 px per tile: about native resolution here, so retina screens switch to 256 px tiles at half the CSS zoom).
+ */
 export const OVERVIEW_ZOOM = 0.07;
 /** At or above this zoom artwork is drawn with nearest-neighbour sampling (crisp pixels). */
 export const PIXELATED_ZOOM = 1.5;
@@ -58,7 +61,7 @@ export class MapRenderer {
 
   artUrl(t: TileEntry, lod: number) { return `data/tiles/${lod}/${t.i}_${t.j}.webp?v=${t.v}`; }
   heightUrl(t: TileEntry) { return `data/heights/${t.i}_${t.j}.png?v=${t.hv}`; }
-  lifeUrl(t: TileEntry) { return `data/life/${t.i}_${t.j}.png?v=${t.v}`; }
+  lifeUrl(t: TileEntry) { return `data/life/${t.i}_${t.j}.png?v=${t.lv ?? t.v}`; }
 
   /** Smallest LOD whose resolution covers the tile's on-screen size in device px. */
   lodFor(deviceTilePx: number): number {
@@ -92,7 +95,7 @@ export class MapRenderer {
     ctx.imageSmoothingEnabled = view.zoom < PIXELATED_ZOOM;
     ctx.imageSmoothingQuality = p.moving ? 'low' : 'high';
     // while the overview is still loading, wait for it rather than fetching every tile at 256 px
-    const useOverview = view.zoom < OVERVIEW_ZOOM && !this.overviewFailed;
+    const useOverview = s < OVERVIEW_ZOOM && !this.overviewFailed;
     const lod = this.lodFor(this.F * s);
 
     for (let j = range.j0; j <= range.j1; j++) {
@@ -104,7 +107,7 @@ export class MapRenderer {
         if (useOverview) { this.drawOverviewCrop(ctx, i, j, x0, y0, dw, dh); continue; }
         const want = this.loader.want(`a:${i}_${j}@${lod}`, this.artUrl(t, lod), this.priority(i, j, view));
         if (want.state === 'ready') {
-          const alpha = Math.min(1, (p.now - want.arrivedAt) / FADE_MS);
+          const alpha = Math.max(0, Math.min(1, (p.now - want.arrivedAt) / FADE_MS));
           if (alpha < 1) { this.drawFallback(ctx, i, j, lod, x0, y0, dw, dh); result.fading = true; }
           ctx.globalAlpha = alpha;
           ctx.drawImage(this.loader.use(want), x0, y0, dw, dh);
@@ -152,7 +155,7 @@ export class MapRenderer {
     for (let j = outer.j0; j <= outer.j1; j++) for (let i = outer.i0; i <= outer.i1; i++) {
       if (i >= inner.i0 && i <= inner.i1 && j >= inner.j0 && j <= inner.j1) continue;
       const t = this.tile(i, j);
-      if (t) this.loader.want(`a:${i}_${j}@${lod}`, this.artUrl(t, lod), 100 + this.priority(i, j, view));
+      if (t) this.loader.want(`a:${i}_${j}@${lod}`, this.artUrl(t, lod), 100 + this.priority(i, j, view), undefined, true);
     }
   }
 

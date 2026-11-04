@@ -117,6 +117,30 @@ def has_reference(t):
     return os.path.exists(os.path.join(JOBS, t, 'color2x.png'))
 
 
+REFERENCE_FILES = ('color2x', 'cls', 'height')
+
+
+def reference_hashes(t):
+    """sha256[:12] of the reference job files of tile t (the provenance recorded in every packet item)."""
+    jd = os.path.join(JOBS, t)
+    return {k: sha_file(os.path.join(jd, f'{k}.png'))[:12] for k in REFERENCE_FILES if os.path.exists(os.path.join(jd, f'{k}.png'))}
+
+
+def reference_changes(key, item):
+    """Human-readable list of reference job files that changed since the item's packet was built (empty = current).
+
+    Tile/context items record color2x/cls/height of their tile; seam items record them per tile under 'jobs'
+    (older seam records have none and cannot be checked)."""
+    ref = item.get('reference') or {}
+    recorded = ref.get('jobs') or ({key: {k: ref[k] for k in REFERENCE_FILES if k in ref}} if item['output']['mode'] != 'seam' else {})
+    out = []
+    for t, rec in recorded.items():
+        cur = reference_hashes(t)
+        for k, v in rec.items():
+            if cur.get(k) != v: out.append(f'{t}/{k}.png {v} -> {cur.get(k, "missing")}')
+    return out
+
+
 @lru_cache(64)
 def _reference(t):
     im = Image.open(os.path.join(JOBS, t, 'color2x.png')).convert('RGB').resize((F(), F()), Image.BOX)

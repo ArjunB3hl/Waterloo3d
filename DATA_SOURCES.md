@@ -25,14 +25,14 @@ All retrievals below were made on **4 November 2026** from the build container, 
 - The published **height tiles** (`web/public/data/heights/`), **class maps** (`cls/`), **collision chunks** (`collision/`), `search.json` and `landmarks.json` are derived from ODbL data and are *Derivative Databases*. If they are publicly distributed with the site, they must be offered under ODbL 1.0, and the attribution must be kept. The generated artwork is not exempt from the attribution requirement.
 - OSM data was **not** fetched from openstreetmap.org directly (the host is blocked). Every OSM element still carries its OSM id (for example `w43250626@28`) for traceability.
 
-**Building heights: provenance and approximations.** Each building part carries a `height_src` label (`pipeline/build_scene.py`). Counts for the whole fetched area, by building part:
+**Building heights: provenance and approximations.** Each building part carries a `height_src` label (`pipeline/build_scene.py`). Counts for the whole fetched area, one per emitted building part (`data_cache/scene/scene_summary.json`):
 
 | `height_src` | Parts | Meaning | Accuracy label |
 |---|---:|---|---|
-| `osm_height` | 2,518 | Explicit OSM `height` tag | measured or mapper-supplied |
-| `osm_levels` | 8,041 | OSM `building:levels` × storey height (3.0 m residential, 3.6 m other, +1 m roof allowance), with `min_level` offsets for parts | **approximation** |
-| `ms_ml_height` | 43,849 | Microsoft ML Buildings estimated height | **estimate** |
-| `class_default` | 25,789 | No height data, so a default by building class (for example house 7 m, university 12 m) | **approximation** |
+| `osm_height` | 34 | Explicit OSM `height` tag | measured or mapper-supplied |
+| `osm_levels` | 8,048 | OSM `building:levels` × storey height (3.0 m residential, 3.6 m other, +1 m roof allowance), with `min_level` offsets for parts | **approximation** |
+| `ms_ml_height` | 46,343 | Microsoft ML Buildings estimated height (including the 3,151 ML-only footprints, whose height is also an ML estimate) | **estimate** |
+| `class_default` | 25,791 | No height data, so a default by building class (for example house 7 m, university 12 m) | **approximation** |
 
 Pitched roofs on small near-rectangular houses that have no OSM `roof:shape` tag are **inferred** (`roof.inferred = true` in render jobs). The base elevation of each building is the minimum terrain height under its footprint.
 

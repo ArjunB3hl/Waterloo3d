@@ -654,14 +654,14 @@
    "title": "Campus 2x2 patch - tiles 0_-1, -1_0, -1_-1 continuing the accepted style sample",
    "mode": "context",
    "frame": "square",
-   "status": "requested",
+   "status": "revision-needed",
    "depends_on": [
     "0_0"
    ],
    "blocked_by": [],
    "parent": null,
    "created_utc": "2026-11-04T13:28:36Z",
-   "updated_utc": "2026-11-04T17:01:48Z",
+   "updated_utc": "2026-11-04T17:23:23Z",
    "packet_rev": 3,
    "order": [
     "0_-1",
@@ -878,7 +878,7 @@
    ],
    "items": {
     "0_-1": {
-     "status": "requested",
+     "status": "received",
      "return_filename": "B002_0_-1.png",
      "files": {
       "composition": "B002_context_0_-1.png",
@@ -914,15 +914,532 @@
        "0_0": "bfd18a94f0c7"
       }
      },
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null,
+     "model_reported": "image_gen.imagegen (model name/version not exposed)",
+     "settings_reported": "reference-image style transfer/edit; mask as image guidance (0_-1, -1_0) / described as coordinates (-1_-1); no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown",
+     "received": [
+      {
+       "file": "B002_0_-1.png",
+       "stored": "art/returned/B002/B002_0_-1.png",
+       "sha256": "276cab3ea102b7e7f5785466ae6f588d76d408aa27a0bbf0bda2e97156a25ad2",
+       "utc": "2026-11-04T17:23:10Z",
+       "model_reported": "image_gen.imagegen (model name/version not exposed)",
+       "settings_reported": "reference-image style transfer/edit; mask as image guidance (0_-1, -1_0) / described as coordinates (-1_-1); no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [
+        {
+         "check": "size",
+         "detail": "returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)"
+        }
+       ],
+       "qa_md": "art/returned/B002/QA_0_-1_276cab3e.md",
+       "qa_png": "art/returned/B002/QA_0_-1_276cab3e.png"
+      }
+     ],
+     "qa": {
+      "verdict": "pass",
+      "metrics": {
+       "size": {
+        "returned": [
+         1254,
+         1254
+        ],
+        "expected": [
+         1536,
+         1536
+        ],
+        "k": 0.8164
+       },
+       "registration": {
+        "dx": 0.22,
+        "dy": 1.03,
+        "peak": 0.0463,
+        "blocks": 33,
+        "scale": 1.0011,
+        "rot_deg": -0.075,
+        "max_resid": 4.6,
+        "displaced": []
+       },
+       "geometry": {
+        "ref": 0.85,
+        "art": 0.91,
+        "rel": 1.071,
+        "bad_cells": []
+       },
+       "buildings": [
+        {
+         "name": "Engineering 3",
+         "id": "a5d82293-84ad-4e37-841e-b052cfd54bf6",
+         "area": 68545,
+         "centroid": [
+          529,
+          899
+         ],
+         "bbox": [
+          321,
+          647,
+          780,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": 1.09,
+         "contrast_rel": 1.82,
+         "bad": false
+        },
+        {
+         "name": "East Campus Hall",
+         "id": "9694726d-fc1c-4a2b-9460-ea81df73ac7a",
+         "area": 52137,
+         "centroid": [
+          800,
+          249
+         ],
+         "bbox": [
+          649,
+          88,
+          968,
+          410
+         ],
+         "landmark": false,
+         "outline_rel": 1.08,
+         "contrast_rel": 1.28,
+         "bad": false
+        },
+        {
+         "name": "William G. Davis Computer Research Centre",
+         "id": "dc57e8cc-e915-4d25-bd08-75f1c6e43a12",
+         "area": 49794,
+         "centroid": [
+          141,
+          794
+         ],
+         "bbox": [
+          0,
+          580,
+          430,
+          944
+         ],
+         "landmark": true,
+         "outline_rel": 1.06,
+         "contrast_rel": 1.21,
+         "bad": false
+        },
+        {
+         "name": "Pearl Sullivan Engineering Building",
+         "id": "707458f7-b7b8-4a7b-9534-4e91a00cade6",
+         "area": 32001,
+         "centroid": [
+          678,
+          494
+         ],
+         "bbox": [
+          527,
+          388,
+          844,
+          590
+         ],
+         "landmark": true,
+         "outline_rel": 1.49,
+         "contrast_rel": 1.39,
+         "bad": false
+        },
+        {
+         "name": "Engineering 5",
+         "id": "eab1aa28-e7af-4d35-be1a-31425060994f",
+         "area": 21423,
+         "centroid": [
+          569,
+          527
+         ],
+         "bbox": [
+          422,
+          433,
+          720,
+          625
+         ],
+         "landmark": true,
+         "outline_rel": 1.25,
+         "contrast_rel": 0.89,
+         "bad": false
+        },
+        {
+         "name": "Carl A. Pollock Hall",
+         "id": "2d630e3b-c37b-4ef0-a696-f683a72f057a",
+         "area": 17140,
+         "centroid": [
+          928,
+          951
+         ],
+         "bbox": [
+          807,
+          875,
+          1024,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": 1.1,
+         "contrast_rel": 1.32,
+         "bad": false
+        },
+        {
+         "name": "Centre for Environmental and Information Technology",
+         "id": "4840a9df-a7f9-4925-a5ed-c3db5a4c75e3",
+         "area": 16096,
+         "centroid": [
+          203,
+          979
+         ],
+         "bbox": [
+          75,
+          907,
+          350,
+          1024
+         ],
+         "landmark": true,
+         "outline_rel": 1.14,
+         "contrast_rel": 1.64,
+         "bad": false
+        },
+        {
+         "name": "Engineering 6",
+         "id": "bee3db2e-2955-45f4-8ed7-a6767cf0a2b8",
+         "area": 15726,
+         "centroid": [
+          897,
+          396
+         ],
+         "bbox": [
+          795,
+          327,
+          998,
+          465
+         ],
+         "landmark": false,
+         "outline_rel": 1.07,
+         "contrast_rel": 1.78,
+         "bad": false
+        },
+        {
+         "name": "East Campus 4",
+         "id": "1a4a989b-17ed-489c-b501-e1d4668ba46b",
+         "area": 15230,
+         "centroid": [
+          357,
+          54
+         ],
+         "bbox": [
+          240,
+          0,
+          489,
+          129
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 0.97,
+         "bad": false
+        },
+        {
+         "name": "Engineering 2",
+         "id": "f7e0a707-890a-4fb6-85e1-b2a1c052e119",
+         "area": 14464,
+         "centroid": [
+          765,
+          987
+         ],
+         "bbox": [
+          597,
+          924,
+          900,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": 1.15,
+         "contrast_rel": 1.16,
+         "bad": false
+        },
+        {
+         "name": "East Campus 2",
+         "id": "f71999f2-2b58-407b-aaaf-83e1a2daf81b",
+         "area": 7278,
+         "centroid": [
+          35,
+          200
+         ],
+         "bbox": [
+          0,
+          146,
+          103,
+          271
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.09,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "34ce5a1c-f0dd-4fc4-a825-c7ccf60dae37",
+         "area": 6340,
+         "centroid": [
+          944,
+          604
+         ],
+         "bbox": [
+          874,
+          551,
+          1015,
+          656
+         ],
+         "landmark": false,
+         "outline_rel": null,
+         "contrast_rel": 1.7,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "06a0dc6e-3310-49fc-8d1a-1a154d955fdc",
+         "area": 5357,
+         "centroid": [
+          853,
+          691
+         ],
+         "bbox": [
+          800,
+          648,
+          897,
+          737
+         ],
+         "landmark": false,
+         "outline_rel": 1.03,
+         "contrast_rel": 1.64,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "ee19fab4-7508-404c-8d6b-69480f306599",
+         "area": 5325,
+         "centroid": [
+          959,
+          752
+         ],
+         "bbox": [
+          890,
+          720,
+          1024,
+          787
+         ],
+         "landmark": false,
+         "outline_rel": 1.03,
+         "contrast_rel": 1.22,
+         "bad": false
+        },
+        {
+         "name": "Autonomous Vehicle Research and Intelligence Lab",
+         "id": "8c6a4482-cb36-4ab4-b1a9-91e08f5e1c82",
+         "area": 5047,
+         "centroid": [
+          494,
+          224
+         ],
+         "bbox": [
+          436,
+          183,
+          555,
+          267
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.3,
+         "bad": false
+        },
+        {
+         "name": "unnamed roof building",
+         "id": "9a2e6d76-2db3-47a7-a806-eac5c068367a",
+         "area": 2418,
+         "centroid": [
+          245,
+          348
+         ],
+         "bbox": [
+          170,
+          290,
+          322,
+          407
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.69,
+         "bad": false
+        },
+        {
+         "name": "unnamed roof building",
+         "id": "d64f9d40-1dee-42ca-b5f3-5516605d8b77",
+         "area": 1691,
+         "centroid": [
+          566,
+          94
+         ],
+         "bbox": [
+          515,
+          55,
+          619,
+          135
+         ],
+         "landmark": false,
+         "outline_rel": null,
+         "contrast_rel": 1.67,
+         "bad": false
+        },
+        {
+         "name": "unnamed roof building",
+         "id": "f0c95b62-a904-4907-8b36-1a228714f3a8",
+         "area": 1611,
+         "centroid": [
+          471,
+          171
+         ],
+         "bbox": [
+          420,
+          133,
+          523,
+          212
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.53,
+         "bad": false
+        },
+        {
+         "name": "unnamed roof building",
+         "id": "657740a2-9bf6-4e8f-b6cf-0eb430f4711b",
+         "area": 1608,
+         "centroid": [
+          120,
+          370
+         ],
+         "bbox": [
+          69,
+          332,
+          173,
+          411
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.78,
+         "bad": false
+        },
+        {
+         "name": "unnamed roof building",
+         "id": "c8ec406b-41a3-4886-8571-33e9ac86dc2a",
+         "area": 1603,
+         "centroid": [
+          216,
+          295
+         ],
+         "bbox": [
+          165,
+          256,
+          268,
+          336
+         ],
+         "landmark": false,
+         "outline_rel": null,
+         "contrast_rel": 2.32,
+         "bad": false
+        },
+        {
+         "name": "unnamed roof building",
+         "id": "1ef45d54-f92f-41f2-9b1f-2c723ffc1e0c",
+         "area": 1556,
+         "centroid": [
+          414,
+          136
+         ],
+         "bbox": [
+          363,
+          97,
+          467,
+          177
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.72,
+         "bad": false
+        },
+        {
+         "name": "unnamed roof building",
+         "id": "efa298e0-d54b-4825-b309-a8c966557e1e",
+         "area": 1540,
+         "centroid": [
+          509,
+          58
+         ],
+         "bbox": [
+          459,
+          20,
+          561,
+          99
+         ],
+         "landmark": false,
+         "outline_rel": 0.55,
+         "contrast_rel": 1.7,
+         "bad": false
+        }
+       ],
+       "shadow": {
+        "ref": 0.662,
+        "art": 0.612,
+        "pixels": 14952
+       },
+       "style": {
+        "against": [
+         "0_0"
+        ],
+        "hist": 0.264,
+        "dE": {
+         "roof": 4.8,
+         "wall": 2.8,
+         "road": 2.9,
+         "path": 7.7,
+         "paved": 3.8,
+         "parking": 4.4,
+         "tree": 10.2,
+         "green": 10.9
+        },
+        "dE_mean": 5.9
+       },
+       "seams": [
+        {
+         "grad_ratio": 1.044,
+         "step_ratio": 1.287,
+         "cross_mean": 31.93,
+         "interior_mean": 30.6,
+         "worst": [],
+         "side": "bottom",
+         "neighbour": "0_0",
+         "bad": false
+        }
+       ],
+       "keep": {
+        "dx": 0.33,
+        "dy": -0.01,
+        "peak": 0.218,
+        "mad": 22.3
+       }
+      },
+      "file": "B002_0_-1.png"
+     },
      "prompt": "TASK - tile 0_-1\nEdit B002_context_0_-1.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.\nB002_mask_0_-1.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)\nMatch the finished style of B002_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B002_classes_0_-1.png (legend: B002_classes_legend.png) for surface types and B002_depth_0_-1.png for building heights.\n\nTHIS TILE SHOWS\n- William G. Davis Computer Research Centre (lower left, around x=141, y=794): DC - large brick-and-concrete research building with a stepped roofline\n- Pearl Sullivan Engineering Building (centre, around x=678, y=494): E7 - newer engineering building, glass and metal curtain walls\n- Engineering 5 (centre, around x=569, y=527): E5 - newer engineering building, glass and metal curtain walls\n- Centre for Environmental and Information Technology (lower left, around x=203, y=979): EIT - concrete and brick science/engineering block\n- Engineering 3 (lower centre, around x=529, y=899): campus building - follow the reference wall colour for its material\n- East Campus Hall (upper right, around x=800, y=249): campus building - follow the reference wall colour for its material\n- Carl A. Pollock Hall (lower right, around x=928, y=951): campus building - follow the reference wall colour for its material\n- Engineering 6 (right, around x=897, y=396): E6 - newer engineering building; follow the reference wall colour for its material\n- East Campus 4 (upper centre, around x=357, y=54): campus building - follow the reference wall colour for its material\n- Streets and paths crossing it: Path 2 East, Ring Road, Laurel Trail (Trans-Canada Trail), Transit Plaza Road, Path 3 East, Phillip Street\n\nOUTPUT\n- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B002_context_0_-1.png, named B002_0_-1.png. We cut the tile out ourselves.\n- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.",
-     "prompt_sha": "18f25700d147"
+     "prompt_sha": "18f25700d147",
+     "report_text": "B002 generation report\nTool: built-in image_gen.imagegen\nModel name: unknown (not exposed)\nModel version: unknown\nMode: reference-image style transfer/edit; mask supplied as image guidance for first two canvases and described as coordinates for third. Dedicated inpainting-mask control not exposed.\nTransparent background: false\nRequested output: 1536 x 1536, whole context canvas\nSeed: unknown\nSteps: unknown\nGuidance/strength: unknown\nQuality setting: unknown\nSuccessful generations: 3, one per tile. One earlier call was rejected before generation because it contained more than five input paths.\nGenerated in order: 0_-1, -1_0, -1_-1. Third canvas uses first two generated canvases as neighbour references.\nAll outputs below are unchanged original PNGs, copied byte for byte. No cropping, resizing, compositing or recompression performed.\nVisual review: full square campus compositions with consistent warm palette and no visible labels. Exact geometry, masked pixel preservation and seamless joins are unverified. Pipeline acceptance QA not run.\n\nB002_0_-1.png: 1254 x 1254 PNG; SHA256 276cab3ea102b7e7f5785466ae6f588d76d408aa27a0bbf0bda2e97156a25ad2\nB002_-1_0.png: 1254 x 1254 PNG; SHA256 9932bfddfb3625c0f26d91b7ce574ac2e5e306eee36c212ad3625145e0976067\nB002_-1_-1.png: 1254 x 1254 PNG; SHA256 c81f4f3cfc60c4605ecdee3659556641ff4aa62525573650635e41a2d323cbab\n"
     },
     "-1_0": {
-     "status": "requested",
+     "status": "received",
      "return_filename": "B002_-1_0.png",
      "files": {
       "composition": "B002_context_-1_0.png",
@@ -958,15 +1475,442 @@
        "-1_1": "reference"
       }
      },
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null,
+     "model_reported": "image_gen.imagegen (model name/version not exposed)",
+     "settings_reported": "reference-image style transfer/edit; mask as image guidance (0_-1, -1_0) / described as coordinates (-1_-1); no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown",
+     "received": [
+      {
+       "file": "B002_-1_0.png",
+       "stored": "art/returned/B002/B002_-1_0.png",
+       "sha256": "9932bfddfb3625c0f26d91b7ce574ac2e5e306eee36c212ad3625145e0976067",
+       "utc": "2026-11-04T17:23:15Z",
+       "model_reported": "image_gen.imagegen (model name/version not exposed)",
+       "settings_reported": "reference-image style transfer/edit; mask as image guidance (0_-1, -1_0) / described as coordinates (-1_-1); no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [
+        {
+         "check": "size",
+         "detail": "returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)"
+        },
+        {
+         "check": "geometry-cells",
+         "detail": "2 cell(s) with weak agreement: [[512, 384, 0.26], [0, 640, -0.17]]"
+        }
+       ],
+       "qa_md": "art/returned/B002/QA_-1_0_9932bfdd.md",
+       "qa_png": "art/returned/B002/QA_-1_0_9932bfdd.png"
+      }
+     ],
+     "qa": {
+      "verdict": "pass",
+      "metrics": {
+       "size": {
+        "returned": [
+         1254,
+         1254
+        ],
+        "expected": [
+         1536,
+         1536
+        ],
+        "k": 0.8164
+       },
+       "registration": {
+        "dx": 0.46,
+        "dy": 0.64,
+        "peak": 0.0454,
+        "blocks": 26,
+        "scale": 1.0013,
+        "rot_deg": 0.013,
+        "max_resid": 2.42,
+        "displaced": []
+       },
+       "geometry": {
+        "ref": 0.863,
+        "art": 0.773,
+        "rel": 0.896,
+        "bad_cells": [
+         [
+          512,
+          384,
+          0.26
+         ],
+         [
+          0,
+          640,
+          -0.17
+         ]
+        ]
+       },
+       "buildings": [
+        {
+         "name": "Student Life Centre",
+         "id": "1dbcdeeb-66f8-4d4d-9b69-d1ef022fd090",
+         "area": 48219,
+         "centroid": [
+          362,
+          163
+         ],
+         "bbox": [
+          152,
+          0,
+          496,
+          315
+         ],
+         "landmark": true,
+         "outline_rel": 1.3,
+         "contrast_rel": 1.76,
+         "bad": false
+        },
+        {
+         "name": "Mike & Ophelia Lazaridis Quantum Nano Centre",
+         "id": "0069e1cf-822e-4ac3-92ce-6606ddf405d4",
+         "area": 37268,
+         "centroid": [
+          734,
+          214
+         ],
+         "bbox": [
+          538,
+          100,
+          916,
+          330
+         ],
+         "landmark": true,
+         "outline_rel": 1.22,
+         "contrast_rel": 1.13,
+         "bad": false
+        },
+        {
+         "name": "Physical Activities Complex",
+         "id": "f9e1a07f-3852-4b8d-9db6-7023bcafb06a",
+         "area": 35016,
+         "centroid": [
+          103,
+          92
+         ],
+         "bbox": [
+          0,
+          0,
+          229,
+          197
+         ],
+         "landmark": false,
+         "outline_rel": 1.01,
+         "contrast_rel": 1.64,
+         "bad": false
+        },
+        {
+         "name": "St. Jerome's University",
+         "id": "b0b19396-2599-492b-aa4c-9431c980500b",
+         "area": 33731,
+         "centroid": [
+          529,
+          787
+         ],
+         "bbox": [
+          309,
+          679,
+          791,
+          877
+         ],
+         "landmark": false,
+         "outline_rel": 0.99,
+         "contrast_rel": 1.3,
+         "bad": false
+        },
+        {
+         "name": "Renison University College",
+         "id": "443f4062-40f9-4670-8e73-6a26b9799b56",
+         "area": 20349,
+         "centroid": [
+          164,
+          963
+         ],
+         "bbox": [
+          0,
+          884,
+          435,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": 1.67,
+         "contrast_rel": 1.66,
+         "bad": false
+        },
+        {
+         "name": "Health Services",
+         "id": "1ad2b4ba-9eae-422a-bd2b-e0289057b857",
+         "area": 18456,
+         "centroid": [
+          323,
+          555
+         ],
+         "bbox": [
+          223,
+          476,
+          450,
+          643
+         ],
+         "landmark": false,
+         "outline_rel": 1.32,
+         "contrast_rel": 1.87,
+         "bad": false
+        },
+        {
+         "name": "Biology 2",
+         "id": "072e5752-2094-4817-9f29-50d87b8d0016",
+         "area": 17592,
+         "centroid": [
+          898,
+          306
+         ],
+         "bbox": [
+          775,
+          224,
+          1024,
+          392
+         ],
+         "landmark": false,
+         "outline_rel": 1.01,
+         "contrast_rel": 0.93,
+         "bad": false
+        },
+        {
+         "name": "St. Jerome's University Residence Buildings",
+         "id": "358c392e-aab0-4714-808d-a6c2fd96e3a3",
+         "area": 17055,
+         "centroid": [
+          329,
+          863
+         ],
+         "bbox": [
+          143,
+          766,
+          512,
+          971
+         ],
+         "landmark": false,
+         "outline_rel": 1.05,
+         "contrast_rel": 1.52,
+         "bad": false
+        },
+        {
+         "name": "St. Jerome's University",
+         "id": "6a944e78-e410-4c83-8213-12308f62a7d6",
+         "area": 16436,
+         "centroid": [
+          633,
+          926
+         ],
+         "bbox": [
+          523,
+          843,
+          780,
+          987
+         ],
+         "landmark": false,
+         "outline_rel": 0.99,
+         "contrast_rel": 1.06,
+         "bad": false
+        },
+        {
+         "name": "Science Teaching Complex",
+         "id": "8637ad30-223d-4548-921e-6f8f22b47718",
+         "area": 12450,
+         "centroid": [
+          959,
+          343
+         ],
+         "bbox": [
+          840,
+          247,
+          1024,
+          439
+         ],
+         "landmark": false,
+         "outline_rel": 1.65,
+         "contrast_rel": 2.55,
+         "bad": false
+        },
+        {
+         "name": "St. Jerome's Academic Centre SJ2",
+         "id": "cb3a1148-7028-4246-a91d-a0992fe66d05",
+         "area": 10590,
+         "centroid": [
+          507,
+          675
+         ],
+         "bbox": [
+          432,
+          627,
+          587,
+          723
+         ],
+         "landmark": false,
+         "outline_rel": 1.01,
+         "contrast_rel": 1.15,
+         "bad": false
+        },
+        {
+         "name": "Mathematics & Computer",
+         "id": "49d9e102-9103-4bcf-ad10-453223e45cd2",
+         "area": 10526,
+         "centroid": [
+          721,
+          29
+         ],
+         "bbox": [
+          588,
+          0,
+          850,
+          95
+         ],
+         "landmark": true,
+         "outline_rel": 0.88,
+         "contrast_rel": 1.37,
+         "bad": false
+        },
+        {
+         "name": "Ira G. Needles Hall",
+         "id": "0cee89e5-9ae3-4934-9107-b2bf58a34919",
+         "area": 10443,
+         "centroid": [
+          964,
+          493
+         ],
+         "bbox": [
+          890,
+          433,
+          1024,
+          591
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.23,
+         "bad": false
+        },
+        {
+         "name": "Earth Sciences & Chemistry",
+         "id": "83b536fa-3972-4ac0-b11c-f59343b78a5c",
+         "area": 5771,
+         "centroid": [
+          987,
+          38
+         ],
+         "bbox": [
+          928,
+          0,
+          1024,
+          100
+         ],
+         "landmark": false,
+         "outline_rel": 1.18,
+         "contrast_rel": 1.24,
+         "bad": false
+        },
+        {
+         "name": "St. Jerome's University",
+         "id": "7de7ebd7-422a-4062-8299-b5b3a17084a5",
+         "area": 4919,
+         "centroid": [
+          766,
+          862
+         ],
+         "bbox": [
+          718,
+          825,
+          811,
+          904
+         ],
+         "landmark": false,
+         "outline_rel": 0.95,
+         "contrast_rel": 0.99,
+         "bad": false
+        },
+        {
+         "name": "Biology 1",
+         "id": "5a9e806e-112e-4777-bf85-e2bf90adbb70",
+         "area": 4833,
+         "centroid": [
+          990,
+          207
+         ],
+         "bbox": [
+          935,
+          161,
+          1024,
+          252
+         ],
+         "landmark": false,
+         "outline_rel": 1.38,
+         "contrast_rel": 1.66,
+         "bad": false
+        }
+       ],
+       "shadow": {
+        "ref": 0.616,
+        "art": 0.566,
+        "pixels": 27699
+       },
+       "style": {
+        "against": [
+         "0_0"
+        ],
+        "hist": 0.2,
+        "dE": {
+         "roof": 2.0,
+         "wall": 2.2,
+         "road": 1.6,
+         "path": 5.2,
+         "paved": 5.0,
+         "parking": 4.9,
+         "tree": 5.0,
+         "green": 3.2
+        },
+        "dE_mean": 3.6
+       },
+       "seams": [
+        {
+         "grad_ratio": 1.371,
+         "step_ratio": 1.414,
+         "cross_mean": 32.94,
+         "interior_mean": 24.03,
+         "worst": [
+          [
+           816,
+           839
+          ],
+          [
+           139,
+           162
+          ]
+         ],
+         "side": "right",
+         "neighbour": "0_0",
+         "bad": false
+        }
+       ],
+       "keep": {
+        "dx": 1.08,
+        "dy": -0.01,
+        "peak": 0.335,
+        "mad": 18.7
+       }
+      },
+      "file": "B002_-1_0.png"
+     },
      "prompt": "TASK - tile -1_0\nEdit B002_context_-1_0.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.\nB002_mask_-1_0.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)\nMatch the finished style of B002_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B002_classes_-1_0.png (legend: B002_classes_legend.png) for surface types and B002_depth_-1_0.png for building heights.\n\nTHIS TILE SHOWS\n- Student Life Centre (upper centre, around x=362, y=163): SLC - the student centre; follow the reference wall colour for its material\n- Mike & Ophelia Lazaridis Quantum Nano Centre (upper right, around x=734, y=214): QNC - glass and metal curtain wall with a honeycomb-like facade pattern\n- Mathematics & Computer (upper right, around x=721, y=29): MC - long precast-concrete brutalist block with a repeated narrow window rhythm\n- Physical Activities Complex (upper left, around x=103, y=92): campus building - follow the reference wall colour for its material\n- St. Jerome's University (lower centre, around x=529, y=787): campus building - follow the reference wall colour for its material\n- Renison University College (lower left, around x=164, y=963): campus building - follow the reference wall colour for its material\n- Health Services (left, around x=323, y=555): campus building - follow the reference wall colour for its material\n- Biology 2 (upper right, around x=898, y=306): red-brown brick campus building\n- St. Jerome's University Residence Buildings (lower left, around x=329, y=863): campus building - follow the reference wall colour for its material\n- Streets and paths crossing it: Ring Road, University Campus Lane, Two Row Path, Path 2 East, Path 2 West, Alumni Lane\n\nOUTPUT\n- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B002_context_-1_0.png, named B002_-1_0.png. We cut the tile out ourselves.\n- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.",
-     "prompt_sha": "a7b088eae0a2"
+     "prompt_sha": "a7b088eae0a2",
+     "report_text": "B002 generation report\nTool: built-in image_gen.imagegen\nModel name: unknown (not exposed)\nModel version: unknown\nMode: reference-image style transfer/edit; mask supplied as image guidance for first two canvases and described as coordinates for third. Dedicated inpainting-mask control not exposed.\nTransparent background: false\nRequested output: 1536 x 1536, whole context canvas\nSeed: unknown\nSteps: unknown\nGuidance/strength: unknown\nQuality setting: unknown\nSuccessful generations: 3, one per tile. One earlier call was rejected before generation because it contained more than five input paths.\nGenerated in order: 0_-1, -1_0, -1_-1. Third canvas uses first two generated canvases as neighbour references.\nAll outputs below are unchanged original PNGs, copied byte for byte. No cropping, resizing, compositing or recompression performed.\nVisual review: full square campus compositions with consistent warm palette and no visible labels. Exact geometry, masked pixel preservation and seamless joins are unverified. Pipeline acceptance QA not run.\n\nB002_0_-1.png: 1254 x 1254 PNG; SHA256 276cab3ea102b7e7f5785466ae6f588d76d408aa27a0bbf0bda2e97156a25ad2\nB002_-1_0.png: 1254 x 1254 PNG; SHA256 9932bfddfb3625c0f26d91b7ce574ac2e5e306eee36c212ad3625145e0976067\nB002_-1_-1.png: 1254 x 1254 PNG; SHA256 c81f4f3cfc60c4605ecdee3659556641ff4aa62525573650635e41a2d323cbab\n"
     },
     "-1_-1": {
-     "status": "requested",
+     "status": "revision-needed",
      "return_filename": "B002_-1_-1.png",
      "files": {
       "composition": "B002_context_-1_-1.png",
@@ -1002,12 +1946,379 @@
        "-1_0": "reference"
       }
      },
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null,
+     "model_reported": "image_gen.imagegen (model name/version not exposed)",
+     "settings_reported": "reference-image style transfer/edit; mask as image guidance (0_-1, -1_0) / described as coordinates (-1_-1); no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown",
+     "received": [
+      {
+       "file": "B002_-1_-1.png",
+       "stored": "art/returned/B002/B002_-1_-1.png",
+       "sha256": "c81f4f3cfc60c4605ecdee3659556641ff4aa62525573650635e41a2d323cbab",
+       "utc": "2026-11-04T17:23:19Z",
+       "model_reported": "image_gen.imagegen (model name/version not exposed)",
+       "settings_reported": "reference-image style transfer/edit; mask as image guidance (0_-1, -1_0) / described as coordinates (-1_-1); no inpainting control; requested 1536 canvas, tool returned 1254x1254; seed/steps/guidance unknown",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "fail",
+       "failures": [
+        {
+         "check": "displacement",
+         "detail": "1 block(s) displaced > 10 px",
+         "fix": "Parts of the image are displaced (yellow boxes in the marked image): put buildings and streets back on the reference positions."
+        }
+       ],
+       "warnings": [
+        {
+         "check": "size",
+         "detail": "returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)"
+        }
+       ],
+       "qa_md": "art/returned/B002/QA_-1_-1_c81f4f3c.md",
+       "qa_png": "art/returned/B002/QA_-1_-1_c81f4f3c.png"
+      }
+     ],
+     "qa": {
+      "verdict": "fail",
+      "metrics": {
+       "size": {
+        "returned": [
+         1254,
+         1254
+        ],
+        "expected": [
+         1536,
+         1536
+        ],
+        "k": 0.8164
+       },
+       "registration": {
+        "dx": -0.83,
+        "dy": 0.22,
+        "peak": 0.043,
+        "blocks": 31,
+        "scale": 1.002,
+        "rot_deg": 0.119,
+        "max_resid": 41.08,
+        "displaced": [
+         [
+          640,
+          256,
+          39.0,
+          -21.0
+         ]
+        ]
+       },
+       "geometry": {
+        "ref": 0.828,
+        "art": 0.929,
+        "rel": 1.121,
+        "bad_cells": []
+       },
+       "buildings": [
+        {
+         "name": "General Services Complex",
+         "id": "9e2fa77d-4ed8-4703-b798-1262ed44c34a",
+         "area": 38767,
+         "centroid": [
+          755,
+          573
+         ],
+         "bbox": [
+          550,
+          421,
+          934,
+          714
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.17,
+         "bad": false
+        },
+        {
+         "name": "B.C. Matthews Hall",
+         "id": "2cfd6157-e274-44ec-b7c6-3cde148207eb",
+         "area": 30377,
+         "centroid": [
+          90,
+          724
+         ],
+         "bbox": [
+          0,
+          605,
+          200,
+          882
+         ],
+         "landmark": false,
+         "outline_rel": 1.01,
+         "contrast_rel": 1.31,
+         "bad": false
+        },
+        {
+         "name": "William G. Davis Computer Research Centre",
+         "id": "dc57e8cc-e915-4d25-bd08-75f1c6e43a12",
+         "area": 28931,
+         "centroid": [
+          926,
+          719
+         ],
+         "bbox": [
+          715,
+          575,
+          1024,
+          888
+         ],
+         "landmark": true,
+         "outline_rel": 1.02,
+         "contrast_rel": 1.09,
+         "bad": false
+        },
+        {
+         "name": "Mathematics & Computer",
+         "id": "49d9e102-9103-4bcf-ad10-453223e45cd2",
+         "area": 27587,
+         "centroid": [
+          669,
+          960
+         ],
+         "bbox": [
+          512,
+          861,
+          853,
+          1024
+         ],
+         "landmark": true,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.53,
+         "bad": false
+        },
+        {
+         "name": "Chemistry 2",
+         "id": "24863f69-4fe8-442e-b77d-a7131561e8a4",
+         "area": 16436,
+         "centroid": [
+          928,
+          948
+         ],
+         "bbox": [
+          824,
+          872,
+          1024,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.41,
+         "bad": false
+        },
+        {
+         "name": "Mathematics 3",
+         "id": "2aa0b435-4cc5-4344-a3d2-8189fca9e24c",
+         "area": 15838,
+         "centroid": [
+          492,
+          734
+         ],
+         "bbox": [
+          382,
+          658,
+          598,
+          809
+         ],
+         "landmark": false,
+         "outline_rel": 1.6,
+         "contrast_rel": 1.42,
+         "bad": false
+        },
+        {
+         "name": "Commisary",
+         "id": "1dcec97c-ab3b-4d74-b7d2-921417f223ac",
+         "area": 15088,
+         "centroid": [
+          673,
+          437
+         ],
+         "bbox": [
+          559,
+          361,
+          783,
+          513
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.18,
+         "bad": false
+        },
+        {
+         "name": "Energy Research Centre",
+         "id": "549494da-666c-4dcb-b7c7-897ccc2cd5b9",
+         "area": 11416,
+         "centroid": [
+          357,
+          638
+         ],
+         "bbox": [
+          268,
+          572,
+          446,
+          706
+         ],
+         "landmark": false,
+         "outline_rel": 1.69,
+         "contrast_rel": 1.8,
+         "bad": false
+        },
+        {
+         "name": "Central Services Building",
+         "id": "e6bc777d-38b4-4647-a619-f7c9f30f5ade",
+         "area": 10879,
+         "centroid": [
+          513,
+          570
+         ],
+         "bbox": [
+          432,
+          495,
+          588,
+          641
+         ],
+         "landmark": false,
+         "outline_rel": 1.09,
+         "contrast_rel": 1.85,
+         "bad": false
+        },
+        {
+         "name": "East Campus 3",
+         "id": "26561134-2af2-4d5d-9048-65713c07e925",
+         "area": 8176,
+         "centroid": [
+          693,
+          21
+         ],
+         "bbox": [
+          575,
+          0,
+          797,
+          64
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.23,
+         "bad": false
+        },
+        {
+         "name": "Physical Activities Complex",
+         "id": "f9e1a07f-3852-4b8d-9db6-7023bcafb06a",
+         "area": 8085,
+         "centroid": [
+          58,
+          985
+         ],
+         "bbox": [
+          2,
+          946,
+          126,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": 2.08,
+         "contrast_rel": 1.76,
+         "bad": false
+        },
+        {
+         "name": "Student Life Centre",
+         "id": "1dbcdeeb-66f8-4d4d-9b69-d1ef022fd090",
+         "area": 7282,
+         "centroid": [
+          220,
+          995
+         ],
+         "bbox": [
+          149,
+          941,
+          516,
+          1024
+         ],
+         "landmark": true,
+         "outline_rel": 0.97,
+         "contrast_rel": 1.77,
+         "bad": false
+        },
+        {
+         "name": "East Campus 2",
+         "id": "f71999f2-2b58-407b-aaaf-83e1a2daf81b",
+         "area": 7062,
+         "centroid": [
+          987,
+          200
+         ],
+         "bbox": [
+          922,
+          146,
+          1024,
+          269
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.11,
+         "bad": false
+        },
+        {
+         "name": "Lyle S. Hallman Institute for Health Promotion",
+         "id": "bda18e6e-9105-4f3a-9e63-d3baf02ef1c4",
+         "area": 4020,
+         "centroid": [
+          37,
+          884
+         ],
+         "bbox": [
+          0,
+          838,
+          103,
+          920
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.31,
+         "bad": false
+        }
+       ],
+       "shadow": {
+        "ref": 0.659,
+        "art": 0.619,
+        "pixels": 19667
+       },
+       "style": {
+        "against": [
+         "0_0"
+        ],
+        "hist": 0.33,
+        "dE": {
+         "roof": 6.1,
+         "wall": 4.8,
+         "road": 3.8,
+         "path": 9.2,
+         "paved": 8.4,
+         "parking": 7.5,
+         "tree": 11.6,
+         "green": 14.6
+        },
+        "dE_mean": 8.2
+       },
+       "seams": [],
+       "keep": {
+        "dx": 0.5,
+        "dy": 0.24,
+        "peak": 0.115,
+        "mad": 23.7
+       }
+      },
+      "file": "B002_-1_-1.png"
+     },
      "prompt": "TASK - tile -1_-1\nEdit B002_context_-1_-1.png (1536 x 1536 px). Its central 1024 x 1024 square (x 256-1279, y 256-1279) is the new tile, shown as the reference underdrawing; the border around it is the surroundings.\nB002_mask_-1_-1.png (same size) says what you may change: WHITE = paint, BLACK = keep exactly as it is. Black areas are finished artwork of neighbouring tiles: continue their colours, roofs, roads, paths, lawns and trees seamlessly across the boundary. White border areas that still show the underdrawing (or flat grey where nothing is mapped) are context: paint them consistently - we cut them away. (If your tool expects a transparent mask: transparent = white.)\nMatch the finished style of B002_style_0_0.png exactly: palette, pixel size, outlines, window pattern, tree style and light. Use B002_classes_-1_-1.png (legend: B002_classes_legend.png) for surface types and B002_depth_-1_-1.png for building heights.\nPaint this tile after 0_-1 and -1_0: where its border shows the underdrawing of 0_-1 / -1_0, match what you painted for those tiles earlier in this conversation.\n\nTHIS TILE SHOWS\n- William G. Davis Computer Research Centre (lower right, around x=926, y=719): DC - large brick-and-concrete research building with a stepped roofline\n- Mathematics & Computer (lower centre, around x=669, y=960): MC - long precast-concrete brutalist block with a repeated narrow window rhythm\n- Student Life Centre (lower left, around x=220, y=995): SLC - the student centre; follow the reference wall colour for its material\n- General Services Complex (right, around x=755, y=573): campus building - follow the reference wall colour for its material\n- B.C. Matthews Hall (lower left, around x=90, y=724): campus building - follow the reference wall colour for its material\n- Chemistry 2 (lower right, around x=928, y=948): campus building - follow the reference wall colour for its material\n- Mathematics 3 (lower centre, around x=492, y=734): campus building - follow the reference wall colour for its material\n- Commisary (centre, around x=673, y=437): campus building - follow the reference wall colour for its material\n- Energy Research Centre (centre, around x=357, y=638): campus building - follow the reference wall colour for its material\n- Streets and paths crossing it: Ring Road, Columbia Street West, Laurel Trail (Trans-Canada Trail), Path 3 East, William Tutte Way, Alumni Lane\n\nOUTPUT\n- Return the WHOLE canvas: 1536 x 1536 px, PNG, same framing as B002_context_-1_-1.png, named B002_-1_-1.png. We cut the tile out ourselves.\n- If you can't output 1536 x 1536: a larger image with exactly the same aspect ratio is fine; if 1024 x 1024 is your only size, return the same full canvas scaled to it. Never crop, pad or change the aspect ratio.",
-     "prompt_sha": "b4cf23874bbc"
+     "prompt_sha": "b4cf23874bbc",
+     "report_text": "B002 generation report\nTool: built-in image_gen.imagegen\nModel name: unknown (not exposed)\nModel version: unknown\nMode: reference-image style transfer/edit; mask supplied as image guidance for first two canvases and described as coordinates for third. Dedicated inpainting-mask control not exposed.\nTransparent background: false\nRequested output: 1536 x 1536, whole context canvas\nSeed: unknown\nSteps: unknown\nGuidance/strength: unknown\nQuality setting: unknown\nSuccessful generations: 3, one per tile. One earlier call was rejected before generation because it contained more than five input paths.\nGenerated in order: 0_-1, -1_0, -1_-1. Third canvas uses first two generated canvases as neighbour references.\nAll outputs below are unchanged original PNGs, copied byte for byte. No cropping, resizing, compositing or recompression performed.\nVisual review: full square campus compositions with consistent warm palette and no visible labels. Exact geometry, masked pixel preservation and seamless joins are unverified. Pipeline acceptance QA not run.\n\nB002_0_-1.png: 1254 x 1254 PNG; SHA256 276cab3ea102b7e7f5785466ae6f588d76d408aa27a0bbf0bda2e97156a25ad2\nB002_-1_0.png: 1254 x 1254 PNG; SHA256 9932bfddfb3625c0f26d91b7ce574ac2e5e306eee36c212ad3625145e0976067\nB002_-1_-1.png: 1254 x 1254 PNG; SHA256 c81f4f3cfc60c4605ecdee3659556641ff4aa62525573650635e41a2d323cbab\n"
     }
    },
    "packet": {

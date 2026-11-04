@@ -150,6 +150,10 @@ class ArtRelayTest(unittest.TestCase):
         wide = np.asarray(Image.fromarray(self.good).resize((1536, 1024)))
         quiet(I.process, 'B001', save(self.ret + '2', 'B001_0_0.png', wide), revision=False)
         self.assertEqual(self.checks('B001', '0_0'), {'size'})
+        # within the 1% aspect tolerance but not square: rejected as a size failure, never a crash
+        near = np.asarray(Image.fromarray(self.good).resize((1030, 1024)))
+        quiet(I.process, 'B001', save(self.ret + '3', 'B001_0_0.png', near), revision=False)
+        self.assertEqual(self.checks('B001', '0_0'), {'size'})
 
     def test_resume_and_report(self):
         folder = save(self.ret, 'B001_0_0.png', self.good)

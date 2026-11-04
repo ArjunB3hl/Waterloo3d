@@ -20,9 +20,12 @@ function sanitize(raw: unknown): Partial<Settings> {
   return out;
 }
 
+function readStored(): Partial<Settings> {
+  try { return sanitize(JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')); } catch { return {}; /* storage blocked or corrupt */ }
+}
+
 export function loadSettings(): Settings {
-  let stored: Partial<Settings> = {};
-  try { stored = sanitize(JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')); } catch { /* storage blocked or corrupt */ }
+  const stored = readStored();
   // Phones: the minimap would cover a large share of the map, so it starts hidden there (still toggleable).
   const small = Math.min(window.innerWidth, window.innerHeight) < 600;
   const s = { ...DEFAULT_SETTINGS, minimap: !small, ...stored };
@@ -31,8 +34,13 @@ export function loadSettings(): Settings {
   return s;
 }
 
-export function saveSettings(s: Settings): void {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch { /* private mode / quota: settings stay per-session */ }
+/**
+ * Persist only what the user changed: the patch is merged into the stored entry, so per-visit values (?perf=1) and
+ * viewport-derived defaults (no minimap on phones) never get written as if the user had chosen them.
+ */
+export function saveSettings(patch: Partial<Settings>): void {
+  const next = { ...readStored(), ...sanitize(patch) };
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { /* private mode / quota: settings stay per-session */ }
 }
 
 export function mergeSettings(s: Settings, patch: Partial<Settings>): Settings {

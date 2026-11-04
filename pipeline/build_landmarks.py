@@ -94,7 +94,11 @@ def main():
             if not b: print('MISSING', match); continue
             p = max(b['parts'], key=lambda q: q['top'])
             foot = shapely.unary_union([shapely.Polygon(q['ring']) for q in b['parts']])
-            c = foot.representative_point(); z = b['z0'] + p['top']
+            # anchor at a point of the footprint, at the roof height of the part under that point: lifting it to the
+            # tallest part's roof would float the label above a lower wing
+            c = foot.representative_point()
+            under = [q['top'] for q in b['parts'] if shapely.Polygon(q['ring'], q['holes']).covers(c)]
+            z = b['z0'] + (max(under) if under else p['top'])
             gsrc = f"OSM {b['osm']} via Overture {rel}"
             srcs = sorted({q['src'] for q in b['parts']})
             hsrc = ', '.join({'osm_height': 'OSM height tag', 'osm_levels': 'OSM building:levels x storey height (approximation)',

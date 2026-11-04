@@ -66,6 +66,14 @@ def main():
             if poly.is_valid and not poly.is_empty:
                 p = poly.representative_point()
                 groups[name] = {'kind': kind, 'pts': [np.array([[p.x, p.y]])]}
+    # named streams and rivers mapped as lines (Laurel Creek, Clair Creek...); a creek sharing its name with a street
+    # gets its own entry
+    for l in S.get('lines', []):
+        name = (l.get('name') or '').strip()
+        if not name or len(l['xy']) < 2: continue
+        key = name if groups.get(name, {}).get('kind', 'water') == 'water' else name + '\x00water'
+        g = groups.setdefault(key, {'kind': 'water', 'pts': [], 'name': name})
+        g['pts'].append(densify(np.asarray(l['xy'], float)))
 
     entries = []
     for name, g in groups.items():
@@ -79,7 +87,7 @@ def main():
         cand = c[inside] if inside.any() else c
         k = keys[inside] if inside.any() else keys
         best = int(np.argmin(((cand - cand.mean(0)) ** 2).sum(1)))  # vertex nearest the centroid lies on the feature
-        entries.append({'n': name, 'k': g['kind'], 'c': [round(float(cand[best, 0]), 1), round(float(cand[best, 1]), 1)], 't': str(k[best])})
+        entries.append({'n': g.get('name', name), 'k': g['kind'], 'c': [round(float(cand[best, 0]), 1), round(float(cand[best, 1]), 1)], 't': str(k[best])})
 
     entries.sort(key=lambda e: (e['t'] not in published, e['n'].lower()))
     out = {'version': 1, 'generated_utc': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),

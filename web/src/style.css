@@ -110,7 +110,8 @@ button { font: inherit; color: inherit; }
 
 /* bottom centre: fly button + landmark strip */
 .bottom {
-  position: fixed; left: 50%; bottom: 40px; translate: -50% 0; width: min(760px, calc(100vw - 2 * var(--gap) - 230px));
+  /* centred, and clear of the 200 px minimap on both sides (it shares the bottom: 40px baseline) */
+  position: fixed; left: 50%; bottom: 40px; translate: -50% 0; width: min(760px, calc(100vw - 4 * var(--gap) - 400px));
   display: flex; flex-direction: column; align-items: center; gap: 10px;
 }
 .strip { width: 100%; border-radius: var(--radius); padding: 4px 6px 8px; }
@@ -207,6 +208,12 @@ kbd { font: 11.5px var(--mono); padding: 1px 6px; border-radius: 5px; border: 1p
 /* goose mode: the actor HUD takes over; hide controls that only make sense while dragging the map */
 .actor-active .map-only, .actor-active #labels .map-label, .actor-active .search-marker { display: none !important; }
 .actor-active .minimap { opacity: 0.75; }
+/* in flight the minimap is display-only: never let it swallow taps meant for the flight pad below it */
+.actor-active .bottom-left, .actor-active .minimap { pointer-events: none; }
+@media (pointer: coarse) {
+  /* the touch flight pad sits bottom-left, exactly where the minimap is on tablets */
+  .actor-active .bottom-left { display: none; }
+}
 
 /* ------------------------------------------------------------------ phones: compact controls, bottom sheets */
 @media (max-width: 640px) {

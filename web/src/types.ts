@@ -8,6 +8,7 @@ export interface TileEntry {
   kind: 'art' | 'reference';      // 'reference' = procedural reference render awaiting generated artwork
   v: string;                      // content hash of the 1024 artwork (cache-busting query ?v=)
   hv: string;                     // content hash of the height tile
+  lv?: string;                    // content hash of the life mask (older manifests: absent, fall back to v)
   art_version: string | null; batch: string | null;
 }
 
@@ -70,6 +71,8 @@ export interface MapAPI {
   heightAt(cx: number, cy: number): number;
   /** Load (bounded LRU) and decode a height tile into Float32 metres (NaN = invalid). null if tile missing. */
   getHeightTile(i: number, j: number): Promise<Float32Array | null>;
+  /** Synchronous lookup of an already decoded height tile (no load is started); null if not cached. */
+  peekHeightTile?(i: number, j: number): Float32Array | null;
   /** Load a life mask tile (RGBA ImageBitmap 1024). null if missing. */
   getLifeTile(i: number, j: number): Promise<ImageBitmap | null>;
   /** 2D canvas holding the composed map for the current frame (device px = CSS px * dpr, dpr capped at 2). */
