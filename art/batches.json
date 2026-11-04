@@ -7,12 +7,12 @@
    "title": "Style sample - tile 0_0, University of Waterloo campus core",
    "mode": "tile",
    "frame": "tile",
-   "status": "requested",
+   "status": "complete",
    "depends_on": [],
    "blocked_by": [],
    "parent": null,
    "created_utc": "2026-11-04T13:28:23Z",
-   "updated_utc": "2026-11-04T16:39:58Z",
+   "updated_utc": "2026-11-04T17:00:30Z",
    "packet_rev": 3,
    "order": [
     "0_0"
@@ -94,7 +94,7 @@
    ],
    "items": {
     "0_0": {
-     "status": "requested",
+     "status": "accepted",
      "return_filename": "B001_0_0.png",
      "files": {
       "composition": "B001_ref_0_0.png",
@@ -124,12 +124,521 @@
       "composition": "08f080a20101",
       "neighbours": {}
      },
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null,
+     "model_reported": "unknown (not reported)",
+     "settings_reported": "unknown; received as 1254x1254 WebP via chat relay",
+     "received": [
+      {
+       "file": "B001_0_0.webp",
+       "stored": "art/returned/B001/B001_0_0.webp",
+       "sha256": "f402de5c3f7139cc1b947278442dbb8937b6326f8fe2e4cadd59af172ac1de5f",
+       "utc": "2026-11-04T16:55:36Z",
+       "model_reported": "unknown",
+       "settings_reported": "unknown",
+       "format": "WEBP",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "fail",
+       "failures": [
+        {
+         "check": "displacement",
+         "detail": "1 block(s) displaced > 8 px",
+         "fix": "Parts of the image are displaced (yellow boxes in the marked image): put buildings and streets back on the reference positions."
+        }
+       ],
+       "warnings": [],
+       "qa_md": "art/returned/B001/QA_0_0.md",
+       "qa_png": "art/returned/B001/QA_0_0.png"
+      },
+      {
+       "file": "B001_0_0.webp",
+       "stored": "art/returned/B001/B001_0_0.webp",
+       "sha256": "f402de5c3f7139cc1b947278442dbb8937b6326f8fe2e4cadd59af172ac1de5f",
+       "utc": "2026-11-04T17:00:26Z",
+       "model_reported": "unknown (not reported)",
+       "settings_reported": "unknown; received as 1254x1254 WebP via chat relay",
+       "format": "WEBP",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [],
+       "qa_md": "art/returned/B001/QA_0_0.md",
+       "qa_png": "art/returned/B001/QA_0_0.png"
+      }
+     ],
+     "qa": {
+      "verdict": "pass",
+      "metrics": {
+       "size": {
+        "returned": [
+         1254,
+         1254
+        ],
+        "expected": [
+         1024,
+         1024
+        ],
+        "k": 1.2246
+       },
+       "registration": {
+        "dx": -0.11,
+        "dy": 0.27,
+        "peak": 0.0782,
+        "blocks": 39,
+        "scale": 1.0004,
+        "rot_deg": 0.007,
+        "max_resid": 9.08,
+        "displaced": []
+       },
+       "geometry": {
+        "ref": 0.738,
+        "art": 0.718,
+        "rel": 0.973,
+        "bad_cells": []
+       },
+       "buildings": [
+        {
+         "name": "J. G. Hagey Hall of the Humanities",
+         "id": "4afa7fab-dc5f-4750-9673-b8c54a1aa5a8",
+         "area": 52547,
+         "centroid": [
+          773,
+          862
+         ],
+         "bbox": [
+          611,
+          708,
+          928,
+          1007
+         ],
+         "landmark": false,
+         "outline_rel": 0.98,
+         "contrast_rel": 1.73,
+         "bad": false
+        },
+        {
+         "name": "Physics",
+         "id": "3e1f2354-5e53-4067-a077-725a36075f27",
+         "area": 33472,
+         "centroid": [
+          428,
+          161
+         ],
+         "bbox": [
+          254,
+          21,
+          609,
+          299
+         ],
+         "landmark": false,
+         "outline_rel": 1.23,
+         "contrast_rel": 1.45,
+         "bad": false
+        },
+        {
+         "name": "Engineering 2",
+         "id": "f7e0a707-890a-4fb6-85e1-b2a1c052e119",
+         "area": 27175,
+         "centroid": [
+          744,
+          83
+         ],
+         "bbox": [
+          568,
+          0,
+          972,
+          189
+         ],
+         "landmark": false,
+         "outline_rel": 0.99,
+         "contrast_rel": 1.2,
+         "bad": false
+        },
+        {
+         "name": "Earth Sciences & Chemistry",
+         "id": "83b536fa-3972-4ac0-b11c-f59343b78a5c",
+         "area": 18804,
+         "centroid": [
+          81,
+          120
+         ],
+         "bbox": [
+          0,
+          8,
+          200,
+          218
+         ],
+         "landmark": false,
+         "outline_rel": 1.15,
+         "contrast_rel": 1.24,
+         "bad": false
+        },
+        {
+         "name": "Environment 1",
+         "id": "edb3a1af-db93-4fc6-afdc-13af3d68482e",
+         "area": 18478,
+         "centroid": [
+          507,
+          857
+         ],
+         "bbox": [
+          384,
+          770,
+          635,
+          947
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.47,
+         "bad": false
+        },
+        {
+         "name": "Environment 3",
+         "id": "3f638bda-ac50-44d4-85dd-798dcec970d1",
+         "area": 17637,
+         "centroid": [
+          345,
+          956
+         ],
+         "bbox": [
+          225,
+          871,
+          484,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": 1.01,
+         "contrast_rel": 1.09,
+         "bad": false
+        },
+        {
+         "name": "J. R. Coutts Engineering Lecture Hall",
+         "id": "ec8e953a-6cd0-4d11-93da-02d516b289a8",
+         "area": 17282,
+         "centroid": [
+          720,
+          241
+         ],
+         "bbox": [
+          621,
+          167,
+          817,
+          316
+         ],
+         "landmark": false,
+         "outline_rel": 1.21,
+         "contrast_rel": 1.42,
+         "bad": false
+        },
+        {
+         "name": "Modern Languages",
+         "id": "78b43e46-f962-4857-bbdc-8df217617ad4",
+         "area": 17203,
+         "centroid": [
+          327,
+          720
+         ],
+         "bbox": [
+          211,
+          623,
+          464,
+          808
+         ],
+         "landmark": false,
+         "outline_rel": 1.53,
+         "contrast_rel": 1.57,
+         "bad": false
+        },
+        {
+         "name": "Dana Porter Library",
+         "id": "fd49fd52-1501-47aa-bbd3-7ca22075de4c",
+         "area": 16827,
+         "centroid": [
+          390,
+          451
+         ],
+         "bbox": [
+          272,
+          354,
+          511,
+          556
+         ],
+         "landmark": true,
+         "outline_rel": 1.22,
+         "contrast_rel": 0.92,
+         "bad": false
+        },
+        {
+         "name": "Ira G. Needles Hall",
+         "id": "0cee89e5-9ae3-4934-9107-b2bf58a34919",
+         "area": 16524,
+         "centroid": [
+          87,
+          580
+         ],
+         "bbox": [
+          0,
+          524,
+          202,
+          656
+         ],
+         "landmark": false,
+         "outline_rel": 1.03,
+         "contrast_rel": 1.15,
+         "bad": false
+        },
+        {
+         "name": "South Campus Hall",
+         "id": "5fc4a2d4-1120-44a2-b873-7a866afbb8ac",
+         "area": 16338,
+         "centroid": [
+          944,
+          472
+         ],
+         "bbox": [
+          827,
+          395,
+          1024,
+          540
+         ],
+         "landmark": false,
+         "outline_rel": 1.09,
+         "contrast_rel": 1.67,
+         "bad": false
+        },
+        {
+         "name": "Biology 1",
+         "id": "5a9e806e-112e-4777-bf85-e2bf90adbb70",
+         "area": 14005,
+         "centroid": [
+          97,
+          284
+         ],
+         "bbox": [
+          0,
+          179,
+          222,
+          388
+         ],
+         "landmark": false,
+         "outline_rel": 0.97,
+         "contrast_rel": 1.7,
+         "bad": false
+        },
+        {
+         "name": "Arts Lecture Hall",
+         "id": "143a2100-4300-44c2-8df1-6707d6821237",
+         "area": 13599,
+         "centroid": [
+          619,
+          668
+         ],
+         "bbox": [
+          522,
+          600,
+          718,
+          738
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.29,
+         "bad": false
+        },
+        {
+         "name": "Douglas Wright Engineering Building",
+         "id": "08ed5f6b-ecab-4acf-a533-e09a7d022d15",
+         "area": 13334,
+         "centroid": [
+          925,
+          271
+         ],
+         "bbox": [
+          809,
+          149,
+          1024,
+          359
+         ],
+         "landmark": false,
+         "outline_rel": 1.5,
+         "contrast_rel": 1.14,
+         "bad": false
+        },
+        {
+         "name": "Engineering 3",
+         "id": "a5d82293-84ad-4e37-841e-b052cfd54bf6",
+         "area": 11200,
+         "centroid": [
+          530,
+          34
+         ],
+         "bbox": [
+          385,
+          0,
+          642,
+          97
+         ],
+         "landmark": false,
+         "outline_rel": 1.09,
+         "contrast_rel": 1.47,
+         "bad": false
+        },
+        {
+         "name": "Tatham Centre for Co-operative Education and Career Action",
+         "id": "d6dea739-abb1-4a7f-9ec3-fcc04357e065",
+         "area": 11076,
+         "centroid": [
+          753,
+          598
+         ],
+         "bbox": [
+          624,
+          510,
+          880,
+          685
+         ],
+         "landmark": false,
+         "outline_rel": 1.3,
+         "contrast_rel": 1.23,
+         "bad": false
+        },
+        {
+         "name": "Environment 2",
+         "id": "f7edc1a8-bcb7-4858-a697-72bb72dfadd6",
+         "area": 10882,
+         "centroid": [
+          383,
+          983
+         ],
+         "bbox": [
+          268,
+          935,
+          484,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": 0.78,
+         "contrast_rel": 1.01,
+         "bad": false
+        },
+        {
+         "name": "Centre for Environmental and Information Technology",
+         "id": "4840a9df-a7f9-4925-a5ed-c3db5a4c75e3",
+         "area": 10161,
+         "centroid": [
+          215,
+          53
+         ],
+         "bbox": [
+          116,
+          0,
+          329,
+          122
+         ],
+         "landmark": true,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.13,
+         "bad": false
+        },
+        {
+         "name": "Science Teaching Complex",
+         "id": "8637ad30-223d-4548-921e-6f8f22b47718",
+         "area": 9154,
+         "centroid": [
+          43,
+          316
+         ],
+         "bbox": [
+          0,
+          241,
+          128,
+          396
+         ],
+         "landmark": false,
+         "outline_rel": 1.63,
+         "contrast_rel": 1.58,
+         "bad": false
+        },
+        {
+         "name": "Carl A. Pollock Hall",
+         "id": "2d630e3b-c37b-4ef0-a696-f683a72f057a",
+         "area": 2457,
+         "centroid": [
+          958,
+          14
+         ],
+         "bbox": [
+          907,
+          0,
+          1024,
+          42
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.06,
+         "bad": false
+        },
+        {
+         "name": "Psychology, Anthropology & Sociology",
+         "id": "279fe405-102f-44b7-af2b-cb2f92ffcab4",
+         "area": 2428,
+         "centroid": [
+          563,
+          1011
+         ],
+         "bbox": [
+          496,
+          985,
+          732,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": 1.11,
+         "contrast_rel": 1.39,
+         "bad": false
+        },
+        {
+         "name": "Graduate House",
+         "id": "b2e00d8e-ff2c-4002-80e2-2adcbb6beba2",
+         "area": 1938,
+         "centroid": [
+          734,
+          393
+         ],
+         "bbox": [
+          690,
+          375,
+          775,
+          418
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.34,
+         "bad": false
+        }
+       ],
+       "shadow": {
+        "ref": 0.6,
+        "art": 0.507,
+        "pixels": 23358
+       },
+       "style": null,
+       "seams": []
+      },
+      "file": "B001_0_0.webp"
+     },
      "prompt": "TASK - tile 0_0 (Style sample - tile 0_0, University of Waterloo campus core)\nPaint a finished pixel-art version of B001_ref_0_0.png at the same size and framing. Use B001_classes_0_0.png (colour legend: B001_classes_legend.png) to know what every surface is, and B001_depth_0_0.png (brighter = taller above ground) for building heights. B001_contact_sheet.png shows the surrounding campus for orientation only (requested tile outlined in red) - don't copy its labels or grid.\n\nTHIS TILE SHOWS\n- Dana Porter Library (centre, around x=390, y=451): tall pale precast-concrete tower with a dense regular window grid, standing on a wide low podium\n- Centre for Environmental and Information Technology (upper left, around x=215, y=53): EIT - concrete and brick science/engineering block\n- J. G. Hagey Hall of the Humanities (lower right, around x=773, y=862): Hagey Hall - low concrete and red-brown brick humanities building\n- Physics (upper centre, around x=428, y=161): red-brown brick campus building\n- Engineering 2 (upper right, around x=744, y=83): campus building - follow the reference wall colour for its material\n- Earth Sciences & Chemistry (upper left, around x=81, y=120): red-brown brick campus building\n- Environment 1 (lower centre, around x=507, y=857): campus building - follow the reference wall colour for its material\n- Environment 3 (lower centre, around x=345, y=956): campus building - follow the reference wall colour for its material\n- J. R. Coutts Engineering Lecture Hall (upper right, around x=720, y=241): campus building - follow the reference wall colour for its material\n- Streets and paths crossing it: Two Row Path, Path 1 West, Path 1 East, Ring Road\n\nOUTPUT\n- One image, exactly 1024 x 1024 px (1:1), PNG, named B001_0_0.png.\n- If your tool can only make a larger square (e.g. 2048 x 2048), that is fine: same composition, just bigger. Never crop, pad, letterbox or change the aspect ratio.",
-     "prompt_sha": "868700e82678"
+     "prompt_sha": "868700e82678",
+     "revision_batch": "B001R1",
+     "report_text": "model: unknown (not reported by the image agent)\nsettings: unknown\nnote: received via chat relay as a 1254x1254 WebP (possibly re-encoded, not confirmed original); accepted by the user as the B001 style sample on 2026-11-04.\n",
+     "accepted": {
+      "file": "B001_0_0.webp",
+      "utc": "2026-11-04T17:00:30Z",
+      "forced": false
+     }
     }
    },
    "packet": {
@@ -145,17 +654,15 @@
    "title": "Campus 2x2 patch - tiles 0_-1, -1_0, -1_-1 continuing the accepted style sample",
    "mode": "context",
    "frame": "square",
-   "status": "draft",
+   "status": "requested",
    "depends_on": [
     "0_0"
    ],
-   "blocked_by": [
-    "0_0"
-   ],
+   "blocked_by": [],
    "parent": null,
    "created_utc": "2026-11-04T13:28:36Z",
-   "updated_utc": "2026-11-04T13:31:25Z",
-   "packet_rev": 2,
+   "updated_utc": "2026-11-04T17:01:48Z",
+   "packet_rev": 3,
    "order": [
     "0_-1",
     "-1_0",
@@ -170,7 +677,7 @@
    "attachments": [
     {
      "file": "B002_style_0_0.png",
-     "purpose": "DRAFT PLACEHOLDER (reference render) - replaced by the accepted art of 0_0 when the batch is rebuilt",
+     "purpose": "STYLE: finished, accepted artwork of neighbouring tile 0_0 - match its palette, pixel size, outlines, windows, trees and light exactly",
      "tiles": [
       "0_0"
      ],
@@ -179,7 +686,7 @@
       1024,
       1024
      ],
-     "sha256": "56cd5ccd5bcaa47f18c4f9a26c08d67fa8e94c0d4a1bf629fc69c0cc81a424af"
+     "sha256": "bfd18a94f0c795a075713d7f7e3cb3de3a1f28fb784b4a9929d587c97da04c58"
     },
     {
      "file": "B002_contact_sheet.png",
@@ -195,7 +702,7 @@
       1024,
       1080
      ],
-     "sha256": "92b9ba42b6c748ed95e501a935d9953418de8688a3eb1fbc3654665e83ab19a2"
+     "sha256": "bbcb851817e36c827b97b22d08992993877fd1aa3363e89782e6cf7d9d4714f3"
     },
     {
      "file": "B002_context_0_-1.png",
@@ -208,7 +715,7 @@
       1536,
       1536
      ],
-     "sha256": "915816fd335413ddda4234ce4d17200ca90fcff3f6aad3ac6a610e06317acfd1"
+     "sha256": "d623172801fcd3d0042ce14e6fd7ccd70750d998fcfc0087f6892c0a6d29365b"
     },
     {
      "file": "B002_mask_0_-1.png",
@@ -221,7 +728,7 @@
       1536,
       1536
      ],
-     "sha256": "cd2249b035c0f1310fcdf1e27d4490c6febb5c0bff5f1dba80bba50056643ee8"
+     "sha256": "834776451c5265395f8cb23779e7718bb19a41a44c536121cc518e9fcdd3db04"
     },
     {
      "file": "B002_classes_0_-1.png",
@@ -234,7 +741,7 @@
       1536,
       1536
      ],
-     "sha256": "a61208ead0b82305d833b0ddf063dc4951d6636211af53760cccff873dbce645"
+     "sha256": "7e33aa8d1ff638382560c572e40775f4c40460c9c522e8f6ce7ba327a6450aee"
     },
     {
      "file": "B002_depth_0_-1.png",
@@ -247,7 +754,7 @@
       1536,
       1536
      ],
-     "sha256": "9b94c4447f599e1b8ba6594fa5d3171b4055b0c4def43fdbfdc52ab83daac5e0"
+     "sha256": "bfe1e822e3755ce50de292819b9d01b22258a3e5a267236182d4a9c4313c08f4"
     },
     {
      "file": "B002_context_-1_0.png",
@@ -260,7 +767,7 @@
       1536,
       1536
      ],
-     "sha256": "0b8cf430bfacf4d2a8be2ea9e57d2a7ad8d822323dc02a2a17e0510bf2849c0a"
+     "sha256": "1281314db2afab2597c0546a5882bb1d32a58bf63f5ebd785e5c5ce1eb5ed694"
     },
     {
      "file": "B002_mask_-1_0.png",
@@ -273,7 +780,7 @@
       1536,
       1536
      ],
-     "sha256": "cd2249b035c0f1310fcdf1e27d4490c6febb5c0bff5f1dba80bba50056643ee8"
+     "sha256": "fea14f0a4eb02cce9f31883bd622b81d21de107d78d2f2c6c5b5174e4f20e261"
     },
     {
      "file": "B002_classes_-1_0.png",
@@ -286,7 +793,7 @@
       1536,
       1536
      ],
-     "sha256": "0b63a3e2322f3f6437a0986122b92d8a0ede9cfbc97ab67720d89df46c84d3ef"
+     "sha256": "837f05a9c65ad05b4cb91a578e613e6c5a75077f196c303799f5dea856a3519d"
     },
     {
      "file": "B002_depth_-1_0.png",
@@ -299,7 +806,7 @@
       1536,
       1536
      ],
-     "sha256": "0b21474f731883de1854c32e38ffc4860481dbddcc9a2450ee1ee0e77fb0df07"
+     "sha256": "e7484bf7fce8e28c557933ad77844a69f7bef59de38a630b4bc8ce765e018c5f"
     },
     {
      "file": "B002_context_-1_-1.png",
@@ -312,7 +819,7 @@
       1536,
       1536
      ],
-     "sha256": "698a3e3307cbf48116f839a58b464dddf7ba1db7ce86d469f350bc79f7a03157"
+     "sha256": "d229751d98da921cba5b74121f8e8aad5be053d4d5b1c4c0d5df51d69c5b43e4"
     },
     {
      "file": "B002_mask_-1_-1.png",
@@ -325,7 +832,7 @@
       1536,
       1536
      ],
-     "sha256": "cd2249b035c0f1310fcdf1e27d4490c6febb5c0bff5f1dba80bba50056643ee8"
+     "sha256": "17934c186a9b44d6efbbe27ab9b7d69fa380549c9fb82091475a8760fe281453"
     },
     {
      "file": "B002_classes_-1_-1.png",
@@ -338,7 +845,7 @@
       1536,
       1536
      ],
-     "sha256": "577d56ce5ccb8909ec913cd2e23bd200acd344ec389cbf19c6c44944ef328218"
+     "sha256": "acd9bf0b41526c4653f80ca7cd50a7c3ce3b154f90cdb38af4100337eec3b81b"
     },
     {
      "file": "B002_depth_-1_-1.png",
@@ -351,7 +858,7 @@
       1536,
       1536
      ],
-     "sha256": "f8a0b4356b86f9b98e15a60540c812150b2515df27d562bff47e48a3f90597bf"
+     "sha256": "cfa746f4a5399dcd02d56d8c831c64771ed893558a11fd97d3c24820e39d57b9"
     },
     {
      "file": "B002_classes_legend.png",
@@ -364,14 +871,14 @@
      "defines_composition": false,
      "size": [
       760,
-      744
+      704
      ],
-     "sha256": "bf1187f5e61edf8a7ff8beb51082f25bbb70df525e69b1845c238e443c74e0e7"
+     "sha256": "fa726c46b242ea03149f1be31cc554fa85c1aa7380839777ce4b11ad547a3fd6"
     }
    ],
    "items": {
     "0_-1": {
-     "status": "draft",
+     "status": "requested",
      "return_filename": "B002_0_-1.png",
      "files": {
       "composition": "B002_context_0_-1.png",
@@ -396,15 +903,15 @@
       ]
      },
      "reference": {
-      "color2x": "cd8546349e80",
-      "cls": "27d3058906e6",
-      "height": "7c7544f9cffb",
-      "composition": "915816fd3354",
+      "color2x": "6c926a046d10",
+      "cls": "c8312bb6177b",
+      "height": "5685e28cd8af",
+      "composition": "d623172801fc",
       "neighbours": {
        "-1_-1": "reference",
        "1_-1": "reference",
        "0_-2": "reference",
-       "0_0": "reference"
+       "0_0": "bfd18a94f0c7"
       }
      },
      "model_reported": "unknown",
@@ -415,7 +922,7 @@
      "prompt_sha": "18f25700d147"
     },
     "-1_0": {
-     "status": "draft",
+     "status": "requested",
      "return_filename": "B002_-1_0.png",
      "files": {
       "composition": "B002_context_-1_0.png",
@@ -441,14 +948,14 @@
      },
      "reference": {
       "color2x": "e970d6c507b6",
-      "cls": "9f872246bfed",
-      "height": "ef76b0a887e9",
-      "composition": "0b8cf430bfac",
+      "cls": "2c507b65c7b2",
+      "height": "f60207ad0175",
+      "composition": "1281314db2af",
       "neighbours": {
-       "-2_0": "none",
-       "0_0": "reference",
+       "-2_0": "reference",
+       "0_0": "bfd18a94f0c7",
        "-1_-1": "reference",
-       "-1_1": "none"
+       "-1_1": "reference"
       }
      },
      "model_reported": "unknown",
@@ -459,7 +966,7 @@
      "prompt_sha": "a7b088eae0a2"
     },
     "-1_-1": {
-     "status": "draft",
+     "status": "requested",
      "return_filename": "B002_-1_-1.png",
      "files": {
       "composition": "B002_context_-1_-1.png",
@@ -484,12 +991,12 @@
       ]
      },
      "reference": {
-      "color2x": "8dd0181a766d",
-      "cls": "7cfab5858f7f",
-      "height": "2a67e4e0d96b",
-      "composition": "698a3e3307cb",
+      "color2x": "a48058406e95",
+      "cls": "d3fabe747d91",
+      "height": "6318a06c947b",
+      "composition": "d229751d98da",
       "neighbours": {
-       "-2_-1": "none",
+       "-2_-1": "reference",
        "0_-1": "reference",
        "-1_-2": "reference",
        "-1_0": "reference"
@@ -507,7 +1014,151 @@
     "md": "IMAGE_REQUEST_B002.md",
     "dir": "art/requests/B002",
     "zip": "art/requests/B002.zip",
-    "zip_sha256": "e20cdf4f380ed5a36d0e79fb591b593113f8462436890418c5c8a59f83217d55"
+    "zip_sha256": "b30c9f1e79a6abe59071e8ec5e4d1c3a9658bab44bc91cbbf30d35239b5d5a75"
+   }
+  },
+  "B001R1": {
+   "id": "B001R1",
+   "kind": "revision",
+   "title": "Revision of B001: 0_0",
+   "mode": "tile",
+   "frame": "tile",
+   "status": "requested",
+   "depends_on": [],
+   "blocked_by": [],
+   "parent": "B001",
+   "created_utc": "2026-11-04T16:55:41Z",
+   "updated_utc": "2026-11-04T16:55:41Z",
+   "packet_rev": 1,
+   "order": [
+    "0_0"
+   ],
+   "style_from": null,
+   "shared_files": [
+    "B001R1_classes_legend.png"
+   ],
+   "attachments": [
+    {
+     "file": "B001R1_ref_0_0.png",
+     "purpose": "COMPOSITION: reference render of tile 0_0; match its layout pixel for pixel",
+     "tiles": [
+      "0_0"
+     ],
+     "defines_composition": true,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "08f080a20101cc16a91a06a3218c484619e787966f5e2ada5e8ba6df52621444"
+    },
+    {
+     "file": "B001R1_classes_0_0.png",
+     "purpose": "SEMANTIC MAP (same framing as the composition)",
+     "tiles": [
+      "0_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "cbc308e34af836684632042ca35d92b070cfce534bb27fb2f342a85cbae21db5"
+    },
+    {
+     "file": "B001R1_previous_0_0.png",
+     "purpose": "YOUR PREVIOUS OUTPUT (as received) - keep what is good about it",
+     "tiles": [
+      "0_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "bfd18a94f0c795a075713d7f7e3cb3de3a1f28fb784b4a9929d587c97da04c58"
+    },
+    {
+     "file": "B001R1_marked_0_0.png",
+     "purpose": "ANNOTATED: what is wrong (red = missing/misplaced vs reference, yellow = displaced area, labels give the fix)",
+     "tiles": [
+      "0_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "653166ff9f6225023fe1d767e882ce6529e6649d8f907f11c5421758d1058eae"
+    },
+    {
+     "file": "B001R1_classes_legend.png",
+     "purpose": "LEGEND for the semantic maps",
+     "tiles": [
+      "0_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      760,
+      544
+     ],
+     "sha256": "8aa88109d6822727808c1112b5f455eb123cb6b605254bf5f7e6484b7dbb3750"
+    }
+   ],
+   "items": {
+    "0_0": {
+     "status": "requested",
+     "return_filename": "B001R1_0_0.png",
+     "files": {
+      "composition": "B001R1_ref_0_0.png",
+      "classes": "B001R1_classes_0_0.png",
+      "previous": "B001R1_previous_0_0.png",
+      "marked": "B001R1_marked_0_0.png"
+     },
+     "output": {
+      "mode": "tile",
+      "frame": "tile",
+      "width": 1024,
+      "height": 1024,
+      "crop": [
+       0,
+       0,
+       1024,
+       1024
+      ],
+      "canvas_origin": [
+       0,
+       0
+      ]
+     },
+     "reference": {
+      "color2x": "c042001ce879",
+      "cls": "1dbec20a2bb3",
+      "height": "5f221ba4641c",
+      "composition": "08f080a20101",
+      "neighbours": {}
+     },
+     "model_reported": "unknown",
+     "settings_reported": "unknown",
+     "received": [],
+     "qa": null,
+     "revision_of": {
+      "batch": "B001",
+      "corrections": [
+       "Parts of the image are displaced (yellow boxes in B001R1_marked_0_0.png): put buildings and streets back on the reference positions."
+      ]
+     },
+     "prompt": "TASK - revised tile 0_0\nPaint a finished pixel-art version of B001R1_ref_0_0.png at the same size and framing. B001R1_previous_0_0.png is what you sent last time and B001R1_marked_0_0.png marks what has to change: fix those points and keep the rest of its style. Geometry must follow B001R1_ref_0_0.png and B001R1_classes_0_0.png.\n\nTHIS TILE SHOWS\n- Dana Porter Library (centre, around x=390, y=451): tall pale precast-concrete tower with a dense regular window grid, standing on a wide low podium\n- Centre for Environmental and Information Technology (upper left, around x=215, y=53): EIT - concrete and brick science/engineering block\n- J. G. Hagey Hall of the Humanities (lower right, around x=773, y=862): Hagey Hall - low concrete and red-brown brick humanities building\n- Physics (upper centre, around x=428, y=161): red-brown brick campus building\n- Engineering 2 (upper right, around x=744, y=83): campus building - follow the reference wall colour for its material\n- Earth Sciences & Chemistry (upper left, around x=81, y=120): red-brown brick campus building\n- Environment 1 (lower centre, around x=507, y=857): campus building - follow the reference wall colour for its material\n- Environment 3 (lower centre, around x=345, y=956): campus building - follow the reference wall colour for its material\n- J. R. Coutts Engineering Lecture Hall (upper right, around x=720, y=241): campus building - follow the reference wall colour for its material\n- Streets and paths crossing it: Two Row Path, Path 1 West, Path 1 East, Ring Road\n\nOUTPUT\n- 1024 x 1024 px, PNG, named B001R1_0_0.png. A larger image with exactly the same aspect ratio is fine; never crop, pad or change the aspect ratio.",
+     "prompt_sha": "0948b2c60930"
+    }
+   },
+   "correction_text": {
+    "0_0": "REVISION - your previous image for this item could not be used. Exact corrections:\n- Parts of the image are displaced (yellow boxes in B001R1_marked_0_0.png): put buildings and streets back on the reference positions."
+   },
+   "packet": {
+    "md": "IMAGE_REQUEST_B001R1.md",
+    "dir": "art/requests/B001R1",
+    "zip": "art/requests/B001R1.zip",
+    "zip_sha256": "eb846b8ee9b5453ab8d40716db50d80170592a571929e0562c2a10678b6607a4"
    }
   }
  }

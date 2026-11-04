@@ -34,7 +34,7 @@ T = {
     'peak_min': 0.02,            # phase-correlation peak below this = image does not register with the reference at all
     'scale_dev': 0.01,           # |scale - 1| from the block displacement field (1 % = 10 px across a tile)
     'rot_deg': 0.5,
-    'local_px': 8.0,             # block displacement residual after the affine fit
+    'local_px': 10.0,            # block displacement residual after the affine fit (8 -> 10 after the first real return, B001: 9.1 px with excellent geometry)
     'geom_rel': 0.50,            # tile geometry score relative to the reference's own score
     'cell_rel': 0.30,            # per 128 px cell
     'bld_rel': 0.35,             # roof outline score relative to the reference

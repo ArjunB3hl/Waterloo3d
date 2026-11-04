@@ -1,9 +1,6 @@
 # Image request B002 - Campus 2x2 patch - tiles 0_-1, -1_0, -1_-1 continuing the accepted style sample
 
-> **DRAFT - do not send yet.** Waiting for 0_0 to be accepted. After that, rebuild with
-> `python3 pipeline/art_request.py build B002` - the margins then show the finished art.
-
-Packet revision 2, built 2026-11-04T13:31:25Z. Status: `draft`.
+Packet revision 3, built 2026-11-04T17:01:48Z. Status: `requested`.
 
 ## What to do (for the user)
 
@@ -53,9 +50,9 @@ ATTACHED FILES
 - B002_mask_0_-1.png (1536x1536) - EDIT MASK: white = paint, black = keep (finished neighbour art)
 - B002_classes_0_-1.png (1536x1536) - SEMANTIC MAP (same framing as the composition): colour = surface type, see legend
 - B002_depth_0_-1.png (1536x1536) - HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more
-- B002_style_0_0.png (1024x1024) - DRAFT PLACEHOLDER (reference render) - replaced by the accepted art of 0_0 when the batch is rebuilt
+- B002_style_0_0.png (1024x1024) - STYLE: finished, accepted artwork of neighbouring tile 0_0 - match its palette, pixel size, outlines, windows, trees and light exactly
 - B002_contact_sheet.png (1024x1080) - CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels
-- B002_classes_legend.png (760x744) - LEGEND for the semantic maps
+- B002_classes_legend.png (760x704) - LEGEND for the semantic maps
 
 ART DIRECTION
 - Detailed pixel-art city illustration with a miniature-diorama feel: crisp, deliberate pixel clusters and clean edges where materials meet. No blur, airbrush, painterly smearing, film grain or photo texture.
@@ -181,21 +178,21 @@ Send back the original file and the model/settings note as before.
 
 | File | Size | Purpose | Tiles | Defines composition | sha256 |
 |---|---|---|---|---|---|
-| `B002_style_0_0.png` | 1024x1024 | DRAFT PLACEHOLDER (reference render) - replaced by the accepted art of 0_0 when the batch is rebuilt | 0_0 | no | `56cd5ccd5bca` |
-| `B002_contact_sheet.png` | 1024x1080 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | -1_-1, 0_-1, -1_0, 0_0 | no | `92b9ba42b6c7` |
-| `B002_context_0_-1.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 0_-1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 0_-1 | yes | `915816fd3354` |
-| `B002_mask_0_-1.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 0_-1 | no | `cd2249b035c0` |
-| `B002_classes_0_-1.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | 0_-1 | no | `a61208ead0b8` |
-| `B002_depth_0_-1.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | 0_-1 | no | `9b94c4447f59` |
-| `B002_context_-1_0.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile -1_0 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | -1_0 | yes | `0b8cf430bfac` |
-| `B002_mask_-1_0.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | -1_0 | no | `cd2249b035c0` |
-| `B002_classes_-1_0.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | -1_0 | no | `0b63a3e2322f` |
-| `B002_depth_-1_0.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | -1_0 | no | `0b21474f7318` |
-| `B002_context_-1_-1.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile -1_-1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | -1_-1 | yes | `698a3e3307cb` |
-| `B002_mask_-1_-1.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | -1_-1 | no | `cd2249b035c0` |
-| `B002_classes_-1_-1.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | -1_-1 | no | `577d56ce5ccb` |
-| `B002_depth_-1_-1.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | -1_-1 | no | `f8a0b4356b86` |
-| `B002_classes_legend.png` | 760x744 | LEGEND for the semantic maps | 0_-1, -1_0, -1_-1 | no | `bf1187f5e61e` |
+| `B002_style_0_0.png` | 1024x1024 | STYLE: finished, accepted artwork of neighbouring tile 0_0 - match its palette, pixel size, outlines, windows, trees and light exactly | 0_0 | no | `bfd18a94f0c7` |
+| `B002_contact_sheet.png` | 1024x1080 | CONTEXT ONLY: surrounding tiles at half scale, requested tile(s) outlined in red, landmark labels | -1_-1, 0_-1, -1_0, 0_0 | no | `bbcb851817e3` |
+| `B002_context_0_-1.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile 0_-1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | 0_-1 | yes | `d623172801fc` |
+| `B002_mask_0_-1.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | 0_-1 | no | `834776451c52` |
+| `B002_classes_0_-1.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | 0_-1 | no | `7e33aa8d1ff6` |
+| `B002_depth_0_-1.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | 0_-1 | no | `bfe1e822e375` |
+| `B002_context_-1_0.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile -1_0 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | -1_0 | yes | `1281314db2af` |
+| `B002_mask_-1_0.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | -1_0 | no | `fea14f0a4eb0` |
+| `B002_classes_-1_0.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | -1_0 | no | `837f05a9c65a` |
+| `B002_depth_-1_0.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | -1_0 | no | `e7484bf7fce8` |
+| `B002_context_-1_-1.png` | 1536x1536 | COMPOSITION + CANVAS TO EDIT (1536x1536): tile -1_-1 underdrawing in the centre (256,256)-(1280,1280), surroundings in the margin | -1_-1 | yes | `d229751d98da` |
+| `B002_mask_-1_-1.png` | 1536x1536 | EDIT MASK: white = paint, black = keep (finished neighbour art) | -1_-1 | no | `17934c186a9b` |
+| `B002_classes_-1_-1.png` | 1536x1536 | SEMANTIC MAP (same framing as the composition): colour = surface type, see legend | -1_-1 | no | `acd9bf0b4152` |
+| `B002_depth_-1_-1.png` | 1536x1536 | HEIGHT GUIDE: brighter = taller above ground, white = 45 m or more | -1_-1 | no | `cfa746f4a539` |
+| `B002_classes_legend.png` | 760x704 | LEGEND for the semantic maps | 0_-1, -1_0, -1_-1 | no | `fa726c46b242` |
 
 | Return file | Item | Expected size | Crop in returned image (x0, y0, x1, y1) | Becomes |
 |---|---|---|---|---|

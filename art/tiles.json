@@ -1,1 +1,16 @@
-{}
+{
+ "0_0": {
+  "version": "bfd18a94f0c7",
+  "batch": "B001",
+  "model_reported": "unknown (not reported)",
+  "settings_reported": "unknown; received as 1254x1254 WebP via chat relay",
+  "prompt_sha": "868700e82678",
+  "reference_sha": "08f080a20101",
+  "accepted_utc": "2026-11-04T17:00:30Z",
+  "source_file": "art/returned/B001/B001_0_0.webp",
+  "source_sha256": "f402de5c3f7139cc1b947278442dbb8937b6326f8fe2e4cadd59af172ac1de5f",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ }
+}

@@ -25,6 +25,17 @@ def sha(path):
     return hashlib.sha256(open(path, 'rb').read()).hexdigest()[:12]
 
 
+def art_finish(im):
+    """Pixel-art finish for accepted generated art (config/world.json 'art_finish'); deterministic for a given input."""
+    f = cfg().get('art_finish')
+    if not f: return im, None
+    small = im.resize((f['work_px'], f['work_px']), Image.BOX)
+    u = f.get('unsharp')
+    if u: small = small.filter(ImageFilter.UnsharpMask(radius=u['radius'], percent=u['percent'], threshold=u['threshold']))
+    q = small.quantize(colors=f['colors'], method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).convert('RGB')
+    return q.resize((F(), F()), Image.NEAREST), f['id']
+
+
 def life_mask(cls):
     tree = cls == CLS['tree']; water = (cls == CLS['water']) | (cls == CLS['pool'])
     # sway weight: stronger toward canopy interior (distance from canopy edge), quantised
@@ -48,14 +59,21 @@ def main():
         if not os.path.exists(os.path.join(jd, 'height.png')): continue
         i, j = map(int, d.split('_'))
         accepted = os.path.join(ART, f'{d}.png')
+        finish = None
         if os.path.exists(accepted):
             src = Image.open(accepted).convert('RGB'); kind = 'art'
+            if src.size != (F(), F()): src = src.resize((F(), F()), Image.LANCZOS)
+            src, finish = art_finish(src)
         else:
             src = Image.open(os.path.join(jd, 'color2x.png')).convert('RGB').resize((F(), F()), Image.BOX); kind = 'reference'
         assert src.size == (F(), F()), (d, src.size)
         for lod in cfg()['tiles']['lods_px']:
-            im = src if lod == F() else src.resize((lod, lod), Image.LANCZOS)
-            im.save(os.path.join(OUT, 'tiles', str(lod), f'{d}.webp'), quality=88 if kind == 'art' else 82, method=6)
+            im = src if lod == F() else src.resize((lod, lod), Image.NEAREST if finish and lod == cfg()['art_finish']['work_px'] else Image.LANCZOS)
+            fp = os.path.join(OUT, 'tiles', str(lod), f'{d}.webp')
+            if finish and lod >= cfg()['art_finish']['work_px']:
+                im.save(fp, lossless=True, method=6)      # keep the finished palette exact (lossy WebP smears pixel art)
+            else:
+                im.save(fp, quality=88 if kind == 'art' else 82, method=6)
         h = np.asarray(Image.open(os.path.join(jd, 'height.png')).convert('RGB'))
         step = F() // hp
         # nearest sample at pixel centres of each step x step block: keeps exact encoded values (no blending of packed bytes)
@@ -66,7 +84,7 @@ def main():
         life_mask(cls).save(os.path.join(OUT, 'life', f'{d}.png'), optimize=True)
         meta = art_meta.get(d, {})
         tiles[d] = {'i': i, 'j': j, 'kind': kind, 'v': sha(os.path.join(OUT, 'tiles', '1024', f'{d}.webp')),
-                    'hv': sha(os.path.join(OUT, 'heights', f'{d}.png')), 'art_version': meta.get('version'), 'batch': meta.get('batch')}
+                    'hv': sha(os.path.join(OUT, 'heights', f'{d}.png')), 'art_version': meta.get('version'), 'batch': meta.get('batch'), 'finish': finish}
     # overview: 64 px per tile
     ov = cfg()['tiles']['overview_px_per_tile']
     ii = [t['i'] for t in tiles.values()]; jj = [t['j'] for t in tiles.values()]

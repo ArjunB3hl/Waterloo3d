@@ -43,5 +43,16 @@
     "comment": "Lossless PNG. encoded = 256*R + G ; height_m = encoded / units_per_m + floor_m ; valid = B > 127. height is z (metres relative to datum_m).",
     "floor_m": -100.0,
     "units_per_m": 100
+  },
+  "art_finish": {
+    "comment": "Deterministic pixel-art finish applied at publish time to accepted generated art (art/accepted keeps the original). Box-downscale to work_px, light unsharp mask, median-cut palette of `colors` without dithering, nearest-neighbour upscale to frame_px.",
+    "id": "px512-q64",
+    "work_px": 512,
+    "colors": 64,
+    "unsharp": {
+      "radius": 1,
+      "percent": 60,
+      "threshold": 2
+    }
   }
 }
