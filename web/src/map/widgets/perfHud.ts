@@ -7,11 +7,12 @@ export function createPerfHud(map: MapAPI): { el: HTMLElement; setVisible(v: boo
   const el = h('div', { class: 'perf-hud panel-chrome', role: 'region', 'aria-live': 'off', 'aria-label': 'Performance statistics', hidden: true }, pre);
   let timer = 0;
   const refresh = () => {
-    const p = map.perf();
+    const p = map.perf(), l = map.labels.stats();
     pre.textContent = [
       `fps        ${p.fps}`,
       `frame p95  ${p.frameP95Ms} ms`,
       `draw p95   ${p.drawP95Ms} ms`,
+      `labels     ${l.drawP95Ms} ms p95  ${l.drawn - l.occluded} drawn  ${l.occluded} under UI`,
       `bitmaps    ${p.bitmaps}  ${p.bitmapMB} / ${p.budgetMB} MB`,
       `heights    ${p.heightTiles}`,
       `requests   ${p.inflight} live  ${p.queued} queued  ${p.deferred ?? 0} deferred  ${p.failed} failed`,

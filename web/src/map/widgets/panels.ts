@@ -58,6 +58,7 @@ export function buildSettings(body: HTMLElement, map: MapAPI): void {
     ['minimap', 'Minimap', 'Keyboard shortcut: M'],
     ['life', 'Life on the map', 'Swaying trees and moving water'],
     ['labels', 'Landmark labels'],
+    ['buildingLabels', 'Building labels', 'Names and campus codes of mapped buildings. Shortcut: B'],
     ['coverage', 'Coverage overlay', 'City boundary, pending areas and render badges'],
     ['tiltShift', 'Tilt-shift focus', 'Miniature-style depth of field'],
   ];
@@ -108,7 +109,7 @@ export function buildAbout(body: HTMLElement, map: MapAPI): void {
   const link = (href: string, text: string) => h('a', { href, target: '_blank', rel: 'noopener noreferrer' }, text);
   const keys: [string, string][] = [
     ['Drag / arrows / WASD', 'Move the map (Shift = faster)'], ['Scroll / pinch / + -', 'Zoom'], ['Double-click', 'Zoom in'],
-    ['0', 'Home view (campus)'], ['/', 'Search'], ['M', 'Toggle minimap'], ['Esc', 'Close panels'],
+    ['0', 'Home view (campus)'], ['/', 'Search'], ['M', 'Toggle minimap'], ['B', 'Toggle building labels'], ['Esc', 'Close panels'],
   ];
   body.append(
     h('p', {}, 'Tiny Waterloo is an interactive illustrated isometric map of Waterloo, Ontario, drawn from a single fixed ',

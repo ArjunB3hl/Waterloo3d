@@ -4,6 +4,7 @@
 import type { ActorModule, EffectsModule, Landmark, MapAPI, Settings } from '../types';
 import { formatHash, homeView } from './view';
 import { h, icon, isTyping } from './widgets/dom';
+import { createBuildingCard } from './widgets/buildingCard';
 import { createLandmarks } from './widgets/landmarks';
 import { createMinimap } from './widgets/minimap';
 import { buildAbout, buildSettings, Panels } from './widgets/panels';
@@ -42,8 +43,18 @@ export function createUI(map: MapAPI, deps: { fx: EffectsModule; actor: ActorMod
   map.on('viewchange', placeMarker);
 
   const lm = createLandmarks(map, landmarks, actor, panels);
+  // building labels: avoid the landmark pills, open a card on click / tap (a landmark building opens its landmark card)
+  map.labels.setLandmarkPills(landmarks.filter((l) => l.status === 'covered').map((l) => ({ id: l.id, canvas: l.canvas, text: l.short ?? l.name })));
+  const buildings = createBuildingCard(map, panels, actor, (id) => {
+    const l = landmarks.find((x) => x.id === id);
+    if (l) lm.select(l, null);
+    return !!l;
+  });
+  map.labels.onTap((l) => buildings.select(l, stage));   // Escape returns focus to the map
   const search = createSearch(map, landmarks, (hit) => {
     if (hit.landmark) { lm.select(hit.landmark, null); return; }
+    const building = hit.buildingId ? map.labels.byId(hit.buildingId) : undefined;
+    if (building) { buildings.select(building); return; }
     const zoom = hit.pending ? PENDING_ZOOM : Math.max(STREET_ZOOM, map.getView().zoom);
     map.setView({ cx: hit.canvas[0], cy: hit.canvas[1], zoom }, { animate: true });
     showMarker(hit);
@@ -104,6 +115,37 @@ export function createUI(map: MapAPI, deps: { fx: EffectsModule; actor: ActorMod
     h('button', { class: 'link-btn', type: 'button', onclick: () => panels.open(aboutPanel.el, aboutBtn) }, 'About'),
   );
 
+  // ---------------------------------------------------------------- fixed UI over the map -> label occlusion
+  // Building labels under the search bar, controls, strip, minimap, flight HUD or an open panel are not painted or
+  // picked (placement ignores the UI, so panning cannot make labels pop). Rects are re-read when any of these
+  // elements changes size or visibility (strip collapse, minimap toggle, panel open / close, flight start / stop) and
+  // on window resize - never per frame.
+  const OCCLUDERS = '#ui .top .search, #ui .controls, #ui .fly-btn, #ui .strip, #ui .minimap, #ui .perf-hud, #ui .panel, .gh-bar, .gh-hints, .gh-pad';
+  const observed = new WeakSet<Element>();
+  let occlusionQueued = false;
+  const readOcclusion = () => {
+    const sr = stage.getBoundingClientRect();
+    const rects: { x: number; y: number; w: number; h: number }[] = [];
+    for (const el of document.querySelectorAll<HTMLElement>(OCCLUDERS)) {
+      if (!observed.has(el)) { observed.add(el); ro.observe(el); }
+      if (el.closest('[hidden]') || el.getClientRects().length === 0) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width && r.height) rects.push({ x: r.left - sr.left, y: r.top - sr.top, w: r.width, h: r.height });
+    }
+    map.labels.setOcclusionRects(rects);
+  };
+  // ResizeObserver callbacks run right after layout, so reading the rects there costs no extra layout or frame
+  const ro = new ResizeObserver(readOcclusion);
+  function queueOcclusion() {
+    if (occlusionQueued) return;
+    occlusionQueued = true;
+    requestAnimationFrame(() => { occlusionQueued = false; readOcclusion(); });
+  }
+  addEventListener('resize', queueOcclusion);
+  // the flight HUD is built lazily and shown / hidden through the hidden attribute
+  new MutationObserver(queueOcclusion).observe(map.hudRoot, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
+  queueOcclusion();
+
   // ---------------------------------------------------------------- settings -> modules
   const applySettings = (s: Settings) => {
     fx.setEnabled({ life: s.life, tiltShift: s.tiltShift, strength: s.tiltStrength });
@@ -114,8 +156,12 @@ export function createUI(map: MapAPI, deps: { fx: EffectsModule; actor: ActorMod
   map.onSettings(applySettings);
 
   // tilt-shift focus follows the mouse on desktop; touch keeps it at the screen centre
+  // ... and the pointer cursor marks clickable building labels
   stage.addEventListener('pointermove', (e) => {
-    if (e.pointerType === 'mouse') { const r = stage.getBoundingClientRect(); fx.setFocus(e.clientX - r.left, e.clientY - r.top); }
+    if (e.pointerType !== 'mouse') return;
+    const r = stage.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    fx.setFocus(x, y);
+    stage.classList.toggle('over-label', !e.buttons && !!map.labels.pick(x, y));
   });
   stage.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') fx.setFocus(null, null); });
 
@@ -128,6 +174,9 @@ export function createUI(map: MapAPI, deps: { fx: EffectsModule; actor: ActorMod
     app.classList.toggle('actor-active', actorActive);
     map.setInteractive(!actorActive);
     minimap.setEnabled(!actorActive);
+    // in flight only campus building codes stay: short, steady orientation marks that do not bury the goose
+    map.labels.setFlightMode(actorActive);
+    queueOcclusion();
     if (actorActive) { panels.close(); search.close(); }
     else flyBtn.focus({ preventScroll: true });
   }
@@ -144,6 +193,10 @@ export function createUI(map: MapAPI, deps: { fx: EffectsModule; actor: ActorMod
     if (isTyping(e)) return;
     if (e.key === '/' && !actorActive) { e.preventDefault(); search.focus(); }
     else if (e.key === 'm' || e.key === 'M') map.updateSettings({ minimap: !map.settings.minimap });
+    else if (e.key === 'b' || e.key === 'B') {
+      map.updateSettings({ buildingLabels: !map.settings.buildingLabels });
+      map.toast(`Building labels ${map.settings.buildingLabels ? 'on' : 'off'}`);
+    }
   });
 }
 

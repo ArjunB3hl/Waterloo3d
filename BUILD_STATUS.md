@@ -123,6 +123,13 @@ Five reviewers covered projection maths, loading and memory, UI, the art workflo
 - The ground texture was misregistered by half a texel against the 3D scene.
 - A stale life-mask cache key.
 
+## Building labels
+
+- `web/public/data/labels.json`: 408 labels covering 417 named OSM buildings in the published tiles (9 same-name neighbours merged): 138 campus, 61 with curated UW codes (`pipeline/building_codes.py`, which needs checking against uwaterloo.ca/map because that host is blocked here).
+- Viewer: labels are placed by zoom with collision checks, stay stable while panning, aren't painted under fixed UI, and can be clicked to open a card with an OSM link. Settings has a switch and **B** toggles them. Search finds buildings by name, code or alternative name.
+- Checks: `tests/labels_check.mjs` 16/16, `browser_check --functional` 14/14, `map_smoke` 25/25. Label pass median 0.4 ms (headless SwiftShader).
+- Screenshots: `docs/screenshots/labels_campus_zoom06.png`, `labels_campus_zoom1.png`, `labels_uptown.png`.
+
 ## Inferred or approximate geometry (labelled in the data)
 
 | What | How | Where it is labelled |

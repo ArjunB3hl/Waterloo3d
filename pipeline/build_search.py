@@ -1,4 +1,5 @@
-"""Build web/public/data/search.json: one entry per unique street / trail / place name inside the City of Waterloo.
+"""Build web/public/data/search.json: one entry per unique street / trail / place name inside the City of Waterloo,
+plus one entry per labelled building from web/public/data/labels.json (run pipeline/build_labels.py first).
 
 Each entry carries a representative canvas point (where the camera jumps) and the tile key containing it.
 Point choice: if any part of the feature lies inside a published tile, the point is picked among those vertices,
@@ -89,9 +90,26 @@ def main():
         best = int(np.argmin(((cand - cand.mean(0)) ** 2).sum(1)))  # vertex nearest the centroid lies on the feature
         entries.append({'n': g.get('name', name), 'k': g['kind'], 'c': [round(float(cand[best, 0]), 1), round(float(cand[best, 1]), 1)], 't': str(k[best])})
 
+    # labelled buildings (labels.json): name, UW code and alternative names are searchable; 'id' links the label so the
+    # viewer can open its building card
+    lpath = os.path.join(ROOT, 'web', 'public', 'data', 'labels.json')
+    n_bld = 0
+    if os.path.exists(lpath):
+        for l in json.load(open(lpath))['labels']:
+            e = {'n': l['name'], 'k': 'building', 'c': l['canvas'], 't': l['tile'], 'id': l['id']}
+            if l.get('short'): e['s'] = l['short']           # curated UW code only (OSM alternative names never count as codes)
+            alt = list(l.get('alt', []))
+            d = l.get('display')                              # e.g. 'V1 East 3'; cut / abbreviated forms are not searchable names
+            if d and '…' not in d and d not in alt and not any(x in d for x in ('Univ.', 'Ctr.', 'Bldg.', 'Eng.', 'Res.', 'Inst.')): alt.append(d)
+            if alt: e['a'] = alt
+            entries.append(e); n_bld += 1
+    else:
+        print('note: labels.json missing - run pipeline/build_labels.py to make buildings searchable')
+
     entries.sort(key=lambda e: (e['t'] not in published, e['n'].lower()))
     out = {'version': 1, 'generated_utc': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
-           'comment': "n name, k kind (street|trail|rail|place|water), c canvas px of a representative point, t tile 'i_j'. "
+           'comment': "n name, k kind (street|trail|rail|place|water|building), c canvas px of a representative point, t tile 'i_j'; "
+                      "buildings also carry id (labels.json id), s (curated UW code) and a (alternative names). "
                       'Covered/pending status is resolved at runtime against manifest.tiles.',
            'entries': entries}
     path = os.path.join(ROOT, 'web', 'public', 'data', 'search.json')

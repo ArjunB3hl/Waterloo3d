@@ -1,7 +1,8 @@
 // MapView: owns the view state, camera motion, tile loading and the base / overlay / aux canvases, and implements
 // the MapAPI contract (web/src/types.ts) the effects, actor and UI modules build on.
 import { Frame } from '../frame';
-import type { CoverageInfo, FrameInfo, Manifest, MapAPI, PerfStats, Settings, ViewState } from '../types';
+import type { BuildingLabel, BuildingLabelsAPI, CoverageInfo, FrameInfo, Manifest, MapAPI, PerfStats, Settings, ViewState } from '../types';
+import { BuildingLabelLayer } from './buildingLabels';
 import { attachInput, type CameraControl } from './input';
 import { ResourceLoader } from './loader';
 import { FrameStats } from './perf';
@@ -18,6 +19,7 @@ const HASH_WRITE_DELAY_MS = 300;
 const SMOOTH_ZOOM_TAU_MS = 70;             // time constant of wheel / key zoom easing
 const INERTIA_TAU_MS = 320;                // time constant of drag inertia decay
 const KEY_PAN_SPEED = 0.8;                 // CSS px per ms (x2.5 with Shift)
+const TOUCH_SLOP_PX = 10;                  // building-label hit margin for touch / pen taps (17 px pill -> 37 px target)
 const MOVING_GRACE_MS = 140;               // after the last camera change, redraw once more in high quality
 
 /** Small screens / low-memory devices get a smaller cache and half-resolution aux layers in 'auto' quality. */
@@ -47,6 +49,9 @@ class MapView implements CameraControl {
   private readonly renderer: MapRenderer;
   private readonly bounds: Rect;
   private readonly stats = new FrameStats();
+  private readonly labelLayer = new BuildingLabelLayer();
+  private readonly labelsReady: Promise<void>;
+  private readonly labelTapL = new Set<Listener<BuildingLabel>>();
 
   private settings: Settings = loadSettings();
   private view: ViewState = { cx: 0, cy: 0, zoom: 0.5 };
@@ -109,6 +114,10 @@ class MapView implements CameraControl {
     const extent = [...Object.values(manifest.tiles).map((t) => [t.i, t.j] as [number, number]), ...(manifest.coverage?.city_tiles ?? [])];
     this.bounds = tilesRect(extent, manifest.frame_px);
 
+    this.labelsReady = fetch('data/labels.json')
+      .then((r) => (r.ok ? (r.json() as Promise<{ labels: BuildingLabel[] }>) : { labels: [] }))
+      .then((d) => { this.labelLayer.setData(d.labels ?? [], this.view.zoom); this.markDirty(); })
+      .catch((e) => console.warn('building labels unavailable', e));
     this.api = this.buildApi();
     this.measure();
     this.view = this.clamp(parseHash(location.hash) ?? homeView(manifest, this.w, this.h));
@@ -159,6 +168,24 @@ class MapView implements CameraControl {
       perf: () => this.perf(),
       toast: (msg) => this.toast(msg),
       get hudRoot() { return self.hud; },
+      labels: this.labelsApi(),
+    };
+  }
+
+  private labelsApi(): BuildingLabelsAPI {
+    const layer = this.labelLayer;
+    return {
+      get all() { return layer.all; },
+      ready: this.labelsReady,
+      byId: (id) => layer.get(id),
+      pick: (sx, sy, slop) => layer.pick(sx, sy, slop),
+      drawn: () => layer.drawn(),
+      stats: () => layer.stats(),
+      setLandmarkPills: (p) => { layer.setPills(p); this.markDirty(); },
+      setFlightMode: (on) => { if (layer.setFlight(on)) this.markDirty(); },
+      setOcclusionRects: (r) => { if (layer.setOcclusion(r)) this.markDirty(); },
+      onTap: (cb) => { this.labelTapL.add(cb); return () => this.labelTapL.delete(cb); },
+      setIgnoreMinZoom: (on) => { layer.debugIgnoreMinZoom = on; this.markDirty(); },
     };
   }
 
@@ -216,7 +243,10 @@ class MapView implements CameraControl {
 
   home(): void { this.setView(homeView(this.manifest, this.w, this.h), true); }
 
-  tap(sx: number, sy: number): void {
+  tap(sx: number, sy: number, pointerType = 'mouse'): void {
+    // fingers are imprecise: a touch / pen tap within TOUCH_SLOP_PX of a label opens it
+    const label = this.labelLayer.pick(sx, sy, pointerType === 'mouse' ? 2 : TOUCH_SLOP_PX);
+    if (label && this.labelTapL.size) { for (const cb of this.labelTapL) cb(label); return; }
     const [i, j] = this.frame.tileOf(...this.screenToCanvas(sx, sy));
     const failed = this.lastDraw.failed.find((f) => f.i === i && f.j === j);
     if (failed) this.loader.retry(failed.key);
@@ -332,6 +362,8 @@ class MapView implements CameraControl {
     if (this.aux.height && this.heightCanvas) this.renderer.drawAux('height', this.heightCanvas.getContext('2d')!, p);
     if (this.aux.life && this.lifeCanvas) this.renderer.drawAux('life', this.lifeCanvas.getContext('2d')!, p);
     this.renderer.drawOverlay(this.overlayCtx, p, this.lastDraw);
+    this.labelLayer.draw(this.overlayCtx, { view: this.view, w: this.w, h: this.h, dpr: this.dpr,
+      enabled: this.settings.buildingLabels, pills: this.settings.labels });
     this.loader.endFrame();
     if (this.lastDraw.fading) this.baseDirty = true;            // keep redrawing until fade-ins complete
   }

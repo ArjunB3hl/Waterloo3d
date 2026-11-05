@@ -20,8 +20,9 @@ for r in $REGIONS; do
 done
 step "render reference tiles (headless three.js)"; node render/render_refs.mjs $FORCE_FLAG
 step "publish tiles, heights, masks, overview";    python3 pipeline/publish_tiles.py
-step "landmarks, search, collision, feathers";
+step "landmarks, building labels, search, collision, feathers";
 python3 pipeline/build_landmarks.py > /dev/null
+python3 pipeline/build_labels.py          # needs landmarks.json (ids) and manifest.json (published tiles)
 python3 pipeline/build_search.py
 python3 pipeline/build_collision.py
 python3 pipeline/build_feathers.py

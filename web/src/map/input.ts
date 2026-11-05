@@ -17,8 +17,8 @@ export interface CameraControl {
   startInertia(vx: number, vy: number): void;           // CSS px per ms
   setKeyPan(dx: number, dy: number, fast: boolean): void; // unit direction (0,0 = stop)
   home(): void;
-  /** Single click / tap without drag (retries a failed tile under the pointer). */
-  tap(sx: number, sy: number): void;
+  /** Single click / tap without drag (opens a building label / retries a failed tile under the pointer). */
+  tap(sx: number, sy: number, pointerType?: string): void;
 }
 
 const DRAG_THRESHOLD_PX = 4;
@@ -113,7 +113,7 @@ export function attachInput(stage: HTMLElement, cam: CameraControl): void {
       cam.zoomAround(2, c.x, c.y, true);
     } else {
       lastTap = { t, x: p.x, y: p.y };
-      cam.tap(p.x, p.y);
+      cam.tap(p.x, p.y, e.pointerType);
     }
   };
   stage.addEventListener('pointerup', end);

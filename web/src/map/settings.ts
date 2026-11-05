@@ -4,7 +4,7 @@ import type { Settings } from '../types';
 const STORAGE_KEY = 'tinyWaterloo.settings.v1';
 
 export const DEFAULT_SETTINGS: Readonly<Settings> = {
-  minimap: true, life: true, tiltShift: true, tiltStrength: 25, labels: true, coverage: true, perfHud: false, quality: 'auto',
+  minimap: true, life: true, tiltShift: true, tiltStrength: 25, labels: true, buildingLabels: true, coverage: true, perfHud: false, quality: 'auto',
 };
 
 /** Keep only known keys with the right types so a stale or hand-edited entry can never break the map. */
@@ -12,7 +12,7 @@ function sanitize(raw: unknown): Partial<Settings> {
   if (!raw || typeof raw !== 'object') return {};
   const r = raw as Record<string, unknown>;
   const out: Partial<Settings> = {};
-  for (const k of ['minimap', 'life', 'tiltShift', 'labels', 'coverage', 'perfHud'] as const) {
+  for (const k of ['minimap', 'life', 'tiltShift', 'labels', 'buildingLabels', 'coverage', 'perfHud'] as const) {
     if (typeof r[k] === 'boolean') out[k] = r[k] as boolean;
   }
   if (typeof r.tiltStrength === 'number' && Number.isFinite(r.tiltStrength)) out.tiltStrength = Math.min(100, Math.max(0, r.tiltStrength));
