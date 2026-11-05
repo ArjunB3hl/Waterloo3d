@@ -1,6 +1,6 @@
 {
  "name": "Tiny Waterloo",
- "generated_utc": "2026-11-05T03:20:44Z",
+ "generated_utc": "2026-11-05T14:47:49Z",
  "frame_px": 1024,
  "lods_px": [
   256,
@@ -814,11 +814,11 @@
    "i": 5,
    "j": -3,
    "kind": "art",
-   "v": "6691419a352f",
+   "v": "3b6b7e91707a",
    "hv": "afa02757dc41",
    "lv": "0a4ccd4e829b",
-   "art_version": "6d544904ef1e",
-   "batch": "B017",
+   "art_version": "f09f40af86cb",
+   "batch": "B017R2",
    "finish": "px512-q64s"
   },
   "5_0": {

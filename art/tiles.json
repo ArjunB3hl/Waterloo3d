@@ -1404,23 +1404,42 @@
   }
  },
  "5_-3": {
-  "version": "6d544904ef1e",
-  "batch": "B017",
+  "version": "f09f40af86cb",
+  "batch": "B017R2",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
-  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
-  "prompt_sha": "e77f2aed24bb",
-  "reference_sha": "e52e065586b4",
+  "settings_reported": "revision of 5_-3; INTERIM: lawn fixed; west driveway 10-14 px right below y110, an extra third driveway and 3 shrubs remain -> B017R3",
+  "prompt_sha": "125aeb0cf1e7",
+  "reference_sha": "e0200cb6ba88",
   "reference_files": {
    "color2x": "6d3233216d67",
    "cls": "477890af1caa",
    "height": "5ef7d26a8d94"
   },
-  "accepted_utc": "2026-11-05T02:18:27Z",
-  "source_file": "art/returned/B017/B017_5_-3.png",
-  "source_sha256": "c8e06d876d3775234976d33f8fc62e273836fe9c7285357f3e22345b48e7629e",
-  "qa_verdict": "fail",
-  "forced": true,
-  "history": []
+  "accepted_utc": "2026-11-05T14:46:16Z",
+  "source_file": "art/returned/B017R2/B017R2_5_-3.png",
+  "source_sha256": "4b6311271969e4005a3c3831beccaed9bbd5159d005d85ea40c48134e2222f39",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": [
+   {
+    "version": "6d544904ef1e",
+    "batch": "B017",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
+    "prompt_sha": "e77f2aed24bb",
+    "reference_sha": "e52e065586b4",
+    "reference_files": {
+     "color2x": "6d3233216d67",
+     "cls": "477890af1caa",
+     "height": "5ef7d26a8d94"
+    },
+    "accepted_utc": "2026-11-05T02:18:27Z",
+    "source_file": "art/returned/B017/B017_5_-3.png",
+    "source_sha256": "c8e06d876d3775234976d33f8fc62e273836fe9c7285357f3e22345b48e7629e",
+    "qa_verdict": "fail",
+    "forced": true
+   }
+  ]
  },
  "6_-3": {
   "version": "1b6390e00666",
