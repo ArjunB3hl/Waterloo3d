@@ -10,6 +10,7 @@ export interface TileEntry {
   hv: string;                     // content hash of the height tile
   lv?: string;                    // content hash of the life mask (older manifests: absent, fall back to v)
   art_version: string | null; batch: string | null;
+  finish?: string | null;          // pixel-art finish id (config/world.json art_finish) or null = full-resolution art
 }
 
 export interface Manifest {

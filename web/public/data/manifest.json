@@ -1,6 +1,6 @@
 {
  "name": "Tiny Waterloo",
- "generated_utc": "2026-11-05T14:47:49Z",
+ "generated_utc": "2026-11-05T19:14:33Z",
  "frame_px": 1024,
  "lods_px": [
   256,
@@ -352,606 +352,606 @@
    "i": -1,
    "j": -1,
    "kind": "art",
-   "v": "f02ed8c4d4ab",
+   "v": "aab1ba0542a1",
    "hv": "86a6c0cf3f72",
    "lv": "c598f567e9b7",
    "art_version": "4ec9ef911f56",
    "batch": "B002",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-1_-2": {
    "i": -1,
    "j": -2,
    "kind": "art",
-   "v": "b6f5488d694b",
+   "v": "c7a10e53da59",
    "hv": "19089bb5b2c7",
    "lv": "dea0744fa524",
    "art_version": "0ccc7fca6375",
    "batch": "S004R1",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-1_-3": {
    "i": -1,
    "j": -3,
    "kind": "art",
-   "v": "0baf797ededc",
+   "v": "1aa95a2a53cd",
    "hv": "b1979a9d2d28",
    "lv": "87658cfaf8e6",
    "art_version": "433012ae0180",
    "batch": "S002",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-1_0": {
    "i": -1,
    "j": 0,
    "kind": "art",
-   "v": "5344c399a2ee",
+   "v": "e1cbce247ef8",
    "hv": "961c4926dd72",
    "lv": "c4302fc84e1b",
    "art_version": "b1f9da2630ef",
    "batch": "B002",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-1_1": {
    "i": -1,
    "j": 1,
    "kind": "art",
-   "v": "595332338df5",
+   "v": "f093002aeb83",
    "hv": "5dc32599a295",
    "lv": "d72ca2f00abf",
    "art_version": "bc00d077a247",
    "batch": "B007",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-2_-1": {
    "i": -2,
    "j": -1,
    "kind": "art",
-   "v": "f5c4f8f69985",
+   "v": "c0da88382924",
    "hv": "b854e3bf9602",
    "lv": "307f6fd76315",
    "art_version": "3faff7873d00",
    "batch": "B008",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-2_-2": {
    "i": -2,
    "j": -2,
    "kind": "art",
-   "v": "2b107277b236",
+   "v": "95bf8848acfd",
    "hv": "fff0a14bd886",
    "lv": "285b224ee651",
    "art_version": "6bd6763a3858",
    "batch": "S004R1",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-2_-3": {
    "i": -2,
    "j": -3,
    "kind": "art",
-   "v": "1110adc985d2",
+   "v": "3dc9f54f22a5",
    "hv": "7d6c5268f057",
    "lv": "e56ea922f7ed",
    "art_version": "e8fce324b153",
    "batch": "S005R1",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-2_0": {
    "i": -2,
    "j": 0,
    "kind": "art",
-   "v": "1cea77bbeed6",
+   "v": "8a7e173fe574",
    "hv": "80409f9e0c9e",
    "lv": "6b44a0fe8a24",
    "art_version": "a08f2d039d6e",
    "batch": "B008",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-2_1": {
    "i": -2,
    "j": 1,
    "kind": "art",
-   "v": "1f41f05ce7d2",
+   "v": "aa9beb2283ec",
    "hv": "aebdb6182571",
    "lv": "c277a5afbf4e",
    "art_version": "0c8e04dfd6d2",
    "batch": "B011",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-3_-1": {
    "i": -3,
    "j": -1,
    "kind": "art",
-   "v": "92215387bd4e",
+   "v": "415e8673a130",
    "hv": "cb25da400141",
    "lv": "163493dc89ee",
    "art_version": "43c761eb7c44",
    "batch": "B012",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-3_-2": {
    "i": -3,
    "j": -2,
    "kind": "art",
-   "v": "5059b05bf0e6",
+   "v": "33611051bf6c",
    "hv": "acd9933aaf49",
    "lv": "a08c79fc93e2",
    "art_version": "a778000c6b78",
    "batch": "B015",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-3_-3": {
    "i": -3,
    "j": -3,
    "kind": "art",
-   "v": "ad1bb85a09b7",
+   "v": "56f6242c1e60",
    "hv": "fae666fe023d",
    "lv": "6d13e3ea02c6",
    "art_version": "b725d4854e51",
    "batch": "S005R1",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-3_0": {
    "i": -3,
    "j": 0,
    "kind": "art",
-   "v": "fc938a9b4652",
+   "v": "4033e063b10d",
    "hv": "7af9f6935d91",
    "lv": "0842721084ec",
    "art_version": "879e74494503",
    "batch": "B012",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "-3_1": {
    "i": -3,
    "j": 1,
    "kind": "art",
-   "v": "0ffe1c97fc9a",
+   "v": "6d1efc2f32a7",
    "hv": "9ab9a7419273",
    "lv": "23c4e7790326",
    "art_version": "b48e4d821b98",
    "batch": "B015",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "0_-1": {
    "i": 0,
    "j": -1,
    "kind": "art",
-   "v": "5976343cd08b",
+   "v": "bdd7b94383a9",
    "hv": "c31cc275ea44",
    "lv": "43d1c58876fe",
    "art_version": "413064644d1f",
    "batch": "B002",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "0_-2": {
    "i": 0,
    "j": -2,
    "kind": "art",
-   "v": "fa9cd9c10352",
+   "v": "40e76dd2d403",
    "hv": "03bb4b1feeb3",
    "lv": "9583888fc2a8",
    "art_version": "3b24a8d9b7fa",
    "batch": "B006",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "0_-3": {
    "i": 0,
    "j": -3,
    "kind": "art",
-   "v": "0a221dfb5d34",
+   "v": "aea5f6e3820e",
    "hv": "2ac8ae5a56c4",
    "lv": "4d69f6369a67",
    "art_version": "a7a476312088",
    "batch": "S002",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "0_0": {
    "i": 0,
    "j": 0,
    "kind": "art",
-   "v": "26b3ba177a92",
+   "v": "c9d5e74e49af",
    "hv": "577c6a2ada79",
    "lv": "7bf45f2ebd58",
    "art_version": "bfd18a94f0c7",
    "batch": "B001",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "0_1": {
    "i": 0,
    "j": 1,
    "kind": "art",
-   "v": "dbdf7913b13c",
+   "v": "20e7e84538dd",
    "hv": "1f7fe6170782",
    "lv": "0e74ead83cb0",
    "art_version": "32c68e3445c7",
    "batch": "B007",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "1_-1": {
    "i": 1,
    "j": -1,
    "kind": "art",
-   "v": "102dab0b9280",
+   "v": "df9086513c68",
    "hv": "ab492bbecbe7",
    "lv": "8caa9d81f19c",
    "art_version": "886238e9fc9b",
    "batch": "B003",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "1_-2": {
    "i": 1,
    "j": -2,
    "kind": "art",
-   "v": "d5bd2b989eb9",
+   "v": "5ab9f38f05f5",
    "hv": "a973b42ad99a",
    "lv": "338afcb12d7c",
    "art_version": "57de4899dada",
    "batch": "B006",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "1_-3": {
    "i": 1,
    "j": -3,
    "kind": "art",
-   "v": "03f8addd2321",
+   "v": "f4d0656aebd2",
    "hv": "8e49509a5c91",
    "lv": "ba32bb9b0c3e",
    "art_version": "7230691aeb16",
    "batch": "B010",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "1_0": {
    "i": 1,
    "j": 0,
    "kind": "art",
-   "v": "2550dc9b454d",
+   "v": "b2a8387934e0",
    "hv": "7bc3fca6eea0",
    "lv": "de998846e4d7",
    "art_version": "1a579696113b",
    "batch": "B003",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "1_1": {
    "i": 1,
    "j": 1,
    "kind": "art",
-   "v": "eceb1634dd0c",
+   "v": "9fb8ba23ad04",
    "hv": "e4a00129083c",
    "lv": "b52786c9b6f2",
    "art_version": "7ce88469b3d6",
    "batch": "B007",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "2_-1": {
    "i": 2,
    "j": -1,
    "kind": "art",
-   "v": "35237e7e9395",
+   "v": "6dfa37c4af1e",
    "hv": "c18a0534715e",
    "lv": "156f4f0bafe9",
    "art_version": "15f7e5cf0ef8",
    "batch": "B004",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "2_-2": {
    "i": 2,
    "j": -2,
    "kind": "art",
-   "v": "bbc7486f930a",
+   "v": "d1b1ccd572d7",
    "hv": "2874af41580e",
    "lv": "e5eb24acd89a",
    "art_version": "37c646cd691c",
    "batch": "B006",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "2_-3": {
    "i": 2,
    "j": -3,
    "kind": "art",
-   "v": "1d320253a2dd",
+   "v": "d3bad348c9d6",
    "hv": "3b181f86dc81",
    "lv": "9bb5d5359b59",
    "art_version": "8fde9e3cb34c",
    "batch": "B010",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "2_0": {
    "i": 2,
    "j": 0,
    "kind": "art",
-   "v": "b4360c7284a1",
+   "v": "07eef2d0d7d8",
    "hv": "0dfbe08f7064",
    "lv": "e2b63dfc03e4",
    "art_version": "7042466bb900",
    "batch": "B004",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "2_1": {
    "i": 2,
    "j": 1,
    "kind": "art",
-   "v": "b4831c0bf4c2",
+   "v": "8a838bcb8b23",
    "hv": "f76a43972edf",
    "lv": "398e51c45c11",
    "art_version": "762db809bd32",
    "batch": "B007",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "3_-1": {
    "i": 3,
    "j": -1,
    "kind": "art",
-   "v": "c5588f44ebca",
+   "v": "987896e16605",
    "hv": "c40ce8917095",
    "lv": "b95bdbe4b0b6",
    "art_version": "b309d2dd1c62",
    "batch": "B005",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "3_-2": {
    "i": 3,
    "j": -2,
    "kind": "art",
-   "v": "ec50a78dee55",
+   "v": "03a31c54e87f",
    "hv": "c43f9cd35ee5",
    "lv": "a5fd5d1951ec",
    "art_version": "7caaca002590",
    "batch": "B011",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "3_-3": {
    "i": 3,
    "j": -3,
    "kind": "art",
-   "v": "d48995a4075b",
+   "v": "a3549331c8d0",
    "hv": "5cd72e99e1eb",
    "lv": "dd20531c9174",
    "art_version": "2fd7f1b3d4e2",
    "batch": "B014",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "3_0": {
    "i": 3,
    "j": 0,
    "kind": "art",
-   "v": "72c75c4c9422",
+   "v": "a4819e272d50",
    "hv": "974924347d04",
    "lv": "439fb274bc17",
    "art_version": "f60ed5ccbeba",
    "batch": "S001",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "3_1": {
    "i": 3,
    "j": 1,
    "kind": "art",
-   "v": "eb95a3ed1f37",
+   "v": "25d304896c86",
    "hv": "24e1a0aae242",
    "lv": "0a4fd8a2b432",
    "art_version": "4d00a8d7e718",
    "batch": "B009",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "4_-1": {
    "i": 4,
    "j": -1,
    "kind": "art",
-   "v": "d3ff7c147d46",
+   "v": "4974caa75851",
    "hv": "bc9964932f91",
    "lv": "95a4072794a3",
    "art_version": "ba865d56d8b2",
    "batch": "B009",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "4_-2": {
    "i": 4,
    "j": -2,
    "kind": "art",
-   "v": "c946524dba07",
+   "v": "6c6e2c70d9fa",
    "hv": "b7adce1c4deb",
    "lv": "a855693cf73d",
    "art_version": "c4a82a7f0b70",
    "batch": "S006",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "4_-3": {
    "i": 4,
    "j": -3,
    "kind": "art",
-   "v": "690f7e0f2559",
+   "v": "322760feb1e7",
    "hv": "cb2f3c23db36",
    "lv": "79db3beb348a",
    "art_version": "d04e6793b9cd",
    "batch": "S006",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "4_0": {
    "i": 4,
    "j": 0,
    "kind": "art",
-   "v": "ef03db21fcad",
+   "v": "3da90ddaac4b",
    "hv": "a2e99a790c9c",
    "lv": "c6242ef8befe",
    "art_version": "0d90127d1d9e",
    "batch": "S001",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "4_1": {
    "i": 4,
    "j": 1,
    "kind": "art",
-   "v": "d5319100a548",
+   "v": "4f2e4d873098",
    "hv": "a53f81d907c9",
    "lv": "c32ca9cc01f0",
    "art_version": "fc702eb84f9b",
    "batch": "B013",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "5_-1": {
    "i": 5,
    "j": -1,
    "kind": "art",
-   "v": "aba76219e23b",
+   "v": "ecbbd608c5c4",
    "hv": "abb809aef091",
    "lv": "3b1dbdd38c0b",
    "art_version": "aa894e103b6c",
    "batch": "S007",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "5_-2": {
    "i": 5,
    "j": -2,
    "kind": "art",
-   "v": "cff1fef1eaca",
+   "v": "0bc2fee9ceee",
    "hv": "ffc5ff5b311f",
    "lv": "83ff724bf854",
    "art_version": "f54188069394",
    "batch": "B017",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "5_-3": {
    "i": 5,
    "j": -3,
    "kind": "art",
-   "v": "3b6b7e91707a",
+   "v": "4464adb711ef",
    "hv": "afa02757dc41",
    "lv": "0a4ccd4e829b",
    "art_version": "f09f40af86cb",
    "batch": "B017R2",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "5_0": {
    "i": 5,
    "j": 0,
    "kind": "art",
-   "v": "2628f89fcfa3",
+   "v": "d9c5485acf41",
    "hv": "9fedf389f81f",
    "lv": "9f292b4ac4df",
    "art_version": "ea93c54b406c",
    "batch": "S007",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "5_1": {
    "i": 5,
    "j": 1,
    "kind": "art",
-   "v": "1ad19bc02171",
+   "v": "eb1f69f58e01",
    "hv": "71ea61ef449c",
    "lv": "347da6feeb36",
    "art_version": "f40b562d253e",
    "batch": "B016",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "6_-1": {
    "i": 6,
    "j": -1,
    "kind": "art",
-   "v": "93f6d7b7bf51",
+   "v": "0d4353a22b6b",
    "hv": "2e07001e69ae",
    "lv": "3fdbb019a610",
    "art_version": "e99d18d554b5",
    "batch": "S008",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "6_-2": {
    "i": 6,
    "j": -2,
    "kind": "art",
-   "v": "c7a62c728c83",
+   "v": "7fffa9785d75",
    "hv": "eaa688070bd9",
    "lv": "a13c5d0e56f8",
    "art_version": "83be20f796a6",
    "batch": "S008",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "6_-3": {
    "i": 6,
    "j": -3,
    "kind": "art",
-   "v": "8a6b981e312a",
+   "v": "11952a6f6ff4",
    "hv": "9d2d13e4942a",
    "lv": "cf54552142aa",
    "art_version": "1b6390e00666",
    "batch": "B017",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "6_0": {
    "i": 6,
    "j": 0,
    "kind": "art",
-   "v": "a9364a97f75f",
+   "v": "40b35ee8b1b9",
    "hv": "a881fc38f2f8",
    "lv": "6dc41e6ec0c8",
    "art_version": "b6d58ad376af",
    "batch": "B013",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "6_1": {
    "i": 6,
    "j": 1,
    "kind": "art",
-   "v": "6037a16dcee9",
+   "v": "ec353f7e0338",
    "hv": "ff2fb6bbe6e1",
    "lv": "ec06e6d24677",
    "art_version": "38a0001d4972",
    "batch": "B016",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "7_-1": {
    "i": 7,
    "j": -1,
    "kind": "art",
-   "v": "5f9333fb9ba8",
+   "v": "9a1dc93b26f1",
    "hv": "e499e19ab9b8",
    "lv": "b777c00f4476",
    "art_version": "018893e84fee",
    "batch": "B016",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "7_-2": {
    "i": 7,
    "j": -2,
    "kind": "art",
-   "v": "6c6a9af33a4d",
+   "v": "ba87d0d21335",
    "hv": "7fcd6abffde8",
    "lv": "607c11338167",
    "art_version": "1b3b3c810e68",
    "batch": "S009",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "7_-3": {
    "i": 7,
    "j": -3,
    "kind": "art",
-   "v": "fc69018b5adf",
+   "v": "514ce28d741d",
    "hv": "3c0a93678fcc",
    "lv": "a84a133fdb8b",
    "art_version": "24f433d6ccbe",
    "batch": "S009",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "7_0": {
    "i": 7,
    "j": 0,
    "kind": "art",
-   "v": "15b95622fa22",
+   "v": "bbde7ee71d41",
    "hv": "3da74790c68b",
    "lv": "844d7fdb1e57",
    "art_version": "be203eb98e7e",
    "batch": "B016",
-   "finish": "px512-q64s"
+   "finish": null
   },
   "7_1": {
    "i": 7,
    "j": 1,
    "kind": "art",
-   "v": "e41805059f24",
+   "v": "b2cfb279e4ee",
    "hv": "83e0e8e09b6e",
    "lv": "3afbe92d3ef6",
    "art_version": "7dacfb677660",
    "batch": "B016",
-   "finish": "px512-q64s"
+   "finish": null
   }
  },
  "counts": {

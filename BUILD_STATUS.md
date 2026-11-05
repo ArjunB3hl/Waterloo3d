@@ -36,7 +36,7 @@ TinyRJ's model also remains unknown. Nothing in this project assumes a particula
 
 **Layer pinning.** When art is accepted, the height and class layers of the reference it was painted on are copied to `art/accepted/layers/<tile>/`. Publishing uses them for art tiles, so re-rendering a reference later cannot desynchronise heights, life masks or collision cues from the artwork. The four campus tiles were pinned retroactively from commit c69793a, the references they were painted on.
 
-**Finishing.** Accepted art keeps its original in `art/accepted/`. At publish time a deterministic pixel-art finish is applied (`config/world.json → art_finish`): box-downscale to 512 px, a light unsharp mask, one **shared 64-colour palette** taken from the B001 style sample (`art/palette_px512-q64s.png`), then a nearest-neighbour upscale. Finished LODs are stored as lossless WebP.
+**Finishing.** Accepted art keeps its original in `art/accepted/`. Since 5 Nov 2026 it is published at **full resolution** (1024 px tiles, lossy WebP q92) with no pixel-art finish: `config/world.json → art_finish.enabled = false`. The earlier finish (box-downscale to 512 px, a light unsharp mask, one shared 64-colour palette from the B001 style sample `art/palette_px512-q64s.png`, then a nearest-neighbour upscale) halved the detail and lost colours such as QNC's blue glass and the pond's water (`docs/screenshots/resolution_before_after.png`). Set `enabled` back to `true` and re-run `pipeline/publish_tiles.py` to restore it. The viewer smooths full-resolution art at every zoom (it uses crisp nearest-neighbour pixels only for pixel-finished art), and the default tilt-shift strength was lowered from 25 to 10.
 
 ## Measured results
 

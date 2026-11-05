@@ -45,7 +45,7 @@ def _prefinish(im, f):
 def art_finish(im):
     """Pixel-art finish for accepted generated art (config/world.json 'art_finish'); deterministic for a given input."""
     f = cfg().get('art_finish')
-    if not f: return im, None
+    if not f or not f.get('enabled', True): return im, None   # disabled: publish the accepted art at full resolution
     small = _prefinish(im, f)
     if f.get('palette_from'):
         q = small.quantize(palette=finish_palette(f), dither=Image.Dither.NONE).convert('RGB')
@@ -100,7 +100,7 @@ def main():
             if finish and lod >= cfg()['art_finish']['work_px']:
                 im.save(fp, lossless=True, method=6)      # keep the finished palette exact (lossy WebP smears pixel art)
             else:
-                im.save(fp, quality=88 if kind == 'art' else 82, method=6)
+                im.save(fp, quality=92 if kind == 'art' else 82, method=6)
         # art tiles use the layers pinned when the art was accepted (the reference it was painted from)
         ld = os.path.join(ROOT, 'art', 'accepted', 'layers', d)
         layer_dir = ld if kind == 'art' and os.path.exists(os.path.join(ld, 'height.png')) else jd

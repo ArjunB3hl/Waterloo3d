@@ -4,7 +4,7 @@ import type { Settings } from '../types';
 const STORAGE_KEY = 'tinyWaterloo.settings.v1';
 
 export const DEFAULT_SETTINGS: Readonly<Settings> = {
-  minimap: true, life: true, tiltShift: true, tiltStrength: 25, labels: true, buildingLabels: true, coverage: true, perfHud: false, quality: 'auto',
+  minimap: true, life: true, tiltShift: true, tiltStrength: 10, labels: true, buildingLabels: true, coverage: true, perfHud: false, quality: 'auto',
 };
 
 /** Keep only known keys with the right types so a stale or hand-edited entry can never break the map. */

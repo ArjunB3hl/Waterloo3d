@@ -9,7 +9,8 @@ import { MAX_FAST_RETRIES, type Resource, ResourceLoader } from './loader';
  * (64 px per tile: about native resolution here, so retina screens switch to 256 px tiles at half the CSS zoom).
  */
 export const OVERVIEW_ZOOM = 0.07;
-/** At or above this zoom artwork is drawn with nearest-neighbour sampling (crisp pixels). */
+/** At or above this zoom pixel-finished artwork is drawn with nearest-neighbour sampling (crisp pixels). Full-resolution
+ *  (unfinished) artwork is always smoothed. */
 export const PIXELATED_ZOOM = 1.5;
 /** Aux layers are only filled above this zoom (life / heights are invisible further out and would cost memory). */
 export const AUX_MIN_ZOOM = 0.1;
@@ -46,7 +47,11 @@ export class MapRenderer {
   private overviewFailed = false;
   private hatch: CanvasPattern | null = null;
 
+  /** Published art carries a pixel-art finish (manifest tiles[].finish): magnify it with crisp pixels. */
+  private readonly pixelArt: boolean;
+
   constructor(private readonly m: Manifest, private readonly cov: CoverageInfo | null, private readonly loader: ResourceLoader) {
+    this.pixelArt = Object.values(m.tiles).some((t) => !!t.finish);
     this.F = m.frame_px;
     this.lods = [...m.lods_px].sort((a, b) => a - b);
     for (const t of Object.values(m.tiles)) this.published.set(tileKey(t.i, t.j), t);
@@ -92,7 +97,7 @@ export class MapRenderer {
     const result: DrawResult = { tilesDrawn: 0, fading: false, failed: [] };
     if (p.coverage && this.pending.size) this.drawPendingHatch(ctx, range, X, Y, s, left, top);
 
-    ctx.imageSmoothingEnabled = view.zoom < PIXELATED_ZOOM;
+    ctx.imageSmoothingEnabled = !this.pixelArt || view.zoom < PIXELATED_ZOOM;
     ctx.imageSmoothingQuality = p.moving ? 'low' : 'high';
     // while the overview is still loading, wait for it rather than fetching every tile at 256 px
     const useOverview = s < OVERVIEW_ZOOM && !this.overviewFailed;
