@@ -935,7 +935,11 @@ def main(argv=None):
     ap.add_argument('--no-publish', action='store_true', help='do not run publish_tiles.py after accepting')
     ap.add_argument('--no-revision', action='store_true', help='do not create a revision packet for failures')
     ap.add_argument('--state-dir', help='use this art/ state directory (also: TW_ART_DIR)')
+    ap.add_argument('--no-feather', action='store_true',
+                    help='seams: paste the band hard instead of the triangular feather - use when the return MOVES a line feature '
+                         '(rails, kerbs) inside the band, which a feather would ghost (S004R1)')
     a = ap.parse_args(argv)
+    if a.no_feather: T['seam_feather'] = False
     if a.state_dir: os.environ['TW_ART_DIR'] = os.path.abspath(a.state_dir)
     if not os.path.isdir(a.folder): raise SystemExit(f'not a directory: {a.folder}')
     rec = process(a.batch, a.folder, a.accept, a.force, set(a.only.split(',')) if a.only else None, a.model, a.settings,

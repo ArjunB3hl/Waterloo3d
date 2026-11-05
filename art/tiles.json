@@ -382,8 +382,8 @@
   "history": []
  },
  "-1_-2": {
-  "version": "971e2f939d4e",
-  "batch": "S003",
+  "version": "0ccc7fca6375",
+  "batch": "S004R1",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-image guided edit/style transfer; mask as reference image (no mask parameter); one call per canvas; returned 1254x1254. FORCED: block-field camera check (scale 0.981) is stripe-aliased; independent fit on 15 confident 128px blocks gives scale 0.9994, rot 0.11 deg, inlier shifts 1-3 px",
   "prompt_sha": "757d4add7001",
@@ -393,7 +393,7 @@
    "cls": "23a41b0d0875",
    "height": "b7ed1cc15867"
   },
-  "accepted_utc": "2026-11-04T22:24:17Z",
+  "accepted_utc": "2026-11-05T02:15:02Z",
   "source_file": "art/returned/B006/B006_-1_-2.png",
   "source_sha256": "5890c3816b2fd818dd3f9dcb6a0ff6bb8885ea88f2c316ac4a86fc75e647f7e5",
   "qa_verdict": "fail",
@@ -416,14 +416,39 @@
     "source_sha256": "5890c3816b2fd818dd3f9dcb6a0ff6bb8885ea88f2c316ac4a86fc75e647f7e5",
     "qa_verdict": "fail",
     "forced": true
+   },
+   {
+    "version": "971e2f939d4e",
+    "batch": "S003",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-image guided edit/style transfer; mask as reference image (no mask parameter); one call per canvas; returned 1254x1254. FORCED: block-field camera check (scale 0.981) is stripe-aliased; independent fit on 15 confident 128px blocks gives scale 0.9994, rot 0.11 deg, inlier shifts 1-3 px",
+    "prompt_sha": "757d4add7001",
+    "reference_sha": "d5ee79c8a39a",
+    "reference_files": {
+     "color2x": "d25893b781e8",
+     "cls": "23a41b0d0875",
+     "height": "b7ed1cc15867"
+    },
+    "accepted_utc": "2026-11-04T22:24:17Z",
+    "source_file": "art/returned/B006/B006_-1_-2.png",
+    "source_sha256": "5890c3816b2fd818dd3f9dcb6a0ff6bb8885ea88f2c316ac4a86fc75e647f7e5",
+    "qa_verdict": "fail",
+    "forced": false,
+    "seam": {
+     "source_file": "art/returned/S003/S003_seam.png",
+     "source_sha256": "d4fa6f73295b0988d6f7c71210441c0aed0af573c74008baa6b43670cc8cdee8",
+     "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+     "settings_reported": "seam repair; whole-frame regeneration, band composited",
+     "prompt_sha": "3ef6369b15c1"
+    }
    }
   ],
   "seam": {
-   "source_file": "art/returned/S003/S003_seam.png",
-   "source_sha256": "d4fa6f73295b0988d6f7c71210441c0aed0af573c74008baa6b43670cc8cdee8",
+   "source_file": "art/returned/S004R1/S004R1_seam.png",
+   "source_sha256": "cde4364e3470080e101672115035363f57ea3fde79019388bc88a4e81fa20926",
    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
-   "settings_reported": "seam repair; whole-frame regeneration, band composited",
-   "prompt_sha": "3ef6369b15c1"
+   "settings_reported": "seam repair redo; rails redrawn between measured entry/exit points; composited with hard band (--no-feather) because a feather ghosts moved rails",
+   "prompt_sha": "b60be4ec4c71"
   }
  },
  "4_-1": {
@@ -682,8 +707,8 @@
   "history": []
  },
  "-2_-2": {
-  "version": "48a4036b073a",
-  "batch": "B011",
+  "version": "6bd6763a3858",
+  "batch": "S004R1",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
   "prompt_sha": "62beaa0fa1dc",
@@ -693,12 +718,38 @@
    "cls": "1be9c5149f82",
    "height": "9aa0ee312708"
   },
-  "accepted_utc": "2026-11-04T21:06:00Z",
+  "accepted_utc": "2026-11-05T02:15:02Z",
   "source_file": "art/returned/B011/B011_-2_-2.png",
   "source_sha256": "3cd4b8104bb4e4d64fb7f674fef1d9e956e859a37e6a87c0a46d3e06980a3a7a",
   "qa_verdict": "pass",
   "forced": false,
-  "history": []
+  "history": [
+   {
+    "version": "48a4036b073a",
+    "batch": "B011",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+    "prompt_sha": "62beaa0fa1dc",
+    "reference_sha": "fa87209e09cd",
+    "reference_files": {
+     "color2x": "d64604d2f8b8",
+     "cls": "1be9c5149f82",
+     "height": "9aa0ee312708"
+    },
+    "accepted_utc": "2026-11-04T21:06:00Z",
+    "source_file": "art/returned/B011/B011_-2_-2.png",
+    "source_sha256": "3cd4b8104bb4e4d64fb7f674fef1d9e956e859a37e6a87c0a46d3e06980a3a7a",
+    "qa_verdict": "pass",
+    "forced": false
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S004R1/S004R1_seam.png",
+   "source_sha256": "cde4364e3470080e101672115035363f57ea3fde79019388bc88a4e81fa20926",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam repair redo; rails redrawn between measured entry/exit points; composited with hard band (--no-feather) because a feather ghosts moved rails",
+   "prompt_sha": "b60be4ec4c71"
+  }
  },
  "-2_1": {
   "version": "0c8e04dfd6d2",
@@ -777,8 +828,8 @@
   "history": []
  },
  "5_0": {
-  "version": "f0657877b25d",
-  "batch": "B013",
+  "version": "ea93c54b406c",
+  "batch": "S007",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
   "prompt_sha": "2f3437a26c6e",
@@ -788,12 +839,38 @@
    "cls": "bca4d9279adc",
    "height": "cebe5af750bc"
   },
-  "accepted_utc": "2026-11-04T22:22:47Z",
+  "accepted_utc": "2026-11-05T02:21:20Z",
   "source_file": "art/returned/B013/B013_5_0.png",
   "source_sha256": "d8d84b680b31f46f6875df1f36486f969f524472a37615002c7f3e119fe5ac10",
   "qa_verdict": "pass",
-  "forced": false,
-  "history": []
+  "forced": true,
+  "history": [
+   {
+    "version": "f0657877b25d",
+    "batch": "B013",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+    "prompt_sha": "2f3437a26c6e",
+    "reference_sha": "491ee6c4ebff",
+    "reference_files": {
+     "color2x": "d60c31d96f50",
+     "cls": "bca4d9279adc",
+     "height": "cebe5af750bc"
+    },
+    "accepted_utc": "2026-11-04T22:22:47Z",
+    "source_file": "art/returned/B013/B013_5_0.png",
+    "source_sha256": "d8d84b680b31f46f6875df1f36486f969f524472a37615002c7f3e119fe5ac10",
+    "qa_verdict": "pass",
+    "forced": false
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S007/S007_seam.png",
+   "source_sha256": "99da5fac98b48d8bcff910eb9a82374dd5287b302156e9e32b0c913865311ff1",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam repair; feathered composite. FORCED: worst join block step x1.95 (from x2.95) is the foot of a small house wall lying on the join line",
+   "prompt_sha": "f7a1db8343bc"
+  }
  },
  "6_-1": {
   "version": "659119ee958e",
@@ -815,8 +892,8 @@
   "history": []
  },
  "4_-2": {
-  "version": "9660969e9f1e",
-  "batch": "B014",
+  "version": "c4a82a7f0b70",
+  "batch": "S006",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
   "prompt_sha": "1ae8ede25640",
@@ -826,12 +903,38 @@
    "cls": "5892165d65ce",
    "height": "dd006bcaafb3"
   },
-  "accepted_utc": "2026-11-04T22:53:28Z",
+  "accepted_utc": "2026-11-05T02:13:35Z",
   "source_file": "art/returned/B014/B014_4_-2.png",
   "source_sha256": "98bb7b1e29a22feae3a606b801cd34775495199fd8053afe154d463bf5da2fb9",
   "qa_verdict": "pass",
   "forced": false,
-  "history": []
+  "history": [
+   {
+    "version": "9660969e9f1e",
+    "batch": "B014",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+    "prompt_sha": "1ae8ede25640",
+    "reference_sha": "2d0d88d6bd50",
+    "reference_files": {
+     "color2x": "cd5c21d10bb8",
+     "cls": "5892165d65ce",
+     "height": "dd006bcaafb3"
+    },
+    "accepted_utc": "2026-11-04T22:53:28Z",
+    "source_file": "art/returned/B014/B014_4_-2.png",
+    "source_sha256": "98bb7b1e29a22feae3a606b801cd34775495199fd8053afe154d463bf5da2fb9",
+    "qa_verdict": "pass",
+    "forced": false
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S006/S006_seam.png",
+   "source_sha256": "7fecfa1cc856821f3f163a742158cbc30287a43d95f6638e5b3d84a437e653f8",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam repair; whole-frame regeneration; feathered composite",
+   "prompt_sha": "701b8856bb35"
+  }
  },
  "3_-3": {
   "version": "2fd7f1b3d4e2",
@@ -853,8 +956,8 @@
   "history": []
  },
  "4_-3": {
-  "version": "9fbc0a394421",
-  "batch": "B014",
+  "version": "d04e6793b9cd",
+  "batch": "S006",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
   "prompt_sha": "c1bc997cf536",
@@ -864,12 +967,38 @@
    "cls": "2476a56eab02",
    "height": "9e732c85390b"
   },
-  "accepted_utc": "2026-11-04T22:53:58Z",
+  "accepted_utc": "2026-11-05T02:13:34Z",
   "source_file": "art/returned/B014/B014_4_-3.png",
   "source_sha256": "30e27d9e28bacac4509891d3b60665b85a76258633dd484b1009d012bc81b87a",
   "qa_verdict": "pass",
   "forced": false,
-  "history": []
+  "history": [
+   {
+    "version": "9fbc0a394421",
+    "batch": "B014",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+    "prompt_sha": "c1bc997cf536",
+    "reference_sha": "b540ba9bdbeb",
+    "reference_files": {
+     "color2x": "ada8d5726973",
+     "cls": "2476a56eab02",
+     "height": "9e732c85390b"
+    },
+    "accepted_utc": "2026-11-04T22:53:58Z",
+    "source_file": "art/returned/B014/B014_4_-3.png",
+    "source_sha256": "30e27d9e28bacac4509891d3b60665b85a76258633dd484b1009d012bc81b87a",
+    "qa_verdict": "pass",
+    "forced": false
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S006/S006_seam.png",
+   "source_sha256": "7fecfa1cc856821f3f163a742158cbc30287a43d95f6638e5b3d84a437e653f8",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam repair; whole-frame regeneration; feathered composite",
+   "prompt_sha": "701b8856bb35"
+  }
  },
  "-2_-3": {
   "version": "c2a409f04de4",
@@ -1043,8 +1172,8 @@
   "history": []
  },
  "5_-1": {
-  "version": "ffd1094c4944",
-  "batch": "B013R1",
+  "version": "aa894e103b6c",
+  "batch": "S007",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown; revision of 5_-1 removing the invented church",
   "prompt_sha": "930787ff3055",
@@ -1054,11 +1183,170 @@
    "cls": "4093816f1809",
    "height": "3a92ea652785"
   },
-  "accepted_utc": "2026-11-04T23:33:28Z",
+  "accepted_utc": "2026-11-05T02:21:20Z",
   "source_file": "art/returned/B013R1/B013R1_5_-1.png",
   "source_sha256": "ea850548fefb167e2366f5996a02ffcae56726ee04d6c9f13e978e010121ae5a",
   "qa_verdict": "pass",
+  "forced": true,
+  "history": [
+   {
+    "version": "ffd1094c4944",
+    "batch": "B013R1",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown; revision of 5_-1 removing the invented church",
+    "prompt_sha": "930787ff3055",
+    "reference_sha": "1d81f3fb3156",
+    "reference_files": {
+     "color2x": "f36a6bb9c461",
+     "cls": "4093816f1809",
+     "height": "3a92ea652785"
+    },
+    "accepted_utc": "2026-11-04T23:33:28Z",
+    "source_file": "art/returned/B013R1/B013R1_5_-1.png",
+    "source_sha256": "ea850548fefb167e2366f5996a02ffcae56726ee04d6c9f13e978e010121ae5a",
+    "qa_verdict": "pass",
+    "forced": false
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S007/S007_seam.png",
+   "source_sha256": "99da5fac98b48d8bcff910eb9a82374dd5287b302156e9e32b0c913865311ff1",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam repair; feathered composite. FORCED: worst join block step x1.95 (from x2.95) is the foot of a small house wall lying on the join line",
+   "prompt_sha": "f7a1db8343bc"
+  }
+ },
+ "5_-2": {
+  "version": "f54188069394",
+  "batch": "B017",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
+  "prompt_sha": "f87e61ed953a",
+  "reference_sha": "12bb848c0e16",
+  "reference_files": {
+   "color2x": "15f2a7fba183",
+   "cls": "0dbe0b6be4f6",
+   "height": "c265772e84af"
+  },
+  "accepted_utc": "2026-11-05T02:17:36Z",
+  "source_file": "art/returned/B017/B017_5_-2.png",
+  "source_sha256": "4f5831ef5b261c5aa8f0fcef25eba4fa1bfc46d67745b3984efd54fb1bddc90a",
+  "qa_verdict": "pass",
   "forced": false,
+  "history": []
+ },
+ "6_-2": {
+  "version": "5a5e83efbddd",
+  "batch": "B017",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
+  "prompt_sha": "896899415bd2",
+  "reference_sha": "c2ca0043abc2",
+  "reference_files": {
+   "color2x": "d1aa7b2bc24a",
+   "cls": "145a84f22415",
+   "height": "25b41c56828e"
+  },
+  "accepted_utc": "2026-11-05T02:17:53Z",
+  "source_file": "art/returned/B017/B017_6_-2.png",
+  "source_sha256": "2e823325eb78abde1a46aafa6aa29373b3d5010ff8053e64355c2c188b25d3fd",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "7_-2": {
+  "version": "c4ddc878f377",
+  "batch": "B017",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
+  "prompt_sha": "0b597f05c585",
+  "reference_sha": "cef6d5c233f4",
+  "reference_files": {
+   "color2x": "e8936b04a15d",
+   "cls": "4c8c623fd6ab",
+   "height": "d66c6c720dbe"
+  },
+  "accepted_utc": "2026-11-05T02:18:10Z",
+  "source_file": "art/returned/B017/B017_7_-2.png",
+  "source_sha256": "d3267af0e456ffa692d2f15cd19730074d6e30e48e3af430a7024916d1d12516",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "5_-3": {
+  "version": "6d544904ef1e",
+  "batch": "B017",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
+  "prompt_sha": "e77f2aed24bb",
+  "reference_sha": "e52e065586b4",
+  "reference_files": {
+   "color2x": "6d3233216d67",
+   "cls": "477890af1caa",
+   "height": "5ef7d26a8d94"
+  },
+  "accepted_utc": "2026-11-05T02:18:27Z",
+  "source_file": "art/returned/B017/B017_5_-3.png",
+  "source_sha256": "c8e06d876d3775234976d33f8fc62e273836fe9c7285357f3e22345b48e7629e",
+  "qa_verdict": "fail",
+  "forced": true,
+  "history": []
+ },
+ "6_-3": {
+  "version": "1b6390e00666",
+  "batch": "B017",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
+  "prompt_sha": "fe7fb52b05cc",
+  "reference_sha": "42eaaf1e00d5",
+  "reference_files": {
+   "color2x": "d9c0f5f30499",
+   "cls": "dd2badfabb20",
+   "height": "0e4b7cf2051c"
+  },
+  "accepted_utc": "2026-11-05T02:18:45Z",
+  "source_file": "art/returned/B017/B017_6_-3.png",
+  "source_sha256": "b5d4b382badc76610eefafa729be78c052b282f0091e0a5e3ed5780596acb19e",
+  "qa_verdict": "pass",
+  "forced": false,
+  "history": []
+ },
+ "7_-3": {
+  "version": "942d2e7449ee",
+  "batch": "B017",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
+  "prompt_sha": "1888311ec505",
+  "reference_sha": "27ca8af1b6ff",
+  "reference_files": {
+   "color2x": "152ce3a265a9",
+   "cls": "0b05415eaf73",
+   "height": "170255a9056e"
+  },
+  "accepted_utc": "2026-11-05T02:19:03Z",
+  "source_file": "art/returned/B017/B017_7_-3.png",
+  "source_sha256": "f7b73362aca7665e99faa187ad5eefb5ed4197461dc7ab5162f62c71b1da9bcc",
+  "qa_verdict": "fail",
+  "forced": true,
+  "history": []
+ },
+ "6_0": {
+  "version": "b6d58ad376af",
+  "batch": "B013",
+  "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+  "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. 6_0 accepted as INTERIM (good except the ION LRT along King St S missing from y~720 down; redraw B013R2 failed review -> next revision pending)",
+  "prompt_sha": "4955f3374ea8",
+  "reference_sha": "27f2fde0b84b",
+  "reference_files": {
+   "color2x": "a950c5203678",
+   "cls": "183053a5ba2c",
+   "height": "7d5087486fa0"
+  },
+  "accepted_utc": "2026-11-05T02:20:22Z",
+  "source_file": "art/returned/B013/B013_6_0.png",
+  "source_sha256": "7e9b3f53bf31d2cd2cf2b035b6f6428420c7d7410ad7c5515221e38a9fb0e7d1",
+  "qa_verdict": "fail",
+  "forced": true,
   "history": []
  }
 }
