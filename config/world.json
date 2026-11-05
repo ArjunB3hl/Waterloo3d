@@ -44,6 +44,7 @@
     "floor_m": -100.0,
     "units_per_m": 100
   },
+  "art_harmonize": {"comment": "Publish-time evening-out of neighbouring accepted tiles (pipeline/harmonize_art.py): detail-gain matching, cross-fade into the neighbour's own painting of each border band, colour levelling where no agreeing painting exists. art/accepted is never changed.", "enabled": true, "xfade_px": 192, "gain_mean": 1.15, "gain_clip": [0.85, 1.6]},
   "art_finish": {
     "comment": "Deterministic pixel-art finish applied at publish time to accepted generated art (art/accepted keeps the original). Box-downscale to work_px, light unsharp mask, median-cut palette of `colors` without dithering, nearest-neighbour upscale to frame_px. One shared palette (art/palette_<id>.png, built from the palette_from style-sample tile) is used for every tile so colours match across seams.",
     "enabled": false, "id": "px512-q64s",

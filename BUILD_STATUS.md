@@ -38,6 +38,16 @@ TinyRJ's model also remains unknown. Nothing in this project assumes a particula
 
 **Finishing.** Accepted art keeps its original in `art/accepted/`. Since 5 Nov 2026 it is published at **full resolution** (1024 px tiles, lossy WebP q92) with no pixel-art finish: `config/world.json → art_finish.enabled = false`. The earlier finish (box-downscale to 512 px, a light unsharp mask, one shared 64-colour palette from the B001 style sample `art/palette_px512-q64s.png`, then a nearest-neighbour upscale) halved the detail and lost colours such as QNC's blue glass and the pond's water (`docs/screenshots/resolution_before_after.png`). Set `enabled` back to `true` and re-run `pipeline/publish_tiles.py` to restore it. The viewer smooths full-resolution art at every zoom (it uses crisp nearest-neighbour pixels only for pixel-finished art), and the default tilt-shift strength was lowered from 25 to 10.
 
+**Tile borders (publish-time harmonisation).** At full resolution the borders between tiles showed as straight lines, because each tile came from a separate image call: sharpness differed up to 2.2× between neighbours, and colour steps at borders had a median of 11 levels. `pipeline/harmonize_art.py` runs inside `publish_tiles.py` (`config/world.json → art_harmonize`) and never changes `art/accepted/`. It does four things:
+1. Matches the detail level of neighbours: per-tile gains are solved from the edge strips (0.73–1.61×). The worst neighbour sharpness ratio drops from 1.88× to about 1.1×.
+2. Cross-fades each border band into the neighbour's own painting of it. Context calls painted a 256 px margin, so 184 border bands have a second painting to blend with. A block is blended only where the two paintings agree in 4–16 px structure (median correlation 0.89), and flat blocks always blend.
+3. Applies colour levelling where no agreeing painting exists.
+4. Uses harmonic seam diffusion to remove the remaining per-row step exactly at each border.
+
+`tests/test_harmonize.py` covers this on synthetic tiles; before and after: `docs/screenshots/seam_before_after.png`.
+
+**Known limit:** where two tiles painted different *content* at the border, a soft join remains. For example, beside ESC the courtyard tree is light on one side and dark on the other, and the image tool also copied that join into its margin. Only a seam repaint (`art_request.py seam`) can fix those.
+
 ## Measured results
 
 ### Geographic grounding and alignment (`pipeline/validate_alignment.py`, `docs/validation/alignment.md`)

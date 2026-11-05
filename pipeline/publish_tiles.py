@@ -15,6 +15,7 @@ from PIL import Image, ImageFilter
 sys.path.insert(0, os.path.dirname(__file__))
 from world import cfg, ROOT, camera_record, F
 from classes import CLS
+import harmonize_art
 
 JOBS = os.path.join(ROOT, 'data_cache', 'jobs')
 OUT = os.path.join(ROOT, 'web', 'public', 'data')
@@ -72,6 +73,14 @@ def main():
         os.makedirs(os.path.join(OUT, d), exist_ok=True)
     tiles = {}
     hp = cfg()['tiles']['height_px']
+    # accepted art, evened out across tile borders as one set (detail, cross-fade, colour; art/accepted is untouched)
+    accepted_src = {}
+    for d in sorted(os.listdir(JOBS)):
+        ap = os.path.join(ART, f'{d}.png')
+        if os.path.exists(ap) and os.path.exists(os.path.join(JOBS, d, 'height.png')):
+            im = Image.open(ap).convert('RGB')
+            accepted_src[d] = im if im.size == (F(), F()) else im.resize((F(), F()), Image.LANCZOS)
+    accepted_src, harm_info = harmonize_art.harmonize(accepted_src)
     for d in sorted(os.listdir(JOBS)):
         jd = os.path.join(JOBS, d)
         if not os.path.exists(os.path.join(jd, 'height.png')): continue
@@ -79,7 +88,7 @@ def main():
         accepted = os.path.join(ART, f'{d}.png')
         finish = None
         if os.path.exists(accepted):
-            src = Image.open(accepted).convert('RGB'); kind = 'art'
+            src = accepted_src[d]; kind = 'art'
             painted_on = art_meta.get(d, {}).get('reference_files') or {}
             now = {k: sha(os.path.join(jd, f'{k}.png')) for k in painted_on if os.path.exists(os.path.join(jd, f'{k}.png'))}
             stale = [k for k, v in painted_on.items() if now.get(k) != v]
@@ -134,6 +143,8 @@ def main():
         'proj4': cfg()['projection']['proj4'], 'classes': CLS,
         'overview': {'url': 'overview.webp', 'i0': i0, 'j0': j0, 'cols': i1 - i0 + 1, 'rows': j1 - j0 + 1, 'px_per_tile': ov},
         'regions': regions, 'tiles': tiles,
+        'harmonize': {'enabled': harm_info is not None,
+                      'detail_gains': harm_info['gains'] if harm_info else None},
         'counts': {'tiles': len(tiles), 'art': sum(t['kind'] == 'art' for t in tiles.values()), 'reference': sum(t['kind'] == 'reference' for t in tiles.values())},
         'attribution': ['© OpenStreetMap contributors (ODbL) via Overture Maps Foundation', 'Overture Maps Foundation',
                         'Microsoft ML Building heights (ODbL) via Overture', 'Terrain: AWS Terrain Tiles / Mapzen (incl. CDEM © NRCan, OGL-Canada)'],
