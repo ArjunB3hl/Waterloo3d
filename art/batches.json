@@ -38247,7 +38247,7 @@
    "kind": "seam",
    "title": "Seam repair - vertical join of -3_-3, -2_-3",
    "mode": "seam",
-   "status": "revision-needed",
+   "status": "complete",
    "depends_on": [
     "-3_-3",
     "-2_-3"
@@ -38326,7 +38326,7 @@
    ],
    "items": {
     "seam": {
-     "status": "revision-needed",
+     "status": "accepted",
      "return_filename": "S005_seam.png",
      "files": {
       "composition": "S005_window.png",
@@ -38521,7 +38521,11 @@
       "file": "S005_seam.png"
      },
      "report_text": "S005 seam repair candidate\nTool: image_gen.imagegen (built-in)\nModel name/version: unknown\nSeed/steps/guidance/strength/quality: unknown\nAttempts: 1\nTransparent background: false\nRequested: 1024 x 1024; any native square >=1024 accepted by brief.\nActual: 1254 x 1254 PNG\nReference-guided image edit. Mask supplied as reference image and explained in prompt; no dedicated mask parameter; internal edit/inpaint mode unknown.\nNone: original generated PNG copied without resizing, cropping, compositing, or recompression.\nOriginal byte identity, PNG header/dimensions and ZIP CRC verified. Generated seam repair candidate only: exact geometry, evolv1 height and black-mask pixel preservation require pipeline QA. No import or acceptance performed.\nSHA-256: 4506f002f841fa1f3a0d6cc49ab0d98e0949e0981f51c88a09ea0f4219d8695f\nExact prompt: S005_prompt.txt\n",
-     "revision_batch": "S005R1"
+     "revision_batch": "S005R1",
+     "accepted": {
+      "via": "S005R1",
+      "utc": "2026-11-05T03:17:43Z"
+     }
     }
    },
    "packet": {
@@ -39288,7 +39292,7 @@
    "title": "Revision of B013: 6_0",
    "mode": "context",
    "frame": "square",
-   "status": "requested",
+   "status": "received",
    "depends_on": [
     "0_0",
     "3_1",
@@ -39298,7 +39302,7 @@
    "blocked_by": [],
    "parent": "B013",
    "created_utc": "2026-11-05T02:22:49Z",
-   "updated_utc": "2026-11-05T02:22:49Z",
+   "updated_utc": "2026-11-05T03:21:09Z",
    "packet_rev": 1,
    "order": [
     "6_0"
@@ -39416,7 +39420,7 @@
    ],
    "items": {
     "6_0": {
-     "status": "requested",
+     "status": "revision-needed",
      "return_filename": "B013R3_6_0.png",
      "files": {
       "composition": "B013R3_context_6_0.png",
@@ -39454,10 +39458,1037 @@
        "6_1": "reference"
       }
      },
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null,
+     "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+     "settings_reported": "revision of 6_0",
+     "received": [
+      {
+       "file": "B013R3_6_0.png",
+       "stored": "art/returned/B013R3/B013R3_6_0.png",
+       "sha256": "dc9f085ea0fbd2a54c4e7b7a7192892b3534f55a8dbe9f166a4f32964d5547b2",
+       "utc": "2026-11-05T03:20:44Z",
+       "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+       "settings_reported": "revision of 6_0",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [
+        {
+         "check": "size",
+         "detail": "returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)"
+        },
+        {
+         "check": "geometry-cells",
+         "detail": "2 cell(s) with weak agreement: [[128, 640, -3.16], [0, 768, -0.17]]"
+        },
+        {
+         "check": "building",
+         "detail": "HSBC (around x=679, y=1003): roof outline score -12.91, roof contrast 2.19 of the reference"
+        }
+       ],
+       "qa_md": "art/returned/B013R3/QA_6_0_dc9f085e.md",
+       "qa_png": "art/returned/B013R3/QA_6_0_dc9f085e.png"
+      }
+     ],
+     "qa": {
+      "verdict": "pass",
+      "metrics": {
+       "size": {
+        "returned": [
+         1254,
+         1254
+        ],
+        "expected": [
+         1536,
+         1536
+        ],
+        "k": 0.8164
+       },
+       "registration": {
+        "dx": 0.51,
+        "dy": 0.66,
+        "peak": 0.0291,
+        "blocks": 18,
+        "scale": 0.9979,
+        "rot_deg": 0.012,
+        "max_resid": 4.6,
+        "camera_fit_dropped": 0,
+        "unconfirmed_blocks": [],
+        "displaced": []
+       },
+       "geometry": {
+        "ref": 0.81,
+        "art": 0.727,
+        "rel": 0.897,
+        "bad_cells": [
+         [
+          128,
+          640,
+          -3.16
+         ],
+         [
+          0,
+          768,
+          -0.17
+         ]
+        ]
+       },
+       "buildings": [
+        {
+         "name": "The Shops at Waterloo Town Square",
+         "id": "6015c8cc-336e-4ffb-b0c0-087aea9bd497",
+         "area": 28127,
+         "centroid": [
+          59,
+          767
+         ],
+         "bbox": [
+          0,
+          635,
+          170,
+          926
+         ],
+         "landmark": false,
+         "outline_rel": 0.58,
+         "contrast_rel": null,
+         "bad": false
+        },
+        {
+         "name": "Region of Waterloo Public Health & Community Services",
+         "id": "1b40a160-b796-4239-bdbe-979addd25a51",
+         "area": 26964,
+         "centroid": [
+          689,
+          768
+         ],
+         "bbox": [
+          559,
+          652,
+          802,
+          886
+         ],
+         "landmark": false,
+         "outline_rel": 1.14,
+         "contrast_rel": 1.28,
+         "bad": false
+        },
+        {
+         "name": "Uptown Waterloo Parkade",
+         "id": "b8abee2a-32c4-4d7f-bd1e-bed335c45425",
+         "area": 23270,
+         "centroid": [
+          409,
+          521
+         ],
+         "bbox": [
+          272,
+          439,
+          550,
+          599
+         ],
+         "landmark": false,
+         "outline_rel": 1.38,
+         "contrast_rel": 1.15,
+         "bad": false
+        },
+        {
+         "name": "Waterloo City Centre",
+         "id": "f4103643-347e-466d-92bd-86800d8d7124",
+         "area": 22176,
+         "centroid": [
+          802,
+          626
+         ],
+         "bbox": [
+          671,
+          536,
+          921,
+          726
+         ],
+         "landmark": false,
+         "outline_rel": 1.24,
+         "contrast_rel": 1.11,
+         "bad": false
+        },
+        {
+         "name": "Faire",
+         "id": "17448c01-7900-46f0-b361-bb9250eff553",
+         "area": 21676,
+         "centroid": [
+          131,
+          945
+         ],
+         "bbox": [
+          0,
+          847,
+          264,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": 1.19,
+         "contrast_rel": 1.3,
+         "bad": false
+        },
+        {
+         "name": "RBC Building",
+         "id": "4704ab18-1adb-495f-b098-6c38e83c1b73",
+         "area": 18040,
+         "centroid": [
+          332,
+          830
+         ],
+         "bbox": [
+          211,
+          742,
+          436,
+          925
+         ],
+         "landmark": false,
+         "outline_rel": 1.12,
+         "contrast_rel": 1.41,
+         "bad": false
+        },
+        {
+         "name": "unnamed office building",
+         "id": "87ea45ae-b642-4da8-bddd-d9c11edd5577",
+         "area": 13056,
+         "centroid": [
+          448,
+          712
+         ],
+         "bbox": [
+          359,
+          645,
+          540,
+          783
+         ],
+         "landmark": false,
+         "outline_rel": 1.55,
+         "contrast_rel": 2.1,
+         "bad": false
+        },
+        {
+         "name": "First Gulf Building",
+         "id": "1d4972ce-d5c7-438f-a56c-431e98f02025",
+         "area": 11909,
+         "centroid": [
+          460,
+          973
+         ],
+         "bbox": [
+          371,
+          906,
+          560,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.59,
+         "bad": false
+        },
+        {
+         "name": "unnamed apartments building",
+         "id": "b3027ab8-e735-47d3-b977-494407acd782",
+         "area": 10676,
+         "centroid": [
+          117,
+          149
+         ],
+         "bbox": [
+          40,
+          80,
+          201,
+          224
+         ],
+         "landmark": false,
+         "outline_rel": 1.44,
+         "contrast_rel": 2.11,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "dd0d3c25-a4f2-41ec-97e7-221a014ae520",
+         "area": 9846,
+         "centroid": [
+          41,
+          496
+         ],
+         "bbox": [
+          0,
+          412,
+          116,
+          557
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.38,
+         "bad": false
+        },
+        {
+         "name": "Spur Line Crossing",
+         "id": "e6d63f8b-adac-471b-997f-f71ecb85e2ad",
+         "area": 8398,
+         "centroid": [
+          975,
+          64
+         ],
+         "bbox": [
+          887,
+          0,
+          1024,
+          185
+         ],
+         "landmark": false,
+         "outline_rel": 1.17,
+         "contrast_rel": 1.42,
+         "bad": false
+        },
+        {
+         "name": "The Waterloo Hotel",
+         "id": "5a76c2ac-6be0-4e38-8f86-36d72fb80011",
+         "area": 5133,
+         "centroid": [
+          63,
+          226
+         ],
+         "bbox": [
+          0,
+          185,
+          136,
+          268
+         ],
+         "landmark": false,
+         "outline_rel": null,
+         "contrast_rel": 2.2,
+         "bad": false
+        },
+        {
+         "name": "unnamed detached building",
+         "id": "af7eed5f-625a-4ee4-aa58-806bf7c8a149",
+         "area": 4582,
+         "centroid": [
+          634,
+          149
+         ],
+         "bbox": [
+          580,
+          109,
+          689,
+          195
+         ],
+         "landmark": false,
+         "outline_rel": 1.31,
+         "contrast_rel": 1.52,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "a65df1c4-089c-48fc-8db6-ae5e044807bd",
+         "area": 4487,
+         "centroid": [
+          775,
+          85
+         ],
+         "bbox": [
+          721,
+          48,
+          831,
+          124
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.64,
+         "bad": false
+        },
+        {
+         "name": "unnamed apartments building",
+         "id": "b0a0cd58-69c4-4c5d-9460-102286deb6aa",
+         "area": 4460,
+         "centroid": [
+          648,
+          967
+         ],
+         "bbox": [
+          595,
+          930,
+          703,
+          1007
+         ],
+         "landmark": false,
+         "outline_rel": 0.64,
+         "contrast_rel": 1.15,
+         "bad": false
+        },
+        {
+         "name": "Central Block",
+         "id": "ed4370f9-558c-4fa5-81fd-70f7181dded3",
+         "area": 4300,
+         "centroid": [
+          170,
+          367
+         ],
+         "bbox": [
+          109,
+          331,
+          233,
+          404
+         ],
+         "landmark": false,
+         "outline_rel": null,
+         "contrast_rel": null,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "c8359655-5a1b-4efc-9674-4256309901b3",
+         "area": 4072,
+         "centroid": [
+          582,
+          878
+         ],
+         "bbox": [
+          527,
+          844,
+          639,
+          915
+         ],
+         "landmark": false,
+         "outline_rel": 1.24,
+         "contrast_rel": 2.08,
+         "bad": false
+        },
+        {
+         "name": "Paul Puncher",
+         "id": "7f35ef2a-2fa3-4c65-bd10-4e728819dd6d",
+         "area": 3761,
+         "centroid": [
+          530,
+          336
+         ],
+         "bbox": [
+          467,
+          294,
+          607,
+          375
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.41,
+         "bad": false
+        },
+        {
+         "name": "Button Factory",
+         "id": "4e02ca04-f684-4496-82af-c2ddb3be36ff",
+         "area": 3679,
+         "centroid": [
+          401,
+          463
+         ],
+         "bbox": [
+          343,
+          430,
+          462,
+          500
+         ],
+         "landmark": false,
+         "outline_rel": 3.87,
+         "contrast_rel": null,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "190219ef-4027-41e9-96be-304955268532",
+         "area": 3519,
+         "centroid": [
+          196,
+          389
+         ],
+         "bbox": [
+          138,
+          356,
+          255,
+          423
+         ],
+         "landmark": false,
+         "outline_rel": 3.07,
+         "contrast_rel": 0.85,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "07f38db4-00a9-416d-8c82-41b5abe22571",
+         "area": 3407,
+         "centroid": [
+          504,
+          773
+         ],
+         "bbox": [
+          444,
+          740,
+          565,
+          807
+         ],
+         "landmark": false,
+         "outline_rel": 2.87,
+         "contrast_rel": null,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "f270a8dc-63a7-4cf5-8e6f-960937c5eace",
+         "area": 3072,
+         "centroid": [
+          522,
+          797
+         ],
+         "bbox": [
+          465,
+          766,
+          580,
+          830
+         ],
+         "landmark": false,
+         "outline_rel": 1.9,
+         "contrast_rel": 0.89,
+         "bad": false
+        },
+        {
+         "name": "RBC",
+         "id": "d6ea0754-a400-4d66-a08c-81d9b2e21192",
+         "area": 3030,
+         "centroid": [
+          377,
+          617
+         ],
+         "bbox": [
+          320,
+          586,
+          435,
+          650
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.24,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "c48a02c6-a42b-4d40-a7da-557a2711dd1e",
+         "area": 2922,
+         "centroid": [
+          624,
+          922
+         ],
+         "bbox": [
+          572,
+          892,
+          678,
+          954
+         ],
+         "landmark": false,
+         "outline_rel": 1.59,
+         "contrast_rel": 1.54,
+         "bad": false
+        },
+        {
+         "name": "McCabe's Irish Pub",
+         "id": "c1c661a0-691f-4f97-a752-382b5ceeb108",
+         "area": 2716,
+         "centroid": [
+          277,
+          518
+         ],
+         "bbox": [
+          224,
+          494,
+          343,
+          548
+         ],
+         "landmark": false,
+         "outline_rel": 1.8,
+         "contrast_rel": null,
+         "bad": false
+        },
+        {
+         "name": "Ontario Seed Company",
+         "id": "98fd40ee-514b-4466-929d-ef739ed6d300",
+         "area": 2701,
+         "centroid": [
+          282,
+          372
+         ],
+         "bbox": [
+          242,
+          343,
+          324,
+          405
+         ],
+         "landmark": false,
+         "outline_rel": 0.74,
+         "contrast_rel": 1.3,
+         "bad": false
+        },
+        {
+         "name": "unnamed service building",
+         "id": "1ca8e273-e196-4377-a173-b6f977563c01",
+         "area": 2501,
+         "centroid": [
+          1003,
+          924
+         ],
+         "bbox": [
+          969,
+          884,
+          1024,
+          958
+         ],
+         "landmark": false,
+         "outline_rel": 3.32,
+         "contrast_rel": 2.21,
+         "bad": false
+        },
+        {
+         "name": "unnamed apartments building",
+         "id": "da7e7dc5-2fd3-4dbd-a02b-a524ff27b585",
+         "area": 2405,
+         "centroid": [
+          148,
+          347
+         ],
+         "bbox": [
+          94,
+          318,
+          204,
+          376
+         ],
+         "landmark": false,
+         "outline_rel": 3.13,
+         "contrast_rel": 0.46,
+         "bad": false
+        },
+        {
+         "name": "Canna Cabana",
+         "id": "c1f891c6-ef24-4e0d-85c9-472a086f1508",
+         "area": 2247,
+         "centroid": [
+          215,
+          438
+         ],
+         "bbox": [
+          162,
+          410,
+          270,
+          468
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.24,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "6b4a94b5-b09c-461a-86a0-4fa5ccbd6960",
+         "area": 2242,
+         "centroid": [
+          544,
+          849
+         ],
+         "bbox": [
+          504,
+          821,
+          583,
+          878
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 0.93,
+         "bad": false
+        },
+        {
+         "name": "HSBC",
+         "id": "f1fe195b-fafb-4e1f-bb1f-9142f0c1bb06",
+         "area": 2212,
+         "centroid": [
+          679,
+          1003
+         ],
+         "bbox": [
+          640,
+          976,
+          720,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": -12.91,
+         "contrast_rel": 2.19,
+         "bad": true
+        },
+        {
+         "name": "Scoop Du Jour",
+         "id": "11e4ed80-ac80-4610-b27c-6f5e7895ce5e",
+         "area": 2139,
+         "centroid": [
+          274,
+          277
+         ],
+         "bbox": [
+          237,
+          254,
+          314,
+          303
+         ],
+         "landmark": false,
+         "outline_rel": 1.92,
+         "contrast_rel": 1.88,
+         "bad": false
+        },
+        {
+         "name": "Empress of India",
+         "id": "bd5dc405-d49e-4f8c-a397-99056b91b3af",
+         "area": 2040,
+         "centroid": [
+          230,
+          455
+         ],
+         "bbox": [
+          177,
+          429,
+          285,
+          484
+         ],
+         "landmark": false,
+         "outline_rel": null,
+         "contrast_rel": null,
+         "bad": false
+        },
+        {
+         "name": "unnamed apartments building",
+         "id": "07085327-bbad-4f61-b97f-dc9675f10d88",
+         "area": 2025,
+         "centroid": [
+          527,
+          822
+         ],
+         "bbox": [
+          484,
+          797,
+          570,
+          848
+         ],
+         "landmark": false,
+         "outline_rel": 3.02,
+         "contrast_rel": null,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "3ef9694c-e6c3-4b05-abab-88799d801fbe",
+         "area": 2000,
+         "centroid": [
+          108,
+          292
+         ],
+         "bbox": [
+          56,
+          266,
+          162,
+          321
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.64,
+         "bad": false
+        },
+        {
+         "name": "unnamed apartments building",
+         "id": "9e035087-340e-4543-9c70-fe3c5c572b5e",
+         "area": 1903,
+         "centroid": [
+          242,
+          461
+         ],
+         "bbox": [
+          190,
+          434,
+          297,
+          489
+         ],
+         "landmark": false,
+         "outline_rel": null,
+         "contrast_rel": 1.85,
+         "bad": false
+        },
+        {
+         "name": "unnamed apartments building",
+         "id": "28f4196c-e236-4588-a960-0d4fbb710e14",
+         "area": 1899,
+         "centroid": [
+          133,
+          329
+         ],
+         "bbox": [
+          81,
+          302,
+          187,
+          357
+         ],
+         "landmark": false,
+         "outline_rel": 3.3,
+         "contrast_rel": null,
+         "bad": false
+        },
+        {
+         "name": "unnamed apartments building",
+         "id": "a0fb1be7-b367-4c60-9ecf-318236abf75e",
+         "area": 1836,
+         "centroid": [
+          121,
+          314
+         ],
+         "bbox": [
+          69,
+          288,
+          175,
+          342
+         ],
+         "landmark": false,
+         "outline_rel": 9.53,
+         "contrast_rel": 0.97,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "cc234ee8-489d-48a6-a485-5bb3d03a1691",
+         "area": 1730,
+         "centroid": [
+          552,
+          13
+         ],
+         "bbox": [
+          512,
+          0,
+          592,
+          36
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.17,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "55ceab44-bb37-4aba-869b-411f2e3ab141",
+         "area": 1597,
+         "centroid": [
+          200,
+          286
+         ],
+         "bbox": [
+          169,
+          259,
+          234,
+          314
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.25,
+         "bad": false
+        },
+        {
+         "name": "Harmony",
+         "id": "6affbf0d-0d5d-4bc9-bd1a-1b3bcc24c03f",
+         "area": 1584,
+         "centroid": [
+          260,
+          498
+         ],
+         "bbox": [
+          213,
+          473,
+          308,
+          524
+         ],
+         "landmark": false,
+         "outline_rel": 0.93,
+         "contrast_rel": 1.17,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "58cae318-b7cd-4453-811a-90cc1b866551",
+         "area": 1538,
+         "centroid": [
+          678,
+          229
+         ],
+         "bbox": [
+          639,
+          210,
+          721,
+          251
+         ],
+         "landmark": false,
+         "outline_rel": null,
+         "contrast_rel": 2.89,
+         "bad": false
+        }
+       ],
+       "shadow": {
+        "ref": 0.617,
+        "art": 0.705,
+        "pixels": 23457
+       },
+       "style": {
+        "against": [
+         "-1_-1",
+         "-1_-2",
+         "-1_-3",
+         "-1_0",
+         "-1_1",
+         "-2_-1",
+         "-2_-2",
+         "-2_-3",
+         "-2_0",
+         "-2_1",
+         "-3_-1",
+         "-3_-2",
+         "-3_-3",
+         "-3_0",
+         "-3_1",
+         "0_-1",
+         "0_-2",
+         "0_-3",
+         "0_0",
+         "0_1",
+         "1_-1",
+         "1_-2",
+         "1_-3",
+         "1_0",
+         "1_1",
+         "2_-1",
+         "2_-2",
+         "2_-3",
+         "2_0",
+         "2_1",
+         "3_-1",
+         "3_-2",
+         "3_-3",
+         "3_0",
+         "3_1",
+         "4_-1",
+         "4_-2",
+         "4_-3",
+         "4_0",
+         "4_1",
+         "5_-1",
+         "5_-2",
+         "5_-3",
+         "5_0",
+         "5_1",
+         "6_-1",
+         "6_-2",
+         "6_-3",
+         "6_1",
+         "7_-1",
+         "7_-2",
+         "7_-3",
+         "7_0",
+         "7_1"
+        ],
+        "hist": 0.254,
+        "dE": {
+         "roof": 4.6,
+         "wall": 2.9,
+         "road": 2.8,
+         "path": 4.6,
+         "paved": 6.5,
+         "parking": 6.4,
+         "tree": 13.0,
+         "green": 6.7
+        },
+        "dE_mean": 5.9
+       },
+       "seams": [
+        {
+         "grad_ratio": 1.473,
+         "step_ratio": 1.579,
+         "cross_mean": 38.29,
+         "interior_mean": 26.0,
+         "worst": [
+          [
+           892,
+           933
+          ],
+          [
+           582,
+           607
+          ]
+         ],
+         "side": "left",
+         "neighbour": "5_0",
+         "bad": false
+        },
+        {
+         "grad_ratio": 1.365,
+         "step_ratio": 1.251,
+         "cross_mean": 27.9,
+         "interior_mean": 20.44,
+         "worst": [
+          [
+           680,
+           702
+          ],
+          [
+           620,
+           638
+          ]
+         ],
+         "side": "right",
+         "neighbour": "7_0",
+         "bad": false
+        },
+        {
+         "grad_ratio": 1.145,
+         "step_ratio": 1.086,
+         "cross_mean": 31.54,
+         "interior_mean": 27.55,
+         "worst": [],
+         "side": "top",
+         "neighbour": "6_-1",
+         "bad": false
+        },
+        {
+         "grad_ratio": 1.378,
+         "step_ratio": 1.46,
+         "cross_mean": 34.86,
+         "interior_mean": 25.31,
+         "worst": [
+          [
+           975,
+           1015
+          ],
+          [
+           724,
+           750
+          ]
+         ],
+         "side": "bottom",
+         "neighbour": "6_1",
+         "bad": false
+        }
+       ],
+       "keep": {
+        "dx": -0.04,
+        "dy": 0.06,
+        "peak": 0.48,
+        "mad": 11.9
+       }
+      },
+      "file": "B013R3_6_0.png"
+     },
      "revision_of": {
       "batch": "B013",
       "corrections": [
@@ -39465,7 +40496,9 @@
       ]
      },
      "prompt": "TASK - revised tile 6_0\nEdit B013R3_context_6_0.png (1536 x 1536 px): the central 1024 x 1024 square (x 256-1279, y 256-1279) is the tile. B013R3_mask_6_0.png: WHITE = paint, BLACK = keep exactly (finished neighbour art - continue it seamlessly across the boundary); white border areas are context that we cut away. B013R3_previous_6_0.png is what you sent last time and B013R3_marked_6_0.png marks what has to change: fix those points and keep the rest of its style. Geometry must follow B013R3_ref_6_0.png and B013R3_classes_6_0.png.\n\nTHIS TILE SHOWS\n- The Shops at Waterloo Town Square (lower left, around x=59, y=767): building - follow the reference wall colour for its material\n- Region of Waterloo Public Health & Community Services (lower right, around x=689, y=768): building - follow the reference wall colour for its material\n- Uptown Waterloo Parkade (centre, around x=409, y=521): building - follow the reference wall colour for its material\n- Waterloo City Centre (right, around x=802, y=626): building - follow the reference wall colour for its material\n- Faire (lower left, around x=131, y=945): building - follow the reference wall colour for its material\n- RBC Building (lower left, around x=332, y=830): building - follow the reference wall colour for its material\n- First Gulf Building (lower centre, around x=460, y=973): building - follow the reference wall colour for its material\n- Spur Line Crossing (upper right, around x=975, y=64): building - follow the reference wall colour for its material\n- The Waterloo Hotel (upper left, around x=63, y=226): building - follow the reference wall colour for its material\n- Waterloo Public Square (lower left, around x=183, y=693): open paved civic plaza - keep it open and paved\n- Streets and paths crossing it: Erb Street East, Laurel Trail, King Street South, Regina Street South, Hughes Lane, Willis Way\n\nOUTPUT\n- 1536 x 1536 px, PNG, named B013R3_6_0.png. A larger image with exactly the same aspect ratio is fine; never crop, pad or change the aspect ratio.",
-     "prompt_sha": "c7b75191a8e3"
+     "prompt_sha": "c7b75191a8e3",
+     "report_text": "B013R3: revised tile6_0 candidate\nTool: built-in image_gen.imagegen\nModel name/version: unknown\nSeed,steps,guidance,strength,quality: unknown\nTransparent background: false\nAttempts:1\nRequested1536x1536; actual1254x1254 PNG\nReference-guided precise-object edit. Mask supplied as reference image plus prompt, no dedicated mask parameter. Internal inpaint mode unknown.\nNone. Original PNG copied unchanged without resize, crop, composite or recompression.\nPNG dimensions, original source byte identity and ZIP CRC verified. Native1536 requested but model returned1254 square, smaller than requested. Exact track coordinates, width/gauge, two-lane road preservation, black-mask pixels and seams require pipeline QA. No project import or acceptance performed.\nSHA256: dc9f085ea0fbd2a54c4e7b7a7192892b3534f55a8dbe9f166a4f32964d5547b2\nExact prompt: B013R3_6_0_prompt.txt\n",
+     "revision_batch": "B013R4"
     }
    },
    "correction_text": {
@@ -39484,7 +40517,7 @@
    "title": "Revision of B017: 5_-3",
    "mode": "context",
    "frame": "square",
-   "status": "requested",
+   "status": "received",
    "depends_on": [
     "0_0",
     "4_-2",
@@ -39496,7 +40529,7 @@
    "blocked_by": [],
    "parent": "B017",
    "created_utc": "2026-11-05T02:22:56Z",
-   "updated_utc": "2026-11-05T02:22:56Z",
+   "updated_utc": "2026-11-05T03:21:33Z",
    "packet_rev": 1,
    "order": [
     "5_-3"
@@ -39614,7 +40647,7 @@
    ],
    "items": {
     "5_-3": {
-     "status": "requested",
+     "status": "revision-needed",
      "return_filename": "B017R1_5_-3.png",
      "files": {
       "composition": "B017R1_context_5_-3.png",
@@ -39652,10 +40685,678 @@
        "5_-2": "reference"
       }
      },
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null,
+     "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+     "settings_reported": "revision of 5_-3",
+     "received": [
+      {
+       "file": "B017R1_5_-3.png",
+       "stored": "art/returned/B017R1/B017R1_5_-3.png",
+       "sha256": "d8a67c2cad2c82d1136a10dedcac6169ce49ae40c26c592f19292a289a4e8b1c",
+       "utc": "2026-11-05T03:21:09Z",
+       "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+       "settings_reported": "revision of 5_-3",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "pass",
+       "failures": [],
+       "warnings": [
+        {
+         "check": "size",
+         "detail": "returned 1254x1254 < requested 1536x1536: tile upscaled x1.22 (reduced detail)"
+        },
+        {
+         "check": "building",
+         "detail": "Canada Computers (around x=343, y=31): roof outline score -0.28, roof contrast 0.92 of the reference"
+        },
+        {
+         "check": "building",
+         "detail": "J&J Cards & Collectibles (around x=374, y=60): roof outline score -0.2, roof contrast 1.71 of the reference"
+        },
+        {
+         "check": "building",
+         "detail": "unnamed building building (around x=499, y=888): roof outline score 0.28, roof contrast 1.6 of the reference"
+        },
+        {
+         "check": "building",
+         "detail": "unnamed residential building (around x=691, y=778): roof outline score -0.06, roof contrast 1.82 of the reference"
+        },
+        {
+         "check": "building",
+         "detail": "unnamed residential building (around x=608, y=838): roof outline score 0.12, roof contrast 1.84 of the reference"
+        }
+       ],
+       "qa_md": "art/returned/B017R1/QA_5_-3_d8a67c2c.md",
+       "qa_png": "art/returned/B017R1/QA_5_-3_d8a67c2c.png"
+      }
+     ],
+     "qa": {
+      "verdict": "pass",
+      "metrics": {
+       "size": {
+        "returned": [
+         1254,
+         1254
+        ],
+        "expected": [
+         1536,
+         1536
+        ],
+        "k": 0.8164
+       },
+       "registration": {
+        "dx": -0.9,
+        "dy": 0.11,
+        "peak": 0.0458,
+        "blocks": 27,
+        "scale": 1.0001,
+        "rot_deg": -0.022,
+        "max_resid": 7.7,
+        "camera_fit_dropped": 0,
+        "unconfirmed_blocks": [],
+        "displaced": []
+       },
+       "geometry": {
+        "ref": 0.908,
+        "art": 0.84,
+        "rel": 0.925,
+        "bad_cells": []
+       },
+       "buildings": [
+        {
+         "name": "unnamed retail building",
+         "id": "7675b66a-58ff-43c8-9f0a-d57dafa59820",
+         "area": 24936,
+         "centroid": [
+          177,
+          615
+         ],
+         "bbox": [
+          32,
+          500,
+          323,
+          732
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.28,
+         "bad": false
+        },
+        {
+         "name": "unnamed building building",
+         "id": "cc16c912-9642-4ad1-8292-fefba07f712e",
+         "area": 15993,
+         "centroid": [
+          739,
+          174
+         ],
+         "bbox": [
+          646,
+          91,
+          848,
+          261
+         ],
+         "landmark": false,
+         "outline_rel": 0.96,
+         "contrast_rel": 1.28,
+         "bad": false
+        },
+        {
+         "name": "Men's Hostel",
+         "id": "1b43699f-1cb3-4787-822d-a0f74a7a6e9f",
+         "area": 11529,
+         "centroid": [
+          953,
+          260
+         ],
+         "bbox": [
+          863,
+          159,
+          1024,
+          343
+         ],
+         "landmark": false,
+         "outline_rel": 3.07,
+         "contrast_rel": 1.04,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "eecb7b01-8f4e-4958-a697-a850df6ad3f5",
+         "area": 8804,
+         "centroid": [
+          419,
+          539
+         ],
+         "bbox": [
+          342,
+          484,
+          499,
+          595
+         ],
+         "landmark": false,
+         "outline_rel": 1.6,
+         "contrast_rel": 0.92,
+         "bad": false
+        },
+        {
+         "name": "Waterloo Fire Station #1",
+         "id": "4edf5713-31bf-4afe-a68d-fe9e6888a5c0",
+         "area": 8498,
+         "centroid": [
+          535,
+          100
+         ],
+         "bbox": [
+          465,
+          35,
+          605,
+          158
+         ],
+         "landmark": false,
+         "outline_rel": 1.08,
+         "contrast_rel": 2.04,
+         "bad": false
+        },
+        {
+         "name": "Physical Plant Operations",
+         "id": "e0734c3a-3395-45d5-997e-05b5013ed49b",
+         "area": 7615,
+         "centroid": [
+          442,
+          800
+         ],
+         "bbox": [
+          351,
+          742,
+          551,
+          854
+         ],
+         "landmark": false,
+         "outline_rel": 0.9,
+         "contrast_rel": 1.08,
+         "bad": false
+        },
+        {
+         "name": "unnamed building building",
+         "id": "251328f2-02a3-4ecf-8e2d-04d0e53771b7",
+         "area": 6912,
+         "centroid": [
+          346,
+          984
+         ],
+         "bbox": [
+          278,
+          935,
+          409,
+          1024
+         ],
+         "landmark": false,
+         "outline_rel": 1.68,
+         "contrast_rel": 1.8,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "8fa975f7-575f-45e7-a7ed-f182bad49274",
+         "area": 6356,
+         "centroid": [
+          158,
+          202
+         ],
+         "bbox": [
+          91,
+          158,
+          228,
+          250
+         ],
+         "landmark": false,
+         "outline_rel": 0.97,
+         "contrast_rel": 1.36,
+         "bad": false
+        },
+        {
+         "name": "unnamed industrial building",
+         "id": "80998552-e7b5-490e-beaf-692c956cc9e0",
+         "area": 5412,
+         "centroid": [
+          991,
+          405
+         ],
+         "bbox": [
+          934,
+          353,
+          1024,
+          457
+         ],
+         "landmark": false,
+         "outline_rel": 0.91,
+         "contrast_rel": 1.11,
+         "bad": false
+        },
+        {
+         "name": "69 Lodge",
+         "id": "08c1360e-6d19-4021-b0a0-dcf540018059",
+         "area": 5272,
+         "centroid": [
+          273,
+          909
+         ],
+         "bbox": [
+          213,
+          867,
+          336,
+          954
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.5,
+         "bad": false
+        },
+        {
+         "name": "Canada Computers",
+         "id": "08e8c239-c64c-4311-9c7b-7c9d75d2ff9d",
+         "area": 4966,
+         "centroid": [
+          343,
+          31
+         ],
+         "bbox": [
+          279,
+          0,
+          419,
+          78
+         ],
+         "landmark": false,
+         "outline_rel": -0.28,
+         "contrast_rel": 0.92,
+         "bad": true
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "6836cbeb-1c53-47a2-b9e0-4cbc2f8057a7",
+         "area": 4939,
+         "centroid": [
+          18,
+          331
+         ],
+         "bbox": [
+          0,
+          245,
+          49,
+          470
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 2.28,
+         "bad": false
+        },
+        {
+         "name": "Centre for Cold Regions and Water Science",
+         "id": "b5e4c3d7-9970-4928-a97a-26777904b25f",
+         "area": 4840,
+         "centroid": [
+          196,
+          961
+         ],
+         "bbox": [
+          139,
+          923,
+          254,
+          1003
+         ],
+         "landmark": false,
+         "outline_rel": 0.96,
+         "contrast_rel": 1.36,
+         "bad": false
+        },
+        {
+         "name": "Tirecraft",
+         "id": "60a02171-6afb-4835-8b14-afaca4471e30",
+         "area": 4558,
+         "centroid": [
+          453,
+          349
+         ],
+         "bbox": [
+          401,
+          307,
+          513,
+          390
+         ],
+         "landmark": false,
+         "outline_rel": 1.34,
+         "contrast_rel": 1.6,
+         "bad": false
+        },
+        {
+         "name": "unnamed office building",
+         "id": "2319ed6b-9b67-43de-9aa1-d2ba75f57516",
+         "area": 4450,
+         "centroid": [
+          517,
+          482
+         ],
+         "bbox": [
+          455,
+          442,
+          580,
+          525
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 2.12,
+         "bad": false
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "d06f57a6-189a-4391-a959-a93286186ac1",
+         "area": 4204,
+         "centroid": [
+          772,
+          555
+         ],
+         "bbox": [
+          715,
+          515,
+          830,
+          598
+         ],
+         "landmark": false,
+         "outline_rel": 0.86,
+         "contrast_rel": 1.27,
+         "bad": false
+        },
+        {
+         "name": "J&J Cards & Collectibles",
+         "id": "0c594b29-79d4-4ff9-9d37-d2bab3a7b12d",
+         "area": 4051,
+         "centroid": [
+          374,
+          60
+         ],
+         "bbox": [
+          321,
+          20,
+          429,
+          102
+         ],
+         "landmark": false,
+         "outline_rel": -0.2,
+         "contrast_rel": 1.71,
+         "bad": true
+        },
+        {
+         "name": "unnamed retail building",
+         "id": "281b0de8-917d-4b67-b4fa-8710c3d98a0f",
+         "area": 3877,
+         "centroid": [
+          233,
+          254
+         ],
+         "bbox": [
+          177,
+          214,
+          288,
+          294
+         ],
+         "landmark": false,
+         "outline_rel": 0.52,
+         "contrast_rel": 1.35,
+         "bad": false
+        },
+        {
+         "name": "unnamed building building",
+         "id": "fc0d98e0-cda5-4a13-9e94-a033862b7dd1",
+         "area": 3729,
+         "centroid": [
+          499,
+          888
+         ],
+         "bbox": [
+          447,
+          847,
+          551,
+          933
+         ],
+         "landmark": false,
+         "outline_rel": 0.28,
+         "contrast_rel": 1.6,
+         "bad": true
+        },
+        {
+         "name": "unnamed residential building",
+         "id": "2bfcd28b-609b-4f1d-b129-edae1e407b5b",
+         "area": 3317,
+         "centroid": [
+          454,
+          931
+         ],
+         "bbox": [
+          400,
+          895,
+          510,
+          970
+         ],
+         "landmark": false,
+         "outline_rel": 1.0,
+         "contrast_rel": 1.45,
+         "bad": false
+        },
+        {
+         "name": "unnamed industrial building",
+         "id": "e2573a0b-f973-4b18-abc1-103fe18a2877",
+         "area": 2925,
+         "centroid": [
+          359,
+          868
+         ],
+         "bbox": [
+          308,
+          842,
+          411,
+          900
+         ],
+         "landmark": false,
+         "outline_rel": 1.12,
+         "contrast_rel": 1.64,
+         "bad": false
+        },
+        {
+         "name": "unnamed building building",
+         "id": "49e44d42-4fc2-4301-9ec7-4d3c035082c4",
+         "area": 2379,
+         "centroid": [
+          588,
+          688
+         ],
+         "bbox": [
+          540,
+          654,
+          635,
+          723
+         ],
+         "landmark": false,
+         "outline_rel": 5.47,
+         "contrast_rel": 1.9,
+         "bad": false
+        },
+        {
+         "name": "unnamed residential building",
+         "id": "637df758-f50e-41ea-9544-519d97f32c33",
+         "area": 2284,
+         "centroid": [
+          413,
+          961
+         ],
+         "bbox": [
+          366,
+          930,
+          464,
+          996
+         ],
+         "landmark": false,
+         "outline_rel": 0.5,
+         "contrast_rel": 2.24,
+         "bad": false
+        },
+        {
+         "name": "unnamed residential building",
+         "id": "4380e9c2-76d4-428e-a6c7-3251116f2489",
+         "area": 1718,
+         "centroid": [
+          691,
+          778
+         ],
+         "bbox": [
+          655,
+          754,
+          727,
+          807
+         ],
+         "landmark": false,
+         "outline_rel": -0.06,
+         "contrast_rel": 1.82,
+         "bad": true
+        },
+        {
+         "name": "unnamed residential building",
+         "id": "41fcbd5e-54e9-4996-9bbf-af822985fe16",
+         "area": 1568,
+         "centroid": [
+          608,
+          838
+         ],
+         "bbox": [
+          572,
+          814,
+          644,
+          866
+         ],
+         "landmark": false,
+         "outline_rel": 0.12,
+         "contrast_rel": 1.84,
+         "bad": true
+        }
+       ],
+       "shadow": {
+        "ref": 0.678,
+        "art": 0.665,
+        "pixels": 15910
+       },
+       "style": {
+        "against": [
+         "-1_-1",
+         "-1_-2",
+         "-1_-3",
+         "-1_0",
+         "-1_1",
+         "-2_-1",
+         "-2_-2",
+         "-2_-3",
+         "-2_0",
+         "-2_1",
+         "-3_-1",
+         "-3_-2",
+         "-3_-3",
+         "-3_0",
+         "-3_1",
+         "0_-1",
+         "0_-2",
+         "0_-3",
+         "0_0",
+         "0_1",
+         "1_-1",
+         "1_-2",
+         "1_-3",
+         "1_0",
+         "1_1",
+         "2_-1",
+         "2_-2",
+         "2_-3",
+         "2_0",
+         "2_1",
+         "3_-1",
+         "3_-2",
+         "3_-3",
+         "3_0",
+         "3_1",
+         "4_-1",
+         "4_-2",
+         "4_-3",
+         "4_0",
+         "4_1",
+         "5_-1",
+         "5_-2",
+         "5_0",
+         "5_1",
+         "6_-1",
+         "6_-2",
+         "6_-3",
+         "6_0",
+         "6_1",
+         "7_-1",
+         "7_-2",
+         "7_-3",
+         "7_0",
+         "7_1"
+        ],
+        "hist": 0.23,
+        "dE": {
+         "roof": 3.9,
+         "wall": 4.7,
+         "road": 5.6,
+         "path": 8.7,
+         "paved": 5.2,
+         "parking": 7.3,
+         "tree": 11.1,
+         "green": 6.7
+        },
+        "dE_mean": 6.7
+       },
+       "seams": [
+        {
+         "grad_ratio": 1.171,
+         "step_ratio": 1.363,
+         "cross_mean": 24.14,
+         "interior_mean": 20.62,
+         "worst": [],
+         "side": "left",
+         "neighbour": "4_-3",
+         "bad": false
+        },
+        {
+         "grad_ratio": 0.755,
+         "step_ratio": 0.707,
+         "cross_mean": 14.33,
+         "interior_mean": 18.98,
+         "worst": [],
+         "side": "right",
+         "neighbour": "6_-3",
+         "bad": false
+        },
+        {
+         "grad_ratio": 1.019,
+         "step_ratio": 1.312,
+         "cross_mean": 24.72,
+         "interior_mean": 24.27,
+         "worst": [],
+         "side": "bottom",
+         "neighbour": "5_-2",
+         "bad": false
+        }
+       ],
+       "keep": {
+        "dx": -0.08,
+        "dy": -0.01,
+        "peak": 0.505,
+        "mad": 11.0
+       }
+      },
+      "file": "B017R1_5_-3.png"
+     },
      "revision_of": {
       "batch": "B017",
       "corrections": [
@@ -39663,7 +41364,9 @@
       ]
      },
      "prompt": "TASK - revised tile 5_-3\nEdit B017R1_context_5_-3.png (1536 x 1536 px): the central 1024 x 1024 square (x 256-1279, y 256-1279) is the tile. B017R1_mask_5_-3.png: WHITE = paint, BLACK = keep exactly (finished neighbour art - continue it seamlessly across the boundary); white border areas are context that we cut away. B017R1_previous_5_-3.png is what you sent last time and B017R1_marked_5_-3.png marks what has to change: fix those points and keep the rest of its style. Geometry must follow B017R1_ref_5_-3.png and B017R1_classes_5_-3.png.\n\nTHIS TILE SHOWS\n- Men's Hostel (upper right, around x=953, y=260): building - follow the reference wall colour for its material\n- Waterloo Fire Station #1 (upper centre, around x=535, y=100): building - follow the reference wall colour for its material\n- Physical Plant Operations (lower centre, around x=442, y=800): building - follow the reference wall colour for its material\n- 69 Lodge (lower left, around x=273, y=909): building - follow the reference wall colour for its material\n- Canada Computers (upper centre, around x=343, y=31): building - follow the reference wall colour for its material\n- Centre for Cold Regions and Water Science (lower left, around x=196, y=961): building - follow the reference wall colour for its material\n- Tirecraft (centre, around x=453, y=349): building - follow the reference wall colour for its material\n- J&J Cards & Collectibles (upper centre, around x=374, y=60): building - follow the reference wall colour for its material\n- Streets and paths crossing it: Weber Street North, Lodge Street, Marshall Street\n\nOUTPUT\n- 1536 x 1536 px, PNG, named B017R1_5_-3.png. A larger image with exactly the same aspect ratio is fine; never crop, pad or change the aspect ratio.",
-     "prompt_sha": "c0150135f345"
+     "prompt_sha": "c0150135f345",
+     "report_text": "B017R1 revision candidate\nTool: image_gen.imagegen (built-in)\nModel name/version: unknown\nSeed/steps/guidance/strength/quality: unknown\nAttempts: 1\nTransparent background: false\nRequested: 1536 x 1536 square\nActual: 1254 x 1254 PNG\nBuilt-in reference-guided precise object edit. Mask passed as a reference image and prompt constraint; no dedicated mask parameter available; internal edit/inpaint mode unknown.\nNone; original generated PNG bytes retained unchanged.\nSource byte identity, PNG dimensions and ZIP CRC verified. Tool returned1254square despite native1536request. Exact driveway/path preservation, pixel-identical kept areas, geometry and seams not verified by project pipeline. No import or acceptance performed.\nSHA-256: d8a67c2cad2c82d1136a10dedcac6169ce49ae40c26c592f19292a289a4e8b1c\nExact prompt: B017R1_5_-3_prompt.txt\n",
+     "revision_batch": "B017R2"
     }
    },
    "correction_text": {
@@ -39681,7 +41384,7 @@
    "kind": "seam",
    "title": "Seam repair - horizontal join of 6_-2, 6_-1",
    "mode": "seam",
-   "status": "requested",
+   "status": "complete",
    "depends_on": [
     "6_-2",
     "6_-1"
@@ -39689,7 +41392,7 @@
    "blocked_by": [],
    "parent": null,
    "created_utc": "2026-11-05T02:22:59Z",
-   "updated_utc": "2026-11-05T02:22:59Z",
+   "updated_utc": "2026-11-05T03:18:47Z",
    "packet_rev": 1,
    "order": [
     "seam"
@@ -39760,7 +41463,7 @@
    ],
    "items": {
     "seam": {
-     "status": "requested",
+     "status": "accepted",
      "return_filename": "S008_seam.png",
      "files": {
       "composition": "S008_window.png",
@@ -39835,10 +41538,123 @@
      ],
      "prompt": "TASK - seam repair S008\nIn S008_window.png, the horizontal line at y = 512 is where separately painted tiles meet, and the join is visible. Repaint ONLY the white band of S008_mask.png so the band reads as one continuous painting: carry roofs, walls, window rows, roads, kerbs, path edges, lawn texture and tree clusters straight across the line and blend colour and brightness smoothly. Everything in the black area must stay pixel-identical. Keep every edge where S008_ref.png has it (no moved or invented buildings, roads or trees). S008_marked.png shows the band and the worst spots - it is a guide only.\nMeasured now: horizontal join between 6_-2 and 6_-1 (discontinuity x1.26 of the interior gradient, colour step x1.41).\nSPECIFIC FIX (from our review of this join): Horizontal join (window y=512; window x = tile x). The creek crosses the join around window x 380-520: above the line it is a wide shrub-lined stream (x ~441-452), below it a thin creek (x ~450-456) about 6 px to the right. Inside the band, narrow the stream and taper the riparian shrubs so the creek runs continuously onto one line at x ~448-456 across the join. Everything else already lines up.\n\nOUTPUT\n- One image, exactly 1024 x 1024 px, PNG, named S008_seam.png, same framing as S008_window.png. Any square size of 1024 px or more is fine (e.g. 1254 x 1254 if that is what your tool returns - send it unchanged); never upscale, crop, pad or change the aspect ratio.",
      "prompt_sha": "3c61a5bee4ae",
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null
+     "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+     "settings_reported": "seam; feathered. FORCED: only keep-changed MAD 12.2 vs 12.0 (whole-frame regeneration); creek worst block 2.03 -> 1.53",
+     "received": [
+      {
+       "file": "S008_seam.png",
+       "stored": "art/returned/S008/S008_seam.png",
+       "sha256": "34c152ada60accfbc4a1a239618de976b25b1be6e69d8b4f98b45082597e9058",
+       "utc": "2026-11-05T03:18:44Z",
+       "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+       "settings_reported": "seam; feathered. FORCED: only keep-changed MAD 12.2 vs 12.0 (whole-frame regeneration); creek worst block 2.03 -> 1.53",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "fail",
+       "failures": [
+        {
+         "check": "keep-changed",
+         "detail": "kept area changed (mean abs diff 12.2)",
+         "fix": "Only the white band may change; everything in the black area must stay pixel-identical."
+        }
+       ],
+       "warnings": [],
+       "qa_md": "art/returned/S008/QA_seam_34c152ad.md",
+       "qa_png": "art/returned/S008/QA_seam_34c152ad.png"
+      }
+     ],
+     "qa": {
+      "verdict": "fail",
+      "metrics": {
+       "keep": {
+        "dx": 0.0,
+        "dy": 0.05,
+        "peak": 0.427,
+        "mad": 12.2
+       },
+       "geometry": {
+        "band_rel": 0.908
+       },
+       "seams": [
+        {
+         "tiles": [
+          "6_-2",
+          "6_-1"
+         ],
+         "before": [
+          1.26,
+          1.41
+         ],
+         "after": [
+          1.067,
+          1.175
+         ],
+         "worst_block_before": [
+          1.8,
+          2.028
+         ],
+         "worst_block_after": [
+          1.284,
+          1.533,
+          [
+           0,
+           128
+          ]
+         ]
+        }
+       ],
+       "band_edges": [
+        {
+         "axis": "horizontal",
+         "at": 464,
+         "span": [
+          0,
+          1024
+         ],
+         "grad_ratio": 1.106,
+         "step_ratio": 1.198,
+         "block": [
+          384,
+          512
+         ],
+         "ref_at_block": [
+          0.996,
+          1.204
+         ],
+         "bad_blocks": []
+        },
+        {
+         "axis": "horizontal",
+         "at": 560,
+         "span": [
+          0,
+          1024
+         ],
+         "grad_ratio": 1.157,
+         "step_ratio": 1.441,
+         "block": [
+          768,
+          896
+         ],
+         "ref_at_block": [
+          1.095,
+          1.45
+         ],
+         "bad_blocks": []
+        }
+       ]
+      },
+      "file": "S008_seam.png"
+     },
+     "report_text": "S008 seam repair candidate\nTool: image_gen.imagegen (built-in)\nModel name/version: unknown\nSeed/steps/guidance/strength/quality: unknown\nAttempts: 1\nTransparent background: false\nRequested: 1024 x 1024 square\nActual: 1254 x 1254 PNG\nMode: Reference-guided precise object edit. Mask supplied as reference plus prompt; dedicated mask parameter unavailable. Internal edit/inpaint mode unknown.\nNone. Original PNG bytes copied unchanged without resize, crop, composite or recompression.\nSource byte identity, PNG dimensions, and ZIP CRC verified. Exact geometry and black-mask preservation not verified by project pipeline. Model may change outside requested band. No project import or acceptance performed.\nSHA-256: 34c152ada60accfbc4a1a239618de976b25b1be6e69d8b4f98b45082597e9058\nExact prompt: S008_prompt.txt\n",
+     "accepted": {
+      "file": "S008_seam.png",
+      "utc": "2026-11-05T03:18:47Z",
+      "forced": true
+     }
     }
    },
    "packet": {
@@ -39853,7 +41669,7 @@
    "kind": "seam",
    "title": "Seam repair - horizontal join of 7_-3, 7_-2",
    "mode": "seam",
-   "status": "requested",
+   "status": "complete",
    "depends_on": [
     "7_-3",
     "7_-2"
@@ -39861,7 +41677,7 @@
    "blocked_by": [],
    "parent": null,
    "created_utc": "2026-11-05T02:23:01Z",
-   "updated_utc": "2026-11-05T02:23:01Z",
+   "updated_utc": "2026-11-05T03:19:47Z",
    "packet_rev": 1,
    "order": [
     "seam"
@@ -39932,7 +41748,7 @@
    ],
    "items": {
     "seam": {
-     "status": "requested",
+     "status": "accepted",
      "return_filename": "S009_seam.png",
      "files": {
       "composition": "S009_window.png",
@@ -40007,10 +41823,123 @@
      ],
      "prompt": "TASK - seam repair S009\nIn S009_window.png, the horizontal line at y = 512 is where separately painted tiles meet, and the join is visible. Repaint ONLY the white band of S009_mask.png so the band reads as one continuous painting: carry roofs, walls, window rows, roads, kerbs, path edges, lawn texture and tree clusters straight across the line and blend colour and brightness smoothly. Everything in the black area must stay pixel-identical. Keep every edge where S009_ref.png has it (no moved or invented buildings, roads or trees). S009_marked.png shows the band and the worst spots - it is a guide only.\nMeasured now: horizontal join between 7_-3 and 7_-2 (discontinuity x1.61 of the interior gradient, colour step x1.54).\nSPECIFIC FIX (from our review of this join): Horizontal join (window y=512; window x = tile x). (1) At window x 0-256 the arterial road changes at the line: even out the asphalt tone, kerbs and centre line (one style of dashes - match the lower tile's yellow dashes) so the road reads as one continuous street. (2) At window x 640-768 the tall block's window pattern and the road centre line step at the line: continue the window rows and the centre line straight across. Do not move any road or building.\n\nOUTPUT\n- One image, exactly 1024 x 1024 px, PNG, named S009_seam.png, same framing as S009_window.png. Any square size of 1024 px or more is fine (e.g. 1254 x 1254 if that is what your tool returns - send it unchanged); never upscale, crop, pad or change the aspect ratio.",
      "prompt_sha": "127a62274a15",
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null
+     "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+     "settings_reported": "seam; feathered. INTERIM, FORCED: whole join 1.61 -> 0.99; one 50 px canopy/shadow line at x 192-256 remains (worst block 1.92) -> S009R1",
+     "received": [
+      {
+       "file": "S009_seam.png",
+       "stored": "art/returned/S009/S009_seam.png",
+       "sha256": "a01b7532dc740a4ced15410ea6b709d534dc92a4d27f9f678ce2558a11ca6676",
+       "utc": "2026-11-05T03:19:44Z",
+       "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+       "settings_reported": "seam; feathered. INTERIM, FORCED: whole join 1.61 -> 0.99; one 50 px canopy/shadow line at x 192-256 remains (worst block 1.92) -> S009R1",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "fail",
+       "failures": [
+        {
+         "check": "seam",
+         "detail": "join 7_-3 | 7_-2 still visible: gradient x0.985, step x1.109 (worst 128 px block [128, 256]: gradient x1.242, step x1.924)",
+         "fix": "The join between 7_-3 and 7_-2 is still visible: blend colour and brightness smoothly and continue every feature straight across the line."
+        }
+       ],
+       "warnings": [],
+       "qa_md": "art/returned/S009/QA_seam_a01b7532.md",
+       "qa_png": "art/returned/S009/QA_seam_a01b7532.png"
+      }
+     ],
+     "qa": {
+      "verdict": "fail",
+      "metrics": {
+       "keep": {
+        "dx": -0.03,
+        "dy": 0.19,
+        "peak": 0.378,
+        "mad": 11.7
+       },
+       "geometry": {
+        "band_rel": 0.832
+       },
+       "seams": [
+        {
+         "tiles": [
+          "7_-3",
+          "7_-2"
+         ],
+         "before": [
+          1.608,
+          1.537
+         ],
+         "after": [
+          0.985,
+          1.109
+         ],
+         "worst_block_before": [
+          2.166,
+          2.387
+         ],
+         "worst_block_after": [
+          1.242,
+          1.924,
+          [
+           128,
+           256
+          ]
+         ]
+        }
+       ],
+       "band_edges": [
+        {
+         "axis": "horizontal",
+         "at": 464,
+         "span": [
+          0,
+          1024
+         ],
+         "grad_ratio": 1.137,
+         "step_ratio": 1.957,
+         "block": [
+          128,
+          256
+         ],
+         "ref_at_block": [
+          1.125,
+          1.971
+         ],
+         "bad_blocks": []
+        },
+        {
+         "axis": "horizontal",
+         "at": 560,
+         "span": [
+          0,
+          1024
+         ],
+         "grad_ratio": 1.192,
+         "step_ratio": 1.801,
+         "block": [
+          768,
+          896
+         ],
+         "ref_at_block": [
+          1.146,
+          1.802
+         ],
+         "bad_blocks": []
+        }
+       ]
+      },
+      "file": "S009_seam.png"
+     },
+     "report_text": "S009 seam repair candidate\nTool: image_gen.imagegen (built-in)\nModel name/version: unknown\nSeed/steps/guidance/strength/quality: unknown\nAttempts: 1\nTransparent background: false\nRequested: 1024 x 1024 square\nActual: 1254 x 1254 PNG\nMode: Reference-guided precise object edit. Mask supplied as reference plus prompt; dedicated mask parameter unavailable. Internal edit/inpaint mode unknown.\nNone. Original PNG bytes copied unchanged without resize, crop, composite or recompression.\nSource byte identity, PNG dimensions, and ZIP CRC verified. Exact geometry and black-mask preservation not verified by project pipeline. Model may change outside requested band. No project import or acceptance performed.\nSHA-256: a01b7532dc740a4ced15410ea6b709d534dc92a4d27f9f678ce2558a11ca6676\nExact prompt: S009_prompt.txt\n",
+     "accepted": {
+      "file": "S009_seam.png",
+      "utc": "2026-11-05T03:19:47Z",
+      "forced": true
+     }
     }
    },
    "packet": {
@@ -40026,7 +41955,7 @@
    "title": "Revision of S005: seam",
    "mode": "seam",
    "frame": null,
-   "status": "requested",
+   "status": "complete",
    "depends_on": [
     "-3_-3",
     "-2_-3"
@@ -40034,7 +41963,7 @@
    "blocked_by": [],
    "parent": "S005",
    "created_utc": "2026-11-05T02:23:39Z",
-   "updated_utc": "2026-11-05T02:23:39Z",
+   "updated_utc": "2026-11-05T03:17:43Z",
    "packet_rev": 1,
    "order": [
     "seam"
@@ -40115,7 +42044,7 @@
    ],
    "items": {
     "seam": {
-     "status": "requested",
+     "status": "accepted",
      "return_filename": "S005R1_seam.png",
      "files": {
       "composition": "S005R1_window.png",
@@ -40168,10 +42097,117 @@
        }
       }
      },
-     "model_reported": "unknown",
-     "settings_reported": "unknown",
-     "received": [],
-     "qa": null,
+     "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+     "settings_reported": "seam redo; feathered. FORCED: worst block [640,768] x2.03 is a path T-junction + tree canopy lying on x=512; whole join 2.16 -> 1.32",
+     "received": [
+      {
+       "file": "S005R1_seam.png",
+       "stored": "art/returned/S005R1/S005R1_seam.png",
+       "sha256": "db0479c83cf51d0fc64cecf240e2a0edd55f4fa4b50a7d072c18314cac0abd85",
+       "utc": "2026-11-05T03:17:40Z",
+       "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+       "settings_reported": "seam redo; feathered. FORCED: worst block [640,768] x2.03 is a path T-junction + tree canopy lying on x=512; whole join 2.16 -> 1.32",
+       "format": "PNG",
+       "size": [
+        1254,
+        1254
+       ],
+       "verdict": "fail",
+       "failures": [
+        {
+         "check": "seam",
+         "detail": "join -3_-3 | -2_-3 still visible: gradient x1.146, step x1.319 (worst 128 px block [640, 768]: gradient x1.86, step x2.027)",
+         "fix": "The join between -3_-3 and -2_-3 is still visible: blend colour and brightness smoothly and continue every feature straight across the line."
+        }
+       ],
+       "warnings": [],
+       "qa_md": "art/returned/S005R1/QA_seam_db0479c8.md",
+       "qa_png": "art/returned/S005R1/QA_seam_db0479c8.png"
+      }
+     ],
+     "qa": {
+      "verdict": "fail",
+      "metrics": {
+       "keep": {
+        "dx": 0.17,
+        "dy": 0.12,
+        "peak": 0.331,
+        "mad": 9.8
+       },
+       "geometry": {
+        "band_rel": 0.967
+       },
+       "seams": [
+        {
+         "tiles": [
+          "-3_-3",
+          "-2_-3"
+         ],
+         "before": [
+          1.773,
+          2.155
+         ],
+         "after": [
+          1.146,
+          1.319
+         ],
+         "worst_block_before": [
+          2.311,
+          3.356
+         ],
+         "worst_block_after": [
+          1.86,
+          2.027,
+          [
+           640,
+           768
+          ]
+         ]
+        }
+       ],
+       "band_edges": [
+        {
+         "axis": "vertical",
+         "at": 464,
+         "span": [
+          0,
+          1024
+         ],
+         "grad_ratio": 1.145,
+         "step_ratio": 1.576,
+         "block": [
+          128,
+          256
+         ],
+         "ref_at_block": [
+          1.089,
+          1.56
+         ],
+         "bad_blocks": []
+        },
+        {
+         "axis": "vertical",
+         "at": 560,
+         "span": [
+          0,
+          1024
+         ],
+         "grad_ratio": 1.071,
+         "step_ratio": 1.142,
+         "block": [
+          128,
+          256
+         ],
+         "ref_at_block": [
+          1.069,
+          1.143
+         ],
+         "bad_blocks": []
+        }
+       ]
+      },
+      "file": "S005R1_seam.png"
+     },
      "revision_of": {
       "batch": "S005",
       "corrections": [
@@ -40210,7 +42246,13 @@
       }
      ],
      "prompt": "TASK - revised seam seam\nRepaint ONLY the white band of S005R1_mask.png in S005R1_window.png so the join reads as one continuous painting; everything in the black area must stay pixel-identical. S005R1_previous_seam.png is what you sent last time and S005R1_marked_seam.png marks what has to change: fix those points and keep the rest of its style. Geometry must follow S005R1_ref.png.\n\nOUTPUT\n- 1024 x 1024 px, PNG, named S005R1_seam.png. A larger image with exactly the same aspect ratio is fine; never crop, pad or change the aspect ratio.",
-     "prompt_sha": "7888d63308e6"
+     "prompt_sha": "7888d63308e6",
+     "report_text": "S005R1 seam revision candidate\nTool: image_gen.imagegen (built-in)\nModel name/version: unknown\nSeed/steps/guidance/strength/quality: unknown\nAttempts: 1\nTransparent background: false\nRequested: 1024 x 1024 square; larger square allowed\nActual: 1254 x 1254 PNG\nMode: Reference-guided precise-object edit. Exactly window+mask input selection per packet; dedicated mask parameter unavailable, internal mode unknown.\nNone; original generated PNG bytes unchanged.\nSource byte identity, PNG dimensions, ZIP CRC verified. Candidate only; project QA not run. Exact geometry, evolv1 facade/parapet height and window rows, curved sidewalk edge and black-mask pixel preservation are not verified. Model may alter geometry and pixels outside the white band. No project import or acceptance.\nSHA-256: db0479c83cf51d0fc64cecf240e2a0edd55f4fa4b50a7d072c18314cac0abd85\nExact prompt: S005R1_prompt.txt\n",
+     "accepted": {
+      "file": "S005R1_seam.png",
+      "utc": "2026-11-05T03:17:43Z",
+      "forced": true
+     }
     }
    },
    "correction_text": {
@@ -40221,6 +42263,563 @@
     "dir": "art/requests/S005R1",
     "zip": "art/requests/S005R1.zip",
     "zip_sha256": "d82ab5ba17a99db3cf9e2f48e56ad8cc2beecae0a086958643fd3618d2de3d39"
+   }
+  },
+  "B013R4": {
+   "id": "B013R4",
+   "kind": "revision",
+   "title": "Revision of B013R3: 6_0",
+   "mode": "context",
+   "frame": "square",
+   "status": "requested",
+   "depends_on": [
+    "0_0",
+    "3_1",
+    "4_-1",
+    "4_0"
+   ],
+   "blocked_by": [],
+   "parent": "B013R3",
+   "created_utc": "2026-11-05T03:22:02Z",
+   "updated_utc": "2026-11-05T03:22:02Z",
+   "packet_rev": 1,
+   "order": [
+    "6_0"
+   ],
+   "style_from": "0_0",
+   "shared_files": [
+    "B013R4_style_0_0.png",
+    "B013R4_classes_legend.png"
+   ],
+   "attachments": [
+    {
+     "file": "B013R4_context_6_0.png",
+     "purpose": "COMPOSITION + CANVAS TO EDIT (1536x1536), tile in the centre at (256, 256, 1280, 1280)",
+     "tiles": [
+      "6_0"
+     ],
+     "defines_composition": true,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "40b261b180fc87bcaeea098ebf6b06882ef8687e2c77aa589c92422913e4f1ac"
+    },
+    {
+     "file": "B013R4_mask_6_0.png",
+     "purpose": "EDIT MASK: white = paint, black = keep (finished neighbour art)",
+     "tiles": [
+      "6_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "4af4b948bf01f502ac28001708d5c6bcfe58a3c661bc82ea6ed9ee070de9d7ab"
+    },
+    {
+     "file": "B013R4_ref_6_0.png",
+     "purpose": "GEOMETRY: reference render of tile 6_0 alone",
+     "tiles": [
+      "6_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "9b8bc1e0e4f1dcfe124ad86f70db6ecb69cff39799f1c71b382e2f2230879e4e"
+    },
+    {
+     "file": "B013R4_classes_6_0.png",
+     "purpose": "SEMANTIC MAP (same framing as the composition)",
+     "tiles": [
+      "6_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "c23cb218b297fe3b4733f624b7ba2ed5cbc56b8def034e903a683b60d6c1f761"
+    },
+    {
+     "file": "B013R4_previous_6_0.png",
+     "purpose": "YOUR PREVIOUS OUTPUT (as received) - keep what is good about it",
+     "tiles": [
+      "6_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "175bd28a3490b23209a3024449ebc9791aebbd5de9faef33f6ac06b35ae405b9"
+    },
+    {
+     "file": "B013R4_marked_6_0.png",
+     "purpose": "ANNOTATED: what is wrong (red = missing/misplaced vs reference, yellow = displaced area, labels give the fix)",
+     "tiles": [
+      "6_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "0f2cea42b47b20c990b927fa124b92f4fc8331c046aedd4c4c45cc51b7bc213c"
+    },
+    {
+     "file": "B013R4_classes_legend.png",
+     "purpose": "LEGEND for the semantic maps",
+     "tiles": [
+      "6_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      760,
+      664
+     ],
+     "sha256": "842ce2584634af25d4ef3daf4cd437f001a854070aad175f733a612457e5bfe8"
+    },
+    {
+     "file": "B013R4_style_0_0.png",
+     "purpose": "STYLE: accepted artwork of tile 0_0 - match it",
+     "tiles": [
+      "0_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "bfd18a94f0c795a075713d7f7e3cb3de3a1f28fb784b4a9929d587c97da04c58"
+    }
+   ],
+   "items": {
+    "6_0": {
+     "status": "requested",
+     "return_filename": "B013R4_6_0.png",
+     "files": {
+      "composition": "B013R4_context_6_0.png",
+      "mask": "B013R4_mask_6_0.png",
+      "reference": "B013R4_ref_6_0.png",
+      "classes": "B013R4_classes_6_0.png",
+      "previous": "B013R4_previous_6_0.png",
+      "marked": "B013R4_marked_6_0.png"
+     },
+     "output": {
+      "mode": "context",
+      "frame": "square",
+      "width": 1536,
+      "height": 1536,
+      "crop": [
+       256,
+       256,
+       1280,
+       1280
+      ],
+      "canvas_origin": [
+       5888,
+       -256
+      ]
+     },
+     "reference": {
+      "color2x": "a950c5203678",
+      "cls": "183053a5ba2c",
+      "height": "7d5087486fa0",
+      "composition": "40b261b180fc",
+      "neighbours": {
+       "5_0": "reference",
+       "7_0": "reference",
+       "6_-1": "reference",
+       "6_1": "reference"
+      }
+     },
+     "model_reported": "unknown",
+     "settings_reported": "unknown",
+     "received": [],
+     "qa": null,
+     "revision_of": {
+      "batch": "B013R3",
+      "corrections": [
+       "Tile 6_0 (tile-local px in the 1024 tile; add 256 for the 1536 canvas). Your last image is close and is the base for this one: it has the right ONE track with two rails and no rails north of the junction - keep that. It only made King Street too narrow. Fix only this: 1) King Street South asphalt spans x 282-322 at y 700, 341-386 at y 760, 386-427 at y 820, 440-479 at y 880, 492-533 at y 940, 546-585 at y 1000, 564-605 at y 1023, with the yellow centre dashes in the MIDDLE of that span (about x 304 at y 700, 406 at y 820, 512 at y 940, 586 at y 1023) so both lanes are about 20 px wide. Last time the asphalt ended at x 313 at y 700, 416 at y 820, 521 at y 940 and 593 at y 1023 - 10-12 px too narrow on the east side. 2) The track starts only where the asphalt ends: west edge at x 322 (y 700), 374 (760), 427 (820), 479 (880), 533 (940), 585 (1000), 605 (1023); it is only 11-12 px wide (east edge 333, 386, 438, 490, 544, 596, 615) - as narrow as the curved track already painted at the upper left (about 9 px). Last time it was 17 px wide and started at 314, 365, 417, 468, 522, 574, 594. 3) East of the track a 12-14 px lawn strip, then the building walls exactly where they are (e.g. x 455 at y 820). 4) At the bottom edge the road must meet the finished tile below exactly: asphalt x 566-605, centre dash x 586-590, track x 605-615. Keep everything else exactly as in your last image: the curve at (253-265, 620)/(287-299, 660), plain King St north of the junction, the main line leaving the right edge at y 234-240, all roofs, the plaza and the neighbouring tiles in the margins."
+      ]
+     },
+     "prompt": "TASK - revised tile 6_0\nEdit B013R4_context_6_0.png (1536 x 1536 px): the central 1024 x 1024 square (x 256-1279, y 256-1279) is the tile. B013R4_mask_6_0.png: WHITE = paint, BLACK = keep exactly (finished neighbour art - continue it seamlessly across the boundary); white border areas are context that we cut away. B013R4_previous_6_0.png is what you sent last time and B013R4_marked_6_0.png marks what has to change: fix those points and keep the rest of its style. Geometry must follow B013R4_ref_6_0.png and B013R4_classes_6_0.png.\n\nTHIS TILE SHOWS\n- The Shops at Waterloo Town Square (lower left, around x=59, y=767): building - follow the reference wall colour for its material\n- Region of Waterloo Public Health & Community Services (lower right, around x=689, y=768): building - follow the reference wall colour for its material\n- Uptown Waterloo Parkade (centre, around x=409, y=521): building - follow the reference wall colour for its material\n- Waterloo City Centre (right, around x=802, y=626): building - follow the reference wall colour for its material\n- Faire (lower left, around x=131, y=945): building - follow the reference wall colour for its material\n- RBC Building (lower left, around x=332, y=830): building - follow the reference wall colour for its material\n- First Gulf Building (lower centre, around x=460, y=973): building - follow the reference wall colour for its material\n- Spur Line Crossing (upper right, around x=975, y=64): building - follow the reference wall colour for its material\n- The Waterloo Hotel (upper left, around x=63, y=226): building - follow the reference wall colour for its material\n- Waterloo Public Square (lower left, around x=183, y=693): open paved civic plaza - keep it open and paved\n- Streets and paths crossing it: Erb Street East, Laurel Trail, King Street South, Regina Street South, Hughes Lane, Willis Way\n\nOUTPUT\n- 1536 x 1536 px, PNG, named B013R4_6_0.png. A larger image with exactly the same aspect ratio is fine; never crop, pad or change the aspect ratio.",
+     "prompt_sha": "f6e17f7ba290"
+    }
+   },
+   "correction_text": {
+    "6_0": "REVISION - your previous image for this item could not be used. Exact corrections:\n- Tile 6_0 (tile-local px in the 1024 tile; add 256 for the 1536 canvas). Your last image is close and is the base for this one: it has the right ONE track with two rails and no rails north of the junction - keep that. It only made King Street too narrow. Fix only this: 1) King Street South asphalt spans x 282-322 at y 700, 341-386 at y 760, 386-427 at y 820, 440-479 at y 880, 492-533 at y 940, 546-585 at y 1000, 564-605 at y 1023, with the yellow centre dashes in the MIDDLE of that span (about x 304 at y 700, 406 at y 820, 512 at y 940, 586 at y 1023) so both lanes are about 20 px wide. Last time the asphalt ended at x 313 at y 700, 416 at y 820, 521 at y 940 and 593 at y 1023 - 10-12 px too narrow on the east side. 2) The track starts only where the asphalt ends: west edge at x 322 (y 700), 374 (760), 427 (820), 479 (880), 533 (940), 585 (1000), 605 (1023); it is only 11-12 px wide (east edge 333, 386, 438, 490, 544, 596, 615) - as narrow as the curved track already painted at the upper left (about 9 px). Last time it was 17 px wide and started at 314, 365, 417, 468, 522, 574, 594. 3) East of the track a 12-14 px lawn strip, then the building walls exactly where they are (e.g. x 455 at y 820). 4) At the bottom edge the road must meet the finished tile below exactly: asphalt x 566-605, centre dash x 586-590, track x 605-615. Keep everything else exactly as in your last image: the curve at (253-265, 620)/(287-299, 660), plain King St north of the junction, the main line leaving the right edge at y 234-240, all roofs, the plaza and the neighbouring tiles in the margins."
+   },
+   "packet": {
+    "md": "IMAGE_REQUEST_B013R4.md",
+    "dir": "art/requests/B013R4",
+    "zip": "art/requests/B013R4.zip",
+    "zip_sha256": "28a65260ec4313e31fe5a3d9e3abb363e5c6605f12222c1f021953507e23039e"
+   }
+  },
+  "B017R2": {
+   "id": "B017R2",
+   "kind": "revision",
+   "title": "Revision of B017R1: 5_-3",
+   "mode": "context",
+   "frame": "square",
+   "status": "requested",
+   "depends_on": [
+    "0_0",
+    "4_-2",
+    "4_-3",
+    "5_-1",
+    "6_-1",
+    "7_-1"
+   ],
+   "blocked_by": [],
+   "parent": "B017R1",
+   "created_utc": "2026-11-05T03:22:07Z",
+   "updated_utc": "2026-11-05T03:22:07Z",
+   "packet_rev": 1,
+   "order": [
+    "5_-3"
+   ],
+   "style_from": "0_0",
+   "shared_files": [
+    "B017R2_style_0_0.png",
+    "B017R2_classes_legend.png"
+   ],
+   "attachments": [
+    {
+     "file": "B017R2_context_5_-3.png",
+     "purpose": "COMPOSITION + CANVAS TO EDIT (1536x1536), tile in the centre at (256, 256, 1280, 1280)",
+     "tiles": [
+      "5_-3"
+     ],
+     "defines_composition": true,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "e0200cb6ba887da87dadfe7655cd155f39a52233aa7a1e830facabc6303ae626"
+    },
+    {
+     "file": "B017R2_mask_5_-3.png",
+     "purpose": "EDIT MASK: white = paint, black = keep (finished neighbour art)",
+     "tiles": [
+      "5_-3"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "2ab762bb370f70dc24c84b169595c79711eb269a368de9ab0de180504b1c2c12"
+    },
+    {
+     "file": "B017R2_ref_5_-3.png",
+     "purpose": "GEOMETRY: reference render of tile 5_-3 alone",
+     "tiles": [
+      "5_-3"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "cb8beede5e826070453d5551351d1f5a81dc23d113fcf1a922f3be6040422aa2"
+    },
+    {
+     "file": "B017R2_classes_5_-3.png",
+     "purpose": "SEMANTIC MAP (same framing as the composition)",
+     "tiles": [
+      "5_-3"
+     ],
+     "defines_composition": false,
+     "size": [
+      1536,
+      1536
+     ],
+     "sha256": "bc272e4600f32b1e88eae10bb592dd81f357acd06debac1eadf3d8f557a13953"
+    },
+    {
+     "file": "B017R2_previous_5_-3.png",
+     "purpose": "YOUR PREVIOUS OUTPUT (as received) - keep what is good about it",
+     "tiles": [
+      "5_-3"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "d89659a366552209dba0ec8940a860fa0b8329b55bac9f9c7898bef4edfd5a8d"
+    },
+    {
+     "file": "B017R2_marked_5_-3.png",
+     "purpose": "ANNOTATED: what is wrong (red = missing/misplaced vs reference, yellow = displaced area, labels give the fix)",
+     "tiles": [
+      "5_-3"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "589545b634fcac85365b71d8034f677418a67bce10bf4855ab0011a49b058050"
+    },
+    {
+     "file": "B017R2_classes_legend.png",
+     "purpose": "LEGEND for the semantic maps",
+     "tiles": [
+      "5_-3"
+     ],
+     "defines_composition": false,
+     "size": [
+      760,
+      624
+     ],
+     "sha256": "ac82d5b35871ebd0318c191dce3817ca603b3d965a803b29b03e65e78fd986d7"
+    },
+    {
+     "file": "B017R2_style_0_0.png",
+     "purpose": "STYLE: accepted artwork of tile 0_0 - match it",
+     "tiles": [
+      "0_0"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "bfd18a94f0c795a075713d7f7e3cb3de3a1f28fb784b4a9929d587c97da04c58"
+    }
+   ],
+   "items": {
+    "5_-3": {
+     "status": "requested",
+     "return_filename": "B017R2_5_-3.png",
+     "files": {
+      "composition": "B017R2_context_5_-3.png",
+      "mask": "B017R2_mask_5_-3.png",
+      "reference": "B017R2_ref_5_-3.png",
+      "classes": "B017R2_classes_5_-3.png",
+      "previous": "B017R2_previous_5_-3.png",
+      "marked": "B017R2_marked_5_-3.png"
+     },
+     "output": {
+      "mode": "context",
+      "frame": "square",
+      "width": 1536,
+      "height": 1536,
+      "crop": [
+       256,
+       256,
+       1280,
+       1280
+      ],
+      "canvas_origin": [
+       4864,
+       -3328
+      ]
+     },
+     "reference": {
+      "color2x": "6d3233216d67",
+      "cls": "477890af1caa",
+      "height": "5ef7d26a8d94",
+      "composition": "e0200cb6ba88",
+      "neighbours": {
+       "4_-3": "9fbc0a394421",
+       "6_-3": "reference",
+       "5_-4": "none",
+       "5_-2": "reference"
+      }
+     },
+     "model_reported": "unknown",
+     "settings_reported": "unknown",
+     "received": [],
+     "qa": null,
+     "revision_of": {
+      "batch": "B017R1",
+      "corrections": [
+       "Tile 5_-3 (tile-local px in the 1024 tile; add 256 for the 1536 canvas). Your last image is very good and is the base for this one: the new mown lawn around Waterloo Fire Station #1 is correct and everything else in the tile must stay exactly as it is. Only one thing is wrong: both asphalt driveways moved about 40 px to the right. Put them back on the reference positions and paint lawn where you drew them. 1) West driveway, about 18 px wide, from the station's west corner down-left: x 456-463 at y 100, 434-451 at y 116, 411-428 at y 132, 388-406 at y 148, 365-383 at y 164, continuing off to the left. (Your image had it at 448-466 @132, 427-443 @148, 404-422 @164, 382-399 @180 - paint lawn there.) 2) East driveway, about 18 px wide, from the red bay doors: x 487-503 at y 148, 466-486 at y 164, 443-464 at y 180, 427-442 at y 196, meeting Weber St N at x 414-421, y 212. (Your image had it at 509-521 @164, 489-505 @180, 468-485 @196, 449-465 @212 - paint lawn there.) 3) Keep the cream footpath parallel to Weber from (376-386, 172) to (474-484, 228); it crosses both driveways. 4) Change nothing else: the lawn, the dirt construction site, the Canada Computers / J&J roof, all other roofs, the striped lots and the joins with the neighbouring tiles."
+      ]
+     },
+     "prompt": "TASK - revised tile 5_-3\nEdit B017R2_context_5_-3.png (1536 x 1536 px): the central 1024 x 1024 square (x 256-1279, y 256-1279) is the tile. B017R2_mask_5_-3.png: WHITE = paint, BLACK = keep exactly (finished neighbour art - continue it seamlessly across the boundary); white border areas are context that we cut away. B017R2_previous_5_-3.png is what you sent last time and B017R2_marked_5_-3.png marks what has to change: fix those points and keep the rest of its style. Geometry must follow B017R2_ref_5_-3.png and B017R2_classes_5_-3.png.\n\nTHIS TILE SHOWS\n- Men's Hostel (upper right, around x=953, y=260): building - follow the reference wall colour for its material\n- Waterloo Fire Station #1 (upper centre, around x=535, y=100): building - follow the reference wall colour for its material\n- Physical Plant Operations (lower centre, around x=442, y=800): building - follow the reference wall colour for its material\n- 69 Lodge (lower left, around x=273, y=909): building - follow the reference wall colour for its material\n- Canada Computers (upper centre, around x=343, y=31): building - follow the reference wall colour for its material\n- Centre for Cold Regions and Water Science (lower left, around x=196, y=961): building - follow the reference wall colour for its material\n- Tirecraft (centre, around x=453, y=349): building - follow the reference wall colour for its material\n- J&J Cards & Collectibles (upper centre, around x=374, y=60): building - follow the reference wall colour for its material\n- Streets and paths crossing it: Weber Street North, Lodge Street, Marshall Street\n\nOUTPUT\n- 1536 x 1536 px, PNG, named B017R2_5_-3.png. A larger image with exactly the same aspect ratio is fine; never crop, pad or change the aspect ratio.",
+     "prompt_sha": "125aeb0cf1e7"
+    }
+   },
+   "correction_text": {
+    "5_-3": "REVISION - your previous image for this item could not be used. Exact corrections:\n- Tile 5_-3 (tile-local px in the 1024 tile; add 256 for the 1536 canvas). Your last image is very good and is the base for this one: the new mown lawn around Waterloo Fire Station #1 is correct and everything else in the tile must stay exactly as it is. Only one thing is wrong: both asphalt driveways moved about 40 px to the right. Put them back on the reference positions and paint lawn where you drew them. 1) West driveway, about 18 px wide, from the station's west corner down-left: x 456-463 at y 100, 434-451 at y 116, 411-428 at y 132, 388-406 at y 148, 365-383 at y 164, continuing off to the left. (Your image had it at 448-466 @132, 427-443 @148, 404-422 @164, 382-399 @180 - paint lawn there.) 2) East driveway, about 18 px wide, from the red bay doors: x 487-503 at y 148, 466-486 at y 164, 443-464 at y 180, 427-442 at y 196, meeting Weber St N at x 414-421, y 212. (Your image had it at 509-521 @164, 489-505 @180, 468-485 @196, 449-465 @212 - paint lawn there.) 3) Keep the cream footpath parallel to Weber from (376-386, 172) to (474-484, 228); it crosses both driveways. 4) Change nothing else: the lawn, the dirt construction site, the Canada Computers / J&J roof, all other roofs, the striped lots and the joins with the neighbouring tiles."
+   },
+   "packet": {
+    "md": "IMAGE_REQUEST_B017R2.md",
+    "dir": "art/requests/B017R2",
+    "zip": "art/requests/B017R2.zip",
+    "zip_sha256": "98e8a12e0846573ae14997200ca84e69d28c405b3ab7b9764cfaab5cf8416428"
+   }
+  },
+  "S010": {
+   "id": "S010",
+   "kind": "seam",
+   "title": "Seam repair - horizontal join of 7_-3, 7_-2",
+   "mode": "seam",
+   "status": "requested",
+   "depends_on": [
+    "7_-3",
+    "7_-2"
+   ],
+   "blocked_by": [],
+   "parent": null,
+   "created_utc": "2026-11-05T03:22:11Z",
+   "updated_utc": "2026-11-05T03:22:11Z",
+   "packet_rev": 1,
+   "order": [
+    "seam"
+   ],
+   "shared_files": [
+    "S010_window.png",
+    "S010_mask.png",
+    "S010_ref.png",
+    "S010_marked.png"
+   ],
+   "attachments": [
+    {
+     "file": "S010_window.png",
+     "purpose": "CANVAS TO EDIT + COMPOSITION: current accepted art around the join (1024x1024)",
+     "tiles": [
+      "7_-3",
+      "7_-2"
+     ],
+     "defines_composition": true,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "7657adced902f316e4a2316f2db0b67f3b473beae483a01e70cd967defb1d66c"
+    },
+    {
+     "file": "S010_mask.png",
+     "purpose": "EDIT MASK: white = repaint band (96 px wide), black = keep pixel-identical",
+     "tiles": [
+      "7_-3",
+      "7_-2"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "d78bb9b2b24136c75351c9a5cfea4afcf62a64e2944ad1ab120276ff59a0b8dd"
+    },
+    {
+     "file": "S010_ref.png",
+     "purpose": "GEOMETRY: reference underdrawing of the same window (where every edge must be)",
+     "tiles": [
+      "7_-3",
+      "7_-2"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "c4b499d748eaf98d053604758d62420dd7a83f44f70cdbdfbca5737b319567af"
+    },
+    {
+     "file": "S010_marked.png",
+     "purpose": "ANNOTATED: band in red, join line dashed, worst rows in yellow",
+     "tiles": [
+      "7_-3",
+      "7_-2"
+     ],
+     "defines_composition": false,
+     "size": [
+      1024,
+      1024
+     ],
+     "sha256": "580d8093441cc51125b045c3a0d74366371123675edef1a1302da0291616799e"
+    }
+   ],
+   "items": {
+    "seam": {
+     "status": "requested",
+     "return_filename": "S010_seam.png",
+     "files": {
+      "composition": "S010_window.png",
+      "mask": "S010_mask.png"
+     },
+     "output": {
+      "mode": "seam",
+      "width": 1024,
+      "height": 1024,
+      "window": [
+       7168,
+       -2560
+      ],
+      "band": 48,
+      "kind": "horizontal",
+      "joins": [
+       {
+        "axis": "horizontal",
+        "at": 512,
+        "tiles": [
+         "7_-3",
+         "7_-2"
+        ]
+       }
+      ],
+      "tiles": [
+       "7_-3",
+       "7_-2"
+      ]
+     },
+     "reference": {
+      "composition": "7657adced902",
+      "tiles": {
+       "7_-3": "24f433d6ccbe",
+       "7_-2": "1b3b3c810e68"
+      },
+      "jobs": {
+       "7_-3": {
+        "color2x": "152ce3a265a9",
+        "cls": "0b05415eaf73",
+        "height": "170255a9056e"
+       },
+       "7_-2": {
+        "color2x": "e8936b04a15d",
+        "cls": "4c8c623fd6ab",
+        "height": "d66c6c720dbe"
+       }
+      }
+     },
+     "before": [
+      {
+       "grad_ratio": 0.985,
+       "step_ratio": 1.109,
+       "cross_mean": 20.23,
+       "interior_mean": 20.55,
+       "worst": [],
+       "tiles": [
+        "7_-3",
+        "7_-2"
+       ],
+       "axis": "horizontal"
+      }
+     ],
+     "prompt": "TASK - seam repair S010\nIn S010_window.png, the horizontal line at y = 512 is where separately painted tiles meet, and the join is visible. Repaint ONLY the white band of S010_mask.png so the band reads as one continuous painting: carry roofs, walls, window rows, roads, kerbs, path edges, lawn texture and tree clusters straight across the line and blend colour and brightness smoothly. Everything in the black area must stay pixel-identical. Keep every edge where S010_ref.png has it (no moved or invented buildings, roads or trees). S010_marked.png shows the band and the worst spots - it is a guide only.\nMeasured now: horizontal join between 7_-3 and 7_-2 (discontinuity x0.98 of the interior gradient, colour step x1.11).\nSPECIFIC FIX (from our review of this join): Horizontal join (window y=512; window x = tile x). The arterial at x 0-256, the tall block's window rows at x 640-768 and the rooftop units already line up - keep them. Two things remain. (1) At window x 190-250, y 500-525, the lawn shadow east of the small L-shaped brick building and the top of the tree cluster to its right start on a flat horizontal line exactly at y=512 (bright lawn above, dark shade and canopy below): make the building's shadow run diagonally from its east wall toward the upper right as in the reference, and give the tree cluster rounded, irregular canopy tops continuous across y 505-525. No straight horizontal edge may remain at y=512. (2) At window x 610-645, y 512-555, keep the tall block's window grid regular - same window size, rows and columns as directly above, no smeared or merged windows. Do not move any road, kerb, building, roof unit or tree.\n\nOUTPUT\n- One image, exactly 1024 x 1024 px, PNG, named S010_seam.png, same framing as S010_window.png. Any square size of 1024 px or more is fine (e.g. 1254 x 1254 if that is what your tool returns - send it unchanged); never upscale, crop, pad or change the aspect ratio.",
+     "prompt_sha": "a00877a07f82",
+     "model_reported": "unknown",
+     "settings_reported": "unknown",
+     "received": [],
+     "qa": null
+    }
+   },
+   "packet": {
+    "md": "IMAGE_REQUEST_S010.md",
+    "dir": "art/requests/S010",
+    "zip": "art/requests/S010.zip",
+    "zip_sha256": "97b1b9f623e8e94267459011b041d78077d76545baf9a464a8fdf0cb6a814e06"
    }
   }
  }

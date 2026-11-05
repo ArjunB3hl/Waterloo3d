@@ -873,8 +873,8 @@
   }
  },
  "6_-1": {
-  "version": "659119ee958e",
-  "batch": "B013",
+  "version": "e99d18d554b5",
+  "batch": "S008",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
   "prompt_sha": "7095fa880fd3",
@@ -884,12 +884,38 @@
    "cls": "60b66474d34b",
    "height": "1eb9d57f861a"
   },
-  "accepted_utc": "2026-11-04T22:23:01Z",
+  "accepted_utc": "2026-11-05T03:18:47Z",
   "source_file": "art/returned/B013/B013_6_-1.png",
   "source_sha256": "1f7c71a4d32c9a120460b61a3dd5b5b5edd8aab3a4dd68963a24c9cbe13d7002",
   "qa_verdict": "pass",
-  "forced": false,
-  "history": []
+  "forced": true,
+  "history": [
+   {
+    "version": "659119ee958e",
+    "batch": "B013",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown",
+    "prompt_sha": "7095fa880fd3",
+    "reference_sha": "455a7531294c",
+    "reference_files": {
+     "color2x": "0e3c441b087f",
+     "cls": "60b66474d34b",
+     "height": "1eb9d57f861a"
+    },
+    "accepted_utc": "2026-11-04T22:23:01Z",
+    "source_file": "art/returned/B013/B013_6_-1.png",
+    "source_sha256": "1f7c71a4d32c9a120460b61a3dd5b5b5edd8aab3a4dd68963a24c9cbe13d7002",
+    "qa_verdict": "pass",
+    "forced": false
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S008/S008_seam.png",
+   "source_sha256": "34c152ada60accfbc4a1a239618de976b25b1be6e69d8b4f98b45082597e9058",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam; feathered. FORCED: only keep-changed MAD 12.2 vs 12.0 (whole-frame regeneration); creek worst block 2.03 -> 1.53",
+   "prompt_sha": "3c61a5bee4ae"
+  }
  },
  "4_-2": {
   "version": "c4a82a7f0b70",
@@ -1001,8 +1027,8 @@
   }
  },
  "-2_-3": {
-  "version": "c2a409f04de4",
-  "batch": "B015",
+  "version": "e8fce324b153",
+  "batch": "S005R1",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED (reviewed): -3_-2 geometry-cell flags are false positives (all roads/kerbs/parking on class outlines at 2-4x); -3_-3 right-join colour step x2.16 (geometry exact, fit scale 1.000 / 0.10 deg) -> seam packet",
   "prompt_sha": "ccf465ab9ad9",
@@ -1012,12 +1038,38 @@
    "cls": "6e94fb9e9d8f",
    "height": "ee561271b2fc"
   },
-  "accepted_utc": "2026-11-04T22:55:15Z",
+  "accepted_utc": "2026-11-05T03:17:43Z",
   "source_file": "art/returned/B015/B015_-2_-3.png",
   "source_sha256": "341576f880dbc9b2b7dd5e669a3fe71eadec40d188e04cc9777c8c708622b89e",
   "qa_verdict": "pass",
-  "forced": false,
-  "history": []
+  "forced": true,
+  "history": [
+   {
+    "version": "c2a409f04de4",
+    "batch": "B015",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED (reviewed): -3_-2 geometry-cell flags are false positives (all roads/kerbs/parking on class outlines at 2-4x); -3_-3 right-join colour step x2.16 (geometry exact, fit scale 1.000 / 0.10 deg) -> seam packet",
+    "prompt_sha": "ccf465ab9ad9",
+    "reference_sha": "9ad3cf65cd84",
+    "reference_files": {
+     "color2x": "e4732ef7729f",
+     "cls": "6e94fb9e9d8f",
+     "height": "ee561271b2fc"
+    },
+    "accepted_utc": "2026-11-04T22:55:15Z",
+    "source_file": "art/returned/B015/B015_-2_-3.png",
+    "source_sha256": "341576f880dbc9b2b7dd5e669a3fe71eadec40d188e04cc9777c8c708622b89e",
+    "qa_verdict": "pass",
+    "forced": false
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S005R1/S005R1_seam.png",
+   "source_sha256": "db0479c83cf51d0fc64cecf240e2a0edd55f4fa4b50a7d072c18314cac0abd85",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam redo; feathered. FORCED: worst block [640,768] x2.03 is a path T-junction + tree canopy lying on x=512; whole join 2.16 -> 1.32",
+   "prompt_sha": "7888d63308e6"
+  }
  },
  "-3_-2": {
   "version": "a778000c6b78",
@@ -1039,8 +1091,8 @@
   "history": []
  },
  "-3_-3": {
-  "version": "46c69f1dd13d",
-  "batch": "B015",
+  "version": "b725d4854e51",
+  "batch": "S005R1",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED (reviewed): -3_-2 geometry-cell flags are false positives (all roads/kerbs/parking on class outlines at 2-4x); -3_-3 right-join colour step x2.16 (geometry exact, fit scale 1.000 / 0.10 deg) -> seam packet",
   "prompt_sha": "f48b72c748e7",
@@ -1050,12 +1102,38 @@
    "cls": "4c911aff37bb",
    "height": "cabf42b773a8"
   },
-  "accepted_utc": "2026-11-04T22:55:45Z",
+  "accepted_utc": "2026-11-05T03:17:43Z",
   "source_file": "art/returned/B015/B015_-3_-3.png",
   "source_sha256": "92fa009df70066ca3f2ec673aca664452516a8e223b6bcd067a09e1909deaf5a",
   "qa_verdict": "fail",
   "forced": true,
-  "history": []
+  "history": [
+   {
+    "version": "46c69f1dd13d",
+    "batch": "B015",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED (reviewed): -3_-2 geometry-cell flags are false positives (all roads/kerbs/parking on class outlines at 2-4x); -3_-3 right-join colour step x2.16 (geometry exact, fit scale 1.000 / 0.10 deg) -> seam packet",
+    "prompt_sha": "f48b72c748e7",
+    "reference_sha": "cfda957df696",
+    "reference_files": {
+     "color2x": "230b20ccdc74",
+     "cls": "4c911aff37bb",
+     "height": "cabf42b773a8"
+    },
+    "accepted_utc": "2026-11-04T22:55:45Z",
+    "source_file": "art/returned/B015/B015_-3_-3.png",
+    "source_sha256": "92fa009df70066ca3f2ec673aca664452516a8e223b6bcd067a09e1909deaf5a",
+    "qa_verdict": "fail",
+    "forced": true
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S005R1/S005R1_seam.png",
+   "source_sha256": "db0479c83cf51d0fc64cecf240e2a0edd55f4fa4b50a7d072c18314cac0abd85",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam redo; feathered. FORCED: worst block [640,768] x2.03 is a path T-junction + tree canopy lying on x=512; whole join 2.16 -> 1.32",
+   "prompt_sha": "7888d63308e6"
+  }
  },
  "-3_1": {
   "version": "b48e4d821b98",
@@ -1236,8 +1314,8 @@
   "history": []
  },
  "6_-2": {
-  "version": "5a5e83efbddd",
-  "batch": "B017",
+  "version": "83be20f796a6",
+  "batch": "S008",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
   "prompt_sha": "896899415bd2",
@@ -1247,16 +1325,42 @@
    "cls": "145a84f22415",
    "height": "25b41c56828e"
   },
-  "accepted_utc": "2026-11-05T02:17:53Z",
+  "accepted_utc": "2026-11-05T03:18:46Z",
   "source_file": "art/returned/B017/B017_6_-2.png",
   "source_sha256": "2e823325eb78abde1a46aafa6aa29373b3d5010ff8053e64355c2c188b25d3fd",
   "qa_verdict": "pass",
-  "forced": false,
-  "history": []
+  "forced": true,
+  "history": [
+   {
+    "version": "5a5e83efbddd",
+    "batch": "B017",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
+    "prompt_sha": "896899415bd2",
+    "reference_sha": "c2ca0043abc2",
+    "reference_files": {
+     "color2x": "d1aa7b2bc24a",
+     "cls": "145a84f22415",
+     "height": "25b41c56828e"
+    },
+    "accepted_utc": "2026-11-05T02:17:53Z",
+    "source_file": "art/returned/B017/B017_6_-2.png",
+    "source_sha256": "2e823325eb78abde1a46aafa6aa29373b3d5010ff8053e64355c2c188b25d3fd",
+    "qa_verdict": "pass",
+    "forced": false
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S008/S008_seam.png",
+   "source_sha256": "34c152ada60accfbc4a1a239618de976b25b1be6e69d8b4f98b45082597e9058",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam; feathered. FORCED: only keep-changed MAD 12.2 vs 12.0 (whole-frame regeneration); creek worst block 2.03 -> 1.53",
+   "prompt_sha": "3c61a5bee4ae"
+  }
  },
  "7_-2": {
-  "version": "c4ddc878f377",
-  "batch": "B017",
+  "version": "1b3b3c810e68",
+  "batch": "S009",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
   "prompt_sha": "0b597f05c585",
@@ -1266,12 +1370,38 @@
    "cls": "4c8c623fd6ab",
    "height": "d66c6c720dbe"
   },
-  "accepted_utc": "2026-11-05T02:18:10Z",
+  "accepted_utc": "2026-11-05T03:19:47Z",
   "source_file": "art/returned/B017/B017_7_-2.png",
   "source_sha256": "d3267af0e456ffa692d2f15cd19730074d6e30e48e3af430a7024916d1d12516",
   "qa_verdict": "pass",
-  "forced": false,
-  "history": []
+  "forced": true,
+  "history": [
+   {
+    "version": "c4ddc878f377",
+    "batch": "B017",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
+    "prompt_sha": "0b597f05c585",
+    "reference_sha": "cef6d5c233f4",
+    "reference_files": {
+     "color2x": "e8936b04a15d",
+     "cls": "4c8c623fd6ab",
+     "height": "d66c6c720dbe"
+    },
+    "accepted_utc": "2026-11-05T02:18:10Z",
+    "source_file": "art/returned/B017/B017_7_-2.png",
+    "source_sha256": "d3267af0e456ffa692d2f15cd19730074d6e30e48e3af430a7024916d1d12516",
+    "qa_verdict": "pass",
+    "forced": false
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S009/S009_seam.png",
+   "source_sha256": "a01b7532dc740a4ced15410ea6b709d534dc92a4d27f9f678ce2558a11ca6676",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam; feathered. INTERIM, FORCED: whole join 1.61 -> 0.99; one 50 px canopy/shadow line at x 192-256 remains (worst block 1.92) -> S009R1",
+   "prompt_sha": "127a62274a15"
+  }
  },
  "5_-3": {
   "version": "6d544904ef1e",
@@ -1312,8 +1442,8 @@
   "history": []
  },
  "7_-3": {
-  "version": "942d2e7449ee",
-  "batch": "B017",
+  "version": "24f433d6ccbe",
+  "batch": "S009",
   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
   "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
   "prompt_sha": "1888311ec505",
@@ -1323,12 +1453,38 @@
    "cls": "0b05415eaf73",
    "height": "170255a9056e"
   },
-  "accepted_utc": "2026-11-05T02:19:03Z",
+  "accepted_utc": "2026-11-05T03:19:47Z",
   "source_file": "art/returned/B017/B017_7_-3.png",
   "source_sha256": "f7b73362aca7665e99faa187ad5eefb5ed4197461dc7ab5162f62c71b1da9bcc",
   "qa_verdict": "fail",
   "forced": true,
-  "history": []
+  "history": [
+   {
+    "version": "942d2e7449ee",
+    "batch": "B017",
+    "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+    "settings_reported": "reference-guided image edit/style transfer; mask as reference image (no mask parameter); one call per canvas; requested 1536 canvas, returned 1254x1254 PNG; seed/steps/guidance/strength/quality unknown. FORCED after review: 7_-3 style dE driven by a paved triangle the reference itself renders as lawn; 5_-3 accepted as INTERIM (invented parking/apron on Waterloo Fire Station #1 lawn -> revision B017R1 pending)",
+    "prompt_sha": "1888311ec505",
+    "reference_sha": "27ca8af1b6ff",
+    "reference_files": {
+     "color2x": "152ce3a265a9",
+     "cls": "0b05415eaf73",
+     "height": "170255a9056e"
+    },
+    "accepted_utc": "2026-11-05T02:19:03Z",
+    "source_file": "art/returned/B017/B017_7_-3.png",
+    "source_sha256": "f7b73362aca7665e99faa187ad5eefb5ed4197461dc7ab5162f62c71b1da9bcc",
+    "qa_verdict": "fail",
+    "forced": true
+   }
+  ],
+  "seam": {
+   "source_file": "art/returned/S009/S009_seam.png",
+   "source_sha256": "a01b7532dc740a4ced15410ea6b709d534dc92a4d27f9f678ce2558a11ca6676",
+   "model_reported": "image_gen.imagegen built into Codex (model name/version not exposed)",
+   "settings_reported": "seam; feathered. INTERIM, FORCED: whole join 1.61 -> 0.99; one 50 px canopy/shadow line at x 192-256 remains (worst block 1.92) -> S009R1",
+   "prompt_sha": "127a62274a15"
+  }
  },
  "6_0": {
   "version": "b6d58ad376af",

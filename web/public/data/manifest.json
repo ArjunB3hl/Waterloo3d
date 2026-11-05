@@ -1,6 +1,6 @@
 {
  "name": "Tiny Waterloo",
- "generated_utc": "2026-11-05T02:22:15Z",
+ "generated_utc": "2026-11-05T03:20:44Z",
  "frame_px": 1024,
  "lods_px": [
   256,
@@ -429,11 +429,11 @@
    "i": -2,
    "j": -3,
    "kind": "art",
-   "v": "8667cc079db9",
+   "v": "1110adc985d2",
    "hv": "7d6c5268f057",
    "lv": "e56ea922f7ed",
-   "art_version": "c2a409f04de4",
-   "batch": "B015",
+   "art_version": "e8fce324b153",
+   "batch": "S005R1",
    "finish": "px512-q64s"
   },
   "-2_0": {
@@ -484,11 +484,11 @@
    "i": -3,
    "j": -3,
    "kind": "art",
-   "v": "921380938dc0",
+   "v": "ad1bb85a09b7",
    "hv": "fae666fe023d",
    "lv": "6d13e3ea02c6",
-   "art_version": "46c69f1dd13d",
-   "batch": "B015",
+   "art_version": "b725d4854e51",
+   "batch": "S005R1",
    "finish": "px512-q64s"
   },
   "-3_0": {
@@ -847,22 +847,22 @@
    "i": 6,
    "j": -1,
    "kind": "art",
-   "v": "4c5e761bc8f0",
+   "v": "93f6d7b7bf51",
    "hv": "2e07001e69ae",
    "lv": "3fdbb019a610",
-   "art_version": "659119ee958e",
-   "batch": "B013",
+   "art_version": "e99d18d554b5",
+   "batch": "S008",
    "finish": "px512-q64s"
   },
   "6_-2": {
    "i": 6,
    "j": -2,
    "kind": "art",
-   "v": "b34befce3307",
+   "v": "c7a62c728c83",
    "hv": "eaa688070bd9",
    "lv": "a13c5d0e56f8",
-   "art_version": "5a5e83efbddd",
-   "batch": "B017",
+   "art_version": "83be20f796a6",
+   "batch": "S008",
    "finish": "px512-q64s"
   },
   "6_-3": {
@@ -913,22 +913,22 @@
    "i": 7,
    "j": -2,
    "kind": "art",
-   "v": "1b4f335ff851",
+   "v": "6c6a9af33a4d",
    "hv": "7fcd6abffde8",
    "lv": "607c11338167",
-   "art_version": "c4ddc878f377",
-   "batch": "B017",
+   "art_version": "1b3b3c810e68",
+   "batch": "S009",
    "finish": "px512-q64s"
   },
   "7_-3": {
    "i": 7,
    "j": -3,
    "kind": "art",
-   "v": "6b1dffb4dd06",
+   "v": "fc69018b5adf",
    "hv": "3c0a93678fcc",
    "lv": "a84a133fdb8b",
-   "art_version": "942d2e7449ee",
-   "batch": "B017",
+   "art_version": "24f433d6ccbe",
+   "batch": "S009",
    "finish": "px512-q64s"
   },
   "7_0": {
