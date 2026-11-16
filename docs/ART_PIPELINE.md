@@ -167,6 +167,29 @@ is above 1.8 and also above the accepted art's own ratio at that block by more t
 band edge is an arbitrary line through untouched art, so a kerb or shoreline that happens to lie on it is not a defect
 of the repair. In a junction, the parts of a band edge that the other band crosses are skipped.
 
+## Repaint overlays (publish-time fixes)
+
+`pipeline/art_overlay.py` handles small fixes that are easier to repaint than to request as whole tiles: a join where two
+tiles painted different content, ghosting left by the border cross-fade, or one surface painted in the wrong colour.
+
+1. `make <id> --box x0,y0,w,h --seam v|h` (or `--cls parking`) cuts a window from **what is published now** (the
+   harmonised art plus every overlay accepted so far) and writes `art/overlays/<id>_input.png` (upscaled to 2048 px for
+   the model), `<id>_window.png` and a soft `<id>_mask.png`. Seam masks are a band of ±150 px around the join (full
+   strength within ±72 px); region masks are the class pixels grown by 8 px.
+2. The window is repainted by an image model with a Change / Preserve / Constraints prompt. Since 16 Nov 2026 this is
+   done directly through the ElevenLabs connector (model `gpt-image-2.5-sunburst`, 2048 px output, quality high); the
+   input is fetched from its raw GitHub URL and the result downloaded from `elevenlabsusercontent.com`.
+3. `qa <id> <file>` checks the return at window size: aspect, global shift against the input (limit 1.5 px), per-block
+   shift inside the mask (3 px), colour agreement where the mask fades out, and 4-16 px structure agreement. It writes
+   `art/overlays/<id>_qa.png` (input, return, composite) for review.
+4. `accept <id> <file> --model ... --generation ...` stores the original in `art/returned/overlays/` and the window-size
+   image in `art/overlays/<id>.png`, and records model, generation id, prompt summary, hashes and the QA numbers in
+   `art/overlays.json`.
+5. `publish_tiles.py` applies accepted overlays in list order after `harmonize_art`. Seam overlays are colour-matched to
+   the map first (detail from the repaint, colour coarser than 40 px from the map), so a model's brightness drift does
+   not show; region overlays keep their own colour. `art/accepted/` is never changed, and deleting an entry from
+   `art/overlays.json` undoes that fix.
+
 ## Statuses (`art/batches.json`)
 
 - **Batch:** `draft` (dependencies not accepted yet; do not send) -> `requested` -> `received` -> `complete`, or

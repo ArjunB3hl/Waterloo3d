@@ -200,7 +200,7 @@
     1024,
     1024
    ],
-   "status": "requested",
+   "status": "accepted",
    "note": "-1_-1 | -1_0 join",
    "seam": "h",
    "cls": null,
@@ -210,7 +210,34 @@
    "tiles": [
     "-1_-1",
     "-1_0"
-   ]
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "provider": "ElevenLabs",
+   "generation_id": "S0QtG7i6Pqs3znSoJQY2",
+   "source_file": "art/returned/overlays/ov05_seam_north_w.png",
+   "source_sha256": "4262fde41eaa7787ee67aee3225bcc209bbbc2e49a62cdf3a51757ab4a58e31d",
+   "qa": {
+    "returned": [
+     2048,
+     2048
+    ],
+    "fail": [],
+    "warn": [],
+    "colour_drift_before_match": 4.0,
+    "shift": [
+     0.05,
+     0.14
+    ],
+    "block_shift_max": 0.5,
+    "keep_drift": 10.5,
+    "edge_diff": 5.2,
+    "structure_ncc_min": 0.97,
+    "structure_ncc_mean": 0.98,
+    "sharpness_ratio": 0.95
+   },
+   "forced": false,
+   "prompt": "Seam repaint: make the central join one continuous painting; doubled or ghosted rooftop units, windows and trees painted once, solid; preserve all geometry, framing and style.",
+   "accepted_utc": "2026-11-16T22:41:23Z"
   },
   {
    "id": "ov06_seam_north_e",
@@ -221,7 +248,7 @@
     1024,
     1024
    ],
-   "status": "requested",
+   "status": "accepted",
    "note": "0_-1 | 0_0 join: doubled rooftop units",
    "seam": "h",
    "cls": null,
@@ -231,7 +258,34 @@
    "tiles": [
     "0_-1",
     "0_0"
-   ]
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "provider": "ElevenLabs",
+   "generation_id": "kOCxCEDit90xCLqiDSZz",
+   "source_file": "art/returned/overlays/ov06_seam_north_e.png",
+   "source_sha256": "3d9ceeba76caa451657617aa768aa3dbcbc7b9b5da91224ae7eae8ef8c7b6413",
+   "qa": {
+    "returned": [
+     2048,
+     2048
+    ],
+    "fail": [],
+    "warn": [],
+    "colour_drift_before_match": 3.6,
+    "shift": [
+     0.05,
+     0.1
+    ],
+    "block_shift_max": 0.24,
+    "keep_drift": 10.9,
+    "edge_diff": 6.0,
+    "structure_ncc_min": 0.97,
+    "structure_ncc_mean": 0.98,
+    "sharpness_ratio": 0.94
+   },
+   "forced": false,
+   "prompt": "Seam repaint: make the central join one continuous painting; doubled or ghosted rooftop units, windows and trees painted once, solid; preserve all geometry, framing and style.",
+   "accepted_utc": "2026-11-16T22:41:35Z"
   },
   {
    "id": "ov07_seam_east",
@@ -242,7 +296,7 @@
     1024,
     1024
    ],
-   "status": "requested",
+   "status": "accepted",
    "note": "0_0 | 1_0 join",
    "seam": "v",
    "cls": null,
@@ -252,7 +306,34 @@
    "tiles": [
     "0_0",
     "1_0"
-   ]
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "provider": "ElevenLabs",
+   "generation_id": "I8G9lCH4wbfyKfnMBvOM",
+   "source_file": "art/returned/overlays/ov07_seam_east.png",
+   "source_sha256": "8085227f8797d64506ebad7fa09e1892b6ab2947933af02cd4aa8905e2567025",
+   "qa": {
+    "returned": [
+     2048,
+     2048
+    ],
+    "fail": [],
+    "warn": [],
+    "colour_drift_before_match": 3.7,
+    "shift": [
+     0.08,
+     -0.01
+    ],
+    "block_shift_max": 0.33,
+    "keep_drift": 8.7,
+    "edge_diff": 4.2,
+    "structure_ncc_min": 0.99,
+    "structure_ncc_mean": 0.99,
+    "sharpness_ratio": 0.87
+   },
+   "forced": false,
+   "prompt": "Seam repaint: make the central join one continuous painting; doubled or ghosted rooftop units, windows and trees painted once, solid; preserve all geometry, framing and style.",
+   "accepted_utc": "2026-11-16T22:41:46Z"
   },
   {
    "id": "ov08_seam_south_e",
@@ -263,7 +344,7 @@
     1024,
     1024
    ],
-   "status": "requested",
+   "status": "accepted",
    "note": "0_0 | 0_1 join",
    "seam": "h",
    "cls": null,
@@ -273,7 +354,34 @@
    "tiles": [
     "0_0",
     "0_1"
-   ]
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "provider": "ElevenLabs",
+   "generation_id": "chCTKTdazlEUPPk6lHvK",
+   "source_file": "art/returned/overlays/ov08_seam_south_e.png",
+   "source_sha256": "6b0fd56cdc0e337b58987278c591f55a8602c4cb349e506f15af8d6c47b568c9",
+   "qa": {
+    "returned": [
+     2048,
+     2048
+    ],
+    "fail": [],
+    "warn": [],
+    "colour_drift_before_match": 4.0,
+    "shift": [
+     0.03,
+     0.02
+    ],
+    "block_shift_max": 0.18,
+    "keep_drift": 8.7,
+    "edge_diff": 3.5,
+    "structure_ncc_min": 0.98,
+    "structure_ncc_mean": 0.99,
+    "sharpness_ratio": 0.88
+   },
+   "forced": false,
+   "prompt": "Seam repaint: make the central join one continuous painting; doubled or ghosted rooftop units, windows and trees painted once, solid; preserve all geometry, framing and style.",
+   "accepted_utc": "2026-11-16T22:41:58Z"
   }
  ]
 }
