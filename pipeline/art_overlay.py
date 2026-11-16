@@ -25,7 +25,7 @@ import harmonize_art as H
 DIR = os.path.join(ROOT, 'art', 'overlays')
 REC = os.path.join(ROOT, 'art', 'overlays.json')
 HARM = os.path.join(ROOT, 'data_cache', 'harmonized')      # written by publish_tiles (harmonised, before overlays)
-T = {'shift_px': 1.5, 'block_shift_px': 3.0, 'edge_diff': 14.0, 'min_ncc': 0.15}
+T = {'colour_sigma': 40.0, 'shift_px': 1.5, 'block_shift_px': 3.0, 'edge_diff': 14.0, 'min_ncc': 0.15}
 
 
 def load():
@@ -96,7 +96,7 @@ def make(a):
     Image.fromarray(mask).save(os.path.join(DIR, f'{a.id}_mask.png'))
     d = load(); d['overlays'] = [o for o in d['overlays'] if o['id'] != a.id]
     d['overlays'].append({'id': a.id, 'kind': kind, 'box': box, 'status': 'requested', 'note': a.note,
-                          'seam': a.seam, 'cls': None if a.seam else a.cls, 'created_utc': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+                          'seam': a.seam, 'cls': None if a.seam else a.cls, 'keep_colour': bool(a.seam), 'created_utc': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
                           'window_sha': sha(os.path.join(DIR, f'{a.id}_window.png')), 'tiles': [f'{i}_{j}' for i, j in _tiles(box)]})
     save(d); print(f'{a.id}: window {w}x{h} at ({x0},{y0}), mask covers {100 * (mask > 127).mean():.1f}% -> art/overlays/{a.id}_input.png')
 
@@ -106,9 +106,15 @@ def check(rec, path):
     img = Image.open(path).convert('RGB'); W, Hh = img.size
     res = {'returned': [W, Hh], 'fail': [], 'warn': []}
     if abs(W / Hh - w / h) > 0.01 * w / h: res['fail'].append(f'aspect {W}x{Hh} does not match the window {w}x{h}')
-    out = np.asarray(img.resize((w, h), Image.BOX if W >= w else Image.LANCZOS), np.float32)
+    raw = np.asarray(img.resize((w, h), Image.BOX if W >= w else Image.LANCZOS), np.float32)
     win = np.asarray(Image.open(os.path.join(DIR, f'{rec["id"]}_window.png')).convert('RGB'), np.float32)
+    # Image models drift in overall brightness / saturation. Keep the repaint's detail but take the broad colour
+    # (everything coarser than ~colour_sigma px) from the current map, so the overlay does not show as a lighter patch.
+    # Region overlays that are meant to change a surface colour (rec['keep_colour'] false) skip this.
+    res_colour = float(np.abs(H._blur(raw, 12) - H._blur(win, 12)).mean())
+    out = np.clip(raw + H._blur(win - raw, T['colour_sigma']), 0, 255) if rec.get('keep_colour', True) else raw
     mask = np.asarray(Image.open(os.path.join(DIR, f'{rec["id"]}_mask.png')).convert('L'), np.float32) / 255
+    res['colour_drift_before_match'] = round(res_colour, 1)
     dx, dy = H._phase_shift(out, win); res['shift'] = [round(float(dx), 2), round(float(dy), 2)]
     if max(abs(dx), abs(dy)) > T['shift_px']: res['fail'].append(f'whole image shifted by ({dx:+.1f}, {dy:+.1f}) px')
     B = 256; worst = 0.0; blocks = []

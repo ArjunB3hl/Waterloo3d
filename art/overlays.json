@@ -9,7 +9,7 @@
     1024,
     1024
    ],
-   "status": "requested",
+   "status": "accepted",
    "note": "ESC courtyard join",
    "seam": "v",
    "cls": null,
@@ -18,7 +18,97 @@
    "tiles": [
     "-1_0",
     "0_0"
-   ]
+   ],
+   "keep_colour": true,
+   "model": "gpt-image-2.5-sunburst",
+   "provider": "ElevenLabs",
+   "generation_id": "nnLmh9Fj1V1zfAo5deVu",
+   "source_file": "art/returned/overlays/ov01_seam_esc.png",
+   "source_sha256": "afe3eee08917cff34529c3dc51701e7faededdc615780afd5deda4240583ace0",
+   "qa": {
+    "returned": [
+     2048,
+     2048
+    ],
+    "fail": [],
+    "warn": [],
+    "colour_drift_before_match": 4.1,
+    "shift": [
+     0.17,
+     -0.01
+    ],
+    "block_shift_max": 0.29,
+    "keep_drift": 10.4,
+    "edge_diff": 4.6,
+    "structure_ncc_min": 0.98,
+    "structure_ncc_mean": 0.99,
+    "sharpness_ratio": 1.0
+   },
+   "forced": false,
+   "prompt": "Seam repaint: make the central vertical join one continuous painting (single courtyard tree, matching window rows, continuous roofs/lawn/paths); preserve all geometry, framing and style.",
+   "accepted_utc": "2026-11-16T22:15:15Z"
+  },
+  {
+   "id": "ov02_seam_south",
+   "kind": "seam",
+   "box": [
+    -1024,
+    512,
+    1024,
+    1024
+   ],
+   "status": "requested",
+   "note": "-1_0 | -1_1 join: doubled rooftop units",
+   "seam": "h",
+   "cls": null,
+   "created_utc": "2026-11-16T22:10:01Z",
+   "window_sha": "df2cf7609d35",
+   "tiles": [
+    "-1_0",
+    "-1_1"
+   ],
+   "keep_colour": true
+  },
+  {
+   "id": "ov03_seam_west",
+   "kind": "seam",
+   "box": [
+    -1536,
+    0,
+    1024,
+    1024
+   ],
+   "status": "requested",
+   "note": "-2_0 | -1_0 join: ghost trees on the pitch",
+   "seam": "v",
+   "cls": null,
+   "created_utc": "2026-11-16T22:10:03Z",
+   "window_sha": "c33bf9274ed8",
+   "tiles": [
+    "-2_0",
+    "-1_0"
+   ],
+   "keep_colour": true
+  },
+  {
+   "id": "ov04_parking",
+   "kind": "region",
+   "box": [
+    -1024,
+    512,
+    640,
+    512
+   ],
+   "status": "requested",
+   "note": "purple parking lots -> asphalt grey",
+   "seam": null,
+   "cls": "parking",
+   "created_utc": "2026-11-16T22:10:45Z",
+   "window_sha": "9f5efa6db847",
+   "tiles": [
+    "-1_0"
+   ],
+   "keep_colour": false
   }
  ]
 }
