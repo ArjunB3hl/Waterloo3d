@@ -48,7 +48,11 @@ export interface Landmark {
   height_source: string;                     // osm_height | osm_levels (approx) | ms_ml_height (estimate) | class_default (approx)
   status: 'covered' | 'pending';
   /** Portfolio stop (portfolio mode, ?portfolio=1): shown with a portfolio card instead of the landmark card. */
-  portfolio?: { award?: string; meta?: string; tech?: string[]; links: { label: string; url: string }[]; image?: string; imageAlt?: string };
+  portfolio?: {
+    award?: string; meta?: string; tech?: string[]; links: { label: string; url: string }[];
+    /** Sub-entries shown as their own blocks in the card (the three projects of the Projects stop; skill groups). */
+    sections?: { title: string; award?: string; meta?: string; text?: string; tech?: string[]; link?: { label: string; url: string } }[];
+  };
 }
 
 /** One named building label (web/public/data/labels.json, built by pipeline/build_labels.py). */

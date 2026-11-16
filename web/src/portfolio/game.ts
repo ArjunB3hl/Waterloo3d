@@ -42,7 +42,7 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
       h('p', { class: 'title-kicker' }, 'An interactive portfolio'),
       h('h1', { id: 'title-name' }, 'Arjun Behl'),
       h('p', { class: 'title-tag' }, 'I build software and AI-powered tools.'),
-      h('p', { class: 'title-sub' }, `Fly a goose over the University of Waterloo campus and find the ${stops.length} stops: three projects, experience, education and how to reach me.`),
+      h('p', { class: 'title-sub' }, `Fly a goose over the University of Waterloo campus and find the ${stops.length} stops: my projects, experience, education, skills and how to reach me.`),
       startBtn,
       found.size ? h('p', { class: 'title-progress' }, `${found.size} of ${stops.length} stops found so far`) : null,
       h('p', { class: 'title-keys' }, h('kbd', {}, 'W A S D'), ' or arrows steer  ', h('kbd', {}, 'Shift'), ' faster  ', h('kbd', {}, 'Space'), ' flap  ', h('kbd', {}, 'L'), ' land and read a stop'),

@@ -35,7 +35,7 @@ Useful URL forms:
 ## Portfolio game (web/portfolio.html)
 
 `web/portfolio.html` is Arjun Behl's portfolio as a game on this map. A title screen opens over the live campus; the
-visitor flies the goose to seven **stops** (three projects, experience, education, about, contact) placed on campus
+visitor flies the goose to six **stops** (About, Projects, Experience, Education, Skills, Contact) placed on campus
 buildings (`web/public/data/portfolio_stops.json`). Flying over a stop finds it, landing beside it opens its card, a
 tracker shows progress and points to the next stop, and progress is kept in the browser. Project cards carry text and a
 GitHub link only. The code is the map app in portfolio mode (`web/src/portfolio/game.ts`). Run `npm run dev` and open
