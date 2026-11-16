@@ -15,7 +15,7 @@ from PIL import Image, ImageFilter
 sys.path.insert(0, os.path.dirname(__file__))
 from world import cfg, ROOT, camera_record, F
 from classes import CLS
-import harmonize_art
+import harmonize_art, art_overlay
 
 JOBS = os.path.join(ROOT, 'data_cache', 'jobs')
 OUT = os.path.join(ROOT, 'web', 'public', 'data')
@@ -81,6 +81,10 @@ def main():
             im = Image.open(ap).convert('RGB')
             accepted_src[d] = im if im.size == (F(), F()) else im.resize((F(), F()), Image.LANCZOS)
     accepted_src, harm_info = harmonize_art.harmonize(accepted_src)
+    # keep the harmonised art (what repaint overlays are cut from), then apply the accepted overlays on top
+    os.makedirs(art_overlay.HARM, exist_ok=True)
+    for d, im in accepted_src.items(): im.save(os.path.join(art_overlay.HARM, f'{d}.png'))
+    accepted_src, overlays_applied = art_overlay.apply(accepted_src)
     for d in sorted(os.listdir(JOBS)):
         jd = os.path.join(JOBS, d)
         if not os.path.exists(os.path.join(jd, 'height.png')): continue
@@ -145,6 +149,7 @@ def main():
         'regions': regions, 'tiles': tiles,
         'harmonize': {'enabled': harm_info is not None,
                       'detail_gains': harm_info['gains'] if harm_info else None},
+        'overlays': overlays_applied,
         'counts': {'tiles': len(tiles), 'art': sum(t['kind'] == 'art' for t in tiles.values()), 'reference': sum(t['kind'] == 'reference' for t in tiles.values())},
         'attribution': ['© OpenStreetMap contributors (ODbL) via Overture Maps Foundation', 'Overture Maps Foundation',
                         'Microsoft ML Building heights (ODbL) via Overture', 'Terrain: AWS Terrain Tiles / Mapzen (incl. CDEM © NRCan, OGL-Canada)'],

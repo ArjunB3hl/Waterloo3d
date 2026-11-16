@@ -1,0 +1,24 @@
+{
+ "overlays": [
+  {
+   "id": "ov01_seam_esc",
+   "kind": "seam",
+   "box": [
+    -512,
+    0,
+    1024,
+    1024
+   ],
+   "status": "requested",
+   "note": "ESC courtyard join",
+   "seam": "v",
+   "cls": null,
+   "created_utc": "2026-11-16T22:08:36Z",
+   "window_sha": "9977a232b759",
+   "tiles": [
+    "-1_0",
+    "0_0"
+   ]
+  }
+ ]
+}
