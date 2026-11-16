@@ -1,0 +1,52 @@
+// Portfolio game checks (web/portfolio.html) against a running preview:
+//   npm run build && npx vite preview --port 4173 &     then     node tests/portfolio_check.cjs [screenshot dir]
+const { chromium, devices } = require('playwright');
+(async () => {
+  const out = process.argv[2] || 'docs/screenshots'; const base = process.env.BASE || 'http://127.0.0.1:4173'; const res = [];
+  const b = await chromium.launch();
+  const p = await b.newPage({ viewport: { width: 1360, height: 820 }, deviceScaleFactor: 1 });
+  const errs = []; p.on('pageerror', (e) => errs.push(String(e)));
+  await p.goto(base + '/portfolio.html'); await p.waitForSelector('.title-screen', { timeout: 60000 }); await p.waitForTimeout(7000);
+  const T = () => p.evaluate(() => document.querySelector('.title-screen')?.innerText || '');
+  res.push(['title screen: name, tagline and Start flying', /Arjun Behl/.test(await T()) && /I build software and AI-powered tools/.test(await T()) && /Start flying/.test(await T())]);
+  res.push(['no website chrome: no search bar, landmark strip or minimap', await p.evaluate(() => ['.top', '.strip', '.bottom-left'].every((s) => { const e = document.querySelector(s); return !e || getComputedStyle(e).display === 'none'; }))]);
+  res.push(['seven stops in the tracker', await p.locator('.quest-item').count() === 7]);
+  await p.screenshot({ path: out + '/portfolio_title.png' });
+  await p.keyboard.press('Enter');                                   // Start flying has focus
+  await p.waitForFunction(() => window.__tinyWaterloo.actor.active, null, { timeout: 60000 });
+  await p.waitForTimeout(3500);
+  res.push(['Enter starts the flight', await p.evaluate(() => !document.querySelector('.title-screen') && window.__tinyWaterloo.actor.active)]);
+  // fly over three stops (teleport = same code path as flying there)
+  for (const id of ['about', 'crisisroom', 'rhythm']) {
+    await p.evaluate(async (id) => {
+      const t = window.__tinyWaterloo, s = t.landmarks.find((l) => l.id === id), f = t.map.frame;
+      const st = t.actor.debug.getState();
+      const here = t.map.getView(); const dx = s.canvas[0] - here.cx, dy = s.canvas[1] - here.cy;
+      // move in world metres by the canvas offset (right = +x canvas, canvas y is foreshortened by sqrt 2)
+      const m = t.map.manifest.camera, k = m.meters_per_px, R = m.right_enu, U = m.up_enu;
+      const wx = st.x + (dx * R[0] - dy * Math.SQRT2 * U[0] / Math.hypot(U[0], U[1])) * k, wy = st.y + (dx * R[1] - dy * Math.SQRT2 * U[1] / Math.hypot(U[0], U[1])) * k;
+      await t.actor.debug.teleport(wx, wy, st.z, st.heading);
+    }, id);
+    await p.waitForTimeout(2200);
+  }
+  const count = await p.locator('.quest-count').innerText();
+  res.push(['flying over stops finds them (3 / 7)', /^3 \/ 7$/.test(count.trim())]);
+  res.push(['pointer names the next stop with a distance', /· \d+ m/.test(await p.locator('.quest-next').innerText())]);
+  await p.screenshot({ path: out + '/portfolio_flight.png' });
+  await p.keyboard.press('l'); await p.waitForTimeout(3000);
+  const card = await p.locator('#ui .panel:not([hidden])').first().innerText().catch(() => '');
+  res.push(['landing beside a stop opens its card with the GitHub link only', /Rhythm/.test(card) && /Top 10 Finalist/.test(card) && /View on GitHub/.test(card) && !/Devpost/.test(card)]);
+  res.push(['no project screenshots in cards', await p.locator('#ui .panel img').count() === 0]);
+  await p.screenshot({ path: out + '/portfolio_stop.png' });
+  await p.reload(); await p.waitForSelector('.title-screen'); await p.waitForTimeout(1500);
+  res.push(['progress is remembered after a reload (3 / 7, "Continue flying")', /^3 \/ 7$/.test((await p.locator('.quest-count').textContent()).trim()) && /Continue flying/.test(await T())]);
+  res.push(['no page errors', errs.length === 0]);
+  const m = await b.newPage({ ...devices['iPhone 13'] });
+  await m.goto(base + '/portfolio.html'); await m.waitForSelector('.title-screen'); await m.waitForTimeout(5000);
+  res.push(['phone: title fits, no horizontal overflow', await m.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1 && document.querySelector('.title-start').getBoundingClientRect().bottom < innerHeight)]);
+  await m.screenshot({ path: out + '/portfolio_phone.png' });
+  let fail = 0; for (const [n, ok] of res) { console.log((ok ? 'PASS ' : 'FAIL ') + n); if (!ok) fail++; }
+  if (errs.length) console.log(errs.slice(0, 3));
+  console.log(`${res.length - fail}/${res.length} checks passed`);
+  await b.close(); process.exit(fail ? 1 : 0);
+})();

@@ -244,3 +244,8 @@ kbd { font: 11.5px var(--mono); padding: 1px 6px; border-radius: 5px; border: 1p
 /* the bottom bar container spans the strip width; only its children take pointer input so the map stays draggable around the button */
 #ui .bottom { pointer-events: none; }
 #ui .bottom > * { pointer-events: auto; }
+
+/* portfolio stops (portfolio mode cards) */
+.stop-image { display: block; width: 100%; height: auto; border-radius: 8px; margin: 8px 0 12px; border: 1px solid rgba(255, 255, 255, 0.12); }
+.stop-facts { margin: 6px 0 12px; padding-left: 18px; }
+.stop-facts li { margin: 3px 0; }

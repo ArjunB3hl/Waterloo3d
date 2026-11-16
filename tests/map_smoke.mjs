@@ -189,7 +189,7 @@ try {
     // expected canvas point under the click, from the same mapping the minimap uses (bounds of all tiles + 0.5 tile)
     const expect = await page.evaluate(() => {
       const m = window.__tinyWaterloo.map.manifest, F = m.frame_px;
-      const t = [...Object.values(m.tiles).map((x) => [x.i, x.j]), ...m.coverage.city_tiles];
+      const t = Object.values(m.tiles).map((x) => [x.i, x.j]);
       const x0 = Math.min(...t.map((a) => a[0])) * F - F / 2, x1 = (Math.max(...t.map((a) => a[0])) + 1) * F + F / 2;
       const y0 = Math.min(...t.map((a) => a[1])) * F - F / 2, y1 = (Math.max(...t.map((a) => a[1])) + 1) * F + F / 2;
       return [x0 + 0.3 * (x1 - x0), y0 + 0.3 * (y1 - y0)];
@@ -218,18 +218,10 @@ try {
     assert(!(await page.locator('#landmark-panel').isVisible()), 'Escape did not close the panel');
   });
 
-  await check('pending landmark jumps to the pending area and says coming soon', async () => {
-    await page.locator('.strip-list').evaluate((el) => { el.scrollLeft = el.scrollWidth; });
-    await page.locator('.card', { hasText: 'Laurel Creek' }).click();
-    const l = await page.evaluate(() => window.__tinyWaterloo.landmarks.find((x) => x.id === 'laurel-creek'));
-    await reach(page, [...l.canvas, 0.3]);
-    const v = await view(page);
-    const toast = await page.locator('#toast').textContent();
-    assert(/coming soon/i.test(toast), `toast ${toast}`);
-    assert(v.zoom < 0.5, `zoom ${v.zoom}`);
-    await page.waitForTimeout(300);
-    await page.screenshot({ path: path.join(SHOTS, 'map_pending.png') });
-    await page.keyboard.press('Escape');
+  await check('landmarks outside the illustrated tiles are not listed', async () => {
+    const ids = await page.evaluate(() => window.__tinyWaterloo.landmarks.map((x) => x.id));
+    assert(!ids.includes('laurel-creek') && ids.includes('dc'), `landmarks ${ids.join(',')}`);
+    assert(await page.locator('.card', { hasText: 'Laurel Creek' }).count() === 0, 'pending landmark card still shown');
   });
 
   await check('search: street name via keyboard jumps there', async () => {

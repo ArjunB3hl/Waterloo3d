@@ -43,6 +43,13 @@ export function createUI(map: MapAPI, deps: { fx: EffectsModule; actor: ActorMod
   map.on('viewchange', placeMarker);
 
   const lm = createLandmarks(map, landmarks, actor, panels);
+  // Portfolio game: landing next to a stop opens its card (finding stops in flight is handled in portfolio/game.ts).
+  const stops = landmarks.filter((l) => l.portfolio);
+  const nearestStop = (maxPx: number) => {
+    const v = map.getView(); let best: Landmark | null = null, bd = maxPx;
+    for (const st of stops) { const d = Math.hypot(st.canvas[0] - v.cx, st.canvas[1] - v.cy); if (d < bd) { bd = d; best = st; } }
+    return best;
+  };
   // building labels: avoid the landmark pills, open a card on click / tap (a landmark building opens its landmark card)
   map.labels.setLandmarkPills(landmarks.filter((l) => l.status === 'covered').map((l) => ({ id: l.id, canvas: l.canvas, text: l.short ?? l.name })));
   const buildings = createBuildingCard(map, panels, actor, (id) => {
@@ -178,7 +185,11 @@ export function createUI(map: MapAPI, deps: { fx: EffectsModule; actor: ActorMod
     map.labels.setFlightMode(actorActive);
     queueOcclusion();
     if (actorActive) { panels.close(); search.close(); }
-    else flyBtn.focus({ preventScroll: true });
+    else {
+      flyBtn.focus({ preventScroll: true });
+      const st = stops.length ? nearestStop(220) : null;
+      if (st) lm.select(st, flyBtn);
+    }
   }
   map.on('frame', syncActor);
   setInterval(syncActor, 400);   // also catch a stop that happens without a redraw

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Arjun Behl — an interactive portfolio</title>
+  <meta name="description" content="Arjun Behl builds software and AI-powered tools. Fly a goose over an illustrated University of Waterloo campus and find his projects: CrisisRoom, Rhythm and Dune Rush." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23e8892f'/%3E%3Cpath d='M3 12V6l5-3 5 3v6z' fill='%23fff3e0'/%3E%3C/svg%3E" />
+</head>
+<body data-portfolio>
+  <div id="app" aria-label="Arjun Behl's interactive portfolio: a campus map you explore as a goose">
+    <div id="stage" role="application" aria-label="Isometric map of the University of Waterloo campus. Start flying to steer a goose between the portfolio stops." tabindex="0">
+      <canvas id="map-base"></canvas>
+      <div id="labels" aria-hidden="false"></div>
+    </div>
+    <div id="ui"></div>
+    <footer id="attribution" aria-label="Map data attribution"></footer>
+  </div>
+  <noscript>
+    <div style="max-width:42rem;margin:2rem auto;padding:0 1.25rem;font:1rem/1.6 system-ui,sans-serif;color:#eee;background:#1d2024">
+      <h1>Arjun Behl</h1>
+      <p>I build software and AI-powered tools. Engineering master’s student at the University of Waterloo, with interests in mobile applications, embedded systems, and the hardware behind AI.</p>
+      <p>This portfolio is an interactive map that needs JavaScript. The projects: CrisisRoom (1st Place and MLH Best Use of Vultr, CommuniHacks 2026) at <a href="https://github.com/jeefwashere/CrisisRoom">github.com/jeefwashere/CrisisRoom</a>; Rhythm (Top 10 Finalist, Build North 2026) at <a href="https://github.com/ArjunB3hl/BuildNorth">github.com/ArjunB3hl/BuildNorth</a>; Dune Rush (Devin Game Jam – Kick005, built with Ali) at <a href="https://github.com/AliasgarTawa/dev-game">github.com/AliasgarTawa/dev-game</a>.</p>
+      <p>Contact: <a href="mailto:arjun.behl.2003@gmail.com">arjun.behl.2003@gmail.com</a> · <a href="https://www.linkedin.com/in/arjunbehl8/">LinkedIn</a> · <a href="https://github.com/ArjunB3hl">GitHub</a></p>
+    </div>
+  </noscript>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

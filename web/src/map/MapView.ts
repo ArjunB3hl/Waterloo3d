@@ -1,7 +1,7 @@
 // MapView: owns the view state, camera motion, tile loading and the base / overlay / aux canvases, and implements
 // the MapAPI contract (web/src/types.ts) the effects, actor and UI modules build on.
 import { Frame } from '../frame';
-import type { BuildingLabel, BuildingLabelsAPI, CoverageInfo, FrameInfo, Manifest, MapAPI, PerfStats, Settings, ViewState } from '../types';
+import type { BuildingLabel, BuildingLabelsAPI, FrameInfo, Manifest, MapAPI, PerfStats, Settings, ViewState } from '../types';
 import { BuildingLabelLayer } from './buildingLabels';
 import { attachInput, type CameraControl } from './input';
 import { ResourceLoader } from './loader';
@@ -28,11 +28,10 @@ const smallScreen = () => Math.min(innerWidth, innerHeight) < 600 || ((navigator
 type Listener<T> = (x: T) => void;
 
 export async function createMap(root: HTMLElement): Promise<MapAPI> {
-  const [manifest, coverage] = await Promise.all([
-    fetch('data/manifest.json').then((r) => { if (!r.ok) throw new Error(`manifest.json: HTTP ${r.status}`); return r.json() as Promise<Manifest>; }),
-    fetch('data/coverage.json').then((r) => (r.ok ? (r.json() as Promise<CoverageInfo>) : null)).catch(() => null),
-  ]);
-  if (!manifest.coverage && coverage) manifest.coverage = coverage;
+  // The map shows only the illustrated tiles: the city-wide coverage plan (pending "coming soon" areas and the
+  // municipal boundary in data/coverage.json) is no longer loaded, so there are no empty areas to pan into.
+  const manifest = await fetch('data/manifest.json').then((r) => { if (!r.ok) throw new Error(`manifest.json: HTTP ${r.status}`); return r.json() as Promise<Manifest>; });
+  manifest.coverage = undefined;
   return new MapView(root, manifest).api;
 }
 

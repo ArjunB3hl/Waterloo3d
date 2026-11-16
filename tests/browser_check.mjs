@@ -239,7 +239,7 @@ async function functionalChecks(browser) {
   await check('minimap click jumps there', async () => {
     // same mapping as widgets/minimap.ts: bounds of published + city tiles, padded by half a tile
     const F = manifest.frame_px;
-    const all = [...Object.values(manifest.tiles).map((t) => [t.i, t.j]), ...coverage.city_tiles];
+    const all = Object.values(manifest.tiles).map((t) => [t.i, t.j]);   // the map shows only the illustrated tiles
     const x0 = Math.min(...all.map((t) => t[0])) * F - F / 2, x1 = (Math.max(...all.map((t) => t[0])) + 1) * F + F / 2;
     const y0 = Math.min(...all.map((t) => t[1])) * F - F / 2, y1 = (Math.max(...all.map((t) => t[1])) + 1) * F + F / 2;
     const box = await page.locator('.minimap-canvas').boundingBox();
@@ -344,30 +344,16 @@ async function functionalChecks(browser) {
     return `fx.debug.tilt ${d0.tilt} -> ${d1.tilt} -> ${d2.tilt}, cocMax ${d0.cocMax.toFixed(1)} px, top band changed; strength slider re-enabled: ${!disabled}`;
   });
 
-  await check('settings: coverage toggle hides and restores the pending-area hatch', async () => {
-    // pending city tiles (-4,-1), (-4,0), (-5,*) sit west of the published area (columns -3..7 are published)
+  await check('no empty areas: the view cannot leave the illustrated tiles', async () => {
     await page.keyboard.press('Escape');
-    await page.evaluate(() => { location.hash = '#-3584,0,0.5'; });
-    await reach(page, [-3584, 0, 0.5], 1, 30000);
-    await idle(page);
-    const sample = () => page.evaluate(() => {
-      const c = document.getElementById('map-base'), g = c.getContext('2d');
-      const d = g.getImageData(0, 0, c.width, c.height).data;
-      let sum = 0; for (let k = 0; k < d.length; k += 4 * 97) sum += d[k] + d[k + 1] + d[k + 2];
-      return sum;
-    });
-    const s0 = await sample();
-    await openSettings(page);
-    await toggleSetting(page, 'coverage');
-    await page.waitForTimeout(600);
-    const s1 = await sample();
-    const setting = await page.evaluate(() => window.__tinyWaterloo.map.settings.coverage);
-    await toggleSetting(page, 'coverage');
-    await page.waitForTimeout(600);
-    const s2 = await sample();
-    await page.keyboard.press('Escape');
-    assert(!setting && s1 !== s0 && s2 === s0, `samples ${s0} -> ${s1} -> ${s2}, setting ${setting}`);
-    return `base-canvas checksum ${s0} -> ${s1} (off) -> ${s2} (on again)`;
+    await page.evaluate(() => window.__tinyWaterloo.map.setView({ cx: -20000, cy: 0, zoom: 0.5 }));
+    await page.waitForTimeout(400);
+    const v = await page.evaluate(() => window.__tinyWaterloo.map.getView());
+    const F = manifest.frame_px, minI = Math.min(...Object.values(manifest.tiles).map((t) => t.i));
+    const cov = await page.evaluate(() => window.__tinyWaterloo.map.manifest.coverage ?? null);
+    assert(cov === null, 'coverage plan should not be loaded');
+    assert(v.cx >= (minI - 0.5) * F, `view centre ${v.cx} is west of the illustrated tiles`);
+    return `asked for cx -20000, clamped to ${v.cx.toFixed(0)}`;
   });
 
   await check('settings persist across reload (localStorage)', async () => {

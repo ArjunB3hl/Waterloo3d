@@ -47,6 +47,8 @@ export interface Landmark {
   geometry_source: string;                   // e.g. "OSM way 43250626 via Overture 2026-10-21.0"
   height_source: string;                     // osm_height | osm_levels (approx) | ms_ml_height (estimate) | class_default (approx)
   status: 'covered' | 'pending';
+  /** Portfolio stop (portfolio mode, ?portfolio=1): shown with a portfolio card instead of the landmark card. */
+  portfolio?: { award?: string; meta?: string; tech?: string[]; links: { label: string; url: string }[]; image?: string; imageAlt?: string };
 }
 
 /** One named building label (web/public/data/labels.json, built by pipeline/build_labels.py). */

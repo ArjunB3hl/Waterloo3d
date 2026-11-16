@@ -3,6 +3,9 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   root: 'web',
   publicDir: 'public',
-  build: { outDir: 'dist', emptyOutDir: true, target: 'es2022', chunkSizeWarningLimit: 900 },
+  build: {
+    outDir: 'dist', emptyOutDir: true, target: 'es2022', chunkSizeWarningLimit: 900,
+    rollupOptions: { input: { main: 'web/index.html', portfolio: 'web/portfolio.html' } },
+  },
   server: { host: '127.0.0.1', port: 5173 },
 });

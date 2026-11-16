@@ -1,0 +1,294 @@
+[
+ {
+  "id": "about",
+  "name": "About Arjun",
+  "short": "Hello",
+  "category": "About",
+  "lonlat": [
+   -80.542271,
+   43.469733
+  ],
+  "canvas": [
+   388.3,
+   409.0
+  ],
+  "zoom": 1.0,
+  "description": "I'm Arjun Behl, an Electrical and Computer Engineering master's student at the University of Waterloo. I build mobile applications and AI-powered tools, with interests in embedded systems and the hardware behind AI.",
+  "facts": [
+   "Mobile development at BeSociable Medias.",
+   "Research on advanced chip packaging for AI accelerators.",
+   "Teaching support for Waterloo's Compilers course."
+  ],
+  "sources": [],
+  "geometry_source": "OSM w43250626@28 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "status": "covered",
+  "portfolio": {
+   "meta": "Software development, AI applications and embedded systems",
+   "links": [
+    {
+     "label": "GitHub",
+     "url": "https://github.com/ArjunB3hl"
+    },
+    {
+     "label": "LinkedIn",
+     "url": "https://www.linkedin.com/in/arjunbehl8/"
+    }
+   ]
+  }
+ },
+ {
+  "id": "crisisroom",
+  "name": "CrisisRoom",
+  "short": "CrisisRoom",
+  "category": "Project",
+  "lonlat": [
+   -80.545213,
+   43.471972
+  ],
+  "canvas": [
+   -665.7,
+   114.8
+  ],
+  "zoom": 1.0,
+  "description": "Practise a crisis before it happens. A team-built crisis rehearsal application for nonprofit boards: participants take leadership roles, discuss an unfolding situation, vote on decisions, and review AI-assisted feedback.",
+  "facts": [
+   "Leadership roles and shared crisis scenarios.",
+   "Timed speaking, discussion and voting.",
+   "Optional recordings, reviewed transcripts and narrated consequences.",
+   "A decision history and qualitative AI feedback.",
+   "I worked with a team of three, contributing to AI-assisted decision feedback and voice integration."
+  ],
+  "sources": [],
+  "geometry_source": "OSM w43250627@37 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "status": "covered",
+  "portfolio": {
+   "award": "1st Place · MLH Best Use of Vultr",
+   "meta": "CommuniHacks 2026 · Capacity Canada · with Jeff David Tieng and Ricardo Gao",
+   "tech": [
+    "React",
+    "TypeScript",
+    "Three.js",
+    "FastAPI",
+    "ElevenLabs",
+    "Docker",
+    "Vultr"
+   ],
+   "links": [
+    {
+     "label": "View on GitHub",
+     "url": "https://github.com/jeefwashere/CrisisRoom"
+    }
+   ]
+  }
+ },
+ {
+  "id": "rhythm",
+  "name": "Rhythm",
+  "short": "Rhythm",
+  "category": "Project",
+  "lonlat": [
+   -80.54421,
+   43.471249
+  ],
+  "canvas": [
+   -311.7,
+   231.0
+  ],
+  "zoom": 1.0,
+  "description": "Health routines, connected. A health companion bringing movement, meals and useful assistant context into one place. Rhythm combines activity tracking with an experimental camera coach and AI-assisted features.",
+  "facts": [
+   "Meals and activity in a shared calendar.",
+   "Exercise tracking and prototype form feedback.",
+   "Account-scoped assistant memory.",
+   "Saved video content with source links and available transcripts."
+  ],
+  "sources": [],
+  "geometry_source": "OSM w182091547@18 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "status": "covered",
+  "portfolio": {
+   "award": "Top 10 Finalist",
+   "meta": "Build North 2026",
+   "tech": [
+    "React Native",
+    "Expo",
+    "TypeScript",
+    "FastAPI",
+    "MediaPipe",
+    "SurrealDB",
+    "MCP"
+   ],
+   "links": [
+    {
+     "label": "View on GitHub",
+     "url": "https://github.com/ArjunB3hl/BuildNorth"
+    }
+   ]
+  }
+ },
+ {
+  "id": "dune-rush",
+  "name": "Dune Rush",
+  "short": "Dune Rush",
+  "category": "Project",
+  "lonlat": [
+   -80.539504,
+   43.472834
+  ],
+  "canvas": [
+   704.1,
+   -503.8
+  ],
+  "zoom": 1.0,
+  "description": "One track. Five worlds. A browser-based riding game built with 3D Gaussian splats. Switch between five environments while the ride, physics and lap timer continue.",
+  "facts": [
+   "Five environments that can change during a ride.",
+   "Gaussian-splat rendering with Spark and Three.js.",
+   "PhysX-based collision behaviour.",
+   "Lap timing and locally saved personal bests.",
+   "Co-developed with Ali. Desktop WebGL2 browser required."
+  ],
+  "sources": [],
+  "geometry_source": "OSM w382735686@10 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "status": "covered",
+  "portfolio": {
+   "meta": "Devin Game Jam – Kick005 · Built with Ali",
+   "tech": [
+    "JavaScript",
+    "Three.js",
+    "Spark",
+    "PhysX",
+    "WebGL2"
+   ],
+   "links": [
+    {
+     "label": "View on GitHub",
+     "url": "https://github.com/AliasgarTawa/dev-game"
+    }
+   ]
+  }
+ },
+ {
+  "id": "experience",
+  "name": "Experience",
+  "short": "Experience",
+  "category": "Experience",
+  "lonlat": [
+   -80.541988,
+   43.471492
+  ],
+  "canvas": [
+   233.5,
+   14.0
+  ],
+  "zoom": 1.0,
+  "description": "Teaching Assistant for ECE 351: Compilers at the University of Waterloo (September 2026 – present).",
+  "facts": [
+   "Research Assistant, University of Waterloo (May – August 2026): hybrid bonding and 2.5D/3D integration for HBM-based AI accelerators.",
+   "Mobile Application Developer, BeSociable Medias (April 2025 – March 2026): React Native, Redux and Firebase Authentication with a Node.js and PostgreSQL backend."
+  ],
+  "sources": [],
+  "geometry_source": "OSM w188703119@11 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "status": "covered",
+  "portfolio": {
+   "meta": "Teaching, research and mobile development",
+   "links": [
+    {
+     "label": "LinkedIn",
+     "url": "https://www.linkedin.com/in/arjunbehl8/"
+    }
+   ]
+  }
+ },
+ {
+  "id": "education",
+  "name": "Education and skills",
+  "short": "Education",
+  "category": "Education",
+  "lonlat": [
+   -80.543927,
+   43.472107
+  ],
+  "canvas": [
+   -349.5,
+   -42.6
+  ],
+  "zoom": 1.0,
+  "description": "Master of Engineering, Electrical and Computer Engineering, University of Waterloo (September 2025 – present).",
+  "facts": [
+   "Bachelor of Engineering, Computer Engineering, Toronto Metropolitan University (September 2021 – May 2025)."
+  ],
+  "sources": [],
+  "geometry_source": "OSM w43250630@39 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "status": "covered",
+  "portfolio": {
+   "meta": "Waterloo and Toronto, Ontario",
+   "tech": [
+    "Python",
+    "TypeScript",
+    "JavaScript",
+    "Java",
+    "C/C++",
+    "SQL",
+    "React Native",
+    "FastAPI",
+    "PostgreSQL",
+    "PyTorch",
+    "Docker",
+    "Linux"
+   ],
+   "links": [
+    {
+     "label": "GitHub",
+     "url": "https://github.com/ArjunB3hl"
+    }
+   ]
+  }
+ },
+ {
+  "id": "contact",
+  "name": "Contact",
+  "short": "Contact",
+  "category": "Contact",
+  "lonlat": [
+   -80.542041,
+   43.472502
+  ],
+  "canvas": [
+   88.9,
+   -245.7
+  ],
+  "zoom": 1.0,
+  "description": "I'm interested in opportunities in software development, AI applications and embedded systems. You can reach me by email or connect with me on LinkedIn.",
+  "facts": [],
+  "sources": [],
+  "geometry_source": "OSM r8765264@4 via Overture 2026-10-21.0",
+  "height_source": "OSM building:levels x storey height (approximation)",
+  "status": "covered",
+  "portfolio": {
+   "links": [
+    {
+     "label": "arjun.behl.2003@gmail.com",
+     "url": "mailto:arjun.behl.2003@gmail.com"
+    },
+    {
+     "label": "LinkedIn",
+     "url": "https://www.linkedin.com/in/arjunbehl8/"
+    },
+    {
+     "label": "GitHub",
+     "url": "https://github.com/ArjunB3hl"
+    },
+    {
+     "label": "Devpost",
+     "url": "https://devpost.com/arjun-behl-2003"
+    }
+   ]
+  }
+ }
+]

@@ -11,11 +11,35 @@ const STRIP_KEY = 'tinyWaterloo.stripCollapsed';
 const isApprox = (s: string) => /approx|estimate|default/i.test(s);
 
 export function createLandmarks(map: MapAPI, landmarks: Landmark[], actor: ActorModule, panels: Panels) {
+  const portfolio = landmarks.some((l) => l.portfolio);
+  const stripTitle = portfolio ? 'Portfolio stops' : 'Landmarks';
   // ---------------------------------------------------------------- detail panel
   const detail = panels.create('landmark-panel', 'Landmark');
   const cards = new Map<string, HTMLButtonElement>();
 
+  const showPortfolio = (l: Landmark, opener: HTMLElement | null) => {
+    const p = l.portfolio!;
+    detail.title.textContent = l.name;
+    const nodes: (Node | null)[] = [
+      h('p', { class: 'chips' }, h('span', { class: 'chip' }, l.category), p.award ? h('span', { class: 'chip ok' }, p.award) : null),
+      p.meta ? h('p', { class: 'muted' }, p.meta) : null,
+      p.image ? h('img', { class: 'stop-image', src: p.image, alt: p.imageAlt ?? '', loading: 'lazy' }) : null,
+      h('p', {}, l.description),
+      (l.facts?.length ? h('ul', { class: 'stop-facts' }, ...l.facts.map((f) => h('li', {}, f))) : null),
+      (p.tech?.length ? h('p', { class: 'chips' }, ...p.tech.map((t) => h('span', { class: 'chip code' }, t))) : null),
+      h('ul', { class: 'sources' }, ...p.links.map((s) => h('li', {},
+        h('a', { href: s.url, target: s.url.startsWith('mailto:') ? '_self' : '_blank', rel: 'noopener noreferrer' }, s.label, icon('external'))))),
+      h('button', {
+        class: 'btn primary', type: 'button',
+        onclick: () => { panels.close(); actor.start({ cx: l.canvas[0], cy: l.canvas[1] }).catch((e) => map.toast(`Could not start flight: ${e?.message ?? e}`)); },
+      }, icon('bird'), 'Keep flying'),
+    ];
+    detail.body.replaceChildren(...nodes.filter((n): n is Node => n !== null));
+    panels.open(detail.el, opener);
+  };
+
   const showDetail = (l: Landmark, opener: HTMLElement | null) => {
+    if (l.portfolio) { showPortfolio(l, opener); return; }
     detail.title.textContent = l.name;
     const covered = l.status === 'covered';
     const heightApprox = isApprox(l.height_source);
@@ -71,9 +95,9 @@ export function createLandmarks(map: MapAPI, landmarks: Landmark[], actor: Actor
     list.append(h('div', { role: 'listitem', class: 'strip-item' }, card));
   }
   const toggle = h('button', { class: 'strip-toggle', type: 'button', 'aria-controls': 'strip-list', 'aria-expanded': String(!collapsed) },
-    h('span', {}, 'Landmarks'), icon('chevron'));
+    h('span', {}, stripTitle), icon('chevron'));
   list.id = 'strip-list';
-  const strip = h('section', { class: `strip panel-chrome${collapsed ? ' collapsed' : ''}`, 'aria-label': 'Landmarks' }, toggle, list);
+  const strip = h('section', { class: `strip panel-chrome${collapsed ? ' collapsed' : ''}`, 'aria-label': stripTitle }, toggle, list);
   toggle.addEventListener('click', () => {
     collapsed = !collapsed;
     strip.classList.toggle('collapsed', collapsed);
@@ -91,6 +115,7 @@ export function createLandmarks(map: MapAPI, landmarks: Landmark[], actor: Actor
     const el = h('button', { class: 'map-label', type: 'button', tabindex: -1, 'aria-hidden': 'true', onclick: () => select(l, cards.get(l.id) ?? null) },
       h('span', { class: 'map-label-dot' }), l.short ?? l.name);
     el.title = l.name;
+    el.dataset.id = l.id;
     labelsRoot.append(el);
     return { l, el };
   });
@@ -113,5 +138,5 @@ export function createLandmarks(map: MapAPI, landmarks: Landmark[], actor: Actor
   new ResizeObserver(placeLabels).observe(labelsRoot);
   placeLabels();
 
-  return { strip, select };
+  return { strip, select, cards };
 }
