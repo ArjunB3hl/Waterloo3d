@@ -81,7 +81,11 @@ def seam_mask(w, h, axis, core, band):
 
 def make(a):
     box = [int(v) for v in a.box.split(',')]; x0, y0, w, h = box
-    win = mosaic(box, harmonised)
+    # cut from what is published now: the harmonised art plus every overlay accepted so far
+    base = {f'{i}_{j}': harmonised(f'{i}_{j}') for i, j in _tiles(box)}
+    if any(v is None for v in base.values()): raise SystemExit('run pipeline/publish_tiles.py first (no harmonised tiles cached)')
+    base, _ = apply({k: Image.fromarray(v) for k, v in base.items()}, verbose=False)
+    win = mosaic(box, lambda t: np.asarray(base[t].convert('RGB')))
     if a.seam:
         mask = seam_mask(w, h, a.seam, a.core, a.band); kind = 'seam'
     else:

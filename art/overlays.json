@@ -22,9 +22,9 @@
    "keep_colour": true,
    "model": "gpt-image-2.5-sunburst",
    "provider": "ElevenLabs",
-   "generation_id": "nnLmh9Fj1V1zfAo5deVu",
+   "generation_id": "tko7nIteZTXbJiH58G6q",
    "source_file": "art/returned/overlays/ov01_seam_esc.png",
-   "source_sha256": "afe3eee08917cff34529c3dc51701e7faededdc615780afd5deda4240583ace0",
+   "source_sha256": "01ee94159423df465ffbedb36a5bfcbb267f85e840fe92a85bb099186a5dfeae",
    "qa": {
     "returned": [
      2048,
@@ -32,21 +32,21 @@
     ],
     "fail": [],
     "warn": [],
-    "colour_drift_before_match": 4.1,
+    "colour_drift_before_match": 3.4,
     "shift": [
-     0.17,
-     -0.01
+     0.15,
+     -0.04
     ],
-    "block_shift_max": 0.29,
-    "keep_drift": 10.4,
+    "block_shift_max": 0.42,
+    "keep_drift": 10.1,
     "edge_diff": 4.6,
     "structure_ncc_min": 0.98,
     "structure_ncc_mean": 0.99,
-    "sharpness_ratio": 1.0
+    "sharpness_ratio": 0.93
    },
    "forced": false,
-   "prompt": "Seam repaint: make the central vertical join one continuous painting (single courtyard tree, matching window rows, continuous roofs/lawn/paths); preserve all geometry, framing and style.",
-   "accepted_utc": "2026-11-16T22:15:15Z"
+   "prompt": "Seam repaint: make the central vertical join one continuous painting (single courtyard tree, matching window rows, continuous roofs/lawn/paths); preserve all geometry, framing and style. Variation 2 of 2 chosen: variation 1 kept a faint vertical line through the tree.",
+   "accepted_utc": "2026-11-16T22:32:41Z"
   },
   {
    "id": "ov02_seam_south",
@@ -57,7 +57,7 @@
     1024,
     1024
    ],
-   "status": "requested",
+   "status": "accepted",
    "note": "-1_0 | -1_1 join: doubled rooftop units",
    "seam": "h",
    "cls": null,
@@ -67,7 +67,34 @@
     "-1_0",
     "-1_1"
    ],
-   "keep_colour": true
+   "keep_colour": true,
+   "model": "gpt-image-2.5-sunburst",
+   "provider": "ElevenLabs",
+   "generation_id": "jos5Y4XJGlcssUyFrvOs",
+   "source_file": "art/returned/overlays/ov02_seam_south.png",
+   "source_sha256": "12acabb62d2e9ebf4877185bc5e4e97f0e8ace3f462c4d89265ba1493019f18f",
+   "qa": {
+    "returned": [
+     2048,
+     2048
+    ],
+    "fail": [],
+    "warn": [],
+    "colour_drift_before_match": 3.9,
+    "shift": [
+     0.02,
+     -0.02
+    ],
+    "block_shift_max": 0.25,
+    "keep_drift": 9.7,
+    "edge_diff": 5.2,
+    "structure_ncc_min": 0.98,
+    "structure_ncc_mean": 0.98,
+    "sharpness_ratio": 0.99
+   },
+   "forced": false,
+   "prompt": "Seam repaint: make the central horizontal join one continuous painting; rooftop units painted once, solid; preserve all geometry, framing and style.",
+   "accepted_utc": "2026-11-16T22:19:06Z"
   },
   {
    "id": "ov03_seam_west",
@@ -78,7 +105,7 @@
     1024,
     1024
    ],
-   "status": "requested",
+   "status": "accepted",
    "note": "-2_0 | -1_0 join: ghost trees on the pitch",
    "seam": "v",
    "cls": null,
@@ -88,7 +115,34 @@
     "-2_0",
     "-1_0"
    ],
-   "keep_colour": true
+   "keep_colour": true,
+   "model": "gpt-image-2.5-sunburst",
+   "provider": "ElevenLabs",
+   "generation_id": "Xalii6s7PMTSsNgiZb4y",
+   "source_file": "art/returned/overlays/ov03_seam_west.png",
+   "source_sha256": "a3dd86529f569adb17d84760c3e010d7f8f26af31290ef19ad5ea232e1255b39",
+   "qa": {
+    "returned": [
+     2048,
+     2048
+    ],
+    "fail": [],
+    "warn": [],
+    "colour_drift_before_match": 3.6,
+    "shift": [
+     0.12,
+     -0.05
+    ],
+    "block_shift_max": 0.3,
+    "keep_drift": 9.8,
+    "edge_diff": 4.6,
+    "structure_ncc_min": 0.97,
+    "structure_ncc_mean": 0.98,
+    "sharpness_ratio": 0.83
+   },
+   "forced": false,
+   "prompt": "Seam repaint: make the central vertical join one continuous painting; sports pitch as clean striped turf with nothing on it; continuous woodland canopy; preserve all geometry, framing and style.",
+   "accepted_utc": "2026-11-16T22:19:16Z"
   },
   {
    "id": "ov04_parking",
@@ -99,7 +153,7 @@
     640,
     512
    ],
-   "status": "requested",
+   "status": "accepted",
    "note": "purple parking lots -> asphalt grey",
    "seam": null,
    "cls": "parking",
@@ -108,7 +162,118 @@
    "tiles": [
     "-1_0"
    ],
-   "keep_colour": false
+   "keep_colour": false,
+   "model": "gpt-image-2.5-sunburst",
+   "provider": "ElevenLabs",
+   "generation_id": "KdGMkVuqOIfeojwJH5XA",
+   "source_file": "art/returned/overlays/ov04_parking.png",
+   "source_sha256": "8361d8c37c5c49514bd2b1c1fb3383e579a882d731a6027eff3d2c963744b757",
+   "qa": {
+    "returned": [
+     2560,
+     2048
+    ],
+    "fail": [],
+    "warn": [],
+    "colour_drift_before_match": 3.4,
+    "shift": [
+     0.01,
+     -0.09
+    ],
+    "block_shift_max": 0.6,
+    "keep_drift": 10.1,
+    "edge_diff": 4.0,
+    "structure_ncc_min": 0.97,
+    "structure_ncc_mean": 0.98,
+    "sharpness_ratio": 0.94
+   },
+   "forced": false,
+   "prompt": "Region repaint: parking-lot surfaces as neutral dark asphalt grey with thin light bay lines, no purple tint; preserve everything else.",
+   "accepted_utc": "2026-11-16T22:19:18Z"
+  },
+  {
+   "id": "ov05_seam_north_w",
+   "kind": "seam",
+   "box": [
+    -1024,
+    -512,
+    1024,
+    1024
+   ],
+   "status": "requested",
+   "note": "-1_-1 | -1_0 join",
+   "seam": "h",
+   "cls": null,
+   "keep_colour": true,
+   "created_utc": "2026-11-16T22:37:04Z",
+   "window_sha": "785740077dd3",
+   "tiles": [
+    "-1_-1",
+    "-1_0"
+   ]
+  },
+  {
+   "id": "ov06_seam_north_e",
+   "kind": "seam",
+   "box": [
+    0,
+    -512,
+    1024,
+    1024
+   ],
+   "status": "requested",
+   "note": "0_-1 | 0_0 join: doubled rooftop units",
+   "seam": "h",
+   "cls": null,
+   "keep_colour": true,
+   "created_utc": "2026-11-16T22:37:05Z",
+   "window_sha": "15eaf799a01c",
+   "tiles": [
+    "0_-1",
+    "0_0"
+   ]
+  },
+  {
+   "id": "ov07_seam_east",
+   "kind": "seam",
+   "box": [
+    512,
+    0,
+    1024,
+    1024
+   ],
+   "status": "requested",
+   "note": "0_0 | 1_0 join",
+   "seam": "v",
+   "cls": null,
+   "keep_colour": true,
+   "created_utc": "2026-11-16T22:37:08Z",
+   "window_sha": "0aae6e947f89",
+   "tiles": [
+    "0_0",
+    "1_0"
+   ]
+  },
+  {
+   "id": "ov08_seam_south_e",
+   "kind": "seam",
+   "box": [
+    0,
+    512,
+    1024,
+    1024
+   ],
+   "status": "requested",
+   "note": "0_0 | 0_1 join",
+   "seam": "h",
+   "cls": null,
+   "keep_colour": true,
+   "created_utc": "2026-11-16T22:37:10Z",
+   "window_sha": "70a7015d2447",
+   "tiles": [
+    "0_0",
+    "0_1"
+   ]
   }
  ]
 }

@@ -1,6 +1,6 @@
 {
  "name": "Tiny Waterloo",
- "generated_utc": "2026-11-05T20:01:38Z",
+ "generated_utc": "2026-11-16T22:35:33Z",
  "frame_px": 1024,
  "lods_px": [
   256,
@@ -385,7 +385,7 @@
    "i": -1,
    "j": 0,
    "kind": "art",
-   "v": "278085a6673a",
+   "v": "068cc59446ca",
    "hv": "961c4926dd72",
    "lv": "c4302fc84e1b",
    "art_version": "b1f9da2630ef",
@@ -396,7 +396,7 @@
    "i": -1,
    "j": 1,
    "kind": "art",
-   "v": "48edec36f95d",
+   "v": "e067b273f4d2",
    "hv": "5dc32599a295",
    "lv": "d72ca2f00abf",
    "art_version": "bc00d077a247",
@@ -440,7 +440,7 @@
    "i": -2,
    "j": 0,
    "kind": "art",
-   "v": "aabca7bddf95",
+   "v": "5909923d2100",
    "hv": "80409f9e0c9e",
    "lv": "6b44a0fe8a24",
    "art_version": "a08f2d039d6e",
@@ -550,7 +550,7 @@
    "i": 0,
    "j": 0,
    "kind": "art",
-   "v": "44e535796032",
+   "v": "7d486319adfe",
    "hv": "577c6a2ada79",
    "lv": "7bf45f2ebd58",
    "art_version": "bfd18a94f0c7",
@@ -1014,6 +1014,12 @@
    "7_1": 1.241
   }
  },
+ "overlays": [
+  "ov01_seam_esc",
+  "ov02_seam_south",
+  "ov03_seam_west",
+  "ov04_parking"
+ ],
  "counts": {
   "tiles": 55,
   "art": 55,
