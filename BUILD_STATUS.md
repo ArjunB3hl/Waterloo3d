@@ -144,7 +144,7 @@ Five reviewers covered projection maths, loading and memory, UI, the art workflo
 
 - **Only the illustrated area is shown.** The viewer no longer loads the city-wide coverage plan, so there are no hatched "coming soon" areas, no dashed city boundary, and panning stops at the 55 painted tiles. Landmarks outside them are not listed.
 - **Campus art fixes.** Eight repaint overlays around the two core campus tiles (seven border joins and the purple parking lots), generated through the ElevenLabs connector with `gpt-image-2.5-sunburst` at 2048 px and checked by `pipeline/art_overlay.py` (worst shift 0.17 px, structure agreement ≥ 0.97). See `docs/ART_PIPELINE.md` and `art/overlays.json`.
-- **Portfolio game.** `web/portfolio.html` is a full-screen game on the campus map: title screen, goose flight, six stops to find (About, Projects, Experience, Education, Skills, Contact), a tracker with a pointer to the next stop, and saved progress. Project cards carry text and a GitHub link only; no project screenshots are used. `tests/portfolio_check.cjs`: 11/11.
+- **Portfolio game.** `web/portfolio.html` is a full-screen game on the campus map: title screen, goose flight, six stops to find (About, Projects, Experience, Education, Skills, Contact), a tracker with a pointer to the next stop, and saved progress. Project cards carry text, a GitHub link and (CrisisRoom and Rhythm) a Devpost link; no project screenshots are used. Shortcuts open any stop without flying (tracker click, keys 1–6, "Skip the flight"). `tests/portfolio_check.cjs`: 16/16.
 - Not checked from this environment: external links other than GitHub (LinkedIn, Devpost) are blocked by the network policy here. Nothing is deployed.
 
 ## Inferred or approximate geometry (labelled in the data)

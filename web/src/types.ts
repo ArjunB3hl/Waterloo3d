@@ -51,7 +51,7 @@ export interface Landmark {
   portfolio?: {
     award?: string; meta?: string; tech?: string[]; links: { label: string; url: string }[];
     /** Sub-entries shown as their own blocks in the card (the three projects of the Projects stop; skill groups). */
-    sections?: { title: string; award?: string; meta?: string; text?: string; tech?: string[]; link?: { label: string; url: string } }[];
+    sections?: { title: string; award?: string; meta?: string; text?: string; tech?: string[]; links?: { label: string; url: string }[] }[];
   };
 }
 

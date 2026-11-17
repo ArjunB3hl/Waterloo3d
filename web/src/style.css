@@ -252,4 +252,5 @@ kbd { font: 11.5px var(--mono); padding: 1px 6px; border-radius: 5px; border: 1p
 .stop-section { border-top: 1px solid rgba(255, 255, 255, 0.14); padding-top: 12px; margin-top: 12px; }
 .stop-section h3 { margin: 0 0 6px; font-size: 17px; }
 .stop-section p { margin: 0 0 8px; }
+.stop-link { display: flex; flex-wrap: wrap; gap: 6px 18px; }
 .stop-link a { font-weight: 600; }

@@ -32,7 +32,7 @@ export function createLandmarks(map: MapAPI, landmarks: Landmark[], actor: Actor
         sec.meta ? h('p', { class: 'muted' }, sec.meta) : null,
         sec.text ? h('p', {}, sec.text) : null,
         sec.tech?.length ? h('p', { class: 'chips' }, ...sec.tech.map((t) => h('span', { class: 'chip code' }, t))) : null,
-        sec.link ? h('p', { class: 'stop-link' }, h('a', { href: sec.link.url, target: '_blank', rel: 'noopener noreferrer' }, sec.link.label, icon('external'))) : null)),
+        sec.links?.length ? h('p', { class: 'stop-link' }, ...sec.links.map((k) => h('a', { href: k.url, target: '_blank', rel: 'noopener noreferrer', 'aria-label': `${sec.title} on ${k.label} (opens in a new tab)` }, k.label, icon('external')))) : null)),
       (p.links.length ? h('ul', { class: 'sources' }, ...p.links.map((s) => h('li', {},
         h('a', { href: s.url, target: s.url.startsWith('mailto:') ? '_self' : '_blank', rel: 'noopener noreferrer' }, s.label, icon('external'))))) : null),
       h('button', {

@@ -36,9 +36,9 @@ Useful URL forms:
 
 `web/portfolio.html` is Arjun Behl's portfolio as a game on this map. A title screen opens over the live campus; the
 visitor flies the goose to six **stops** (About, Projects, Experience, Education, Skills, Contact) placed on campus
-buildings (`web/public/data/portfolio_stops.json`). Flying over a stop finds it, landing beside it opens its card, a
-tracker shows progress and points to the next stop, and progress is kept in the browser. Project cards carry text and a
-GitHub link only. The code is the map app in portfolio mode (`web/src/portfolio/game.ts`). Run `npm run dev` and open
+buildings (`web/public/data/portfolio_stops.json`). Flying over a stop finds it, landing beside it opens its card. Visitors can also skip flying: click a stop in the tracker, press 1–6, or choose "Skip the flight" on the title screen. A
+tracker shows progress and points to the next stop, and progress is kept in the browser. Project cards carry text, a
+GitHub link and (CrisisRoom, Rhythm) a Devpost link; no screenshots. The code is the map app in portfolio mode (`web/src/portfolio/game.ts`). Run `npm run dev` and open
 `/portfolio.html`; `tests/portfolio_check.cjs` checks it against a preview server. Nothing is deployed.
 
 ## How it works

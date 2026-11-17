@@ -35,7 +35,8 @@
 .quest-mark { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.5); }
 .quest-item.done .quest-mark { border-color: #7fd596; background: #7fd596 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2 5 8.6 9.6 3.6' fill='none' stroke='%23132' stroke-width='2'/%3E%3C/svg%3E") center / 10px no-repeat; }
 .quest-item.done .quest-name { color: #c9ced2; }
-.quest-cat { font-size: 11px; color: #aeb5ba; text-transform: uppercase; letter-spacing: 0.08em; }
+.quest-key { font: 600 11px/1 ui-monospace, monospace; padding: 3px 6px; border: 1px solid rgba(255, 255, 255, 0.3); border-bottom-width: 2px; border-radius: 4px; color: #c9ced2; }
+.quest-hint { margin: 8px 6px 0; font-size: 12px; color: #aeb5ba; }
 .quest-reset { margin-top: 6px; background: none; border: 0; color: #aeb5ba; font: inherit; font-size: 12px; text-decoration: underline; cursor: pointer; padding: 4px 6px; }
 
 /* stop beacons: stay visible in flight, pulse until found */
@@ -48,8 +49,7 @@
 
 @media (max-width: 700px) {
   .quest { width: 176px; padding: 9px; }
-  .quest-list { display: none; }
-  .quest-reset { display: none; }
+  .quest-reset, .quest-hint, .quest-key { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .title-start, .portfolio-mode .map-label .map-label-dot { animation: none; }

@@ -14,29 +14,39 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
   const found = new Set<string>();
   try { for (const id of JSON.parse(localStorage.getItem(SEEN_KEY) || '[]')) if (stops.some((s) => s.id === id)) found.add(id); } catch { /* storage unavailable */ }
   const save = () => { try { localStorage.setItem(SEEN_KEY, JSON.stringify([...found])); } catch { /* ignore */ } };
-  let target: Landmark | null = null;
+
+  /** Shortcut: go straight to a stop and open its card, without flying (lands the goose first if it is in the air). */
+  function jumpTo(s: Landmark) {
+    const open = () => document.querySelector<HTMLElement>(`.map-label[data-id="${s.id}"]`)?.click();   // moves the map, opens the card, marks it found
+    if (!actor.active) { open(); return; }
+    actor.stop();
+    const t0 = performance.now();
+    const wait = () => { if (!app.classList.contains('actor-active') || performance.now() - t0 > 1500) open(); else window.setTimeout(wait, 50); };
+    wait();
+  }
 
   // ------------------------------------------------------------------ quest tracker
   const items = new Map<string, HTMLButtonElement>();
   const list = h('ol', { class: 'quest-list' });
-  for (const s of stops) {
-    const b = h('button', { type: 'button', class: 'quest-item', onclick: () => { target = s; map.toast(`Pointer set to ${s.name}`); update(); } },
-      h('span', { class: 'quest-mark', 'aria-hidden': 'true' }), h('span', { class: 'quest-name' }, s.name), h('span', { class: 'quest-cat' }, s.category));
+  stops.forEach((s, n) => {
+    const b = h('button', { type: 'button', class: 'quest-item', title: `Jump to ${s.name} (key ${n + 1})`, onclick: () => jumpTo(s) },
+      h('span', { class: 'quest-mark', 'aria-hidden': 'true' }), h('span', { class: 'quest-name' }, s.name), h('kbd', { class: 'quest-key', 'aria-hidden': 'true' }, String(n + 1)));
     items.set(s.id, b);
     list.append(h('li', {}, b));
-  }
+  });
   const count = h('span', { class: 'quest-count' });
   const pointerArrow = h('span', { class: 'quest-arrow', 'aria-hidden': 'true' }, '➤');
   const pointerText = h('span', { class: 'quest-next' });
   const pointer = h('div', { class: 'quest-pointer', role: 'status', 'aria-live': 'off' }, pointerArrow, pointerText);
   const reset = h('button', { type: 'button', class: 'quest-reset', onclick: () => { found.clear(); save(); update(); map.toast('Progress cleared'); } }, 'Reset');
   const tracker = h('section', { class: 'quest panel-chrome', 'aria-label': 'Portfolio stops' },
-    h('header', { class: 'quest-head' }, h('span', { class: 'quest-title' }, 'Stops found'), count), pointer, list, reset);
+    h('header', { class: 'quest-head' }, h('span', { class: 'quest-title' }, 'Stops found'), count), pointer, list,
+    h('p', { class: 'quest-hint' }, 'Click a stop or press 1–', String(stops.length), ' to jump there'), reset);
   ui.append(tracker);
 
   // ------------------------------------------------------------------ title screen
   const startBtn = h('button', { type: 'button', class: 'btn primary title-start' }, icon('bird'), found.size ? 'Continue flying' : 'Start flying');
-  const lookBtn = h('button', { type: 'button', class: 'title-look' }, 'or look around the map first');
+  const lookBtn = h('button', { type: 'button', class: 'title-look' }, 'Skip the flight: jump straight to the stops');
   const title = h('div', { class: 'title-screen', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'title-name' },
     h('div', { class: 'title-box' },
       h('p', { class: 'title-kicker' }, 'An interactive portfolio'),
@@ -45,7 +55,7 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
       h('p', { class: 'title-sub' }, `Fly a goose over the University of Waterloo campus and find the ${stops.length} stops: my projects, experience, education, skills and how to reach me.`),
       startBtn,
       found.size ? h('p', { class: 'title-progress' }, `${found.size} of ${stops.length} stops found so far`) : null,
-      h('p', { class: 'title-keys' }, h('kbd', {}, 'W A S D'), ' or arrows steer  ', h('kbd', {}, 'Shift'), ' faster  ', h('kbd', {}, 'Space'), ' flap  ', h('kbd', {}, 'L'), ' land and read a stop'),
+      h('p', { class: 'title-keys' }, h('kbd', {}, 'W A S D'), ' or arrows steer  ', h('kbd', {}, 'Shift'), ' faster  ', h('kbd', {}, 'Space'), ' flap  ', h('kbd', {}, 'L'), ' land and read a stop  ', h('kbd', {}, `1–${stops.length}`), ' jump to a stop'),
       lookBtn,
       h('p', { class: 'title-links' },
         h('a', { href: 'https://github.com/ArjunB3hl', target: '_blank', rel: 'noopener noreferrer' }, 'GitHub'),
@@ -59,7 +69,7 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
     closeTitle();
     actor.start({ cx: first.canvas[0] - 60, cy: first.canvas[1] + 240 }).catch((e) => map.toast(`Could not start flight: ${e?.message ?? e}`));
   });
-  lookBtn.addEventListener('click', () => { closeTitle(); document.getElementById('stage')?.focus(); });
+  lookBtn.addEventListener('click', () => { closeTitle(); jumpTo(first); map.toast(`No flying needed: pick a stop from the list, or press 1–${stops.length}`); });
   title.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeTitle(); document.getElementById('stage')?.focus(); } e.stopPropagation(); });
   window.setTimeout(() => startBtn.focus(), 0);
 
@@ -75,8 +85,7 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
     for (const s of stops) {
       const done = found.has(s.id);
       items.get(s.id)!.classList.toggle('done', done);
-      items.get(s.id)!.classList.toggle('target', target?.id === s.id);
-      items.get(s.id)!.setAttribute('aria-label', `${s.name}, ${s.category}, ${done ? 'found' : 'not found yet'}${target?.id === s.id ? ', pointer set' : ''}`);
+      items.get(s.id)!.setAttribute('aria-label', `${s.name}, ${s.category}, ${done ? 'found' : 'not found yet'}. Jump to this stop`);
       document.querySelector<HTMLElement>(`.map-label[data-id="${s.id}"]`)?.classList.toggle('found', done);
     }
     reset.hidden = found.size === 0;
@@ -84,7 +93,6 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
   function find(s: Landmark) {
     if (found.has(s.id)) return;
     found.add(s.id); save();
-    if (target?.id === s.id) target = null;
     const award = s.portfolio?.award ? ` - ${s.portfolio.award}` : '';
     map.toast(found.size === stops.length ? `Found ${s.name}${award}. That is all ${stops.length} stops!` : `Found ${s.name}${award} (${found.size}/${stops.length}). Press L to land and read it`);
     update();
@@ -105,9 +113,9 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
         lastNear = s.id;
       } else lastNear = null;
     }
-    // pointer to the chosen stop, else the nearest one not found yet
+    // pointer to the nearest stop not found yet
     const todo = stops.filter((s) => !found.has(s.id));
-    const goal = target ?? nearest(here, todo)[0];
+    const goal = nearest(here, todo)[0];
     if (!goal) { pointer.classList.add('all'); pointerText.textContent = 'All stops found'; return; }
     pointer.classList.remove('all');
     const dx = goal.canvas[0] - here[0], dy = goal.canvas[1] - here[1];
@@ -120,6 +128,14 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
     const id = (e.target as HTMLElement).closest<HTMLElement>('.map-label')?.dataset.id;
     const s = stops.find((x) => x.id === id);
     if (s) find(s);
+  });
+  // keys 1..n jump to a stop (not while typing, and not while the title screen is open)
+  window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey || app.classList.contains('title-open')) return;
+    const el = e.target as HTMLElement | null;
+    if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)) return;
+    const n = Number(e.key);
+    if (Number.isInteger(n) && n >= 1 && n <= stops.length) { e.preventDefault(); jumpTo(stops[n - 1]); }
   });
   update();
 }

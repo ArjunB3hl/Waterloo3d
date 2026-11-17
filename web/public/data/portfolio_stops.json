@@ -73,10 +73,16 @@
       "Docker",
       "Vultr"
      ],
-     "link": {
-      "label": "CrisisRoom on GitHub",
-      "url": "https://github.com/jeefwashere/CrisisRoom"
-     }
+     "links": [
+      {
+       "label": "GitHub",
+       "url": "https://github.com/jeefwashere/CrisisRoom"
+      },
+      {
+       "label": "Devpost",
+       "url": "https://devpost.com/software/crisisroom-36paq9"
+      }
+     ]
     },
     {
      "title": "Rhythm",
@@ -92,10 +98,16 @@
       "SurrealDB",
       "MCP"
      ],
-     "link": {
-      "label": "Rhythm on GitHub",
-      "url": "https://github.com/ArjunB3hl/BuildNorth"
-     }
+     "links": [
+      {
+       "label": "GitHub",
+       "url": "https://github.com/ArjunB3hl/BuildNorth"
+      },
+      {
+       "label": "Devpost",
+       "url": "https://devpost.com/software/rhythm-i0k9fv"
+      }
+     ]
     },
     {
      "title": "Dune Rush",
@@ -108,10 +120,12 @@
       "PhysX",
       "WebGL2"
      ],
-     "link": {
-      "label": "Dune Rush on GitHub",
-      "url": "https://github.com/AliasgarTawa/dev-game"
-     }
+     "links": [
+      {
+       "label": "GitHub",
+       "url": "https://github.com/AliasgarTawa/dev-game"
+      }
+     ]
     }
    ]
   }
