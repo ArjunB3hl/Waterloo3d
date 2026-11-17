@@ -28,17 +28,21 @@ const { chromium, devices } = require('playwright');
     const playing = await state();
     check('entering through Skip starts real decoded audio', playing.duration > 30 && !playing.error);
     check('background track loops at a quiet volume', playing.loop && playing.volume === 0.22);
-    await page.getByRole('button', { name: 'Pause background music', exact: true }).click();
+    const mute = page.getByRole('button', { name: 'Mute music', exact: true });
+    check('in-game speaker icon is visible', await mute.locator('svg').isVisible());
+    const speakerPath = await mute.locator('svg').innerHTML();
+    await mute.click();
     check('music can be paused and preference is saved', (await state()).paused && await page.evaluate(() => localStorage.getItem('arjunPortfolio.music.v1') === 'off'));
+    check('muting changes the speaker icon', await page.getByRole('button', { name: 'Unmute music', exact: true }).locator('svg').innerHTML() !== speakerPath);
     await page.reload();
     await page.locator('.title-look').click();
     check('muted preference survives reloading and entering', (await state()).paused);
-    await page.getByRole('button', { name: 'Play background music', exact: true }).click();
+    await page.getByRole('button', { name: 'Unmute music', exact: true }).click();
     await page.waitForFunction(() => {
       const audio = document.querySelector('.portfolio-music');
       return !audio.paused && Number.isFinite(audio.duration) && audio.readyState >= 2;
     });
-    check('music can be enabled again', await page.getByRole('button', { name: 'Pause background music', exact: true }).getAttribute('aria-pressed') === 'true');
+    check('music can be enabled again', await page.getByRole('button', { name: 'Mute music', exact: true }).getAttribute('aria-pressed') === 'true');
     await page.locator('.portfolio-music').evaluate((audio) => { audio.currentTime = audio.duration - 0.2; });
     await page.waitForFunction(() => {
       const audio = document.querySelector('.portfolio-music');
@@ -65,7 +69,7 @@ const { chromium, devices } = require('playwright');
     await failure.goto(`${base}/portfolio.html`);
     await failure.locator('.title-look').click();
     await failure.waitForFunction(() => document.querySelector('.portfolio-music').error !== null);
-    check('failed audio leaves stop navigation usable', await failure.locator('.quest-item').count() === 6 && await failure.getByRole('button', { name: 'Play background music', exact: true }).isVisible() && failureErrors.length === 0);
+    check('failed audio leaves stop navigation usable', await failure.locator('.quest-item').count() === 6 && await failure.getByRole('button', { name: 'Unmute music', exact: true }).isVisible() && failureErrors.length === 0);
     check('music interactions produce no page errors', errors.length === 0);
     console.log(`${passed}/${passed} music checks passed`);
   } finally {

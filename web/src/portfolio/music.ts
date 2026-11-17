@@ -1,4 +1,4 @@
-import { h } from '../map/widgets/dom';
+import { h, icon } from '../map/widgets/dom';
 
 const PREFERENCE_KEY = 'arjunPortfolio.music.v1';
 
@@ -14,13 +14,14 @@ export function createPortfolioMusic(ui: HTMLElement): { start: () => void } {
 
   const button = h('button', {
     type: 'button', class: 'music-toggle panel-chrome',
-    title: 'Campus Daydream · original instrumental generated with ElevenLabs',
     onkeydown: (event: Event) => event.stopPropagation(),
   });
   const sync = () => {
     const playing = !audio.paused && !audio.error;
-    button.textContent = playing ? '♫ Music on' : '♫ Music off';
-    button.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music');
+    const label = playing ? 'Mute music' : 'Unmute music';
+    button.replaceChildren(icon(playing ? 'volume' : 'muted'));
+    button.setAttribute('aria-label', label);
+    button.title = `${label} · Campus Daydream · ElevenLabs`;
     button.setAttribute('aria-pressed', String(playing));
   };
   const play = () => {

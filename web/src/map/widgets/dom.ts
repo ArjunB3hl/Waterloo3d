@@ -28,6 +28,8 @@ const ICONS: Record<string, string> = {
   chevron: '<path d="m6 9 6 6 6-6"/>',
   pin: '<path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/>',
   bird: '<path d="M3 13c3-1 5-1 7 .5 1.2-2.6 3.2-4.5 6-5l3-2.5-.5 3.5c.6 3.6-1.6 7-5.5 7.5-3.4.4-6-.6-10-4z"/><path d="M10 13.5c1.5 1.6 3.4 2.2 5.5 1.8"/>',
+  volume: '<path d="M11 4 6 8H3v8h3l5 4z"/><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/>',
+  muted: '<path d="M11 4 6 8H3v8h3l5 4z"/><path d="m16 9 6 6m0-6-6 6"/>',
   external: '<path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M17 14v5H5V7h5"/>',
 };
 
