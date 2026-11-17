@@ -4,6 +4,7 @@
 import './game.css';
 import type { ActorModule, Landmark, MapAPI } from '../types';
 import { h, icon } from '../map/widgets/dom';
+import { createPortfolioMusic } from './music';
 
 const SEEN_KEY = 'arjunPortfolio.stopsFound.v1';
 const FIND_RADIUS = 150;            // canvas px (about 45 m): flying this close to a stop finds it
@@ -11,6 +12,7 @@ const M_PER_PX = 0.29296875;
 
 export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landmark[], ui: HTMLElement): void {
   const app = document.getElementById('app')!;
+  const music = createPortfolioMusic(ui);
   const found = new Set<string>();
   try { for (const id of JSON.parse(localStorage.getItem(SEEN_KEY) || '[]')) if (stops.some((s) => s.id === id)) found.add(id); } catch { /* storage unavailable */ }
   const save = () => { try { localStorage.setItem(SEEN_KEY, JSON.stringify([...found])); } catch { /* ignore */ } };
@@ -62,7 +64,7 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
         h('a', { href: 'https://www.linkedin.com/in/arjunbehl8/', target: '_blank', rel: 'noopener noreferrer' }, 'LinkedIn'),
         h('a', { href: 'mailto:arjun.behl.2003@gmail.com' }, 'Email'))));
   ui.append(title);
-  const closeTitle = () => { title.remove(); app.classList.remove('title-open'); };
+  const closeTitle = () => { title.remove(); app.classList.remove('title-open'); music.start(); };
   app.classList.add('title-open');
   const first = stops.find((s) => s.id === 'about') ?? stops[0];
   startBtn.addEventListener('click', () => {
