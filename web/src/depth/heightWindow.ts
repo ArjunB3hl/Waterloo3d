@@ -1,18 +1,28 @@
 // 3 x 3 tile window of decoded visible-surface heights around the actor, shared by the occlusion and shadow passes.
 //
 // Layout: one Float32 value per height texel (each covers 2 x 2 artwork px, sampled at the block centre), 1536 x 1536
-// texels, row 0 = smallest canvas y (top of the map). Texel (tx, ty) covers canvas px [originX + 2 tx, +2) x
-// [originY + 2 ty, +2). Missing tiles and invalid texels hold HEIGHT_UNKNOWN, which the shaders treat as "no data":
-// no occlusion and no shadow there (never an invented surface).
+// texels. The array is a ring: the texel for canvas px (cx, cy) is (floor(cx / 2) mod 1536, floor(cy / 2) mod 1536), so
+// tile (i, j) always lives in block (i mod 3, j mod 3) and keeps that block for as long as it is in the window.
+// Crossing a tile boundary therefore rewrites only the three blocks whose tiles changed; nothing is shifted. The window
+// itself is canvas px [originX, originX + 3072) x [originY, originY + 3072): readers test that range first, because a
+// texel outside it would alias onto some other tile's block. Missing tiles and invalid texels hold HEIGHT_UNKNOWN, which
+// the shaders treat as "no data": no occlusion and no shadow there (never an invented surface).
 //
 // Every renderer gets its own R32F DataTexture over the same array (one GL context cannot sample another's texture);
-// flush() re-uploads them at most once per frame, only after the contents changed. No three.js at runtime here: this
-// module is part of the always-loaded actor shell.
+// flush() uploads the blocks that changed, at most once per frame. No three.js at runtime here: this module is part of
+// the always-loaded actor shell.
 import type { DataTexture } from 'three';
 import type { MapAPI } from '../types';
 
 export const HEIGHT_UNKNOWN = -10000;
 const EMPTY = new Float32Array([HEIGHT_UNKNOWN]);
+/** Loader priority of the read-ahead ring: behind everything on screen (the map's visible tiles are 0-10, its own ring 100+). */
+const RING_PRIORITY = 200;
+
+/** Upload texels [x, x + size) x [y, y + size) of the window array into one renderer's texture. */
+export type BlockUpload = (x: number, y: number, size: number) => void;
+
+const mod = (a: number, n: number) => ((a % n) + n) % n;
 
 export class HeightWindow {
   readonly tilesAcross = 3;
@@ -22,11 +32,17 @@ export class HeightWindow {
   private data: Float32Array | null = null;
   private centre: [number, number] | null = null;
   private generation = 0;      // bumps on every recentre so late tile loads for an old window are dropped
-  private dirty = false;
-  private readonly textures = new Set<DataTexture>();
+  /** Tile key ('i_j') whose heights each block holds, '' while the block is unknown. Row-major, block = row * 3 + col. */
+  private readonly held: string[] = Array<string>(9).fill('');
+  private readonly dirty = new Set<number>();
+  /** The array was (re)allocated: three.js uploads all of it on the next render, so block uploads would be redundant. */
+  private whole = false;
+  /** Renderer textures over the array, each with its block uploader (null: re-upload the whole texture instead). */
+  private readonly textures = new Map<DataTexture, BlockUpload | null>();
+  /** Whether a decoded tile contains invalid (NaN) texels, so the common all-valid tile is copied without a fix-up pass. */
+  private readonly invalid = new WeakMap<Float32Array, boolean>();
   private readonly tilePx: number;
   private readonly tileTexels: number;
-  private readonly loaded = new Set<string>();
 
   constructor(private readonly map: MapAPI) {
     this.tilePx = map.frame.F;
@@ -40,8 +56,8 @@ export class HeightWindow {
   /** The window's current array (textures are created over it by shaders.ts heightTexture()). */
   get array(): Float32Array { return this.ensureData(); }
 
-  /** Track a renderer's texture over the array: re-uploaded by flush(), re-pointed and freed by release(). */
-  register(tex: DataTexture): void { this.textures.add(tex); }
+  /** Track a renderer's texture over the array: uploaded by flush(), re-pointed and freed by release(). */
+  register(tex: DataTexture, upload: BlockUpload | null = null): void { this.textures.set(tex, upload); }
 
   /**
    * Centre the window on the tile containing canvas px (cx, cy). Returns a promise that settles once the window's
@@ -50,87 +66,70 @@ export class HeightWindow {
   centreOn(cx: number, cy: number): Promise<void> {
     const [i, j] = this.map.frame.tileOf(cx, cy);
     if (this.centre && this.centre[0] === i && this.centre[1] === j) return Promise.resolve();
-    const prev = this.data ? this.centre : null;
     this.centre = [i, j];
     const gen = ++this.generation;
     this.originX = (i - 1) * this.tilePx;
     this.originY = (j - 1) * this.tilePx;
-    // Never leave the window blank for a frame: blocks the previous window already held are shifted into place, and
-    // tiles that are decoded already are copied synchronously; only the rest stay unknown until their load lands.
-    const kept = prev ? this.shift(i - prev[0], j - prev[1]) : (this.ensureData().fill(HEIGHT_UNKNOWN), new Set<string>());
-    this.loaded.clear();
-    for (const k of kept) this.loaded.add(k);
-    this.dirty = true;
-    // the 3 x 3 window, then a low-priority ring so the next recentre usually finds its tiles decoded already
+    this.ensureData();
+    // Never leave the window blank for a frame: tiles that stay in the window keep their block untouched, and tiles
+    // that are decoded already are copied synchronously; only the rest are unknown until their load lands.
     const jobs: Promise<void>[] = [];
     for (let dj = -1; dj <= 1; dj++)
       for (let di = -1; di <= 1; di++) {
-        const col = di + 1, row = dj + 1;
-        if (this.loaded.has(`${col}_${row}`)) continue;
-        const now = this.map.peekHeightTile?.(i + di, j + dj);
-        if (now) { this.copy(now, col, row); continue; }
-        jobs.push(this.map.getHeightTile(i + di, j + dj).then((t) => { if (t && gen === this.generation) this.copy(t, col, row); }, () => {}));
+        const ti = i + di, tj = j + dj, key = `${ti}_${tj}`;
+        const block = mod(tj, this.tilesAcross) * this.tilesAcross + mod(ti, this.tilesAcross);
+        if (this.held[block] === key) continue;
+        const now = this.map.peekHeightTile?.(ti, tj);
+        if (now) { this.copy(now, block, key); continue; }
+        this.clear(block);
+        jobs.push(this.map.getHeightTile(ti, tj).then((t) => { if (t && gen === this.generation) this.copy(t, block, key); }, () => {}));
       }
+    // then a low-priority ring so the next recentre usually finds its tiles decoded already
     const all = Promise.all(jobs).then(() => {
       if (gen !== this.generation) return;
       for (let dj = -2; dj <= 2; dj++)
         for (let di = -2; di <= 2; di++)
-          if (Math.max(Math.abs(di), Math.abs(dj)) === 2) void this.map.getHeightTile(i + di, j + dj).catch(() => null);
+          if (Math.max(Math.abs(di), Math.abs(dj)) === 2) void this.map.getHeightTile(i + di, j + dj, RING_PRIORITY).catch(() => null);
     });
     return all;
-  }
-
-  /**
-   * Move the window contents by (dI, dJ) tiles: block (c + dI, r + dJ) of the old window becomes block (c, r).
-   * Blocks with no old counterpart (or whose old copy never loaded) are reset to unknown. Returns the loaded blocks.
-   */
-  private shift(dI: number, dJ: number): Set<string> {
-    const data = this.ensureData(), n = this.tileTexels, W = this.texels, N = this.tilesAcross;
-    const kept = new Set<string>();
-    // iterate so that every source block is read before it is overwritten (sources lie at +dI / +dJ)
-    const cs = dI >= 0 ? [0, 1, 2] : [2, 1, 0], rs = dJ >= 0 ? [0, 1, 2] : [2, 1, 0];
-    for (const r of rs)
-      for (const c of cs) {
-        const sc = c + dI, sr = r + dJ;
-        const ok = sc >= 0 && sr >= 0 && sc < N && sr < N && this.loaded.has(`${sc}_${sr}`);
-        for (let y = 0; y < n; y++) {
-          const dst = (r * n + y) * W + c * n;
-          if (ok) data.copyWithin(dst, (sr * n + y) * W + sc * n, (sr * n + y) * W + sc * n + n);
-          else data.fill(HEIGHT_UNKNOWN, dst, dst + n);
-        }
-        if (ok) kept.add(`${c}_${r}`);
-      }
-    return kept;
   }
 
   /** CPU sample (same addressing as the shader): z at canvas px or NaN when unknown. */
   sample(cx: number, cy: number): number {
     if (!this.data) return NaN;
-    const tx = Math.floor((cx - this.originX) / 2), ty = Math.floor((cy - this.originY) / 2);
-    if (tx < 0 || ty < 0 || tx >= this.texels || ty >= this.texels) return NaN;
-    const v = this.data[ty * this.texels + tx];
+    const W = this.texels, ax = Math.floor(cx / 2), ay = Math.floor(cy / 2);
+    const tx = ax - this.originX / 2, ty = ay - this.originY / 2;
+    if (tx < 0 || ty < 0 || tx >= W || ty >= W) return NaN;
+    const v = this.data[mod(ay, W) * W + mod(ax, W)];
     return v <= HEIGHT_UNKNOWN + 1 ? NaN : v;
   }
 
-  /** Upload changed contents to every texture (call once per frame before rendering). */
+  /** Upload changed blocks to every texture (call once per frame before rendering). */
   flush(): void {
-    if (!this.dirty) return;
-    this.dirty = false;
-    for (const t of this.textures) t.needsUpdate = true;
+    if (this.whole) { this.whole = false; this.dirty.clear(); return; }   // ensureData() already asked for a full upload
+    if (!this.dirty.size) return;
+    const n = this.tileTexels;
+    for (const [tex, upload] of this.textures) {
+      if (!upload) { tex.needsUpdate = true; continue; }
+      for (const block of this.dirty) upload((block % this.tilesAcross) * n, Math.floor(block / this.tilesAcross) * n, n);
+    }
+    this.dirty.clear();
   }
 
   /** Number of the 9 window tiles that hold data. */
-  get tilesLoaded(): number { return this.loaded.size; }
+  get tilesLoaded(): number { return this.held.reduce((k, key) => k + (key ? 1 : 0), 0); }
 
   /**
    * Free the CPU array and the GPU copies while the actor is idle. Textures stay registered: the next centreOn()
    * allocates a fresh array, points them at it and three.js re-uploads on first use.
    */
   release(): void {
-    for (const t of this.textures) { t.dispose(); t.image = { data: EMPTY, width: 1, height: 1 }; }
+    for (const t of this.textures.keys()) { t.dispose(); t.image = { data: EMPTY, width: 1, height: 1 }; }
     this.data = null;
     this.centre = null;
-    this.loaded.clear();
+    this.held.fill('');
+    this.dirty.clear();
+    this.whole = false;
     this.generation++;
   }
 
@@ -143,22 +142,34 @@ export class HeightWindow {
   private ensureData(): Float32Array {
     if (!this.data) {
       const data = (this.data = new Float32Array(this.texels * this.texels).fill(HEIGHT_UNKNOWN));
-      for (const t of this.textures) { t.image = { data, width: this.texels, height: this.texels }; t.needsUpdate = true; }
+      for (const t of this.textures.keys()) { t.image = { data, width: this.texels, height: this.texels }; t.needsUpdate = true; }
+      this.whole = true;
     }
     return this.data;
   }
 
-  private copy(tile: Float32Array, col: number, row: number): void {
+  /** Reset a block to unknown (its tile left the window and the new one has not been decoded yet). */
+  private clear(block: number): void {
+    if (!this.held[block]) return;
     const data = this.ensureData(), n = this.tileTexels, W = this.texels;
+    const col = block % this.tilesAcross, row = Math.floor(block / this.tilesAcross);
+    for (let y = 0; y < n; y++) { const dst = (row * n + y) * W + col * n; data.fill(HEIGHT_UNKNOWN, dst, dst + n); }
+    this.held[block] = '';
+    this.dirty.add(block);
+  }
+
+  private copy(tile: Float32Array, block: number, key: string): void {
+    const data = this.ensureData(), n = this.tileTexels, W = this.texels;
+    const col = block % this.tilesAcross, row = Math.floor(block / this.tilesAcross);
+    let invalid = this.invalid.get(tile);
+    if (invalid === undefined) this.invalid.set(tile, (invalid = tile.includes(NaN)));
     for (let y = 0; y < n; y++) {
       const dst = (row * n + y) * W + col * n;
-      for (let x = 0; x < n; x++) {
-        const v = tile[y * n + x];
-        data[dst + x] = v === v ? v : HEIGHT_UNKNOWN;   // NaN (invalid texel) -> sentinel
-      }
+      data.set(tile.subarray(y * n, (y + 1) * n), dst);
+      if (invalid) for (let x = dst; x < dst + n; x++) if (data[x] !== data[x]) data[x] = HEIGHT_UNKNOWN;   // NaN -> sentinel
     }
-    this.loaded.add(`${col}_${row}`);
-    this.dirty = true;
+    this.held[block] = key;
+    this.dirty.add(block);
     this.map.invalidate();
   }
 }

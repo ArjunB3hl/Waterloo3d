@@ -20,7 +20,7 @@ const PAD: { key: PadKey; label: string; glyph: string }[] = [
 
 export interface HudStats {
   altitude: number;          // m above the surface below (NaN = unknown)
-  speed: number;             // m/s horizontal
+  speed: number;             // m/s horizontal, direction scale removed (Flight.nominalSpeed)
   feathers: number; total: number;
   nearest: { angle: number; distance: number; label: string } | null;   // screen angle (rad, clockwise from +x)
 }
@@ -39,6 +39,7 @@ export class FlightHud {
   private readonly markerEls = new Map<string, HTMLElement>();
   private readonly held = new Set<PadKey>();
   private lastText = '';
+  private lastArrow = '';
 
   constructor(root: HTMLElement, onLand: () => void) {
     this.el = el('div', 'goose-hud');
@@ -121,7 +122,8 @@ export class FlightHud {
   update(s: HudStats): void {
     const alt = s.altitude === s.altitude ? `${Math.max(0, Math.round(s.altitude))} m` : '–';
     const text = `${alt}|${Math.round(s.speed)}|${s.feathers}/${s.total}|${s.nearest ? Math.round(s.nearest.distance / 10) : ''}`;
-    if (s.nearest) this.nearestArrow.style.transform = `rotate(${s.nearest.angle.toFixed(3)}rad)`;
+    const arrow = s.nearest ? `rotate(${s.nearest.angle.toFixed(2)}rad)` : this.lastArrow;
+    if (arrow !== this.lastArrow) { this.lastArrow = arrow; this.nearestArrow.style.transform = arrow; }
     if (text === this.lastText) return;
     this.lastText = text;
     this.alt.textContent = alt;

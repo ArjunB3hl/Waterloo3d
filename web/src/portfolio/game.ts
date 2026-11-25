@@ -104,6 +104,12 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
     }
   }
   let lastNear: string | null = null;
+  const shown = { state: '?', arrow: '', text: '' };
+  const setPointer = (state: '' | 'all', arrow: string, text: string) => {
+    if (state !== shown.state) { shown.state = state; pointer.classList.toggle('all', state === 'all'); }
+    if (arrow !== shown.arrow) { shown.arrow = arrow; pointerArrow.style.transform = arrow; }
+    if (text !== shown.text) { shown.text = text; pointerText.textContent = text; }
+  };
   map.on('frame', () => {
     const v = map.getView(), here: [number, number] = [v.cx, v.cy];
     const flying = !!actor.active;
@@ -118,12 +124,12 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
     // pointer to the nearest stop not found yet
     const todo = stops.filter((s) => !found.has(s.id));
     const goal = nearest(here, todo)[0];
-    if (!goal) { pointer.classList.add('all'); pointerText.textContent = 'All stops found'; return; }
-    pointer.classList.remove('all');
+    // touch the DOM only when what is shown changes: this runs every frame, and each write is a mutation the browser
+    // (and any extension watching the page) has to process
+    if (!goal) { setPointer('all', '', 'All stops found'); return; }
     const dx = goal.canvas[0] - here[0], dy = goal.canvas[1] - here[1];
     const metres = Math.round(Math.hypot(dx, dy * Math.SQRT2) * M_PER_PX / 10) * 10;
-    pointerArrow.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
-    pointerText.textContent = `${goal.name} · ${metres} m`;
+    setPointer('', `rotate(${Math.atan2(dy, dx).toFixed(2)}rad)`, `${goal.name} · ${metres} m`);
   });
   // opening a stop from its beacon also counts as finding it
   document.getElementById('labels')!.addEventListener('click', (e) => {

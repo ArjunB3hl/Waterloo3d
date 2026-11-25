@@ -1,7 +1,9 @@
 // Small world-space particle bursts around the goose: feather puffs on wall hits, leaves in tree crowns, spray when
 // skimming water, a pale wake while boosting and a sparkle when a feather is collected. Simulated on the CPU (a fixed
-// pool, no allocation per frame) and drawn as 1-2 texel points into the actor's pixel-art render target, with the
-// same occlusion test as the goose. Fading is a stable dither (pixel art has no partial alpha).
+// pool, no allocation per frame) and drawn as square points of 1-2 goose texels straight onto the actor canvas, each
+// at its true position (so a particle that hangs in the air stays put against the map while the goose's own texel
+// lattice travels with the goose), with a one-texel dark rim like the goose's and the same occlusion test. Fading is a
+// dither per particle texel (pixel art has no partial alpha).
 import * as THREE from 'three';
 import type { Vec3 } from '../frame';
 import { FRAME_GLSL, srgb, type FrameUniforms } from './shaders';
@@ -27,6 +29,7 @@ export class Particles {
   private readonly col = new Float32Array(MAX * 3);
   private readonly size = new Float32Array(MAX);
   private readonly fade = new Float32Array(MAX);      // remaining life fraction (1 -> 0)
+  private readonly phase = new Float32Array(MAX);     // 0..3: which dither cell this particle starts on (fixed for its life)
   private readonly life = new Float32Array(MAX);
   private readonly age = new Float32Array(MAX);
   private readonly gravity = new Float32Array(MAX);
@@ -36,36 +39,54 @@ export class Particles {
   private readonly geometry = new THREE.BufferGeometry();
   private readonly material: THREE.ShaderMaterial;
 
-  constructor(uniforms: FrameUniforms) {
+  /** @param rim colour (sRGB hex) and alpha of the one-texel rim around visible particles */
+  constructor(uniforms: FrameUniforms, rim: number, rimAlpha: number) {
     const g = this.geometry;
     g.setAttribute('position', new THREE.BufferAttribute(this.pos, 3).setUsage(THREE.DynamicDrawUsage));
     g.setAttribute('aColor', new THREE.BufferAttribute(this.col, 3).setUsage(THREE.DynamicDrawUsage));
     g.setAttribute('aSize', new THREE.BufferAttribute(this.size, 1).setUsage(THREE.DynamicDrawUsage));
     g.setAttribute('aFade', new THREE.BufferAttribute(this.fade, 1).setUsage(THREE.DynamicDrawUsage));
+    g.setAttribute('aPhase', new THREE.BufferAttribute(this.phase, 1).setUsage(THREE.DynamicDrawUsage));
     g.setDrawRange(0, 0);
     this.material = new THREE.ShaderMaterial({
-      uniforms,
+      uniforms: { ...uniforms, uTexel: { value: 1 }, uRim: { value: srgb(rim) } },
       blending: THREE.NoBlending,
       vertexShader: /* glsl */ `
-        attribute vec3 aColor; attribute float aSize; attribute float aFade;
-        varying vec3 vColor; varying float vFade; varying vec3 vWorld;
+        attribute vec3 aColor; attribute float aSize; attribute float aFade; attribute float aPhase;
+        uniform float uTexel;                              // device px per goose texel
+        varying vec3 vColor; varying float vFade; varying vec3 vWorld; varying float vSize; varying vec2 vPhase;
         void main() {
-          vColor = aColor; vFade = aFade; vWorld = position;
+          vColor = aColor; vFade = aFade; vWorld = position; vSize = aSize;
+          vPhase = vec2(mod(aPhase, 2.0), floor(aPhase / 2.0));     // dither phase: particles thin out at different moments
           gl_Position = projectionMatrix * viewMatrix * vec4(position, 1.0);
-          gl_PointSize = aSize;
+          gl_PointSize = (aSize + 2.0) * uTexel;           // the particle plus a one-texel rim all round
         }`,
       fragmentShader: /* glsl */ `
         ${FRAME_GLSL}
-        varying vec3 vColor; varying float vFade; varying vec3 vWorld;
+        uniform float uTexel; uniform vec3 uRim;
+        varying vec3 vColor; varying float vFade; varying vec3 vWorld; varying float vSize; varying vec2 vPhase;
         void main() {
-          // ordered 2x2 dither: a particle thins out over its last half of life instead of blending
-          vec2 q = mod(floor(gl_FragCoord.xy), 2.0);
+          // texel inside the point: 0 .. vSize - 1 is the particle, -1 and vSize are the rim ring
+          vec2 t = floor(gl_PointCoord * (vSize + 2.0)) - 1.0;
+          bool rx = t.x < 0.0 || t.x >= vSize, ry = t.y < 0.0 || t.y >= vSize;
+          // ordered 2x2 dither per particle texel (a rim texel follows the particle texel it borders): a particle
+          // thins out over its last half of life instead of blending
+          vec2 q = mod(clamp(t, 0.0, vSize - 1.0) + vPhase, 2.0);
           float threshold = (q.x * 2.0 + q.y + 0.5) / 4.0;
           if (vFade * 2.0 < threshold) discard;
           vec2 c = worldToCanvas(vWorld);
           float h = surfaceHeight(c);
           bool hidden = known(h) && depthOf(vWorld) < depthAt(c, h) - 0.3;
-          gl_FragColor = vec4(vColor, hidden ? 0.5 : 1.0);
+          if (rx || ry) {
+            if ((rx && ry) || hidden) discard;             // rim: edge neighbours only, and only round visible particles
+            gl_FragColor = vec4(uRim * ${rimAlpha.toFixed(2)}, ${rimAlpha.toFixed(2)});   // premultiplied
+            gl_FragDepth = 0.9;                            // any particle's body wins over any rim
+          } else {
+            vec2 cell = floor(gl_FragCoord.xy / uTexel);
+            if (hidden && mod(cell.x + cell.y, 2.0) < 0.5) discard;   // behind the city: 50% stipple
+            gl_FragColor = vec4(vColor, 1.0);
+            gl_FragDepth = 0.1;
+          }
         }`,
     });
     this.points = new THREE.Points(g, this.material);
@@ -85,6 +106,7 @@ export class Particles {
       this.life[i] = s.life[0] + (s.life[1] - s.life[0]) * this.rand();
       this.age[i] = 0;
       this.fade[i] = 1;
+      this.phase[i] = Math.floor(this.rand() * 4);
       this.gravity[i] = s.gravity;
       this.drag[i] = s.drag;
     }
@@ -106,10 +128,13 @@ export class Particles {
     }
     const g = this.geometry;
     g.setDrawRange(0, this.count);
-    for (const name of ['position', 'aColor', 'aSize', 'aFade']) (g.getAttribute(name) as THREE.BufferAttribute).needsUpdate = true;
+    for (const name of ['position', 'aColor', 'aSize', 'aFade', 'aPhase']) (g.getAttribute(name) as THREE.BufferAttribute).needsUpdate = true;
   }
 
   clear(): void { this.count = 0; this.geometry.setDrawRange(0, 0); }
+
+  /** Size of one goose texel in device px for the next draw (points are sized in goose texels). */
+  setTexelSize(devicePx: number): void { this.material.uniforms.uTexel.value = devicePx; }
 
   get alive(): number { return this.count; }
 
@@ -119,7 +144,7 @@ export class Particles {
     const last = --this.count;
     if (k === last) return;
     for (const arr of [this.pos, this.vel, this.col]) arr.copyWithin(k * 3, last * 3, last * 3 + 3);
-    for (const arr of [this.size, this.fade, this.life, this.age, this.gravity, this.drag]) arr[k] = arr[last];
+    for (const arr of [this.size, this.fade, this.phase, this.life, this.age, this.gravity, this.drag]) arr[k] = arr[last];
   }
 
   /** Deterministic xorshift (visual only; keeps tests and screenshots reproducible). */

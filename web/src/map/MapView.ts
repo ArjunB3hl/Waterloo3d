@@ -1,6 +1,7 @@
 // MapView: owns the view state, camera motion, tile loading and the base / overlay / aux canvases, and implements
 // the MapAPI contract (web/src/types.ts) the effects, actor and UI modules build on.
 import { Frame } from '../frame';
+import { idleTurn } from '../idle';
 import type { BuildingLabel, BuildingLabelsAPI, FrameInfo, Manifest, MapAPI, PerfStats, Settings, ViewState } from '../types';
 import { BuildingLabelLayer } from './buildingLabels';
 import { attachInput, type CameraControl } from './input';
@@ -81,6 +82,7 @@ class MapView implements CameraControl {
   private readonly heightTiles = new Map<string, Float32Array>();
   private readonly heightLoads = new Map<string, Promise<Float32Array | null>>();
   private scratch: OffscreenCanvasRenderingContext2D | null = null;
+  private readonly heightFetching = new Set<string>();   // height tiles whose bitmap has not arrived yet
 
   private readonly frameL = new Set<Listener<FrameInfo>>();
   private readonly viewL = new Set<Listener<ViewState>>();
@@ -144,7 +146,7 @@ class MapView implements CameraControl {
       screenToCanvas: (sx, sy) => this.screenToCanvas(sx, sy),
       canvasToScreen: (cx, cy) => [(cx - this.view.cx) * this.view.zoom + this.w / 2, (cy - this.view.cy) * this.view.zoom + this.h / 2],
       heightAt: (cx, cy) => this.heightAt(cx, cy),
-      getHeightTile: (i, j) => this.getHeightTile(i, j),
+      getHeightTile: (i, j, priority) => this.getHeightTile(i, j, priority),
       peekHeightTile: (i, j) => this.heightTiles.get(tileKey(i, j)) ?? null,
       getLifeTile: (i, j) => {
         const t = this.renderer.tile(i, j);
@@ -421,34 +423,54 @@ class MapView implements CameraControl {
     return tile[ty * n + tx];
   }
 
-  private getHeightTile(i: number, j: number): Promise<Float32Array | null> {
+  /** @param priority loader priority (smaller loads first): 0 for tiles needed now, large for read-ahead */
+  private getHeightTile(i: number, j: number, priority = 0): Promise<Float32Array | null> {
     const key = tileKey(i, j);
     const cached = this.heightTiles.get(key);
     if (cached) { this.heightTiles.delete(key); this.heightTiles.set(key, cached); return Promise.resolve(cached); }
     const t = this.renderer.tile(i, j);
     if (!t) return Promise.resolve(null);
     let p = this.heightLoads.get(key);
+    // still being fetched as read-ahead, now needed: asking the loader again moves it up the queue. (Only while the
+    // fetch is outstanding: once the bitmap has been read, asking again could fetch the tile a second time.)
+    if (p && priority === 0 && this.heightFetching.has(key)) void this.loader.load(this.renderer.heightKey(i, j, this.frame.heightPx), this.renderer.heightUrl(t), 0, RAW_DECODE);
     if (!p) {
       const n = this.frame.heightPx;
-      p = this.loader.load(this.renderer.heightKey(i, j, n), this.renderer.heightUrl(t), 0, RAW_DECODE).then((bmp) => {
-        this.heightLoads.delete(key);
-        if (!bmp) return null;
-        const data = this.decodeHeights(bmp);
-        this.heightTiles.set(key, data);
-        while (this.heightTiles.size > HEIGHT_TILE_CACHE) this.heightTiles.delete(this.heightTiles.keys().next().value!);
-        return data;
+      this.heightFetching.add(key);
+      p = this.loader.load(this.renderer.heightKey(i, j, n), this.renderer.heightUrl(t), priority, RAW_DECODE).then(async (bmp) => {
+        this.heightFetching.delete(key);
+        try {
+          if (!bmp) return null;
+          const px = this.readHeightPixels(bmp);   // now: the loader may close the bitmap once this frame is over
+          await idleTurn();                        // a few ms on the main thread: one per idle period (idle.ts)
+          const data = this.decodeHeights(px);
+          this.heightTiles.set(key, data);
+          while (this.heightTiles.size > HEIGHT_TILE_CACHE) this.heightTiles.delete(this.heightTiles.keys().next().value!);
+          // The decode now finishes after the loader's own redraw, so ask for a frame: listeners that read heightAt
+          // (the tilt-shift focus) would otherwise keep a stale height until something else moved.
+          this.invalidated = true;
+          this.requestFrame();
+          return data;
+        } finally {
+          this.heightLoads.delete(key);
+        }
       });
       this.heightLoads.set(key, p);
     }
     return p;
   }
 
-  private decodeHeights(bmp: ImageBitmap): Float32Array {
+  /** Packed height bytes (RGBA) of a height tile bitmap. */
+  private readHeightPixels(bmp: ImageBitmap): Uint8ClampedArray {
     const n = this.frame.heightPx;
     this.scratch ??= new OffscreenCanvas(n, n).getContext('2d', { willReadFrequently: true })!;
     this.scratch.clearRect(0, 0, n, n);
     this.scratch.drawImage(bmp, 0, 0);
-    const px = this.scratch.getImageData(0, 0, n, n).data;
+    return this.scratch.getImageData(0, 0, n, n).data;
+  }
+
+  private decodeHeights(px: Uint8ClampedArray): Float32Array {
+    const n = this.frame.heightPx;
     const out = new Float32Array(n * n);
     for (let k = 0; k < n * n; k++) out[k] = this.frame.decodeHeight(px[4 * k], px[4 * k + 1], px[4 * k + 2]);
     return out;

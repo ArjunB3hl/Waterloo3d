@@ -138,8 +138,11 @@ export interface MapAPI {
   canvasToScreen(cx: number, cy: number): [number, number];
   /** Decoded height (z, metres rel. datum) at canvas px from loaded height tiles; NaN if unknown/not loaded. */
   heightAt(cx: number, cy: number): number;
-  /** Load (bounded LRU) and decode a height tile into Float32 metres (NaN = invalid). null if tile missing. */
-  getHeightTile(i: number, j: number): Promise<Float32Array | null>;
+  /**
+   * Load (bounded LRU) and decode a height tile into Float32 metres (NaN = invalid). null if tile missing.
+   * `priority`: loader priority, smaller first. Leave it out (0) for tiles needed now; pass a large value for read-ahead.
+   */
+  getHeightTile(i: number, j: number, priority?: number): Promise<Float32Array | null>;
   /** Synchronous lookup of an already decoded height tile (no load is started); null if not cached. */
   peekHeightTile?(i: number, j: number): Float32Array | null;
   /** Load a life mask tile (RGBA ImageBitmap 1024). null if missing. */

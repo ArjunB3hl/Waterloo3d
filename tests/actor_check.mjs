@@ -265,7 +265,8 @@ async function main() {
         await D.teleport(s0[0], s0[1], col.ground(s0[0], s0[1]) + 5, Math.atan2(dir[1], dir[0]));
         const states = at.run(900, 1 / 60, {});
         const inside = states.filter((s) => s.inCanopy);
-        const minSpeed = Math.min(...inside.map((s) => s.speed));
+        // nominalSpeed: ground speed is scaled by the direction of travel (even on-screen speed), cruise is not
+        const minSpeed = Math.min(...inside.map((s) => s.nominalSpeed));
         const last = states[states.length - 1];
         const progress = (last.x - best.x) * dir[0] + (last.y - best.y) * dir[1];
         let monotonic = true;

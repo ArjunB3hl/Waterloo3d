@@ -12,6 +12,13 @@
 //    Over water the clearance and sweep radius shrink so it can skim low.
 //  - Trees are soft: inside a crown the target speed drops to FLIGHT.canopySlow (40%) but nothing blocks.
 //  - The published-artwork boundary is a fence: motion across it is projected onto the fence (slide) and reported.
+//
+// Speed as the player sees it: the map is an oblique view, so a metre flown toward the top or bottom of the screen
+// covers fewer pixels than a metre flown across it (0.71 of them in this camera). With the screen axes given, the
+// target speed is scaled by the direction of travel so the goose crosses the screen at the same rate on every heading
+// (FLIGHT.cruise / FLIGHT.boost are the speeds in the fastest-looking direction, where the scale is 1). Turning keeps
+// that speed, and the direction of travel follows the heading closely: see the velocity update in substep(). The turn
+// rate is scaled the same way (turnScale), so the goose also turns at one rate on screen on every heading.
 import type { Vec3 } from '../frame';
 import { type CollisionField, KIND_BUILDING, KIND_WATER } from './collision';
 import { GOOSE_BODY_RADIUS_M, GOOSE_DISPLAY_SCALE } from './gooseDims';
@@ -23,7 +30,7 @@ export const FLIGHT = {
   cruise: 14,                 // m/s
   boost: 24,                  // m/s
   canopySlow: 0.4,            // fraction of the target speed inside tree crowns
-  turnRate: 1.5,              // rad/s at full input
+  turnRate: 1.5,              // rad/s at full input, as seen on screen (see Flight.turnScale)
   climbRate: 6,               // m/s (W / Up)
   diveRate: 9,                // m/s (S / Down)
   flapClimb: 9,               // m/s (Space)
@@ -44,6 +51,11 @@ const WALL_YAW_RATE = 3;        // rad/s the heading swings toward a wall's tang
 const WALL_ROLL = 1.15;         // rad: roll the wall-side wing up while scraping (keeps the 3.9 m half-span out of the facade)
 const WALL_ROLL_TAU = 0.35;
 const SLIDE_ITERATIONS = 3;
+const STEER_TAU = 0.15;         // s for the direction of travel to swing onto the heading (13 degrees behind at full turn rate)
+const STEER_MIN_COS = 0.5;      // steering applies while travel is within 60 degrees of the heading ...
+const CONTACT_MEMORY_S = 0.6;   // ... and not this soon after a wall or fence contact (see substep)
+const MAX_SPEED_SCALE = 2;      // bound on the heading scale, for a camera much flatter than any we draw
+const MAX_TURN_SCALE = 2;       // the same bound for the turn-rate scale (it and its inverse)
 
 export interface FlightInput {
   turn: number;      // -1 right .. +1 left (counter-clockwise)
@@ -76,6 +88,9 @@ export interface FlightState {
   waiting: boolean;       // collision data under the goose not loaded yet: horizontal motion paused
 }
 
+/** Horizontal (east, north) parts of the map camera's right and up axes: ground vector -> screen vector. */
+export type ScreenAxes = readonly [right: readonly [number, number], up: readonly [number, number]];
+
 export interface StepEvents { wall: HitInfo | null; fence: boolean; canopy: boolean; water: boolean }
 
 const relax = (cur: number, target: number, dt: number, tau: number) => cur + (target - cur) * (1 - Math.exp(-dt / tau));
@@ -87,21 +102,71 @@ export class Flight {
     inCanopy: false, overWater: false, surface: NaN, time: 0, lastHit: null, waiting: false,
   };
 
+  private readonly axes: ScreenAxes | null;
+  private readonly fastest: number;   // on-screen length of a unit ground vector in the fastest-looking direction
+  private readonly area: number;      // on-screen area of a unit ground square (|det| of the ground -> screen map)
+  /** state.time of the last wall or fence contact (state.lastHit is overwritten by roof and ground contacts too). */
+  private lastDeflect = -Infinity;
+
   /**
    * @param col collision field (chunks around the goose must be loaded; unloaded data pauses horizontal motion)
    * @param fenceNormals horizontal unit vectors of the possible fence orientations (canvas x and y axes on the ground)
    * @param inside true where the goose may fly (published artwork with collision data)
+   * @param screenAxes horizontal (east, north) parts of the map camera's right and up axes; when given, speed is
+   *   scaled by direction so on-screen speed is the same on every heading. Omitted: ground speed is the same instead.
    */
   constructor(
     private readonly col: CollisionField,
     private readonly fenceNormals: readonly [number, number][],
     private readonly inside: (x: number, y: number, z: number) => boolean,
-  ) {}
+    screenAxes: ScreenAxes | null = null,
+  ) {
+    this.axes = screenAxes;
+    this.fastest = 1;
+    this.area = 1;
+    if (screenAxes) {
+      // largest stretch of the 2 x 2 ground -> screen map [right; up] (square root of the top eigenvalue of M^T M)
+      const [[r0, r1], [u0, u1]] = screenAxes;
+      const a = r0 * r0 + u0 * u0, b = r0 * r1 + u0 * u1, c = r1 * r1 + u1 * u1;
+      this.fastest = Math.sqrt((a + c) / 2 + Math.hypot((a - c) / 2, b));
+      this.area = Math.abs(r0 * u1 - r1 * u0) || 1;
+    }
+  }
 
+  /**
+   * Ground turn rate per unit of FLIGHT.turnRate when facing the unit ground direction (hx, hy). The oblique view also
+   * distorts angles: a heading turning at a constant rate over the ground sweeps the screen twice as fast while it
+   * points up or down the screen as while it points across it (in this camera), so a steady turn used to hesitate at
+   * the sideways headings. With this scale the goose turns at FLIGHT.turnRate on screen on every heading; a full
+   * circle still takes the same time (the scale averages to 1 over a revolution).
+   */
+  turnScale(hx: number, hy: number): number {
+    if (!this.axes) return 1;
+    const [[r0, r1], [u0, u1]] = this.axes;
+    const sx = hx * r0 + hy * r1, sy = hx * u0 + hy * u1;
+    return clamp((sx * sx + sy * sy) / this.area, 1 / MAX_TURN_SCALE, MAX_TURN_SCALE);
+  }
+
+  /** Ground speed per unit of FLIGHT speed when travelling along the unit ground direction (dx, dy): 1 or more. */
+  speedScale(dx: number, dy: number): number {
+    if (!this.axes) return 1;
+    const [[r0, r1], [u0, u1]] = this.axes;
+    const onScreen = Math.hypot(dx * r0 + dy * r1, dx * u0 + dy * u1);
+    return onScreen > 0 ? Math.min(MAX_SPEED_SCALE, this.fastest / onScreen) : MAX_SPEED_SCALE;
+  }
+
+  /** Horizontal speed with the direction scale taken out: what FLIGHT.cruise / boost mean, and what the HUD shows. */
+  nominalSpeed(): number {
+    const s = this.state, v = Math.hypot(s.vx, s.vy);
+    return v > 1e-6 ? v / this.speedScale(s.vx / v, s.vy / v) : 0;
+  }
+
+  /** @param speed in FLIGHT units (cruise / boost): the direction scale is applied, like everywhere else */
   teleport(x: number, y: number, z: number, heading: number, speed: number = FLIGHT.cruise): void {
-    const s = this.state;
+    const s = this.state, hx = Math.cos(heading), hy = Math.sin(heading), v = speed * this.speedScale(hx, hy);
+    this.lastDeflect = -Infinity;
     Object.assign(s, {
-      x, y, z, heading, vx: Math.cos(heading) * speed, vy: Math.sin(heading) * speed, vz: 0,
+      x, y, z, heading, vx: hx * v, vy: hy * v, vz: 0,
       turn: 0, bank: 0, wallRoll: 0, pitch: 0, time: 0, lastHit: null, waiting: false,
     });
     this.updateSurface();
@@ -126,7 +191,7 @@ export class Flight {
 
     // steering: smoothed turn input -> yaw rate and a visual bank into the turn
     s.turn = relax(s.turn, clamp(input.turn, -1, 1), dt, TURN_TAU);
-    s.heading = wrapAngle(s.heading + s.turn * FLIGHT.turnRate * dt);
+    s.heading = wrapAngle(s.heading + s.turn * FLIGHT.turnRate * this.turnScale(Math.cos(s.heading), Math.sin(s.heading)) * dt);
     s.wallRoll = relax(s.wallRoll, 0, dt, WALL_ROLL_TAU);
     s.bank = relax(s.bank, -s.turn * MAX_BANK + s.wallRoll, dt, BANK_TAU);
 
@@ -135,11 +200,38 @@ export class Flight {
     s.inCanopy = canopy > s.z - FLIGHT.radius * 0.5;
     if (s.inCanopy) ev.canopy = true;
 
-    // horizontal velocity relaxes toward the facing direction at the target speed
+    // Horizontal velocity, worked on with the direction scale taken out; the scale for the new direction of travel is
+    // put back afterwards, so it follows the direction at once (a turn sweeps through every direction, and a lagging
+    // scale would pulse the speed).
+    const hx = Math.cos(s.heading), hy = Math.sin(s.heading);
+    const v = Math.hypot(s.vx, s.vy);
+    const dx = v > 0.01 ? s.vx / v : hx, dy = v > 0.01 ? s.vy / v : hy;
+    const scale = this.speedScale(dx, dy);
     const target = (input.boost ? FLIGHT.boost : FLIGHT.cruise) * (s.inCanopy ? FLIGHT.canopySlow : 1);
     const tau = s.inCanopy ? CANOPY_TAU : SPEED_TAU;
-    s.vx = relax(s.vx, Math.cos(s.heading) * target, dt, tau);
-    s.vy = relax(s.vy, Math.sin(s.heading) * target, dt, tau);
+    const deflected = s.time - this.lastDeflect < CONTACT_MEMORY_S;
+    let wx: number, wy: number;
+    if (dx * hx + dy * hy > STEER_MIN_COS && !deflected) {
+      // Steering: speed and direction are handled separately. The speed relaxes toward the target as in straight
+      // flight, so a turn costs none of it; the direction of travel swings onto the heading within STEER_TAU, so the
+      // goose goes where it points instead of sliding on along its old course. (Relaxing the whole vector toward the
+      // heading, as below, does both at the slow speed rate: the direction trails a full-rate turn by 41 degrees and
+      // the speed settles a quarter lower.)
+      const speed = relax(v / scale, target, dt, tau);
+      const dir = Math.atan2(dy, dx);
+      const to = dir + wrapAngle(s.heading - dir) * (1 - Math.exp(-dt / STEER_TAU));
+      wx = Math.cos(to) * speed;
+      wy = Math.sin(to) * speed;
+    } else {
+      // Deflected by a wall or fence, or travelling far off the heading: ease the whole vector back toward the heading,
+      // which slows the goose down, stops it and brings it round (walls should cost speed).
+      wx = relax(s.vx / scale, hx * target, dt, tau);
+      wy = relax(s.vy / scale, hy * target, dt, tau);
+    }
+    const w = Math.hypot(wx, wy);
+    const rescale = w > 1e-6 ? this.speedScale(wx / w, wy / w) : 1;
+    s.vx = wx * rescale;
+    s.vy = wy * rescale;
 
     // vertical: climb / dive / flap-climb, otherwise hold altitude
     const climb = clamp(input.climb, -1, 1);
@@ -189,6 +281,7 @@ export class Flight {
       if (Math.abs(side * WALL_ROLL) > Math.abs(s.wallRoll)) s.wallRoll = side * WALL_ROLL;
       const info: HitInfo = { kind: 'wall', x: p[0], y: p[1], z: p[2], normal: [nx, ny, 0], time: s.time };
       s.lastHit = info;
+      this.lastDeflect = s.time;
       ev.wall ??= info;
       if (it === SLIDE_ITERATIONS - 1) to = from;   // out of iterations: stay at the last safe point
     }
@@ -198,7 +291,16 @@ export class Flight {
     if (!this.inside(x, y, z)) {
       const dx = x - s.x, dy = y - s.y;
       let moved = false;
-      for (const [fx, fy] of this.fenceNormals) {
+      // The edge test depends on altitude too (a higher goose is drawn further up the screen, a lower one further down),
+      // so a climb or a dive alone can take it out. Then keep the horizontal move and cancel the vertical one; treating
+      // it as a fence would stop the goose dead every step for as long as the key is held. This is not a fence contact.
+      let verticalOnly = false;
+      if (z !== s.z && this.inside(x, y, s.z) && col.sweep([s.x, s.y, s.z], [x, y, s.z], FLIGHT.radius, 1, { trees: false }).hit === 'none') {
+        if ((z - s.z) * s.vz > 0) s.vz = 0;
+        z = s.z;
+        moved = verticalOnly = true;
+      }
+      if (!moved) for (const [fx, fy] of this.fenceNormals) {
         const d = dx * fx + dy * fy;
         const cx = s.x + dx - d * fx, cy = s.y + dy - d * fy;
         // the projected point was not part of the sweep above: only take it when it is free as well
@@ -210,8 +312,11 @@ export class Flight {
         }
       }
       if (!moved) { x = s.x; y = s.y; z = s.z; s.vx *= -0.3; s.vy *= -0.3; }
-      ev.fence = true;
-      s.lastHit = { kind: 'fence', x, y, z, normal: [0, 0, 0], time: s.time };
+      if (!verticalOnly) {
+        ev.fence = true;
+        s.lastHit = { kind: 'fence', x, y, z, normal: [0, 0, 0], time: s.time };
+        this.lastDeflect = s.time;
+      }
     }
     s.x = x; s.y = y; s.z = z;
 

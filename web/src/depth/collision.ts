@@ -46,6 +46,11 @@ export interface CollisionOptions {
   maxChunks?: number;
   /** Byte loader (defaults to fetch). Node self-checks pass a file reader. */
   load?: (url: string) => Promise<ArrayBuffer | Uint8Array>;
+  /**
+   * Awaited before each few-millisecond step of unpacking a chunk (two PNG unfilters and the repack). In the browser pass
+   * a waiter for an idle period, so chunks arriving together do not stack up inside one frame. Default: no waiting.
+   */
+  turn?: () => Promise<void>;
 }
 
 interface Chunk {
@@ -56,6 +61,8 @@ interface Chunk {
   used: number;         // LRU clock
 }
 
+const FETCH_TIMEOUT_MS = 10000;   // default loader: give up on a chunk request after this long
+const RETRY_MS = 3000;            // a chunk that failed to load may be requested again after this long
 const NORMAL_RING = 24;           // directions used to estimate a side normal after a hit
 const REFINE_STEPS = 5;           // bisection after a hit: 1 m / 2^5 ~ 3 cm contact precision
 
@@ -67,7 +74,8 @@ const chunkKey = (ix: number, iy: number) => (ix + 32768) * 65536 + (iy + 32768)
 export class CollisionField {
   private readonly chunks = new Map<number, Chunk>();
   private readonly pending = new Map<number, Promise<void>>();
-  private readonly failed = new Set<number>();
+  private readonly failed = new Map<number, number>();   // chunk key -> time (ms) after which it may be fetched again
+  private readonly turn: () => Promise<void>;
   private readonly zmax = new Map<number, number>();   // per listed chunk: highest solid / canopy z (fast reject)
   private readonly maxChunks: number;
   private readonly load: (url: string) => Promise<ArrayBuffer | Uint8Array>;
@@ -92,10 +100,12 @@ export class CollisionField {
     if (meta.chunk_cells !== 256) throw new Error(`collision: unsupported chunk_cells ${meta.chunk_cells}`);
     this.maxChunks = Math.max(4, opts.maxChunks ?? 48);
     this.load = opts.load ?? (async (url) => {
-      const r = await fetch(url);
+      // a request that stalls would otherwise leave the chunk pending for good
+      const r = await fetch(url, typeof AbortSignal.timeout === 'function' ? { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) } : undefined);
       if (!r.ok) throw new Error(`HTTP ${r.status} for ${url}`);
       return r.arrayBuffer();
     });
+    this.turn = opts.turn ?? (() => Promise.resolve());
     this.cell = meta.cell_m;
     this.floor = meta.z_codec.floor_m;
     this.units = meta.z_codec.units_per_m;
@@ -147,16 +157,18 @@ export class CollisionField {
     const have = this.chunks.get(key);
     if (have) { have.used = ++this.clock; return Promise.resolve(); }
     const rec = this.meta.chunks[`${ix}_${iy}`];
-    if (!rec || this.failed.has(key)) return Promise.resolve();
+    const retryAt = this.failed.get(key);
+    if (!rec || (retryAt !== undefined && Date.now() < retryAt)) return Promise.resolve();
     const inflight = this.pending.get(key);
     if (inflight) return inflight;
     const url = (pattern: string) => `${this.baseUrl}${pattern.replace('{ix}', String(ix)).replace('{iy}', String(iy))}?v=${rec.v}`;
     const job = (async () => {
       try {
         const [s, g] = await Promise.all([this.load(url(this.meta.files.solid)), this.load(url(this.meta.files.ground))]);
-        const [sp, gp] = await Promise.all([decodePng(toBytes(s)), decodePng(toBytes(g))]);
+        const sp = await decodePng(toBytes(s), this.turn), gp = await decodePng(toBytes(g), this.turn);
         if (sp.width !== 256 || sp.height !== 256 || sp.channels !== 4 || gp.width !== 256 || gp.height !== 256 || gp.channels < 3)
           throw new Error('unexpected chunk image format');
+        await this.turn();
         const n = 256 * 256;
         const c: Chunk = { solid: new Uint16Array(n), ground: new Uint16Array(n), canopy: new Uint8Array(n), kind: new Uint8Array(n), used: ++this.clock };
         const S = sp.data, G = gp.data, gs = gp.channels;
@@ -167,8 +179,10 @@ export class CollisionField {
           c.ground[k] = (G[k * gs] << 8) | G[k * gs + 1];
         }
         this.insert(key, c);
+        this.failed.delete(key);
       } catch (e) {
-        this.failed.add(key);   // do not retry every frame; the area simply reads as "not loaded"
+        // do not retry every frame: the area reads as "not loaded" until the next request after RETRY_MS
+        this.failed.set(key, Date.now() + RETRY_MS);
         console.warn(`collision: chunk ${ix},${iy} unavailable`, e);
       } finally {
         this.pending.delete(key);
@@ -382,7 +396,8 @@ function toBytes(b: ArrayBuffer | Uint8Array): Uint8Array {
 
 export interface DecodedPng { width: number; height: number; channels: number; data: Uint8Array }
 
-export async function decodePng(bytes: Uint8Array): Promise<DecodedPng> {
+/** @param turn awaited before the unfilter pass, the part that takes time on the calling thread (see CollisionOptions.turn) */
+export async function decodePng(bytes: Uint8Array, turn?: () => Promise<void>): Promise<DecodedPng> {
   const sig = [137, 80, 78, 71, 13, 10, 26, 10];
   for (let k = 0; k < 8; k++) if (bytes[k] !== sig[k]) throw new Error('not a PNG');
   const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
@@ -403,6 +418,7 @@ export async function decodePng(bytes: Uint8Array): Promise<DecodedPng> {
   if (!channels || !idat.length) throw new Error('PNG without IHDR / IDAT');
   const stream = new Blob(idat as BlobPart[]).stream().pipeThrough(new DecompressionStream('deflate'));
   const raw = new Uint8Array(await new Response(stream).arrayBuffer());
+  if (turn) await turn();
   const stride = width * channels, out = new Uint8Array(stride * height);
   if (raw.length < (stride + 1) * height) throw new Error('truncated PNG data');
   for (let y = 0; y < height; y++) {

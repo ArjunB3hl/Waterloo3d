@@ -54,23 +54,52 @@ vec3 canvasToWorld(vec2 c, float z) {
 
 /** Decoded visible-surface height at canvas px c (one texel per 2x2 artwork px); HEIGHT_UNKNOWN outside / missing. */
 float surfaceHeight(vec2 c) {
-  vec2 t = floor((c - uWinOrigin) * 0.5);
+  vec2 a = floor(c * 0.5);                 // texel on the whole-map grid
+  vec2 t = a - uWinOrigin * 0.5;           // the same texel relative to the window (its origin is on an even px)
   if (t.x < 0.0 || t.y < 0.0 || t.x >= uWinTexels || t.y >= uWinTexels) return HEIGHT_UNKNOWN;
-  return texelFetch(uHeights, ivec2(t), 0).r;
+  // the window array is a ring (heightWindow.ts). Wrapped in integers: a float mod() may return the full size on a
+  // multiple of it where division is not exactly rounded, and that texel is outside the texture.
+  int W = int(uWinTexels);
+  ivec2 r = ivec2(a) % W;
+  r += W * ivec2(lessThan(r, ivec2(0)));
+  return texelFetch(uHeights, r, 0).r;
 }
 bool known(float h) { return h > HEIGHT_UNKNOWN + 1.0; }
 `;
 
-/** A renderer's R32F texture over the height window (nearest, no mipmaps), registered for uploads. */
-export function heightTexture(win: HeightWindow): THREE.DataTexture {
-  const tex = new THREE.DataTexture(win.array, win.texels, win.texels, THREE.RedFormat, THREE.FloatType);
-  tex.minFilter = tex.magFilter = THREE.NearestFilter;
-  tex.generateMipmaps = false;
-  tex.flipY = false;
-  tex.unpackAlignment = 4;
-  tex.colorSpace = THREE.NoColorSpace;
+const NO_IMAGE = { data: new Float32Array(1), width: 1, height: 1 };
+
+/** A renderer's R32F texture over the height window (nearest, no mipmaps), registered for block uploads. */
+export function heightTexture(win: HeightWindow, renderer: THREE.WebGLRenderer): THREE.DataTexture {
+  const make = () => {
+    const t = new THREE.DataTexture(win.array, win.texels, win.texels, THREE.RedFormat, THREE.FloatType);
+    t.minFilter = t.magFilter = THREE.NearestFilter;
+    t.generateMipmaps = false;
+    t.flipY = false;
+    t.unpackAlignment = 4;
+    t.colorSpace = THREE.NoColorSpace;
+    return t;
+  };
+  const tex = make();
   tex.needsUpdate = true;
-  win.register(tex);
+  // A second texture object over the same array that is never rendered with, so it has no GL texture of its own:
+  // copyTextureToTexture() then reads it from the CPU array and uploads only the requested block (texSubImage2D).
+  const source = make();
+  source.image = NO_IMAGE;                 // it points at the window array only during a copy, so release() really frees it
+  const region = new THREE.Box2(), at = new THREE.Vector2();
+  // copyTextureToTexture() saves and restores these unpack parameters; three.js only knows a value once it has set it
+  // and otherwise asks the GPU process, a blocking round trip each. Setting the defaults here keeps that off the frame.
+  const gl = renderer.getContext() as WebGL2RenderingContext;
+  for (const name of [gl.UNPACK_ROW_LENGTH, gl.UNPACK_IMAGE_HEIGHT, gl.UNPACK_SKIP_PIXELS, gl.UNPACK_SKIP_ROWS, gl.UNPACK_SKIP_IMAGES]) {
+    renderer.state.pixelStorei(name, 0);
+  }
+  win.register(tex, (x, y, size) => {
+    source.image = tex.image;              // release() / a fresh array re-point tex.image
+    region.min.set(x, y);
+    region.max.set(x + size, y + size);
+    renderer.copyTextureToTexture(source, tex, region, at.set(x, y));
+    source.image = NO_IMAGE;
+  });
   return tex;
 }
 

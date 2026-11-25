@@ -17,22 +17,26 @@ const { chromium, devices } = require('playwright');
   await p.waitForTimeout(3500);
   res.push(['Enter starts the flight', await p.evaluate(() => !document.querySelector('.title-screen') && window.__tinyWaterloo.actor.active)]);
   // fly over three stops (teleport = same code path as flying there)
+  const flyTo = (id) => p.evaluate(async (id) => {
+    const t = window.__tinyWaterloo, s = t.landmarks.find((l) => l.id === id), f = t.map.frame;
+    const st = t.actor.debug.getState();
+    const here = t.map.getView(); const dx = s.canvas[0] - here.cx, dy = s.canvas[1] - here.cy;
+    // move in world metres by the canvas offset (right = +x canvas, canvas y is foreshortened by sqrt 2)
+    const m = t.map.manifest.camera, k = m.meters_per_px, R = m.right_enu, U = m.up_enu;
+    const wx = st.x + (dx * R[0] - dy * Math.SQRT2 * U[0] / Math.hypot(U[0], U[1])) * k, wy = st.y + (dx * R[1] - dy * Math.SQRT2 * U[1] / Math.hypot(U[0], U[1])) * k;
+    await t.actor.debug.teleport(wx, wy, st.z, st.heading);
+  }, id);
   for (const id of ['about', 'education', 'projects']) {
-    await p.evaluate(async (id) => {
-      const t = window.__tinyWaterloo, s = t.landmarks.find((l) => l.id === id), f = t.map.frame;
-      const st = t.actor.debug.getState();
-      const here = t.map.getView(); const dx = s.canvas[0] - here.cx, dy = s.canvas[1] - here.cy;
-      // move in world metres by the canvas offset (right = +x canvas, canvas y is foreshortened by sqrt 2)
-      const m = t.map.manifest.camera, k = m.meters_per_px, R = m.right_enu, U = m.up_enu;
-      const wx = st.x + (dx * R[0] - dy * Math.SQRT2 * U[0] / Math.hypot(U[0], U[1])) * k, wy = st.y + (dx * R[1] - dy * Math.SQRT2 * U[1] / Math.hypot(U[0], U[1])) * k;
-      await t.actor.debug.teleport(wx, wy, st.z, st.heading);
-    }, id);
+    await flyTo(id);
     await p.waitForTimeout(2200);
   }
   const count = await p.locator('.quest-count').innerText();
   res.push(['flying over stops finds them (3 / 6)', /^3 \/ 6$/.test(count.trim())]);
   res.push(['pointer names the next stop with a distance', /· \d+ m/.test(await p.locator('.quest-next').innerText())]);
   await p.screenshot({ path: out + '/portfolio_flight.png' });
+  // Land next to Projects. The goose has been flying on since it got there, straight toward Education (276 px away),
+  // and the screenshot takes a while under software GL, so go back first: landing opens the nearest stop's card.
+  await flyTo('projects'); await p.waitForTimeout(500);
   await p.keyboard.press('l'); await p.waitForTimeout(3000);
   const card = await p.locator('#ui .panel:not([hidden])').first().innerText().catch(() => '');
   res.push(['landing at Projects shows all three projects', /CrisisRoom/i.test(card) && /1st Place/.test(card) && /Rhythm/i.test(card) && /Top 10 Finalist/.test(card) && /Dune Rush/i.test(card)]);

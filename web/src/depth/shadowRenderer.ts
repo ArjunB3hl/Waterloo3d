@@ -2,9 +2,9 @@
 //
 // Pass 1: the goose's shadow proxy is rendered from the sun (orthographic light camera tightly around the goose) into
 //   a depth texture.
-// Pass 2: a quad over the shadow's possible footprint on the map. Each fragment snaps to the actor's pixel grid,
-//   reconstructs the visible city surface point from the height window (so roofs, lawns and the facades seen in the
-//   artwork all receive it correctly), projects that point into light space and compares with the goose depth.
+// Pass 2: a quad over the shadow's possible footprint on the map. Each device pixel reconstructs the visible city
+//   surface point from the height window (so roofs, lawns and the facades seen in the artwork all receive it
+//   correctly), projects that point into light space and compares with the goose depth.
 //   Shadowed fragments output a cool tone; the canvas multiplies it over the map. Unknown heights -> no shadow.
 import * as THREE from 'three';
 import type { Frame } from '../frame';
@@ -41,6 +41,7 @@ export class ShadowRenderer {
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.renderer.setClearColor(0x000000, 0);
     this.renderer.autoClear = false;
+    this.renderer.debug.checkShaderErrors = import.meta.env.DEV;   // see ActorRenderer
     this.sun = new THREE.Vector3(...frame.sun).normalize();
 
     const depthTexture = new THREE.DepthTexture(LIGHT_TEXELS, LIGHT_TEXELS);
@@ -50,7 +51,7 @@ export class ShadowRenderer {
     goose.shadow.matrixAutoUpdate = false;
     this.lightScene.add(goose.shadow);
 
-    this.uniforms = frameUniforms(frame, heights, heightTexture(heights));
+    this.uniforms = frameUniforms(frame, heights, heightTexture(heights, this.renderer));
     this.material = new THREE.ShaderMaterial({
       uniforms: {
         ...this.uniforms,
@@ -61,9 +62,11 @@ export class ShadowRenderer {
         uSun: { value: this.sun },
         uTone: { value: srgb(SHADOW_TONE) },
         uBias: { value: 0 },
+        uDevice: { value: 1 },
       },
       depthTest: false, depthWrite: false, transparent: true, blending: THREE.NoBlending,
       side: THREE.DoubleSide,                            // the quad's y flip (canvas y down) reverses its winding
+      forceSinglePass: true,                             // one draw, one program (transparent + DoubleSide means two of each)
       vertexShader: QUAD_VERTEX,
       fragmentShader: /* glsl */ `
         ${FRAME_GLSL}
@@ -74,6 +77,7 @@ export class ShadowRenderer {
         uniform vec3 uSun;
         uniform vec3 uTone;
         uniform float uBias;
+        uniform float uDevice;                                 // canvas px per device px
         varying vec2 vCanvas;
         // 1 when the surface point p is behind the goose as seen from the sun
         float shadowed(vec3 p) {
@@ -83,17 +87,19 @@ export class ShadowRenderer {
           return q.z > texture(uLightDepth, q.xy).r + uBias ? 1.0 : 0.0;
         }
         void main() {
-          float s = uRect.w;
-          vec2 c = (floor(vCanvas / s) + 0.5) * s;              // centre of this actor pixel
+          // Sampled per device pixel. The light pass is centred on the goose, so its silhouette is the same every
+          // frame and the shadow slides over the ground with the goose. (Snapping the receiver to artwork pixels,
+          // as this used to, re-sampled that silhouette at a new phase each frame: the shadow stepped 3.2 device px.)
+          vec2 c = vCanvas;
           float h = surfaceHeight(c);
           if (!known(h)) discard;
-          // four sub-samples inside the pixel -> 0, 1/2 or 1 coverage (a one-step pixel-art edge)
+          // four sub-samples inside the device pixel soften the edge by one step
           float cov = 0.0;
           for (int k = 0; k < 4; k++) {
-            vec2 o = (vec2(float(k & 1), float(k >> 1)) - 0.5) * 0.5 * s;
+            vec2 o = (vec2(float(k & 1), float(k >> 1)) - 0.5) * 0.5 * uDevice;
             cov += shadowed(canvasToWorld(c + o, h));
           }
-          cov = floor(cov / 4.0 * 2.0 + 0.25) / 2.0;
+          cov *= 0.25;
           if (cov <= 0.0) discard;
           // a little lighter when the goose is high above the receiver (sky light fills a distant shadow)
           vec3 p = canvasToWorld(c, h);
@@ -110,13 +116,11 @@ export class ShadowRenderer {
   /**
    * Render the shadow of the goose (its group's matrixWorld must be current) for the viewport.
    * @param surfaceBelow lowest plausible receiver height under the goose (sizes the quad along the sun ray)
-   * @param artPerTexel actor pixel size in artwork px (shared grid with the goose)
+   * @param artPerTexel goose texel size in artwork px (margin around the quad)
    */
   render(vp: Viewport, surfaceBelow: number, artPerTexel: number): void {
     const r = this.renderer, f = this.frame, g = this.goose.group.position;
-    if (r.getPixelRatio() !== vp.dpr) r.setPixelRatio(vp.dpr);
-    const size = r.getSize(SIZE);
-    if (size.x !== vp.width || size.y !== vp.height) r.setSize(vp.width, vp.height, false);
+    this.resize(vp);
 
     // light camera: looks down the sun ray at the goose, frustum just around it and deep enough to reach the
     // lowest receiver (t1 metres along the ray below the goose)
@@ -151,6 +155,7 @@ export class ShadowRenderer {
     u.uLightVP.value.multiplyMatrices(L.projectionMatrix, L.matrixWorldInverse);
     u.uGoose.value.copy(g);
     u.uBias.value = SHADOW_BIAS_M / (L.far - L.near);   // depth is linear in an orthographic light
+    u.uDevice.value = 1 / (vp.view.zoom * vp.dpr);
     this.uniforms.uWinOrigin.value.set(this.heights.originX, this.heights.originY);
     r.setRenderTarget(null);
     r.clear(true, true, false);
@@ -160,6 +165,21 @@ export class ShadowRenderer {
   clear(): void {
     this.renderer.setRenderTarget(null);
     this.renderer.clear(true, true, false);
+  }
+
+  /** Take-off warm-up (see ActorRenderer.prepare): size the drawing buffer and link both passes' programs. */
+  prepare(vp: Viewport): Promise<unknown> {
+    this.resize(vp);
+    return Promise.all([this.renderer.compileAsync(this.lightScene, this.lightCamera), this.renderer.compileAsync(this.scene, this.camera)]);
+  }
+
+  /** Upload the height window now (see ActorRenderer.uploadHeights). */
+  uploadHeights(): void { this.renderer.initTexture(this.uniforms.uHeights.value); }
+
+  /** Size the drawing buffer for the viewport, in device px rounded as MapView rounds (see ActorRenderer.resize). */
+  resize(vp: Viewport): void {
+    const r = this.renderer, size = r.getSize(SIZE), w = Math.round(vp.width * vp.dpr), h = Math.round(vp.height * vp.dpr);
+    if (r.getPixelRatio() !== 1 || size.x !== w || size.y !== h) r.setDrawingBufferSize(w, h, 1);
   }
 
   /**

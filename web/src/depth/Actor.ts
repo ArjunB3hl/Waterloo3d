@@ -9,6 +9,7 @@
 // actorRenderer.ts (camera, pixel-art target, occlusion stipple), shadowRenderer.ts (sun shadow on the visible
 // surface), particles.ts, hud.ts. Design notes and measured test results: docs/DEPTH.md.
 import type { Vec3 } from '../frame';
+import { idleTurn } from '../idle';
 import type { ActorModule, FrameInfo, MapAPI, ViewState } from '../types';
 import type { GooseAttitude, Viewport } from './actorRenderer';
 import { CollisionField } from './collision';
@@ -21,16 +22,18 @@ import type { Renderers } from './renderers';
 
 const COLLECT_RADIUS_M = 10;
 const MIN_FLIGHT_ZOOM = 1;            // below this the camera zooms in to FLIGHT_ZOOM on take-off
-const FLIGHT_ZOOM = 1.6;              // goose ~30 CSS px long: readable, with ~230 m of map ahead on a laptop
-const FOLLOW_TAU_S = 0.35;            // camera smoothing
-const LEAD_S = 0.6;                   // camera looks ahead along the velocity
+const FLIGHT_ZOOM = 1.6;              // goose ~30 CSS px long: readable, with ~120 m of map around it on a laptop
+const FOLLOW_TAU_S = 0.35;            // easing of the camera's look-ahead offset
+const LEAD_S = 0.12;                  // the camera centre sits this far ahead of the goose along its velocity
 const INTRO_TIMEOUT_MS = 3200;
 const CHUNK_RADIUS_M = 320;           // collision chunks kept loaded around the goose
 const CHUNK_REFRESH_M = 80;
+const WAIT_RETRY_MS = 500;            // how often a goose paused over missing collision data asks for it again
 const EDGE_MARGIN_PX = 48;            // keep the goose this far inside the published artwork
 const HONK_INTERVAL_MS = 2500;
 const FENCE_TOAST_MS = 5000;
 const START_WAIT_MS = 2500;           // longest wait for the height window before take-off
+const WARM_UP_WAIT_MS = 1500;         // ... and for the shader programs to link (never holds up a take-off for longer)
 /** Light frustum half-size: half the scaled wingspan plus room for bank / pitch. */
 const SHADOW_RADIUS_M = (GOOSE_WINGSPAN_M / 2) * GOOSE_SCALE * 1.25;
 
@@ -43,6 +46,8 @@ const KEYS: Record<string, Key> = {
 export interface ActorDebugState {
   x: number; y: number; z: number; vx: number; vy: number; vz: number;
   heading: number; speed: number; surface: number; inCanopy: boolean; overWater: boolean; waiting: boolean;
+  /** `speed` with the direction scale taken out (Flight.nominalSpeed): comparable with FLIGHT.cruise / boost. */
+  nominalSpeed: number;
   time: number; lastHit: HitInfo | null;
 }
 
@@ -98,10 +103,15 @@ class GooseActor implements Actor {
   private autoStep = true;
   private lastTime = NaN;
   private intro: { until: number; prev: ViewState | null } | null = null;
-  private cam = { x: 0, y: 0, zoom: 1 };
+  /** Camera centre minus goose, canvas px: the eased look-ahead. The camera is always goose + lead. */
+  private lead = { x: 0, y: 0 };
+  private followZoom = 1;        // zoom the follow camera last saw (a change means the user is zooming)
+  private lastTurnKey: 'left' | 'right' = 'left';
+  private lastWaitRetry = -Infinity;
   private readonly keys = new Set<Key>();
   private chunkCentre: [number, number] = [Infinity, Infinity];
   private lastViewport: Viewport | null = null;
+  private frameSize: { width: number; height: number; dpr: number } | null = null;   // of the map's last frame
   private lastHonk = -Infinity;
   private lastFence = -Infinity;
   private emitClock = { leaf: 0, spray: 0, wake: 0 };
@@ -153,16 +163,20 @@ class GooseActor implements Actor {
   }
 
   render(f: FrameInfo): void {
+    this.frameSize = { width: f.width, height: f.height, dpr: f.dpr };
     if (!this.isActive || !this.gl || !this.flight) return;
     const vp: Viewport = { view: f.view, width: f.width, height: f.height, dpr: f.dpr };
     this.lastViewport = vp;
     const dt = Number.isFinite(this.lastTime) ? Math.min(0.1, Math.max(0, (f.time - this.lastTime) / 1000)) : 0;
     this.lastTime = f.time;
     const flying = this.updateIntro(f.view);
+    // Draw first: f.view is the camera that follow() set last frame from the goose's state at that moment, so the
+    // goose is drawn in that same state and stands still on screen in straight flight however long a frame took.
+    // (Stepping first drew the new goose against the old camera: a late frame showed as a lurch of the goose.)
+    this.draw(vp);
     if (flying && this.autoStep) this.advance(dt, this.input());
     else this.flight.idle(dt);
     this.gl.actor.particles.update(dt);
-    this.draw(vp);
     if (flying) this.follow(f.view, dt);
     this.updateHud(vp);
     this.map.invalidate();
@@ -182,12 +196,30 @@ class GooseActor implements Actor {
   private async takeOff(at?: { cx: number; cy: number }): Promise<void> {
     const data = await this.loadData();
     await this.ensureGl(data);
-    const flight = this.flight!;
+    const flight = this.flight!, gl = this.gl!;
+    // Warm-up, first half, while the start point and its height tiles load: size both canvases and link every shader
+    // program. Left to the first flying frame, this made one frame of over 100 ms right at take-off.
+    const linked = gl.actor.prepare(this.viewportNow()).then(nextFrame).then(() => gl.shadow.prepare(this.viewportNow())).catch(() => {});
     const start = await this.startPoint(at, data.col);
     flight.teleport(start[0], start[1], start[2], screenUpHeading(this.map));
     this.chunkCentre = [start[0], start[1]];
     const c = this.map.frame.worldToCanvas(...start);
     await withTimeout(this.heights.centreOn(c.cx, c.cy), START_WAIT_MS);
+    await withTimeout(linked, WARM_UP_WAIT_MS);
+    // Second half, each step in a frame of its own while the map is still: upload the height window (9.4 MB) to each
+    // GL context, then draw once and wipe it, which is the programs' first real use. flush() comes first: it settles
+    // what the window has marked for upload, so tiles that land from here on go up as blocks.
+    this.heights.flush();
+    gl.actor.uploadHeights();
+    await nextFrame();
+    gl.shadow.uploadHeights();
+    await nextFrame();
+    if (this.gl !== gl) return;                    // disposed meanwhile
+    this.draw(this.viewportNow());
+    gl.actor.clear();
+    gl.shadow.clear();
+    await nextFrame();
+    if (this.gl !== gl) return;
 
     this.isActive = true;
     this.autoStep = true;
@@ -212,7 +244,7 @@ class GooseActor implements Actor {
   }
 
   private loadData(): Promise<Data> {
-    this.dataLoad ??= Promise.all([CollisionField.open('data/collision/meta.json'), loadFeathers()]).then(([col, feathers]) => {
+    this.dataLoad ??= Promise.all([CollisionField.open('data/collision/meta.json', { turn: idleTurn }), loadFeathers()]).then(([col, feathers]) => {
       this.data = { col, feathers, progress: new FeatherProgress(feathers) };
       return this.data;
     });
@@ -234,7 +266,7 @@ class GooseActor implements Actor {
     // fence orientations: the canvas x and y axes on the ground (tile edges run along them)
     const r = f.right, u = f.up, ul = Math.hypot(u[0], u[1]);
     const fences: [number, number][] = [[r[0], r[1]], [u[0] / ul, u[1] / ul]];
-    this.flight = new Flight(data.col, fences, (x, y, z) => this.inside(data.col, x, y, z));
+    this.flight = new Flight(data.col, fences, (x, y, z) => this.inside(data.col, x, y, z), [[r[0], r[1]], [u[0], u[1]]]);
     this.hud = new FlightHud(this.map.hudRoot, () => this.stop());
   }
 
@@ -314,6 +346,12 @@ class GooseActor implements Actor {
       this.chunkCentre = [s.x, s.y];
       void data.col.ensureAround(s.x, s.y, CHUNK_RADIUS_M);
     }
+    // Paused over a chunk that is not loaded (it failed, or the goose outran it): it does not move, so the distance
+    // test above never asks again. Ask here, or the goose would hang in the air until the page is reloaded.
+    if (s.waiting) {
+      const now = performance.now();
+      if (now - this.lastWaitRetry > WAIT_RETRY_MS) { this.lastWaitRetry = now; void data.col.ensureAround(s.x, s.y, CHUNK_RADIUS_M); }
+    }
     return ev;
   }
 
@@ -331,6 +369,15 @@ class GooseActor implements Actor {
     shadow.render(vp, (ground === ground ? ground : s.z - FLIGHT.maxAltitude) - 25, actor.rect.artPerTexel);
   }
 
+  /** The viewport as the map last drew it (before the first flying frame there is no FrameInfo to take it from). */
+  private viewportNow(): Viewport {
+    const f = this.frameSize, el = this.element.parentElement ?? this.element;
+    return {
+      view: this.map.getView(),
+      width: f?.width ?? el.clientWidth, height: f?.height ?? el.clientHeight, dpr: f?.dpr ?? Math.min(devicePixelRatio || 1, 2),
+    };
+  }
+
   /** The intro camera flight; returns true once the goose is under player control. */
   private updateIntro(view: ViewState): boolean {
     const intro = this.intro;
@@ -339,24 +386,33 @@ class GooseActor implements Actor {
     intro.prev = { ...view };
     if (!settled && performance.now() < intro.until) return false;
     this.intro = null;
-    this.cam = { x: view.cx, y: view.cy, zoom: view.zoom };
+    this.seedFollow(view);
     return true;
   }
 
-  /** Pan the map after the goose (smoothed, looking ahead). Pauses while the user zooms so MapView's zoom easing runs. */
+  /** Start following from the current view: the look-ahead offset is whatever the view's offset from the goose is now. */
+  private seedFollow(view: ViewState): void {
+    const s = this.flight!.state, c = this.map.frame.worldToCanvas(s.x, s.y, s.z);
+    this.lead = { x: view.cx - c.cx, y: view.cy - c.cy };
+    this.followZoom = view.zoom;
+  }
+
+  /**
+   * Keep the camera on the goose, a little ahead of it. The camera centre is the goose plus a look-ahead offset, and
+   * only that offset is eased, so the camera never lags the goose itself: the map scrolls by exactly the goose's motion
+   * each frame, plus the slow swing of the offset in a turn. Pauses while the user zooms so MapView's zoom easing runs.
+   */
   private follow(view: ViewState, dt: number): void {
-    if (view.zoom !== this.cam.zoom) { this.cam = { x: view.cx, y: view.cy, zoom: view.zoom }; return; }
+    if (view.zoom !== this.followZoom) { this.seedFollow(view); return; }
     const s = this.flight!.state, f = this.map.frame;
     const c = f.worldToCanvas(s.x, s.y, s.z);
     const vel = f.worldToCanvas(s.vx, s.vy, s.vz);
     const vp = this.lastViewport!;
     const lx = clamp(vel.cx * LEAD_S, (0.22 * vp.width) / view.zoom), ly = clamp(vel.cy * LEAD_S, (0.22 * vp.height) / view.zoom);
     const k = 1 - Math.exp(-dt / FOLLOW_TAU_S);
-    this.cam.x += (c.cx + lx - this.cam.x) * k;
-    this.cam.y += (c.cy + ly - this.cam.y) * k;
-    this.map.setView({ cx: this.cam.x, cy: this.cam.y });
-    const after = this.map.getView();   // MapView may clamp the centre near the map edge
-    this.cam.x = after.cx; this.cam.y = after.cy;
+    this.lead.x += (lx - this.lead.x) * k;
+    this.lead.y += (ly - this.lead.y) * k;
+    this.map.setView({ cx: c.cx + this.lead.x, cy: c.cy + this.lead.y });   // MapView clamps the centre near the map edge
   }
 
   private updateHud(vp: Viewport): void {
@@ -378,7 +434,7 @@ class GooseActor implements Actor {
     }
     this.hud!.setMarkers(markers);
     this.hud!.update({
-      altitude: s.z - s.surface, speed: Math.hypot(s.vx, s.vy), feathers: data.progress.count, total: data.progress.total, nearest: pointer,
+      altitude: s.z - s.surface, speed: this.flight!.nominalSpeed(), feathers: data.progress.count, total: data.progress.total, nearest: pointer,
     });
   }
 
@@ -386,8 +442,11 @@ class GooseActor implements Actor {
 
   private input(): FlightInput {
     const k = this.keys, t = this.hud?.touchInput() ?? NO_INPUT;
+    // both turn keys held (reversing a turn before letting go of the first key): the one pressed last wins
+    const left = k.has('left'), right = k.has('right');
+    const keyTurn = left && right ? (this.lastTurnKey === 'left' ? 1 : -1) : (left ? 1 : 0) - (right ? 1 : 0);
     return {
-      turn: clamp((k.has('left') ? 1 : 0) - (k.has('right') ? 1 : 0) + t.turn, 1),
+      turn: clamp(keyTurn + t.turn, 1),
       climb: clamp((k.has('up') ? 1 : 0) - (k.has('down') ? 1 : 0) + t.climb, 1),
       boost: k.has('boost') || t.boost,
       flap: k.has('flap') || t.flap,
@@ -403,6 +462,7 @@ class GooseActor implements Actor {
     e.preventDefault();
     if (key === 'land') { this.stop(); return; }
     this.keys.add(key);
+    if (key === 'left' || key === 'right') this.lastTurnKey = key;
   };
 
   private readonly onBlur = () => this.keys.clear();
@@ -428,6 +488,7 @@ class GooseActor implements Actor {
         const s = need().flight.state;
         return {
           x: s.x, y: s.y, z: s.z, vx: s.vx, vy: s.vy, vz: s.vz, heading: s.heading, speed: Math.hypot(s.vx, s.vy),
+          nominalSpeed: need().flight.nominalSpeed(),
           surface: s.surface, inCanopy: s.inCanopy, overWater: s.overWater, waiting: s.waiting, time: s.time,
           lastHit: s.lastHit && { ...s.lastHit, normal: [...s.lastHit.normal] as Vec3 },
         };
@@ -440,8 +501,7 @@ class GooseActor implements Actor {
         this.intro = null;
         const c = this.map.frame.worldToCanvas(x, y, z);
         this.map.setView({ cx: c.cx, cy: c.cy });
-        const v = this.map.getView();
-        this.cam = { x: v.cx, y: v.cy, zoom: v.zoom };
+        this.seedFollow(this.map.getView());
         await this.heights.centreOn(c.cx, c.cy);
         this.heights.flush();
       },
@@ -500,6 +560,14 @@ function clamp(v: number, limit: number): number { return Math.max(-limit, Math.
 /** Keys aimed at a form control or an open map panel (e.g. settings during flight) are not flight input. */
 function inControls(t: EventTarget | null): boolean {
   return t instanceof Element && (!!t.closest('#ui, input, textarea, select') || (t as HTMLElement).isContentEditable);
+}
+
+/** The next animation frame, or 100 ms when none are being produced (a hidden tab). */
+function nextFrame(): Promise<void> {
+  return new Promise((resolve) => {
+    const done = () => { clearTimeout(timer); cancelAnimationFrame(frame); resolve(); };
+    const timer = window.setTimeout(done, 100), frame = requestAnimationFrame(done);
+  });
 }
 
 async function withTimeout(p: Promise<unknown>, ms: number): Promise<void> {

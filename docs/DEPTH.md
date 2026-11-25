@@ -41,18 +41,26 @@ The render camera is a `THREE.OrthographicCamera` in world metres (local ENU, z 
 
 - `camera.up = up_enu` and `lookAt(eye - back_enu)`. three.js then builds the basis `x = up x back = right`, `y = up`,
   `z = back`.
-- The eye sits on the `back` axis through the centre of the render-target rectangle, 150 m in front of the goose. Near is
-  1 m and far is 300 m.
+- The eye sits on the `back` axis through the goose (the centre of the render-target rectangle), 150 m in front of it.
+  Near is 1 m and far is 300 m.
 - `left/right/top/bottom` are +-half the rectangle size in metres.
 
 The render target is not the whole screen. It is a 64 x 64 texel square around the goose:
 
 - Texel size: `artPerTexel = max(1 artwork px, 1 device px)`, so at zoom >= 1 / dpr it is exactly one artwork pixel.
-- The square is anchored on that texel grid in canvas coordinates, so goose pixels line up with artwork pixels.
+- The square is centred exactly on the goose, so the goose always rasterises at the same sub-texel phase: its
+  silhouette does not shimmer as it moves, and the sprite travels with the goose, not with a grid. (It used to be
+  anchored on the artwork-pixel grid. At flight zoom on a retina screen one artwork pixel is 3.2 device px, so the sprite
+  hopped one or two of those per frame, 2.7-7.8 device px, against a map that pans a steady 4.4.)
 - At zoom 1.6 the square covers 64 artwork px (18.75 m). The 7x goose has an 11.2 m wingspan, about 38 artwork px.
 
 The blit is a quad over the square in canvas px, placed on screen with the map's own transform
-(`(c - view.c) * zoom + size / 2`). It uses `texelFetch`, so sampling is nearest-neighbour.
+(`(c - view.c) * zoom + size / 2`) and then nudged by under half a device pixel so its corner lands on a whole device
+pixel, the grid `MapRenderer.drawBase` places tiles on. The sprite therefore moves in device-pixel steps like the map,
+with a fixed texel pattern. It uses `texelFetch` with the texel index worked out from each fragment's own device pixel
+(its offset from that corner divided by the device px per texel), so sampling is nearest-neighbour and a pixel on a
+texel boundary resolves the same way every frame. It blends premultiplied "over", so the rim darkens particles already
+on the canvas. `rect`, the camera and `debug.projectToScreen` stay exact (they ignore the nudge, under half a device px).
 
 **Verified:** each known surface point is projected through the actual render camera and the blit mapping
 (`debug.projectToScreen`) and compared with `map.canvasToScreen`. The points are the Dana Porter roof, the E5 roof and the
@@ -66,26 +74,36 @@ about 25 artwork px long, roughly 40 CSS px at the take-off zoom of 1.6.
 
 The plumage Lambert materials are replaced by shader materials with the same sRGB colours. Each facet's normal comes from
 screen derivatives (flat shading). The shader quantises `dot(n, sun_enu)` into three flat tones (light 1.06, mid 0.88,
-shade 0.70), and the shade tone is cooled slightly. Colours are written as sRGB with no conversion.
+shade 0.70), and the shade tone is cooled slightly. Each step is spread over a band of 0.1 so a flat wing panel that banks
+through a threshold changes tone over a few frames. Colours are written as sRGB with no conversion.
 
 In the blit, texels next to the visible goose get a soft dark 1-texel rim (45%) so the goose separates from busy artwork.
-Particles are 1-2 texel points in the same target. They fade with an ordered dither rather than alpha.
+Particles are not in the target (its texel lattice travels with the goose; a particle hanging in the air must stay put
+against the map). They are drawn straight onto the actor canvas, before the goose blit, as square points of 1-2 goose
+texels at their true positions, each with the same 1-texel rim. They fade with an ordered dither per particle texel
+rather than alpha, and a particle behind the city is drawn as a 50% stipple.
 
 ## Height window
 
 `HeightWindow` holds a 3 x 3 tile block of `map.getHeightTile` results around the tile under the goose's canvas point:
 
 - Size: 1536 x 1536 Float32 values, one per height texel (each texel is 2 x 2 artwork px, sampled at the block centre).
-- Row 0 is the smallest canvas y.
+- The array is a ring: the texel for canvas px (cx, cy) is (floor(cx / 2) mod 1536, floor(cy / 2) mod 1536), so tile
+  (i, j) always sits in block (i mod 3, j mod 3). Readers first test that the point is inside the window, because a
+  point outside it would land on another tile's block.
 - Invalid texels (NaN) and missing tiles become `HEIGHT_UNKNOWN = -10000`. The shaders treat that value as "no data": no
   occlusion and no shadow there.
 
 Each renderer has its own R32F `DataTexture` over the shared array, with NEAREST filtering, `texelFetch` sampling and no
 mipmaps. (Two GL contexts cannot share a texture.)
 
-- **Recentre:** when the goose's tile changes, the array is refilled from the map's height LRU. The 5 x 5 ring around it
-  is prefetched so the next recentre usually finds its tiles already decoded.
-- **Uploads:** `flush()` uploads at most once per frame, and only after the contents changed.
+- **Recentre:** when the goose's tile changes, tiles that stay in the window keep their block; only the blocks whose
+  tile changed (three for a one-tile step) are rewritten from the map's height LRU. The 5 x 5 ring around it is
+  prefetched so the next recentre usually finds its tiles already decoded. `MapView` decodes height tiles one per idle
+  period, so a ring landing together does not stack up inside one frame.
+- **Uploads:** `flush()` runs at most once per frame and uploads only the changed blocks (`texSubImage2D` through
+  `renderer.copyTextureToTexture`), 1 MB each instead of the whole 9.4 MB texture. A freshly allocated array is
+  uploaded whole.
 - **Memory:** 9.4 MB on the CPU plus 2 x 9.4 MB on the GPU while flying. `release()` frees all of it on landing.
 
 ## Occlusion
@@ -95,11 +113,11 @@ The goose and particle fragment shaders run this test for each fragment:
 1. Convert the fragment's world position to canvas px.
 2. Read the visible-surface height `h` there from the window.
 3. Reconstruct the city surface's depth with `frame.depthAt(c, h)`.
-4. If the goose fragment is more than **0.3 m** behind that surface, mark it hidden. The shader writes alpha 0.5 instead
-   of 1 into the render target.
+4. If the fragment is more than **0.3 m** behind that surface, mark it hidden. The goose shader writes alpha 0.5 instead
+   of 1 into the render target; a hidden particle, drawn straight onto the canvas, keeps half its pixels (a 50% stipple).
 
-The blit draws hidden texels as a 50% checkerboard stipple in amber (`#f3a646`), on the global texel grid so the pattern
-stays stable as the goose moves. Empty texels next to hidden texels get a cream outline (`#fff4e0`). The player can follow
+The blit draws hidden goose texels as a 50% checkerboard stipple in amber (`#f3a646`), on the target's own texels, so
+the pattern travels with the goose. Empty texels next to hidden texels get a cream outline (`#fff4e0`). The player can follow
 the goose behind towers, and parts that are not covered (for example a head sticking out past a roof edge) stay normally
 shaded.
 
@@ -124,11 +142,12 @@ and 11.3 m behind the tower's visible surface, at a free spot found by searching
 **Receiver pass:** a quad on the shadow canvas covers the canvas-space bounding square of the sun ray. The ray runs from
 the goose down to `ground - 25 m`, with the goose's radius as a margin. For each fragment the shader:
 
-1. Snaps to the actor's pixel grid.
+1. Takes its own device pixel (it used to snap to the artwork-pixel grid, which made the shadow step 3.2 device px).
 2. Reads the visible-surface height and reconstructs the city surface point with `frame.canvasToWorld`.
 3. Projects that point into light space and compares it with the goose's depth.
 
-Four sub-samples per pixel give coverage of 0, 1/2 or 1, which makes a one-step pixel-art edge. The result is a cool
+The light pass is centred on the goose, so its silhouette is the same every frame and the shadow slides over the ground
+with the goose. Four sub-samples per device pixel soften the edge by one step. The result is a cool
 blue-grey `#8c9ec7`, multiplied over the map by CSS. It gets slightly lighter when the goose is 30-110 m above the
 receiver.
 
@@ -153,7 +172,7 @@ See `docs/screenshots/actor_shadow_roof.png`.
 
 | Action | Keys | Touch pad (coarse pointers) |
 | --- | --- | --- |
-| Turn | A / D or Left / Right (1.5 rad/s, banks up to 0.6 rad into the turn) | ◀ ▶ |
+| Turn | A / D or Left / Right (1.5 rad/s as seen on screen, banks up to 0.6 rad into the turn; with both held, the one pressed last wins) | ◀ ▶ |
 | Climb / dive | W / S or Up / Down (+6 / -9 m/s) | ▲ ▼ |
 | Boost | Shift (24 m/s instead of 14 m/s) | Boost |
 | Flap-climb | Space (+9 m/s, faster wing beat) | Flap |
@@ -161,14 +180,42 @@ See `docs/screenshots/actor_shadow_roof.png`.
 
 - **Keys are ignored** when they are aimed at form controls or the map's `#ui` panels (for example the settings panel
   during flight).
+- **Speed is even on screen.** The map is an oblique view: a metre flown toward the top or bottom of the screen covers
+  0.71 of the pixels of a metre flown across it. `Flight` scales the target speed by the direction of travel
+  (`speedScale`, 1 across the screen up to 1.41 along it), so the goose crosses the screen at the same rate on every
+  heading: 14 / 24 m/s are the speeds in the across-screen direction, and ground speed reaches 19.8 / 33.9 m/s along
+  the screen's vertical. The HUD and `debug.getState().nominalSpeed` show the speed with that scale taken out.
+- **Steering.** While the direction of travel is within 60 degrees of the heading and no wall or fence was touched in
+  the last 0.6 s, speed and direction are handled separately: the speed relaxes toward the target as in straight
+  flight (0.6 s), so a turn costs none of it, and the direction of travel swings onto the heading within 0.15 s, so
+  the goose goes where it points (it trails a full-rate turn by 12 degrees and is back in line 0.4 s after the key is
+  released). Otherwise the whole velocity vector eases back toward the heading at the speed rate, which slows the
+  goose, stops it and brings it round: walls still cost speed.
+- **Turns are even on screen.** The oblique view distorts angles as well as lengths: a heading turning at a constant
+  ground rate sweeps the screen twice as fast pointing up or down it as pointing across it (61 vs 121 degrees per
+  second here), so a steady turn hesitated at the sideways headings. `Flight.turnScale` scales the ground turn rate by
+  heading (0.71 to 1.41) so the goose turns at 1.5 rad/s on screen everywhere. A full circle takes the same 4.2 s, and
+  on screen it is a circle of 87 CSS px radius at boost (51 cruising) at zoom 1.6.
+- **Climbing at the map edge.** The edge test depends on altitude (a higher goose is drawn further up the screen). When
+  only the climb takes the goose out, the climb is cancelled and the horizontal move kept; it used to stop the goose dead
+  on every step while the climb key was held.
 - **Wing beat** follows effort: 1.0 when climbing, 0.6 cruising, 0.3 when skimming low, 0.12 when diving.
 - **Legs** lower when the goose skims within about 3 m of the surface.
 - **Take-off:** the goose starts 35 m above the surface (obstacle top) at the given canvas point (or the view centre),
   facing up the screen. If that spot is not flyable it falls back to the campus origin and shows a toast.
+- **Take-off warm-up:** before the flight becomes active, both canvases are sized (one reallocation each), every shader
+  program is linked with `compileAsync`, the height window (9.4 MB) is uploaded to each GL context in a frame of its own,
+  and one throw-away draw is made. Left to the first flying frame this was a single frame of about 120 ms. Production
+  builds also turn off three.js's shader error check, which reads each program's info log and so waits for its link.
 - **Take-off camera:** if the zoom is below 1, the camera zooms to 1.6 with the map's animated fly-to. The simulation
   starts once the view settles (3.2 s at most).
-- **Follow camera:** `map.setView({cx, cy})`, pan only. It is exponentially smoothed (0.35 s) and looks 0.6 s ahead along
-  the velocity, clamped to 22% of the viewport.
+- **Follow camera:** `map.setView({cx, cy})`, pan only. The camera centre is the goose plus a look-ahead offset of 0.12 s
+  of travel (clamped to 22% of the viewport), and only that offset is eased (0.35 s). The camera never lags the goose
+  itself, so the map scrolls by exactly the goose's motion each frame and, in a full-rate turn, about 8% faster while the
+  offset swings round. (Easing the camera position toward a point 0.6 s ahead left the goose 33 px off centre, swung it
+  round the screen in turns and sped the scene up by up to 30%.)
+- **Frame order:** each frame draws the goose in the state the frame's view was computed from, then steps the simulation
+  and sets the next view. The goose's place on screen therefore does not depend on how long a frame took.
 - **Zoom while flying:** the user can still zoom. While the zoom is changing, the follow camera pauses so MapView's zoom
   easing is not cancelled, then catches up smoothly.
 - **Simulation steps:** at most 1/60 s each. A frame's dt is clamped to 0.1 s.
@@ -207,7 +254,9 @@ Buildings, roofs and terrain are solid. Trees are soft. Water can be skimmed. Al
    - The toast "The map ends here for now" appears at most every 5 s.
    - The projected move is swept too, so it cannot enter a wall.
 8. **Unloaded data:** when collision data under the goose is not loaded yet, horizontal motion pauses (`waiting`). Chunks
-   within 320 m are kept loaded (refreshed every 80 m), and the LRU holds 48 chunks (about 19 MB).
+   within 320 m are kept loaded (refreshed every 80 m), and the LRU holds 48 chunks (about 19 MB). Chunks are unpacked one
+   step per idle period (`idle.ts`), so several arriving together do not stack up inside a frame. A chunk that fails to
+   load may be requested again after 3 s, and a goose paused over missing data asks for it every 0.5 s.
 
 **Fix in `collision.ts` (reported):** the sphere test used to sample 8 points on the equator ring. A 2 m cell corner could
 slip between two samples to about 1.1 m from the centre of a 2 m sphere; the first E5 test run measured 1.48 m. The probe
@@ -222,7 +271,8 @@ behaviour.
   saved by `FeatherProgress` in localStorage (guarded with try/catch).
 - **Feedback:** `map.toast` announces each feather ("Feather found: Dana Porter Library rooftop (1 of 24)"). The toast
   element is `role=status`, so screen readers announce it.
-- **Toolbar** (`#hud`): altitude above the surface below, horizontal speed, feathers n / N, a pointer and distance to the
+- **Toolbar** (`#hud`): altitude above the surface below, horizontal speed with the direction scale removed (comparable
+  with 14 / 24 m/s on every heading), feathers n / N, a pointer and distance to the
   nearest uncollected feather, the Land button and keyboard hints.
 - **Markers:** uncollected feathers on screen get bobbing markers. They are decorative (`aria-hidden`); the toolbar is a
   labelled region.
@@ -237,7 +287,7 @@ behaviour.
 
 | Hook | What it does |
 | --- | --- |
-| `getState()` | `x, y, z, vx, vy, vz, heading, speed, surface, inCanopy, overWater, waiting, time, lastHit` |
+| `getState()` | `x, y, z, vx, vy, vz, heading, speed, nominalSpeed, surface, inCanopy, overWater, waiting, time, lastHit` |
 | `teleport(x, y, z, heading)` | Moves the goose without collision, snaps the camera and waits for collision and height data |
 | `step(dt, input)` | The deterministic live step, including collision response and pickups |
 | `setAutoStep(on)` | Freezes or resumes the live loop's simulation (rendering continues) |
@@ -245,7 +295,7 @@ behaviour.
 | `stippleStats()` | On-screen pixel classes of the last actor render |
 | `shadowCentreScreen()` | Alpha-weighted centroid of the shadow on screen |
 | `shadowRay()` | A point on the sun ray through the goose's light-pass silhouette centroid |
-| `projectToScreen(x, y, z)` | World point to screen through the render camera and blit mapping |
+| `projectToScreen(x, y, z)` | World point to screen through the render camera and blit mapping (without the device-pixel nudge) |
 | `windowHeight(cx, cy)` | Height-window sample at a canvas px |
 | `inside(x, y, z)` | Whether the goose may fly at that point |
 | `collision` | The `CollisionField` instance |
@@ -296,6 +346,7 @@ Screenshots, all 1280 x 800:
   - a 64 x 64 render-target pass;
   - a 128 x 128 depth pass;
   - one quad on each canvas;
+  - a points draw of the particles on the actor canvas (screen-space squares, before the goose blit), when any are alive;
   - a base-map redraw, because the camera pans.
 - **Collision is a 2 m column model.** Footprints are accurate to about +-1 m. There is no flying under bridges or
   overhangs. Wall normals are estimated from the grid (about 7 degrees off on diagonal facades, which makes slides along
