@@ -1,0 +1,13 @@
+{
+  "title": "Slow Laps",
+  "provider": "ElevenLabs",
+  "model": "eleven_music_v2_5",
+  "flow_id": "qRmzgB40yOpq6GlxzhHz",
+  "generation_id": "EQ59RcmEyHAuhr1rC8mT",
+  "tempo_bpm": 68,
+  "duration_seconds": 169.416,
+  "prompt": "Slow, laid-back instrumental lo-fi hip hop beat at 68 BPM. Dusty, warm Rhodes electric piano playing mellow jazzy seventh chords, a soft muted guitar lick answering now and then, round deep sub bass, and a lazy swung boom-bap drum pattern with a soft kick, a muffled rimshot snare and gentle closed hi-hats. Vinyl crackle, light tape hiss and subtle tape wobble, low-pass filtered and warm, nothing bright or sharp. Sleepy, cozy late-night study mood that stays at the same relaxed low energy from start to finish: no build-ups, no drops, no fills that get busy, no tempo changes, no vocals or spoken words. Begins and ends on the same chord loop so it repeats seamlessly as background music.",
+  "generated_variations": 4,
+  "total_credits": 10800,
+  "post_processing": "Cut to 48 bars (the generated 180 s is 51 bars): bars 2-48 followed by bar 49 crossfaded into bar 1 over one bar (equal power), so the end of the file leads into its start. Gain +6.8 dB to -15 LUFS with a limiter at -1.5 dBFS, MP3 192 kbps."
+}

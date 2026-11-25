@@ -5,7 +5,7 @@ const PREFERENCE_KEY = 'arjunPortfolio.music.v1';
 /** Start playback from an entry-button gesture so browsers can allow audible music. */
 export function createPortfolioMusic(ui: HTMLElement): { start: () => void } {
   const audio = h('audio', { class: 'portfolio-music', preload: 'none', 'aria-hidden': 'true' });
-  audio.src = 'audio/campus-daydream.mp3';
+  audio.src = 'audio/slow-laps.mp3';
   audio.loop = true;
   audio.volume = 0.22;
   let enabled = true;
@@ -21,7 +21,7 @@ export function createPortfolioMusic(ui: HTMLElement): { start: () => void } {
     const label = playing ? 'Mute music' : 'Unmute music';
     button.replaceChildren(icon(playing ? 'volume' : 'muted'));
     button.setAttribute('aria-label', label);
-    button.title = `${label} · Campus Daydream · ElevenLabs`;
+    button.title = `${label} · Slow Laps · ElevenLabs`;
     button.setAttribute('aria-pressed', String(playing));
   };
   const play = () => {

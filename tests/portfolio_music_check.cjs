@@ -19,7 +19,7 @@ const { chromium, devices } = require('playwright');
   try {
     await page.goto(`${base}/portfolio.html`);
     await page.waitForSelector('.title-screen');
-    check('music waits for a visitor gesture', (await state()).paused && !requests.some((url) => url.includes('campus-daydream.mp3')));
+    check('music waits for a visitor gesture', (await state()).paused && !requests.some((url) => url.includes('slow-laps.mp3')));
     await page.locator('.title-look').click();
     await page.waitForFunction(() => {
       const audio = document.querySelector('.portfolio-music');
@@ -65,7 +65,7 @@ const { chromium, devices } = require('playwright');
     const failure = await browser.newPage();
     const failureErrors = [];
     failure.on('pageerror', (error) => failureErrors.push(error.message));
-    await failure.route('**/audio/campus-daydream.mp3', (route) => route.abort());
+    await failure.route('**/audio/slow-laps.mp3', (route) => route.abort());
     await failure.goto(`${base}/portfolio.html`);
     await failure.locator('.title-look').click();
     await failure.waitForFunction(() => document.querySelector('.portfolio-music').error !== null);
