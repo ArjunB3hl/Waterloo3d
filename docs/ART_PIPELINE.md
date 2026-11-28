@@ -57,10 +57,26 @@ both look right side by side in the viewer. New batches use the same commands, e
    is composited back, with a triangular feather (see [Seam compositing](#seam-compositing)). Every affected tile gets
    a new version, and its previous version is kept in the tile's `history` in `art/tiles.json`.
 
-`--force` accepts an item that failed QA. Use it only after reviewing the report, for example when a visible join will
-be fixed with a seam packet next. The forced acceptance is recorded (`forced: true`). `--only 0_-1` limits an import to
-some items. `--model` and `--settings` record what the agent reported when there is no report file. Anything not
-reported is stored as `unknown`.
+**Forcing is per item.** `--force 0_-1,-1_0 --reason "join fixed by seam packet S011 next"` accepts the named items
+even though their latest return failed QA. It also lets them past the changed-reference refusal (see
+[Resuming](#resuming)). Use it only after reviewing each item's report and choosing it by name.
+
+- Every other failing item of the batch stays unaccepted, exactly as without `--force`. There is no batch-wide force:
+  a bare `--force` without item ids is refused, and so is `--force` without `--reason`.
+- Each forced acceptance is printed as `<item>: ACCEPTED - FORCED despite <checks>; reason: ...`, with a summary line
+  at the end of the run.
+- `art/tiles.json` (and the item's `accepted` record in `art/batches.json`) gets `forced: true`, `forced_reason` and
+  `forced_checks`. `forced_checks` lists the failing QA checks that were overridden, plus `reference` when the
+  reference job had changed.
+- A named item that passed QA on a current reference is accepted normally (`forced: false`).
+- Tile ids that start with `-` can follow `--force` and `--only` directly (`--force -1_0`). `--force=-1_0,-1_-1` also
+  works.
+
+The 26 Nov 2026 ring attempt ran `--accept --force` on whole batches and accepted 17 failing tiles nobody had looked at.
+That is why forcing is now per item.
+
+`--only 0_-1` limits an import to some items. `--model` and `--settings` record what the agent reported when there is
+no report file. Anything not reported is stored as `unknown`.
 
 ## File naming
 
@@ -128,14 +144,66 @@ trusting them for wide coverage. They live in `T` at the top of `pipeline/art_im
 | buildings and landmarks | every roof of 1500 px or more visible (projected roof polygon ∩ roof class): outline recall vs the reference, plus roof-to-surroundings colour contrast (Lab) vs the reference | outline < 0.35 or contrast < 0.35 on a landmark or a roof of 3000 px or more (smaller roofs only warn) |
 | sun / shadows | luminance of the reference's cast-shadow ground pixels relative to lit pixels of the same classes | warns above 0.88; fails above 0.97 (no shadow where the sun puts one) |
 | style | per class-group mean colour difference (CIE76 dE) and coarse HSV histogram (Bhattacharyya) vs all accepted tiles; skipped until a style sample is accepted | mean dE > 20 or any group > 30 (warns at dE > 12 or histogram > 0.35) |
+| content | invented content: water-blue pixels outside the reference's water and pools; asphalt, paving or roof colours inside its open ground; tan ground painted green. Connected blobs, see [Invented content](#invented-content) | a water blob of 500 px or more, paving on open ground of 1500 px or more, lawn on tan ground of 20000 px or more (warns from half) |
 | seams | against each accepted edge neighbour: colour difference of pixels 2 px apart across the join vs the same inside 4 px bands (`grad_ratio`), and the colour step between the 4 px bands vs the next band in (`step_ratio`) | either ratio > 1.8 |
 | kept margin (context) | phase correlation and mean absolute difference of the mask-black area, returned vs sent | moved > 3 px (warns when repainted, mean abs diff > 30) |
 | seam repair | kept area unchanged (mean abs diff <= 12, shift <= 2 px); band geometry; after compositing: join `grad_ratio` and `step_ratio` over the whole join **and per 128 px block along it** (worst block reported); both band edges, gradient **and** step ratio per 128 px block | kept area / geometry as stated; join: whole-join or worst-block ratio > 1.8; band edge: a block > 1.8 **and** > the accepted art's own ratio at that block + 0.15 |
 
-A global failure (translation, registration or camera) is reported as the cause. The geometry and building failures
-it produces are folded into one "consequence" note, so the revision asks for one clear fix. Pixel-art quality, the
-right materials, the absence of text or borders, and the overall feel cannot be judged automatically. Each QA report
-ends with a human-review checklist for them.
+A global failure (translation, registration or camera) is reported as the cause. The geometry, building and content
+failures it produces are folded into one "consequence" note, so the revision asks for one clear fix. Pixel-art quality,
+the right materials, the absence of text or borders, and the overall feel cannot be judged automatically. Each QA
+report ends with a human-review checklist for them.
+
+### Invented content
+
+Geometry, building and style checks only test that what the reference has is in the painting. They cannot see what
+the painting adds. The 26 Nov 2026 ring attempt passed them with five invented ponds (8_0), ponds and a lined parking
+lot on lawn (4_2), and a creek widened about 7x (-4_-2). `content_check(rgb, cls)` in `pipeline/art_import.py` is a pure
+function of the 1024 px art and the reference class ids. It returns metrics and the regions with their positions, so it
+can be run directly on any tile. It looks for three kinds of content:
+
+- **water**: blue pixels (hue 185-245, saturation >= 0.15) outside the reference's water and pool classes, which are
+  dilated by 8 px to allow for shoreline drift. Pixels within 3 px of roofs and walls are ignored, so window glass does
+  not count. This style paints cast shadows blue-grey on paving and parking, so on hard ground a pixel must be much
+  bluer (blue - red >= 60) than on soft ground (>= 30). The blue mask is opened before the shoreline band is taken
+  out. Opening it afterwards erased every strip of widening narrower than about 5 px, so a creek could be painted
+  13 px wider on each side, 4-5x its width, without a flagged pixel. Now reference water widened by up to 9 px a side
+  passes and by 11 px or more fails (synthetic widening of 7_-2, 6_-2 and 5_0: 3264-3757 px at 11 px).
+- **hard**: asphalt, parking, paving or roof colours on the reference's open ground (lawn, park, residential yards,
+  pitch, golf, farmland, forest floor). These are grey pixels, or non-green pixels below saturation 0.35 (0.25 on
+  farmland). Only pixels 6 px inside the open ground and 10 px from roofs and walls count, so cast shadows, kerbs and
+  buildings painted a few px off are ignored. Dark green shade and water-blue are not counted. Farmland is the only
+  open ground whose colour is not green: a tan field has hue 27-32 and saturation 0.43-0.58. At 0.35 a field painted
+  20% paler failed as a whole-field parking lot. At 0.25 a field 40% paler passes, and the invented street of houses
+  over -4_-3's field still fails (21668 px). The 0.35 cut elsewhere is tight: at 0.40 the faithful ring tiles -4_1 and
+  -4_2 fail on pale sunlit tan ground.
+- **ground**: saturated green on the inside of construction or farmland, that is, a tan field painted as lawn.
+
+Each colour mask is opened by 2 px, which removes fences, paths, lane dashes and window panes. It is then split into
+connected blobs on a 4 px grid. A blob at or above its threshold fails, and blobs from half the threshold upward are
+warnings. Failing blobs are drawn as boxes on the QA overlay and on the marked image of the revision packet: cyan for
+water, magenta for paving, orange for lawn on tan ground. The revision text gives each blob's position, size and the
+reference class under it.
+
+Calibration (largest blob per tile; thresholds and evidence are in `T`, keys `content_*`):
+
+| Set | water | hard | ground |
+|---|---|---|---|
+| 55 accepted tiles (must pass) | max 155 px (7_-2's creek painted a little wider) | max 657 px (a driveway, 5_-3) | max 8291 px (7_1's construction lot painted as lawn) |
+| reference renders and the self-test's posterised references, 147 jobs | 0 | max 825 px | 0 |
+| ring tiles judged fine (9) | 0 | max 451 px | 0 |
+| ring tiles with invented water (12) | 11 tiles fail, 1055-10830 px; -4_-1 (a small shoreline change) missed | | |
+| ring tiles with paving or buildings on open ground (15) | | 9 caught, 2727-21668 px | -4_-2, -4_-3 (51000+ px) |
+
+The largest blob that passes is not always faithful content: the minor driveway pads the ring added beside houses reach
+1048 px (7_-4), 70% of the hard threshold. On 5_-4 both water defects fail: the upper reach painted 20 px west of the
+reference (1639 px), and the stream drawn 36-48 px wide where the reference has 9-10 px (951 px). Before the water
+mask was opened first, the stream left only blobs under 500 px.
+
+Not caught: buildings on ground the reference already marks as paved (-1_-4), a green pitch painted on lawn (5_2),
+houses on a construction lot (3_-4), and dense forest painted over open lawn. Construction is not treated as open ground
+for the hard check, because the reference's own construction colour (saturation about 0.3) reads as paving. A pitch
+painted as lawn is too close in colour to park to test reliably.
 
 ### Seam compositing
 
@@ -166,6 +234,64 @@ away. Both band edges are measured for gradient and colour step per 128 px block
 is above 1.8 and also above the accepted art's own ratio at that block by more than 0.15 (`T['seam_edge_tol']`). The
 band edge is an arbitrary line through untouched art, so a kerb or shoreline that happens to lie on it is not a defect
 of the repair. In a junction, the parts of a band edge that the other band crosses are skipped.
+
+## Publish-time harmonisation
+
+`publish_tiles.py` evens out neighbouring accepted tiles with `pipeline/harmonize_art.py` before it applies overlays.
+`art/accepted/` is never changed. Four steps run, all driven by the strips along shared edges:
+
+1. A detail gain per tile, solved by least squares so that sharpness matches across every edge.
+2. A cross-fade of each border band into the neighbour's margin painting from its generation call. Bands whose
+   margin is misaligned or paints different structure are skipped.
+3. Colour levelling, only where the cross-fade had nothing to blend with.
+4. Seam diffusion of the step left exactly at each edge.
+
+Settings are in `config/world.json` under `art_harmonize`. `python3 pipeline/harmonize_art.py` prints a before/after
+seam report.
+
+**Locked tiles.** Finished tiles must not change when tiles are added next to them. `art_harmonize.locked_regions`
+names the regions of `config/regions.json` whose tiles are final, in ordered lock groups, oldest first:
+
+- a list of names is one group: now `["campus2x2", "park_uptown", "stage2_surround"]`;
+- a list of lists is several groups, for example
+  `[["campus2x2", "park_uptown", "stage2_surround"], ["stage3_ring"]]`. A tile listed twice stays in its first group.
+  A mix of names and lists, or an unknown region, stops the publish.
+
+How each kind of tile is treated:
+
+- The first group is harmonised among itself only, exactly as if no other tile existed.
+- Each later group is fitted to the groups before it and sees no later group and no unlocked tile:
+  - Its gains are solved with the earlier gains held.
+  - On an edge with an earlier tile, it takes the whole correction: a one-sided cross-fade into the earlier tile's
+    margin painting (where it lines up), and the full colour levelling and seam diffusion. The earlier side gets none
+    of it.
+  - Edges inside the group are shared half and half.
+- The unlocked tiles come last and are fitted to all locked groups the same way.
+- Edges between two locked groups, and at a notch (a new tile with earlier tiles on two adjacent sides), are handled
+  one direction at a time, so a corner is not corrected twice.
+- With every accepted tile in one group (the committed state), the output is byte-identical to what the code
+  published before locking existed. The same holds with no locked tile at all.
+
+Workflow: publish new tiles unlocked and review them on the map. Once they are final, add their region as a new last
+group. Its tiles then keep exactly the art they were reviewed with. This assumes no unlocked tile next to them changed
+in between, because while unlocked they were fitted together with their unlocked neighbours. No earlier group changes,
+then or later. Adding the region to an existing group instead would re-harmonise that whole group as equals, and every
+tile in it would change slightly. The change would be largest near the new region but would reach whole tiles,
+through the shared detail gains.
+
+What to expect at a locked edge:
+
+- Where the locked tile's margin does not line up with the new tile (band skipped as misaligned) or disagrees in
+  structure, there is no cross-fade. Colour levelling and seam diffusion then pull the new tile's border colours
+  toward the locked tile's. Where the two paintings show different ground (for example lawn where the locked tile
+  has plaza), this shows as a tinted haze on the new tile's side. Before locking, the same mismatch showed as a ghost
+  on the finished tile. Fix it by revising the new tile or with a repaint overlay on the new tile's side, not by
+  unlocking.
+- In the 36-tile ring test (Hermes attempt, Nov 2026), all 32 locked-to-ring bands were skipped as misaligned. So the
+  ring joined the 55 locked tiles through levelling and diffusion only, which left a purple haze on `-3_-4` where
+  it meets the pink plaza of `-3_-3`.
+
+Unit checks: `python3 tests/test_harmonize.py`.
 
 ## Repaint overlays (publish-time fixes)
 
@@ -202,7 +328,9 @@ tiles painted different content, ghosting left by the border cross-fade, or one 
   text metadata, QA report paths). It also stores `model_reported`, `settings_reported` and `report_text`.
 - **`art/tiles.json`:** per accepted tile, `{version (sha256[:12] of the accepted PNG), batch, model_reported,
   settings_reported, prompt_sha, reference_sha, accepted_utc, source_file, source_sha256, qa_verdict, forced,
-  history[]}`. `publish_tiles.py` reads `version` and `batch` into the manifest.
+  history[]}`. A forced acceptance adds `forced_reason` and `forced_checks` (the overridden failing checks, plus
+  `reference` for a changed reference job). A later unforced seam acceptance drops them from the current entry, and
+  they stay in `history`. `publish_tiles.py` reads `version` and `batch` into the manifest.
 
 ## Resuming
 
@@ -214,12 +342,13 @@ received file passed. A failure whose revision packet was never built (an interr
 run. A rebuilt packet keeps the receive and QA history of its items, including the accepted items it no longer
 requests, and increments `packet_rev`. Every item records sha256[:12] of its reference job files (color2x, cls,
 height); if they changed since the packet was built, import and accept refuse the item until the packet is rebuilt and
-resent (or `--force`), and `publish_tiles.py` warns when accepted art sits on a changed reference job. Do not rebuild a packet that
+resent (or the item is named in `--force`, which records `reference` among its `forced_checks`), and `publish_tiles.py`
+warns when accepted art sits on a changed reference job. Do not rebuild a packet that
 has already been sent unless you resend it: the kept-margin check compares against the current packet files.
 
 ## Self-test
 
-`python3 tests/test_art_import.py` runs in about 100 s. It works on a temporary copy of the art state (`TW_ART_DIR`), so
+`python3 tests/test_art_import.py` runs in about 80 s. It works on a temporary copy of the art state (`TW_ART_DIR`), so
 the real `batches.json` is untouched, and publishing is skipped. It builds B001 and B002, then imports synthetic
 returns:
 
@@ -234,6 +363,16 @@ returns:
 - a seam packet for `0_0:0_-1`: a return that changes the kept area **fails**; a faithful band repair is
   **accepted** and composited into both tiles; a regenerated frame with a brighter band is accepted with the feathered
   blend, and the band-edge pixels and everything outside the band stay identical to the accepted art;
-- the CLI entry points.
+- the posterized reference with a blue pond, or a grey lined parking lot, painted on open lawn: **fail** content, with
+  the region located on the painted area;
+- two B002 edits that both fail the seam, imported with `--force 0_-1 --reason ...`: only `0_-1` is accepted, and
+  `art/tiles.json` records `forced`, `forced_reason` and `forced_checks`. The other item stays `revision-needed`. A
+  batch-wide force, a force without a reason, and a force naming an unknown item are refused;
+- a return for an item whose reference job changed is refused, and accepted with `--force 0_0` and
+  `forced_checks: ['reference']`. With two changed B002 references and only `0_-1` named, the other item's new return
+  is not imported, it is not accepted, and no revision packet is built for it;
+- content thresholds: a creek widened 12 px a side **fails** (4 px of drift passes); a pale pond on lawn **fails**; a
+  blue-grey shadow on parking and a tan field painted 30% paler pass; asphalt on the field **fails**;
+- the CLI entry points, including a bare `--force`, `--force` without `--reason`, and ids starting with `-`.
 
 Set `TW_ART_DIR` (or pass `--state-dir`) to try the tools on a scratch copy at any time.

@@ -1,7 +1,7 @@
 """Prepare per-tile render jobs: visible world region, scene subset, top-down ground colour + class textures.
 
 Usage: python3 pipeline/prepare_tiles.py --region campus2x2      (named region from config/regions.json)
-       python3 pipeline/prepare_tiles.py --tiles 0,0 -1,0
+       python3 pipeline/prepare_tiles.py --tiles 0,0 1,0      (or --tiles-file F: whitespace-separated ids, for parallel workers)
 Outputs data_cache/jobs/<i>_<j>/{job.json, ground.png, groundcls.png}
 """
 import os, sys, json, math, pickle, argparse, hashlib
@@ -243,8 +243,10 @@ def roof_spec(cls, part):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--region'); ap.add_argument('--tiles', nargs='*', default=[]); ap.add_argument('--force', action='store_true')
+    ap.add_argument('--tiles-file', help='file with whitespace-separated i,j ids (parallel workers; negative ids need no quoting)')
     a = ap.parse_args()
     tiles = [tuple(map(int, t.split(','))) for t in a.tiles]
+    if a.tiles_file: tiles += [tuple(map(int, t.split(','))) for t in open(a.tiles_file).read().split()]
     if a.region:
         regions = json.load(open(os.path.join(ROOT, 'config', 'regions.json')))
         tiles += [tuple(t) for t in regions[a.region]['tiles']]

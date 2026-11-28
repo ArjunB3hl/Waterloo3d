@@ -2,7 +2,8 @@
 
 For every tile with a reference render (data_cache/jobs/<i>_<j>) this writes:
   tiles/<lod>/<i>_<j>.webp       artwork, lod in {256, 512, 1024}. Source = accepted generated art if present
-                                 (art/accepted/<i>_<j>.png), else the procedural reference render.
+                                 (art/accepted/<i>_<j>.png), else the procedural reference render (skipped when
+                                 config/world.json publish.reference_tiles is false).
   heights/<i>_<j>.png            512x512 lossless packed visible-surface heights (see config/world.json 'heights')
   life/<i>_<j>.png               1024x1024 RGB mask: R=tree sway weight, G=canopy, B=water (derived from class map)
   cls/<i>_<j>.png                1024x1024 class IDs (R channel) - used by collision/QA tools
@@ -73,6 +74,9 @@ def main():
         os.makedirs(os.path.join(OUT, d), exist_ok=True)
     tiles = {}
     hp = cfg()['tiles']['height_px']
+    # config/world.json 'publish': reference_tiles = false publishes only tiles with accepted art (the viewer shows
+    # exactly what is published, so procedural renders of unpainted tiles never appear on the map)
+    show_refs = (cfg().get('publish') or {}).get('reference_tiles', True)
     # accepted art, evened out across tile borders as one set (detail, cross-fade, colour; art/accepted is untouched)
     accepted_src = {}
     for d in sorted(os.listdir(JOBS)):
@@ -91,6 +95,7 @@ def main():
         i, j = map(int, d.split('_'))
         accepted = os.path.join(ART, f'{d}.png')
         finish = None
+        if not os.path.exists(accepted) and not show_refs: continue   # unpainted tiles stay off the map
         if os.path.exists(accepted):
             src = accepted_src[d]; kind = 'art'
             painted_on = art_meta.get(d, {}).get('reference_files') or {}

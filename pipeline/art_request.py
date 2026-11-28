@@ -466,7 +466,9 @@ def qa_md(rec):
             'size / aspect; global translation by phase correlation of edge maps (> 4 px fails); local displacement and '
             'scale/rotation from a block grid (camera change); geometry agreement of class-map boundaries with image edges '
             '(whole tile, 8x8 cells, every building roof, landmark roofs); sun/shadow side; colour style against accepted '
-            'tiles; seam discontinuity in a 4 px band against accepted neighbours; for context edits, drift of the kept margin.')
+            'tiles; seam discontinuity in a 4 px band against accepted neighbours; for context edits, drift of the kept margin; '
+            'invented content: water where the reference has none (or water widened), paving, parking or buildings on open '
+            'ground, and lawn painted over tan farmland or construction ground all fail.')
 
 
 # ----------------------------------------------------------------------------------------------- seam packets

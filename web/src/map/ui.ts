@@ -193,12 +193,24 @@ export function createUI(map: MapAPI, deps: { fx: EffectsModule; actor: ActorMod
   }
   map.on('frame', syncActor);
   setInterval(syncActor, 400);   // also catch a stop that happens without a redraw
+  // In flight, a mouse or touch press on a UI button (mute, share, a panel's close button) must not leave keyboard
+  // focus on that button, or the next Space presses it again instead of flapping. Focus goes back to the map unless the
+  // click moved it into a panel (Settings, About) or the press came from the keyboard (detail 0), which keeps it.
+  ui.addEventListener('click', (e) => {
+    if (!actor.active || e.detail === 0) return;
+    const a = document.activeElement;
+    if (a instanceof Element && a !== document.body && a.closest('[role="dialog"], input, textarea, select')) return;
+    stage.focus({ preventScroll: true });
+  });
 
   // ---------------------------------------------------------------- global shortcuts
   addEventListener('keydown', (e) => {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     if (e.key === 'Escape') {
-      if (panels.close()) e.preventDefault();
+      if (panels.close()) {
+        e.preventDefault();
+        if (actorActive) stage.focus({ preventScroll: true });   // closed mid-flight: the keys fly the goose again
+      }
       return;
     }
     if (isTyping(e)) return;

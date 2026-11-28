@@ -221,6 +221,10 @@ export interface EffectsModule {
 export interface ActorModule {
   readonly element: HTMLElement;
   start(at?: { cx: number; cy: number }): Promise<void>;
+  /** Optional: fetch take-off data ahead of start() (no GL contexts are created). */
+  prefetch?(): void;
+  /** Optional: drop a start() still loading, so its promise resolves without taking off. */
+  cancelStart?(): void;
   stop(): void;
   readonly active: boolean;
   render(f: FrameInfo): void;

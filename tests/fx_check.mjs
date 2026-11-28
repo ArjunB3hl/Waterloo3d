@@ -398,20 +398,23 @@ try {
     return `zoom 0.18 blur fade ${mid.tiltFade.toFixed(2)}; zoom 0.12 blur off, life on; zoom 0.08 fx hidden, base shown (detail ${sharp.toFixed(1)})`;
   });
 
-  await check('WebGL context loss falls back to the base canvas and recovers on restore', async () => {
+  await check('WebGL context loss falls back to the base canvas and recovers on restore, aux layers included', async () => {
     await open(page);
     const r = await page.evaluate(async () => {
       const fx = window.__tinyWaterloo.fx, map = window.__tinyWaterloo.map;
       const ext = fx.canvas.getContext('webgl2').getExtension('WEBGL_lose_context');
+      const layers = () => ({ life: !!map.lifeCanvas, height: !!map.heightCanvas });
+      const before = layers();
       ext.loseContext();
       await new Promise((r) => setTimeout(r, 300));
-      const lost = { fx: fx.canvas.style.visibility, base: map.baseCanvas.style.visibility };
+      const lost = { fx: fx.canvas.style.visibility, base: map.baseCanvas.style.visibility, ...layers() };
       ext.restoreContext();
       await new Promise((r) => setTimeout(r, 800));
-      return { lost, restored: { fx: fx.canvas.style.visibility, base: map.baseCanvas.style.visibility, webgl2: fx.debug.webgl2 } };
+      return { before, lost, restored: { fx: fx.canvas.style.visibility, base: map.baseCanvas.style.visibility, webgl2: fx.debug.webgl2, ...layers() } };
     });
-    assert(r.lost.fx === 'hidden' && r.lost.base === 'visible', `lost ${JSON.stringify(r.lost)}`);
-    assert(r.restored.fx === 'visible' && r.restored.base === 'hidden' && r.restored.webgl2, `restored ${JSON.stringify(r.restored)}`);
+    assert(r.before.life && r.before.height, `aux layers before ${JSON.stringify(r.before)}`);
+    assert(r.lost.fx === 'hidden' && r.lost.base === 'visible' && !r.lost.life && !r.lost.height, `lost ${JSON.stringify(r.lost)}`);
+    assert(r.restored.fx === 'visible' && r.restored.base === 'hidden' && r.restored.webgl2 && r.restored.life && r.restored.height, `restored ${JSON.stringify(r.restored)}`);
     return `lost: fx ${r.lost.fx} / base ${r.lost.base}; restored: fx ${r.restored.fx}`;
   });
 

@@ -16,6 +16,11 @@ const { chromium, devices } = require('playwright');
   await p.waitForFunction(() => window.__tinyWaterloo.actor.active, null, { timeout: 60000 });
   await p.waitForTimeout(3500);
   res.push(['Enter starts the flight', await p.evaluate(() => !document.querySelector('.title-screen') && window.__tinyWaterloo.actor.active)]);
+  // a mouse click on a UI button in flight used to leave focus on it, so WASD, L and Escape stopped flying the goose
+  const heading = () => p.evaluate(() => window.__tinyWaterloo.actor.debug.getState().heading);
+  await p.locator('.music-toggle').click(); await p.waitForTimeout(300);
+  const h0 = await heading(); await p.keyboard.down('a'); await p.waitForTimeout(700); await p.keyboard.up('a');
+  res.push(['after clicking mute in flight the keys still steer the goose', Math.abs(await heading() - h0) > 0.3 && await p.evaluate(() => document.activeElement?.id === 'stage')]);
   // fly over three stops (teleport = same code path as flying there)
   const flyTo = (id) => p.evaluate(async (id) => {
     const t = window.__tinyWaterloo, s = t.landmarks.find((l) => l.id === id), f = t.map.frame;
@@ -62,6 +67,19 @@ const { chromium, devices } = require('playwright');
   await m.goto(base + '/portfolio.html'); await m.waitForSelector('.title-screen'); await m.waitForTimeout(5000);
   res.push(['phone: title fits, no horizontal overflow', await m.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1 && document.querySelector('.title-start').getBoundingClientRect().bottom < innerHeight)]);
   await m.screenshot({ path: out + '/portfolio_phone.png' });
+  // landscape phone: everything on the title can be reached, and in flight nothing covers the touch flight pad
+  const hits = (pg, sel) => pg.evaluate((sel) => [...document.querySelectorAll(sel)].map((el) => {
+    const r = el.getBoundingClientRect(), hit = document.elementFromPoint((r.left + r.right) / 2, (r.top + r.bottom) / 2);
+    return r.bottom <= innerHeight && r.right <= innerWidth && !!hit && (hit === el || el.contains(hit));
+  }), sel);
+  const ml = await b.newPage({ ...devices['iPhone 13 landscape'] });
+  await ml.goto(base + '/portfolio.html'); await ml.waitForSelector('.title-start:not([disabled])', { timeout: 60000 }); await ml.waitForTimeout(1500);
+  res.push(['landscape phone: Start, Skip and the contact links are on screen and tappable', (await hits(ml, '.title-start, .title-look, .title-links a')).every(Boolean)]);
+  await ml.evaluate(() => document.querySelector('.title-start').click());
+  await ml.waitForFunction(() => window.__tinyWaterloo.actor.active && !document.querySelector('.title-screen'), null, { timeout: 90000 }); await ml.waitForTimeout(1500);
+  const pad = await hits(ml, '.gh-pad-btn, .gh-land, .music-toggle');
+  res.push(['landscape phone: every flight pad button, Land and mute take a tap at their centre', pad.length === 8 && pad.every(Boolean)]);
+  await ml.close();
   let fail = 0; for (const [n, ok] of res) { console.log((ok ? 'PASS ' : 'FAIL ') + n); if (!ok) fail++; }
   if (errs.length) console.log(errs.slice(0, 3));
   console.log(`${res.length - fail}/${res.length} checks passed`);

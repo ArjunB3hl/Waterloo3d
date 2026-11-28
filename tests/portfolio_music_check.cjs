@@ -52,14 +52,17 @@ const { chromium, devices } = require('playwright');
 
     const phone = await browser.newPage({ ...devices['iPhone 13'], reducedMotion: 'reduce' });
     await phone.goto(`${base}/portfolio.html`);
-    await phone.waitForSelector('.music-toggle');
-    check('music toggle is visible and accessible on a phone', await phone.locator('.music-toggle').evaluate((button) => {
-      const rect = button.getBoundingClientRect();
-      return rect.left >= 0 && rect.right <= innerWidth && rect.bottom <= innerHeight && rect.height >= 44;
-    }));
+    await phone.waitForSelector('.title-start:not([disabled])');
     await phone.locator('.title-start').click();
     await phone.waitForFunction(() => !document.querySelector('.portfolio-music').paused);
     check('Start flying also starts music on a phone', true);
+    // the toggle used to sit under the attribution footer on phones: a tap opened the OpenStreetMap page instead
+    await phone.waitForFunction(() => window.__tinyWaterloo?.actor?.active && !document.querySelector('.title-screen'), null, { timeout: 90000 });
+    check('music toggle is on screen and takes a tap at its centre on a phone in flight', await phone.locator('.music-toggle').evaluate((button) => {
+      const rect = button.getBoundingClientRect();
+      const hit = document.elementFromPoint((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2);
+      return rect.left >= 0 && rect.right <= innerWidth && rect.bottom <= innerHeight && rect.height >= 38 && hit?.closest('.music-toggle') === button;
+    }));
     await phone.close();
 
     const failure = await browser.newPage();

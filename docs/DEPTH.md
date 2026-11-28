@@ -243,7 +243,10 @@ Buildings, roofs and terrain are solid. Trees are soft. Water can be skimmed. Al
    - Hard floor: `solidTop + radius + 0.05`. Never violated, so the sphere never penetrates.
    - Soft floor: `solidTop + 2.3 m`. When the goose is below it, it is pulled up with a 0.1 s time constant and any
      downward speed is cancelled. The goose skims and follows slopes and roofs.
-   - The ceiling is the lower of 120 m above the surface and z 150 m (the top of the collision data).
+   - The ceiling is the lower of 120 m above the surface and z 150 m (the top of the collision data). It stops a climb
+     but never moves the goose down in one step: when the ground falls away under a goose flying at the ceiling (off a
+     roof or a hill), the goose sinks back onto it at overshoot / 0.8 s, at most the 9 m/s dive rate, eased like a dive.
+     A hard clamp there dropped the goose and the camera the whole height of the step in one frame.
 5. **Trees (soft):** inside a crown (`canopyTop > z - 1 m`) the target speed drops to **40%**, with a 0.25 s time
    constant, and leaves fall. Nothing blocks the goose; the floor is the ground under the trees.
 6. **Water:** over water cells the sweep radius drops to 0.8 m and the soft floor to 1.0 m. The goose skims low and throws

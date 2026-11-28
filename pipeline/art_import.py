@@ -1,7 +1,7 @@
 """Import artwork returned by the image agent: match, QA against the source geometry, record, accept, publish.
 
-  python3 pipeline/art_import.py <batch> <dir-with-returned-files> [--accept] [--force] [--only 0_0,...]
-                                 [--model "..."] [--settings "..."] [--reprocess] [--no-publish] [--no-revision]
+  python3 pipeline/art_import.py <batch> <dir-with-returned-files> [--accept] [--force 0_0,-1_0 --reason "..."]
+                                 [--only 0_0,...] [--model "..."] [--settings "..."] [--reprocess] [--no-publish] [--no-revision]
 
 For each returned file whose name matches an expected return filename of the batch (e.g. B001_0_0.png; suffixes such
 as "B001_0_0 (1).png" are tolerated) and that has not been processed before (by sha256):
@@ -9,16 +9,20 @@ as "B001_0_0 (1).png" are tolerated) and that has not been processed before (by 
   2. size/aspect are checked and the final 1024 tile is cut out (see crop math in docs/ART_PIPELINE.md);
   3. QA: global translation (phase correlation of edge maps), block displacement + scale/rotation (camera change),
      geometry agreement of class-map boundaries with image edges (tile, cells, every visible roof, landmarks),
-     shadow side, colour style vs accepted tiles, seams against accepted neighbours, kept-margin drift;
+     shadow side, colour style vs accepted tiles, invented content (water outside the reference's water, paving / parking /
+     buildings on its open ground, tan fields painted as lawn), seams against accepted neighbours, kept-margin drift;
   4. art/returned/<batch>/QA_<item>_<sha8>.md + .png per returned file (reference | returned | edge overlay; QA_<item>.md/.png
      are copies of the latest) are written and
      batches.json is updated: received (QA pass) or revision-needed (QA fail, with reasons); failures also get a focused
      revision packet <batch>R<n> (IMAGE_REQUEST_<batch>R<n>.md) unless --no-revision.
 --accept copies passing items to art/accepted/<i>_<j>.png (seams: composites the band into the accepted tiles), writes
-art/tiles.json and runs pipeline/publish_tiles.py; QA failures are never accepted unless --force. Items are processed
-in the batch order and accepted immediately, so later tiles of the batch are seam-checked against earlier ones.
-Draft batches whose dependencies become accepted are rebuilt automatically. Returns for an item whose reference job
-(color2x/cls/height) changed since its packet was built are refused (rebuild and resend, or --force).
+art/tiles.json and runs pipeline/publish_tiles.py. QA failures are never accepted, except for the items named in
+--force (comma-separated item ids; --force=-1_0,... also works), which needs --reason: each forced acceptance is printed
+and recorded in tiles.json as forced: true, forced_reason and forced_checks (the overridden failing checks). There is no
+batch-wide force. Items are processed in the batch order and accepted immediately, so later tiles of the batch are
+seam-checked against earlier ones. Draft batches whose dependencies become accepted are rebuilt automatically. Returns
+for an item whose reference job (color2x/cls/height) changed since its packet was built are refused (rebuild and resend,
+or name the item in --force: 'reference' is then recorded among its forced_checks).
 """
 import math, os, sys, re, json, shutil, argparse, subprocess
 import numpy as np
@@ -54,6 +58,28 @@ T = {
                                  # must stay <= seam_ratio (a 200-row lake or 30-row rail defect is not averaged away)
     'seam_feather': True,        # seam accept: triangular blend weight (1 at the join -> 0 at the band edges) instead of the
                                  # legacy hard band with an ~8 px blur; see docs/ART_PIPELINE.md "Seam compositing"
+    # Invented content (content_check). Calibrated on the 55 accepted tiles (must pass) and the 36 reverted Hermes ring
+    # tiles (art/accepted of hermes-ring-attempt-2026-11-26), largest connected blob per tile:
+    'content_water_tol': 8,      # px of shoreline drift allowed around the reference's water / pool classes. The water mask is
+                                 # opened before this band is taken out, so a thin strip of widening still counts: reference water
+                                 # widened by up to 9 px a side passes, by 11+ fails (7_-2, 6_-2, 5_0: 3264-3757 px; 10 px: 319-547)
+    'content_water_px': 500,     # invented / widened water blob that fails. Accepted tiles peak at 155 px (7_-2: a creek painted
+                                 # a little wider than the reference); the ring's invented ponds and widened creeks start at 1055 px
+    'content_water_sat': 0.15,   # water-blue: hue 185-245 and at least this saturation (8_0's pale invented ponds are 0.2-0.3)
+    'content_water_br': (30, 60),  # ... and blue - red >= this on soft / hard ground: this style's cast shadows on paving and
+                                 # parking are blue-grey (hue 210-245, blue - red 20-50), real water is bluer (40-190)
+    'content_hard_px': 1500,     # paving, parking or roofs on open ground. Accepted tiles peak at 657 px (a painted driveway, 5_-3),
+                                 # stylised references at 825; the ring's invented lots, plazas and houses start at 2727 px. Small
+                                 # invented driveway pads beside houses (a minor defect) reach 1048 px (ring 7_-4) and pass
+    'content_ground_px': 20000,  # tan bare ground / farmland painted as lawn. Accepted 7_1 paints an 8300 px construction lot as
+                                 # lawn; the ring's -4_-2 / -4_-3 fields are 51000+ px. Whole fields only
+    'content_edge_px': 6,        # open-ground interior: px from any other class (kerbs, paths, misregistration)
+    'content_bld_px': 10,        # ... and px from roofs / walls (cast shadows, buildings painted ~10 px off their footprint)
+    'content_hard_sat': 0.35,    # a non-green pixel below this saturation reads as asphalt, parking, paving or roof (lawn ~0.85).
+                                 # Tight against pale sunlit tan ground: at 0.40 the faithful ring tiles -4_1 / -4_2 fail
+    'content_hard_sat_farmland': 0.25,  # the same on farmland, the only non-green open ground: a tan field has hue 27-32 and
+                                 # saturation ~0.43-0.58, so at 0.35 one painted 20% paler would fail as paving. At 0.25 a field
+                                 # 40% paler passes, and -4_-3's invented street of houses over its field still fails (21668 px)
 }
 EDGE_FRAC = 0.20                 # top fraction of gradient magnitudes counted as image edges
 NEAR = 3                         # class boundary counts as matched when an image edge is within this many px
@@ -258,6 +284,63 @@ def keep_drift(ctx, mask, ret_full):
     return {'dx': round(dx, 2), 'dy': round(dy, 2), 'peak': round(peak, 3), 'mad': round(mad, 1)}
 
 
+def _ids(*names):
+    return [CLS[n] for n in names]
+
+
+CLS_NAME = {v: k for k, v in CLS.items()}
+SOFT_GROUND = _ids('lawn', 'park', 'residential', 'pitch', 'golf', 'farmland', 'forest_floor')
+HARD_GROUND = _ids('paved', 'parking', 'road', 'major_road', 'path', 'rail', 'track')
+CONTENT_KINDS = {  # kind -> (threshold key, what it is, marker colour in the QA / marked images)
+    'water': ('content_water_px', 'invented or widened water', (0, 220, 255)),
+    'hard': ('content_hard_px', 'paving / parking / building on open ground', (255, 0, 200)),
+    'ground': ('content_ground_px', 'tan bare ground or farmland painted as lawn', (255, 150, 0)),
+}
+
+
+def content_check(rgb, cls):
+    """Content the painting adds that the reference does not have. Pure function of the art (1024 px RGB uint8) and the
+    reference class ids (1024 px); geometry, buildings and style cannot see it (the Hermes ring passed them with invented
+    ponds, a 7x widened creek and parking lots on lawns). Returns ({'metrics', 'regions'}, masks); a region is a connected
+    blob {kind, px, bbox [x0, y0, x1, y1], at [x, y], on: reference class under it, fail}, listed from half its threshold.
+      water   water-blue pixels outside the reference's water / pool (+ T['content_water_tol'] px of shoreline drift) and
+              3 px from roofs / walls (window glass). Cast shadows of this style are blue-grey on paving and parking, so on
+              hard ground a much bluer colour is required than on soft ground (T['content_water_br']).
+      hard    asphalt / parking / paving / roof colours (grey, or non-green below T['content_hard_sat'] saturation;
+              T['content_hard_sat_farmland'] on farmland, whose tan is not green) on open ground (lawn, park, yards,
+              pitch, golf, farmland, forest floor), T['content_edge_px'] px inside it and T['content_bld_px'] px from
+              roofs and walls; dark-green shade and water-blue are excluded.
+      ground  saturated green on the interior of construction / farmland (a tan field painted as lawn).
+    Each colour mask is opened by 2 px, so fences, paths, kerbs, lane dashes and window panes do not count. The water
+    mask is opened before the shoreline band and roofs are taken out (a creek widened by a few px a side leaves strips
+    too thin to survive an opening, so opening afterwards would let a 4x widened creek through)."""
+    h, s, v = A.hsv(rgb); f = rgb.astype(np.int16)
+    bld = np.isin(cls, _ids('roof', 'wall'))
+    opened = lambda m, r=2: A.dilate(~A.dilate(~m, r), r)
+    blue = (h >= 185) & (h <= 245) & (s >= T['content_water_sat']) & (v >= 0.35)
+    wet = blue & (f[..., 2] - f[..., 0] >= np.where(np.isin(cls, HARD_GROUND), T['content_water_br'][1], T['content_water_br'][0]))
+    masks = {'water': opened(wet) & ~A.dilate(np.isin(cls, _ids('water', 'pool')), T['content_water_tol']) & ~A.dilate(bld, 3)}
+    soft = np.isin(cls, SOFT_GROUND)
+    inner = soft & ~A.dilate(~soft, T['content_edge_px']) & ~A.dilate(bld, T['content_bld_px'])
+    sat_cut = np.where(np.isin(cls, _ids('farmland')), T['content_hard_sat_farmland'], T['content_hard_sat'])
+    grey = (v >= 0.2) & ((s < 0.12) | ((s < sat_cut) & ~((h >= 50) & (h <= 170))))
+    masks['hard'] = opened(grey & ~wet & inner) & inner
+    tan = np.isin(cls, _ids('construction', 'farmland'))
+    tan_in = tan & ~A.dilate(~tan, T['content_edge_px']) & ~A.dilate(bld, T['content_bld_px'])
+    masks['ground'] = opened((h >= 60) & (h <= 150) & (s >= 0.45) & (v >= 0.3) & tan_in) & tan_in
+    metrics, regions = {}, []
+    for kind, m in masks.items():
+        lim = T[CONTENT_KINDS[kind][0]]
+        bl = A.blobs(m)
+        metrics[kind] = {'px': int(m.sum()), 'max_blob': bl[0]['px'] if bl else 0, 'threshold': lim}
+        for b in bl:
+            if b['px'] < lim / 2: break
+            x0, y0, x1, y1 = b['bbox']; under = cls[y0:y1, x0:x1][m[y0:y1, x0:x1]]
+            regions.append({'kind': kind, 'px': b['px'], 'bbox': b['bbox'], 'at': [(x0 + x1) // 2, (y0 + y1) // 2],
+                            'on': CLS_NAME.get(int(np.bincount(under).argmax()), '?'), 'fail': b['px'] >= lim})
+    return {'metrics': metrics, 'regions': regions}, masks
+
+
 # ----------------------------------------------------------------------------------------------- QA of a tile item
 class Result:
     def __init__(self):
@@ -395,6 +478,25 @@ def qa_tile(rec, key, item, img, info):
         elif st['hist'] > T['hist_warn'] or (st['dE_mean'] or 0) > T['de_warn']:
             res.warn('style', f'colour distance: histogram {st["hist"]}, dE mean {st["dE_mean"]} (worst: {worst} {worst_de})')
 
+    cc, _masks = content_check(tile, cls); res.metrics['content'] = cc
+    where = lambda rs: '; '.join(f'around x={r["at"][0]}, y={r["at"][1]} ({r["px"]} px on {r["on"]})' for r in rs[:6]) + \
+        (f'; and {len(rs) - 6} more' if len(rs) > 6 else '')
+    content_bad = [r for r in cc['regions'] if r['fail']]
+    for kind, (tkey, what, _col) in CONTENT_KINDS.items():
+        bad = [r for r in content_bad if r['kind'] == kind]
+        near = [r for r in cc['regions'] if r['kind'] == kind and not r['fail']]
+        if near: res.warn('content', f'{what} below the {T[tkey]} px limit: {where(near)}')
+        if not bad: continue
+        detail = f'{what}: {len(bad)} area(s) of {T[tkey]} px or more, {where(bad)}'
+        fix = {'water': f'There is water that {comp} does not have (cyan boxes in the marked image: {where(bad)}). Remove it and paint '
+                        'the ground the reference shows there; keep every creek, pond and pool exactly its reference size and outline.',
+               'hard': f'Open ground of {comp} (lawn, park, yards, sports fields, farmland) is painted as pavement, a parking lot or '
+                       f'buildings (magenta boxes in the marked image: {where(bad)}). Paint it back as the open ground the reference '
+                       'shows; add no parking lots, plazas, driveways, roads or buildings the reference does not have.',
+               'ground': f'Tan bare ground or farmland of {comp} is painted as green lawn (orange boxes in the marked image: '
+                         f'{where(bad)}). Keep it tan soil / field as in the reference.'}[kind]
+        res.fail('content', detail, fix)
+
     seams = seam_checks(t, tile); res.metrics['seams'] = seams
     for s in seams:
         if s['bad']:
@@ -416,14 +518,17 @@ def qa_tile(rec, key, item, img, info):
         else:
             res.warn('keep-drift', 'packet files missing - kept-margin drift not checked')
     if any(f['check'] in ('registration', 'translation', 'camera') for f in res.failures):
-        # a global offset / camera change misaligns everything: report the cause, keep the consequences as notes
-        follow = [f for f in res.failures if f['check'] in ('geometry', 'geometry-cells', 'building', 'displacement')]
+        # a global offset / camera change misaligns everything: report the cause, keep the consequences as notes (a shifted
+        # shoreline or lot also reads as invented content, so 'content' is folded too)
+        follow = [f for f in res.failures if f['check'] in ('geometry', 'geometry-cells', 'building', 'displacement', 'content')]
         res.failures = [f for f in res.failures if f not in follow]
-        res.warnings = [w for w in res.warnings if w['check'] not in ('geometry-cells', 'building')]
+        res.warnings = [w for w in res.warnings if w['check'] not in ('geometry-cells', 'building', 'content')]
+        content_bad = []
         if follow:
-            res.warn('consequence', f'{len(follow)} geometry/building check(s) also fail - expected from the global misregistration: '
+            res.warn('consequence', f'{len(follow)} geometry/building/content check(s) also fail - expected from the global misregistration: '
                      + '; '.join(f['detail'] for f in follow[:4]) + (' ...' if len(follow) > 4 else ''))
-    overlays = {'B': B, 'near': near_ret, 'buildings': [b for b in blds if b['bad']], 'cells': cells, 'reg': reg, 'seams': seams}
+    overlays = {'B': B, 'near': near_ret, 'buildings': [b for b in blds if b['bad']], 'cells': cells, 'reg': reg, 'seams': seams,
+                'content': content_bad}
     return res, tile, overlays
 
 
@@ -591,6 +696,10 @@ def overlay_image(tile, ov):
     out = np.stack([g, g, g], -1)
     B, near = ov['B'], ov['near']
     out[B & near] = (40, 220, 80); out[B & ~near] = (240, 40, 40)
+    if ov.get('content'):   # invented content: boxes in the kind's colour (cyan water, magenta paving, orange lawn on tan)
+        im = Image.fromarray(out); d = ImageDraw.Draw(im)
+        for r in ov['content']: d.rectangle(r['bbox'], outline=CONTENT_KINDS[r['kind']][2], width=4)
+        out = np.asarray(im)
     return out
 
 
@@ -606,6 +715,11 @@ def marked_image(tile, ov, res):
     for x, y, dx, dy in ov['reg'].get('displaced', []):
         d.rectangle([x - 126, y - 126, x + 125, y + 125], outline=(255, 220, 0), width=3)
         A.label(d, (x - 120, y - 120), f'moved {dx:+.0f},{dy:+.0f} px', size=14, bg=(120, 100, 0))
+    for r in ov.get('content', []):
+        col = CONTENT_KINDS[r['kind']][2]; x0, y0, x1, y1 = r['bbox']
+        d.rectangle([x0 - 3, y0 - 3, x1 + 2, y1 + 2], outline=col, width=4)
+        A.label(d, (min(x0, F() - 250), max(0, y0 - 26)), {'water': 'invented water: remove', 'hard': f'not in reference: paint {r["on"]}',
+                                           'ground': f'keep {r["on"]} (tan)'}[r['kind']], size=15, bg=tuple(c // 2 for c in col))
     for s in ov['seams']:
         if not s['bad']: continue
         bar = {'left': [0, 0, 7, F() - 1], 'right': [F() - 8, 0, F() - 1, F() - 1], 'top': [0, 0, F() - 1, 7],
@@ -669,6 +783,10 @@ def write_report(rec, key, entry, res, tile_or_win, ov, ref_img, out_dir):
         L.append('| style | ' + ('no accepted tiles yet - this tile sets the style' if not s else
                                  f'hist {s["hist"]}, dE mean {s["dE_mean"]} {s["dE"]} vs {s["against"]}') +
                  f' | hist <= {T["hist_warn"]} (warn), dE mean <= {T["de_warn"]} / {T["de_fail"]}, any class <= {T["de_group_fail"]} |')
+    if m.get('content'):
+        c = m['content']['metrics']
+        L.append('| content (largest blob: invented water / paving on open ground / lawn on tan ground) | '
+                 + ' / '.join(f'{c[k]["max_blob"]} px' for k in CONTENT_KINDS) + ' | < ' + ' / '.join(f'{c[k]["threshold"]}' for k in CONTENT_KINDS) + ' px |')
     for s in m.get('seams', []):
         if 'side' in s:
             L.append(f'| seam {s["side"]} vs {s["neighbour"]} | gradient x{s["grad_ratio"]}, step x{s["step_ratio"]} | <= {T["seam_ratio"]} |')
@@ -713,6 +831,7 @@ def snapshot_layers(t):
 
 
 def accept_tile(rec, key, item, tile, entry, forced):
+    """forced: {'forced': bool[, 'forced_reason', 'forced_checks']} (see force_record)."""
     t = key
     path = A.save_png(tile, A.accepted_path(t))
     snapshot_layers(t)
@@ -723,7 +842,7 @@ def accept_tile(rec, key, item, tile, entry, forced):
                'reference_sha': item['reference']['composition'],
                'reference_files': {k: item['reference'][k] for k in A.REFERENCE_FILES if k in item['reference']},
                'accepted_utc': A.utc_now(), 'source_file': entry['stored'],
-               'source_sha256': entry['sha256'], 'qa_verdict': entry['verdict'], 'forced': forced,
+               'source_sha256': entry['sha256'], 'qa_verdict': entry['verdict'], **forced,
                'history': ((prev or {}).get('history', []) + [{k: v for k, v in prev.items() if k != 'history'}]) if prev else []}
     A.save_tiles_meta(meta)
     return [t]
@@ -738,7 +857,9 @@ def accept_seam(rec, item, comp, entry, forced):
         art[ay0 - j * F():ay1 - j * F(), ax0 - i * F():ax1 - i * F()] = comp[ay0 - y0:ay1 - y0, ax0 - x0:ax1 - x0]
         path = A.save_png(art, A.accepted_path(t))
         prev = meta[t]
-        meta[t] = dict(prev, version=A.sha_file(path)[:12], batch=rec['id'], accepted_utc=A.utc_now(), forced=forced,
+        # the tile's earlier force record (if any) stays in history only: this version is forced only if this seam was
+        keep = {k: v for k, v in prev.items() if k not in ('forced_reason', 'forced_checks')}
+        meta[t] = dict(keep, version=A.sha_file(path)[:12], batch=rec['id'], accepted_utc=A.utc_now(), **forced,
                        seam={'source_file': entry['stored'], 'source_sha256': entry['sha256'], 'model_reported': entry['model_reported'],
                              'settings_reported': entry['settings_reported'], 'prompt_sha': item['prompt_sha']},
                        history=prev.get('history', []) + [{k: v for k, v in prev.items() if k != 'history'}])
@@ -815,11 +936,38 @@ def resolve_parents(batches, rec, key, bid):
 
 
 # ----------------------------------------------------------------------------------------------- main flow
-def process(bid, folder, accept=False, force=False, only=None, model=None, settings=None, reprocess=False,
-            publish=True, revision=True):
+def force_items(rec, force, reason):
+    """--force: the item ids of rec that may be accepted despite failing QA (or a changed reference), plus a reason. A bare
+    batch-wide force (force=True) is refused: every forced item must be named (Hermes forced 17 failing ring tiles by
+    running --accept --force on whole batches)."""
+    if force is True:
+        raise SystemExit('force must name the items to accept despite failing QA, e.g. --force 0_0,1_-1 --reason "..." '
+                         '(a batch-wide --force is no longer accepted)')
+    if isinstance(force, str): force = force.split(',')
+    force = {str(k).strip() for k in (force or ()) if str(k).strip()}
+    if force and not (reason or '').strip():
+        raise SystemExit(f'--force {",".join(sorted(force))} needs --reason "why these items are accepted despite failing QA" '
+                         '(recorded in art/tiles.json)')
+    unknown = sorted(force - set(rec['items']))
+    if unknown: raise SystemExit(f'--force: {", ".join(unknown)} is not an item of {rec["id"]} (items: {", ".join(rec["order"])})')
+    return force
+
+
+def force_record(last, changed, reason):
+    """Acceptance fields for an item listed in --force: the overridden checks are the latest return's failing QA checks plus
+    'reference' when the reference job changed since the packet was built. Nothing overridden = an ordinary acceptance."""
+    over = sorted({f['check'] for f in last.get('failures', [])}) + (['reference'] if changed else [])
+    return {'forced': True, 'forced_reason': reason.strip(), 'forced_checks': over} if over else {'forced': False}
+
+
+def process(bid, folder, accept=False, force=None, only=None, model=None, settings=None, reprocess=False,
+            publish=True, revision=True, reason=None):
+    """force: item ids (set, list or comma-separated str) that may be accepted despite QA failures or a changed reference;
+    needs reason. Every other failing item stays unaccepted."""
     batches = A.load_batches()
     if bid not in batches['batches']: raise SystemExit(f'unknown batch {bid} (see python3 pipeline/art_request.py status)')
     rec = batches['batches'][bid]
+    force = force_items(rec, force, reason); forced_log = []
     if rec['status'] == 'draft': print(f'warning: {bid} is still a DRAFT packet (dependencies were not accepted when it was built)')
     found, unmatched = match_files(rec, folder)
     for u in unmatched: print(f'  unmatched file (not an expected name for {bid}): {u}')
@@ -837,11 +985,11 @@ def process(bid, folder, accept=False, force=False, only=None, model=None, setti
         if changed and (todo or accept) and item['status'] != 'accepted':
             msg = (f'  {key}: the reference changed since packet rev {rec.get("packet_rev", "?")} was built '
                    f'({"; ".join(changed)})')
-            if not force:
-                print(msg + ' - not imported/accepted. Rebuild and resend the packet, or pass --force to QA against the '
-                      'current reference.')
+            if key not in force:
+                print(msg + f' - not imported/accepted. Rebuild and resend the packet, or pass --force {key} --reason "..." '
+                      'to QA against the current reference.')
                 continue
-            print(msg + ' - continuing because of --force')
+            print(msg + f' - continuing because of --force {key}')
         for p in todo:
             stored, sha = store_original(bid, p)
             entry = {'file': os.path.basename(p), 'stored': A.rel(stored), 'sha256': sha, 'utc': A.utc_now(),
@@ -865,29 +1013,42 @@ def process(bid, folder, accept=False, force=False, only=None, model=None, setti
             else:
                 fixes.pop(key, None)   # a later passing return supersedes an earlier failure in the same run
             save(batches, rec)
-        # accept the latest received version if it passed (or with --force)
+        # accept the latest received version if it passed (or if this item is listed in --force)
         last = item['received'][-1] if item['received'] else None
-        if accept and last and item['status'] != 'accepted' and (last['verdict'] == 'pass' or force):
+        if accept and last and item['status'] != 'accepted' and last['verdict'] != 'pass' and key not in force:
+            print(f'  {key}: QA failed - not accepted (to accept it anyway after review: --force {key} --reason "...")')
+        if accept and last and item['status'] != 'accepted' and (last['verdict'] == 'pass' or key in force):
+            fr = force_record(last, changed, reason) if key in force else {'forced': False}
             try:
                 img, info = A.read_image(stored_path(last))
             except ValueError as e:
                 print(f'  {key}: cannot decode {last["file"]} ({e}) - not accepted'); continue
             if item['output']['mode'] == 'seam':
                 _r, comp, _o = qa_seam(item, img, info)
-                accepted += accept_seam(rec, item, comp, last, forced=last['verdict'] != 'pass')
+                accepted += accept_seam(rec, item, comp, last, fr)
             else:
                 try:
                     tile, _full = cut_tile(item, img, info, Result())
                 except (ValueError, OSError) as e:
                     tile = None; print(f'  {key}: {type(e).__name__}: {e}')
                 if tile is None: print(f'  {key}: cannot cut a tile from {last["file"]} - not accepted'); continue
-                accepted += accept_tile(rec, key, item, tile, last, forced=last['verdict'] != 'pass')
-            item['status'] = 'accepted'; item['accepted'] = {'file': last['file'], 'utc': A.utc_now(), 'forced': last['verdict'] != 'pass'}
+                accepted += accept_tile(rec, key, item, tile, last, fr)
+            item['status'] = 'accepted'; item['accepted'] = {'file': last['file'], 'utc': A.utc_now(), **fr}
             if fixes.pop(key, None): print(f'  {key}: accepted with --force; no revision packet')
-            print(f'  {key}: ACCEPTED' + (' (forced despite QA failure)' if last['verdict'] != 'pass' else ''))
+            if fr['forced']:
+                forced_log.append((key, fr['forced_checks']))
+                print(f'  {key}: ACCEPTED - FORCED despite {", ".join(fr["forced_checks"])}; reason: {fr["forced_reason"]}')
+            else:
+                print(f'  {key}: ACCEPTED' + (' (listed in --force, but nothing to override: an ordinary acceptance)' if key in force else ''))
             resolve_parents(batches, rec, key, bid)
             save(batches, rec)
     if not any(found.values()) and not accept: print(f'  no files for {bid} in {folder}')
+    if forced_log:
+        print(f'  FORCED: {len(forced_log)} item(s) accepted despite failing checks, reason "{reason.strip()}": '
+              + '; '.join(f'{k} ({", ".join(c)})' for k, c in forced_log))
+    for k in sorted(force - {k for k, _c in forced_log}):
+        if rec['items'][k]['status'] != 'accepted' or not accept:
+            print(f'  --force {k}: not accepted' + ('' if accept else ' (run with --accept)'))
     if revision:
         # resume: a failure saved by an earlier run that stopped before its revision packet was built
         for key in rec['order']:
@@ -895,7 +1056,7 @@ def process(bid, folder, accept=False, force=False, only=None, model=None, setti
             it = rec['items'][key]
             last = it['received'][-1] if it['received'] else None
             if (it['status'] == 'revision-needed' and last and last['verdict'] == 'fail' and not it.get('revision_batch')
-                    and (force or not A.reference_changes(key, it))):
+                    and (key in force or not A.reference_changes(key, it))):
                 res, _info, cut, ov, _ref = run_qa(rec, key, it, stored_path(last))
                 if res.verdict == 'fail': fixes[key] = make_fix(it, res, cut, ov)
     if fixes:
@@ -931,10 +1092,22 @@ def refresh_drafts():
 
 
 def main(argv=None):
+    argv, k = list(sys.argv[1:] if argv is None else argv), 0
+    while k < len(argv):
+        tok, nxt = argv[k], (argv[k + 1] if k + 1 < len(argv) else None)
+        if tok == '--force' and (nxt is None or nxt.startswith('--')):
+            raise SystemExit('--force needs the item ids to accept despite failing QA, e.g. --force 0_0,1_-1 --reason "..." '
+                             '(a bare batch-wide --force is no longer accepted)')
+        # tile ids such as -1_0 start with '-': argparse would read them as an option, so glue them to their flag
+        if tok in ('--force', '--only') and nxt and re.fullmatch(r'-\d[\w,-]*', nxt): argv[k:k + 2] = [f'{tok}={nxt}']
+        k += 1
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('batch'); ap.add_argument('folder')
     ap.add_argument('--accept', action='store_true', help='accept items whose latest file passes QA')
-    ap.add_argument('--force', action='store_true', help='with --accept: accept even if QA failed (recorded as forced)')
+    ap.add_argument('--force', metavar='ITEM[,ITEM...]',
+                    help='with --accept: also accept these items although their QA failed (or their reference changed); needs '
+                         '--reason; recorded in art/tiles.json as forced, with the reason and the overridden checks')
+    ap.add_argument('--reason', help='why the --force items are accepted despite failing QA (required with --force)')
     ap.add_argument('--only', help='comma-separated item ids')
     ap.add_argument('--model', help='model name/version reported by the agent (overrides <batch>_report.txt)')
     ap.add_argument('--settings', help='settings reported by the agent')
@@ -946,11 +1119,15 @@ def main(argv=None):
                     help='seams: paste the band hard instead of the triangular feather - use when the return MOVES a line feature '
                          '(rails, kerbs) inside the band, which a feather would ghost (S004R1)')
     a = ap.parse_args(argv)
+    if a.force is not None and not a.force.strip(',').strip():
+        raise SystemExit('--force needs the item ids to accept despite failing QA, e.g. --force 0_0,1_-1 --reason "..."')
+    if a.force and not (a.reason or '').strip():
+        raise SystemExit(f'--force {a.force} needs --reason "why these items are accepted despite failing QA" (recorded in art/tiles.json)')
     if a.no_feather: T['seam_feather'] = False
     if a.state_dir: os.environ['TW_ART_DIR'] = os.path.abspath(a.state_dir)
     if not os.path.isdir(a.folder): raise SystemExit(f'not a directory: {a.folder}')
     rec = process(a.batch, a.folder, a.accept, a.force, set(a.only.split(',')) if a.only else None, a.model, a.settings,
-                  a.reprocess, not a.no_publish, not a.no_revision)
+                  a.reprocess, not a.no_publish, not a.no_revision, reason=a.reason)
     print(f'{a.batch}: {rec["status"]} - ' + ', '.join(f'{k} {it["status"]}' for k, it in rec['items'].items()))
 
 

@@ -46,6 +46,7 @@ export const FLIGHT = {
 } as const;
 
 const SPEED_TAU = 0.6, CANOPY_TAU = 0.25, VZ_TAU = 0.3, TURN_TAU = 0.12, BANK_TAU = 0.2, FLOOR_TAU = 0.1;
+const CEILING_SINK_TAU = 0.8;   // s: sink speed above the ceiling is the overshoot / this (at most FLIGHT.diveRate)
 const MAX_BANK = 0.6;           // rad at full turn input
 const WALL_YAW_RATE = 3;        // rad/s the heading swings toward a wall's tangent while scraping it
 const WALL_ROLL = 1.15;         // rad: roll the wall-side wing up while scraping (keeps the 3.9 m half-span out of the facade)
@@ -235,7 +236,12 @@ export class Flight {
 
     // vertical: climb / dive / flap-climb, otherwise hold altitude
     const climb = clamp(input.climb, -1, 1);
-    const vzTarget = input.flap ? FLIGHT.flapClimb : climb > 0 ? climb * FLIGHT.climbRate : climb * FLIGHT.diveRate;
+    let vzTarget = input.flap ? FLIGHT.flapClimb : climb > 0 ? climb * FLIGHT.climbRate : climb * FLIGHT.diveRate;
+    // Above the ceiling (the ground fell away under a goose flying at it, off a roof or a hill): sink back onto it like
+    // a dive, eased by VZ_TAU. Clamping z to it instead dropped the goose, and the camera with it, the whole height of
+    // the step in one frame (a 10 m roof edge was an 80 px jump of the map).
+    const over = s.z - this.ceilingAt(s.x, s.y);
+    if (over > 0) vzTarget = Math.min(vzTarget, -Math.min(FLIGHT.diveRate, over / CEILING_SINK_TAU));
     s.vz = relax(s.vz, vzTarget, dt, VZ_TAU);
 
     if (!col.isLoaded(s.x, s.y)) { s.waiting = true; this.animate(dt, input); return; }
@@ -244,8 +250,8 @@ export class Flight {
     // collide and slide
     let from: Vec3 = [s.x, s.y, s.z];
     let to: Vec3 = [s.x + s.vx * dt, s.y + s.vy * dt, s.z + s.vz * dt];
-    const ceiling = this.solid(to[0], to[1]);
-    to[2] = Math.min(to[2], FLIGHT.maxZ, (ceiling === -Infinity ? s.surface : ceiling) + FLIGHT.maxAltitude);
+    // the ceiling stops a climb, but never pulls the goose down by itself (see the sink above)
+    to[2] = Math.min(to[2], FLIGHT.maxZ, Math.max(this.ceilingAt(to[0], to[1]), Math.min(s.z, to[2])));
     for (let it = 0; it < SLIDE_ITERATIONS; it++) {
       const r = this.radiusAt(from[0], from[1], from[2]);
       const hit = col.sweep(from, to, r, 1, { trees: false });
@@ -300,15 +306,21 @@ export class Flight {
         z = s.z;
         moved = verticalOnly = true;
       }
-      if (!moved) for (const [fx, fy] of this.fenceNormals) {
-        const d = dx * fx + dy * fy;
-        const cx = s.x + dx - d * fx, cy = s.y + dy - d * fy;
-        // the projected point was not part of the sweep above: only take it when it is free as well
-        if (this.inside(cx, cy, z) && col.sweep([s.x, s.y, s.z], [cx, cy, z], FLIGHT.radius, 1, { trees: false }).hit === 'none') {
-          x = cx; y = cy; moved = true;
-          const v = s.vx * fx + s.vy * fy;
-          s.vx -= v * fx; s.vy -= v * fy;
-          break;
+      // Slide along the fence, at the new altitude if that is inside, else at the old one: on the bottom edge a dive or
+      // the sink above the ceiling moves the goose's screen point out as well, and without the second try every
+      // projection failed and the goose stopped dead against the fence for as long as it kept sinking.
+      if (!moved) slide: for (const zz of z !== s.z ? [z, s.z] : [z]) {
+        for (const [fx, fy] of this.fenceNormals) {
+          const d = dx * fx + dy * fy;
+          const cx = s.x + dx - d * fx, cy = s.y + dy - d * fy;
+          // the projected point was not part of the sweep above: only take it when it is free as well
+          if (this.inside(cx, cy, zz) && col.sweep([s.x, s.y, s.z], [cx, cy, zz], FLIGHT.radius, 1, { trees: false }).hit === 'none') {
+            x = cx; y = cy; moved = true;
+            const v = s.vx * fx + s.vy * fy;
+            s.vx -= v * fx; s.vy -= v * fy;
+            if (zz !== z) { if ((z - s.z) * s.vz > 0) s.vz = 0; z = zz; }
+            break slide;
+          }
         }
       }
       if (!moved) { x = s.x; y = s.y; z = s.z; s.vx *= -0.3; s.vy *= -0.3; }
@@ -358,6 +370,13 @@ export class Flight {
     const top = this.col.solidTop(x, y);
     const water = (this.col.kind(x, y) & (KIND_WATER | KIND_BUILDING)) === KIND_WATER;
     return water && z - top < FLIGHT.radius + 0.05 ? FLIGHT.waterRadius : FLIGHT.radius;
+  }
+
+  /** The highest the goose may climb over (x, y): FLIGHT.maxAltitude above the solid top there, at most FLIGHT.maxZ. */
+  private ceilingAt(x: number, y: number): number {
+    const top = this.solid(x, y);
+    const c = (top === -Infinity ? this.state.surface : top) + FLIGHT.maxAltitude;
+    return c === c ? Math.min(c, FLIGHT.maxZ) : FLIGHT.maxZ;
   }
 
   /** solidTop, with -Infinity for unknown data (so Math.max ignores it). */

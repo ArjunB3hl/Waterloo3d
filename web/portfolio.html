@@ -5,15 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Arjun Behl — an interactive portfolio</title>
   <meta name="description" content="Arjun Behl builds software and AI-powered tools. Fly a goose over an illustrated University of Waterloo campus and find his projects: CrisisRoom, Rhythm and Dune Rush." />
+  <link rel="canonical" href="https://arjun-behl-portfolio.onrender.com/" />
+  <meta name="theme-color" content="#1d2024" />
+  <!-- link previews (LinkedIn, Slack, iMessage, X): the image is the title screen over the map, 1200 x 630 -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Arjun Behl" />
+  <meta property="og:title" content="Arjun Behl — an interactive portfolio" />
+  <meta property="og:description" content="I build software and AI-powered tools. Fly a goose over an illustrated University of Waterloo campus to find my projects, experience and skills." />
+  <meta property="og:url" content="https://arjun-behl-portfolio.onrender.com/" />
+  <meta property="og:image" content="https://arjun-behl-portfolio.onrender.com/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Arjun Behl, an interactive portfolio: a title screen over an illustrated map of the University of Waterloo campus" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Arjun Behl — an interactive portfolio" />
+  <meta name="twitter:description" content="I build software and AI-powered tools. Fly a goose over an illustrated University of Waterloo campus to find my projects." />
+  <meta name="twitter:image" content="https://arjun-behl-portfolio.onrender.com/og-image.jpg" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23e8892f'/%3E%3Cpath d='M3 12V6l5-3 5 3v6z' fill='%23fff3e0'/%3E%3C/svg%3E" />
 </head>
 <body data-portfolio>
-  <div id="app" aria-label="Arjun Behl's interactive portfolio: a campus map you explore as a goose">
+  <div id="app" class="portfolio-mode title-open" aria-label="Arjun Behl's interactive portfolio: a campus map you explore as a goose">
     <div id="stage" role="application" aria-label="Isometric map of the University of Waterloo campus. Start flying to steer a goose between the portfolio stops." tabindex="0">
       <canvas id="map-base"></canvas>
       <div id="labels" aria-hidden="false"></div>
     </div>
-    <div id="ui"></div>
+    <div id="ui">
+      <!-- Painted with the page, before the map loads; portfolio/game.ts replaces it with the working title screen. -->
+      <div class="title-screen" id="title-boot">
+        <div class="title-box">
+          <p class="title-kicker">An interactive portfolio</p>
+          <h1>Arjun Behl</h1>
+          <p class="title-tag">I build software and AI-powered tools.</p>
+          <p class="title-sub">Fly a goose over the University of Waterloo campus and find the stops: my projects, experience, education, skills and how to reach me.</p>
+          <button type="button" class="btn primary title-start" disabled aria-busy="true">Loading the map…</button>
+        </div>
+      </div>
+    </div>
     <footer id="attribution" aria-label="Map data attribution"></footer>
   </div>
   <noscript>

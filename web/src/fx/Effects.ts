@@ -27,6 +27,12 @@ const FOCUS_TAU_MS = 140;
 const HALF_RES_PIXELS = 2_400_000;
 /** CoC radius (device px) above which the blur is always computed at half resolution. */
 const HALF_RES_COC = 8;
+/** Adaptive quality (fx/adaptive.ts) levels, by measured GPU cost: the effects layer itself (uploading the base, height
+ *  and life canvases every moving frame, plus the final pass) is most of it, so level 1 drops the tilt-shift and level
+ *  2 drops the life animation too, which hides the effects layer entirely. */
+export const ADAPTIVE_MAX_LEVEL = 2;
+/** The tilt-shift fades out (and back in at the next take-off) over this long instead of popping. */
+const TILT_GATE_MS = 400;
 
 export interface EffectsDebug {
   webgl2: boolean;
@@ -41,9 +47,15 @@ export interface EffectsDebug {
   renderMs: number;          // CPU time of the last render (uploads + draw submission)
   frames: number;            // frames composed so far
   uploads: number;           // base texture uploads so far
+  adaptiveLevel: number;     // 0 = as set, 1 = tilt-shift off, 2 = life off too (see ADAPTIVE_MAX_LEVEL)
+  tiltGate: number;          // 0..1 adaptive fade of the tilt-shift
 }
 
-export type Effects = EffectsModule & { readonly debug: Readonly<EffectsDebug> };
+export type Effects = EffectsModule & {
+  readonly debug: Readonly<EffectsDebug>;
+  /** Runtime quality reduction from fx/adaptive.ts (never stored in the settings): 0..ADAPTIVE_MAX_LEVEL. */
+  setAdaptiveLevel(level: number): void;
+};
 
 const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -56,9 +68,12 @@ export function createEffects(map: MapAPI): Effects {
 
   const debug: EffectsDebug = {
     webgl2: false, visible: false, life: false, tilt: false, tiltFade: 0, lastFocusDepth: NaN, focusSettled: true,
-    cocMax: 0, blurScale: 1, renderMs: 0, frames: 0, uploads: 0,
+    cocMax: 0, blurScale: 1, renderMs: 0, frames: 0, uploads: 0, adaptiveLevel: 0, tiltGate: 1,
   };
   let enabled = { life: false, tiltShift: false, strength: 0 };
+  let adaptive = 0;
+  let tiltGate = 1;           // eased toward 0 while adaptive >= 1
+  let gateT = NaN;            // frame time of the last gate step
   let quality: Settings['quality'] = map.settings.quality;
   let focus: { sx: number; sy: number } | null = null;
   /** Eased focus, view relative so panning never makes it lag: depth offset from the centre's ground and screen row (CSS px). */
@@ -77,8 +92,9 @@ export function createEffects(map: MapAPI): Effects {
   };
   initGL();
 
-  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); comp = null; show(false); });
-  canvas.addEventListener('webglcontextrestored', () => { initGL(); map.invalidate(); });
+  // the aux layers follow comp (syncAux): released while the context is gone, requested again once it is back
+  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); comp = null; show(false); syncAux(); });
+  canvas.addEventListener('webglcontextrestored', () => { initGL(); syncAux(); map.invalidate(); });
 
   function show(v: boolean): void {
     debug.visible = v;
@@ -93,8 +109,46 @@ export function createEffects(map: MapAPI): Effects {
       warned = true;
       map.toast('Visual effects are unavailable in this browser (no WebGL2).');
     }
-    map.requestAuxLayers({ life: !!comp && enabled.life, height: !!comp && tiltOn });
+    syncAux();
     map.invalidate();
+  }
+
+  /** The effects actually drawn: the settings less the adaptive reduction (the tilt-shift stays while it fades out). */
+  function effective(): { life: boolean; tilt: boolean } {
+    return {
+      life: enabled.life && adaptive < 2,
+      tilt: enabled.tiltShift && enabled.strength > 0 && (adaptive < 1 || tiltGate > 0),
+    };
+  }
+
+  /** Ask MapView only for the aux layers in use: drawing the height and life canvases is part of the cost too. */
+  function syncAux(): void {
+    const e = effective();
+    map.requestAuxLayers({ life: !!comp && e.life, height: !!comp && e.tilt });
+  }
+
+  function setAdaptiveLevel(level: number): void {
+    const l = Math.max(0, Math.min(ADAPTIVE_MAX_LEVEL, Math.round(level)));
+    if (l === adaptive) return;
+    adaptive = l;
+    debug.adaptiveLevel = l;
+    gateT = NaN;
+    syncAux();
+    map.invalidate();
+  }
+
+  /** Step the tilt-shift gate toward its target (1 at level 0, else 0); returns it. */
+  function stepGate(time: number): number {
+    const target = adaptive < 1 ? 1 : 0;
+    if (tiltGate === target) { gateT = time; return tiltGate; }
+    const dt = Number.isFinite(gateT) ? Math.min(100, Math.max(0, time - gateT)) : 0;
+    gateT = time;
+    const step = prefersReducedMotion.matches ? 1 : dt / TILT_GATE_MS;
+    tiltGate = target > tiltGate ? Math.min(target, tiltGate + step) : Math.max(target, tiltGate - step);
+    if (tiltGate === 0) syncAux();          // faded out: stop drawing the height layer
+    else map.invalidate();                  // keep frames coming until the fade is done
+    debug.tiltGate = tiltGate;
+    return tiltGate;
   }
 
   function setFocus(sx: number | null, sy: number | null): void {
@@ -165,10 +219,11 @@ export function createEffects(map: MapAPI): Effects {
     if (comp?.contextLost) comp = null;
     const z = f.view.zoom, F = map.frame.F;
     const visibleTiles = (f.width / z / F) * (f.height / z / F);
+    const gate = stepGate(f.time);
     const tiltFade = enabled.tiltShift && enabled.strength > 0
-      ? Math.min(1, Math.max(0, (TILT_FADE_TILES[1] - visibleTiles) / (TILT_FADE_TILES[1] - TILT_FADE_TILES[0]))) : 0;
+      ? gate * Math.min(1, Math.max(0, (TILT_FADE_TILES[1] - visibleTiles) / (TILT_FADE_TILES[1] - TILT_FADE_TILES[0]))) : 0;
     const lifeCanvas = map.lifeCanvas;
-    const lifeOn = enabled.life && z >= LIFE_MIN_ZOOM && !!lifeCanvas;
+    const lifeOn = enabled.life && adaptive < 2 && z >= LIFE_MIN_ZOOM && !!lifeCanvas;
     const tiltOn = tiltFade > 0;
     debug.tiltFade = tiltFade;
     debug.life = !!comp && lifeOn;
@@ -230,6 +285,7 @@ export function createEffects(map: MapAPI): Effects {
     canvas,
     debug,
     setEnabled,
+    setAdaptiveLevel,
     setFocus,
     render,
     dispose() {

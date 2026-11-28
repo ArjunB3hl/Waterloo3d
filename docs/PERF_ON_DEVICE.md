@@ -60,6 +60,8 @@ not input handling. Part B covers input.
    and `heap`.
 6. Click **Fly as a goose**. Fly around campus for about 10 seconds (A/D turn, W/S climb, Shift boost) and read
    `fps` and `frame p95` again. Press L to land.
+   With Quality on Auto, a slow flight lowers the effects by itself (a toast says so), so this reading is of
+   the lowered level. To measure the full effects, set Quality to High or open the page with `?adaptive=0`.
 
 Send back a short list, for example:
 

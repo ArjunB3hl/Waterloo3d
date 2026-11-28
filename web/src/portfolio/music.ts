@@ -12,10 +12,8 @@ export function createPortfolioMusic(ui: HTMLElement): { start: () => void } {
   let started = false;
   try { enabled = localStorage.getItem(PREFERENCE_KEY) !== 'off'; } catch { /* storage unavailable */ }
 
-  const button = h('button', {
-    type: 'button', class: 'music-toggle panel-chrome',
-    onkeydown: (event: Event) => event.stopPropagation(),
-  });
+  // Space and Enter on the focused button toggle it: the goose's flight keys leave keys aimed at a button alone
+  const button = h('button', { type: 'button', class: 'icon-btn music-toggle' });
   const sync = () => {
     const playing = !audio.paused && !audio.error;
     const label = playing ? 'Mute music' : 'Unmute music';
@@ -42,7 +40,11 @@ export function createPortfolioMusic(ui: HTMLElement): { start: () => void } {
     if (document.hidden) audio.pause();
     else play();
   });
-  ui.append(audio, button);
+  // In the right-hand control column with share, settings and about: a fixed corner of its own put it under the map
+  // attribution footer on phones and on top of the touch flight pad's turn-left button in landscape.
+  const group = ui.querySelector('.controls .btn-group:last-child');
+  ui.append(audio);
+  if (group) group.prepend(button); else ui.append(button);
   sync();
   return { start: () => { started = true; play(); } };
 }

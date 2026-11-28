@@ -1,7 +1,7 @@
 // Portfolio as a game (web/portfolio.html, or index.html?portfolio=1): a title screen over the live map, stops to
 // find as a goose, a quest tracker with a pointer to the next stop, and a finish message. Stop content itself is in
-// web/public/data/portfolio_stops.json and is shown by the landmark widget (map/widgets/landmarks.ts).
-import './game.css';
+// web/public/data/portfolio_stops.json and is shown by the landmark widget (map/widgets/landmarks.ts). Its stylesheet
+// (game.css) is imported by main.ts, so the title screen and the hidden map-app chrome are styled at first paint.
 import type { ActorModule, Landmark, MapAPI } from '../types';
 import { h, icon } from '../map/widgets/dom';
 import { createPortfolioMusic } from './music';
@@ -9,6 +9,10 @@ import { createPortfolioMusic } from './music';
 const SEEN_KEY = 'arjunPortfolio.stopsFound.v1';
 const FIND_RADIUS = 150;            // canvas px (about 45 m): flying this close to a stop finds it
 const M_PER_PX = 0.29296875;
+const PREFETCH_DELAY_MS = 1500;     // after the title shows: fetch what a take-off needs while the visitor reads
+
+/** Touch screens get tap wording instead of key names (same test as the touch flight pad's CSS). */
+const touch = () => matchMedia('(pointer: coarse)').matches;
 
 export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landmark[], ui: HTMLElement): void {
   const app = document.getElementById('app')!;
@@ -41,39 +45,90 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
   const pointerText = h('span', { class: 'quest-next' });
   const pointer = h('div', { class: 'quest-pointer', role: 'status', 'aria-live': 'off' }, pointerArrow, pointerText);
   const reset = h('button', { type: 'button', class: 'quest-reset', onclick: () => { found.clear(); save(); update(); map.toast('Progress cleared'); } }, 'Reset');
+  // the chevron only shows on short screens (landscape phones), where the list starts folded away (game.css)
+  list.id = 'quest-list';
+  const more = h('button', { type: 'button', class: 'quest-more', 'aria-controls': 'quest-list', 'aria-expanded': 'false', 'aria-label': 'Show all stops' }, icon('chevron'));
   const tracker = h('section', { class: 'quest panel-chrome', 'aria-label': 'Portfolio stops' },
-    h('header', { class: 'quest-head' }, h('span', { class: 'quest-title' }, 'Stops found'), count), pointer, list,
-    h('p', { class: 'quest-hint' }, 'Click a stop or press 1–', String(stops.length), ' to jump there'), reset);
+    h('header', { class: 'quest-head' }, h('span', { class: 'quest-title' }, 'Stops found'), count, more), pointer, list,
+    h('p', { class: 'quest-hint' }, touch() ? 'Tap a stop to jump there' : `Click a stop or press 1–${stops.length} to jump there`), reset);
+  more.addEventListener('click', () => {
+    const open = tracker.classList.toggle('expanded');
+    more.setAttribute('aria-expanded', String(open));
+    more.setAttribute('aria-label', open ? 'Hide the list of stops' : 'Show all stops');
+  });
   ui.append(tracker);
 
   // ------------------------------------------------------------------ title screen
-  const startBtn = h('button', { type: 'button', class: 'btn primary title-start' }, icon('bird'), found.size ? 'Continue flying' : 'Start flying');
+  const startLabel = h('span', {}, found.size ? 'Continue flying' : 'Start flying');
+  const startBtn = h('button', { type: 'button', class: 'btn primary title-start' }, icon('bird'), startLabel);
   const lookBtn = h('button', { type: 'button', class: 'title-look' }, 'Skip the flight: jump straight to the stops');
+  const startError = h('p', { class: 'title-error', role: 'alert', hidden: true });
   const title = h('div', { class: 'title-screen', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'title-name' },
     h('div', { class: 'title-box' },
       h('p', { class: 'title-kicker' }, 'An interactive portfolio'),
       h('h1', { id: 'title-name' }, 'Arjun Behl'),
       h('p', { class: 'title-tag' }, 'I build software and AI-powered tools.'),
-      h('p', { class: 'title-sub' }, `Fly a goose over the University of Waterloo campus and find the ${stops.length} stops: my projects, experience, education, skills and how to reach me.`),
+      h('p', { class: 'title-sub' }, 'Fly a goose over the University of Waterloo campus and find the stops: my projects, experience, education, skills and how to reach me.'),
       startBtn,
+      startError,
       found.size ? h('p', { class: 'title-progress' }, `${found.size} of ${stops.length} stops found so far`) : null,
       h('p', { class: 'title-keys' }, h('kbd', {}, 'W A S D'), ' or arrows steer  ', h('kbd', {}, 'Shift'), ' faster  ', h('kbd', {}, 'Space'), ' flap  ', h('kbd', {}, 'L'), ' land and read a stop  ', h('kbd', {}, `1–${stops.length}`), ' jump to a stop'),
+      h('p', { class: 'title-touch' }, 'Steer with the arrow buttons and tap Land to read a stop, or tap a stop in the list to jump there.'),
       lookBtn,
       h('p', { class: 'title-links' },
         h('a', { href: 'https://github.com/ArjunB3hl', target: '_blank', rel: 'noopener noreferrer' }, 'GitHub'),
         h('a', { href: 'https://www.linkedin.com/in/arjunbehl8/', target: '_blank', rel: 'noopener noreferrer' }, 'LinkedIn'),
         h('a', { href: 'mailto:arjun.behl.2003@gmail.com' }, 'Email'))));
+  document.getElementById('title-boot')?.remove();     // the static title portfolio.html paints before the scripts run
   ui.append(title);
-  const closeTitle = () => { title.remove(); app.classList.remove('title-open'); music.start(); };
+  // Escape leaves the title wherever focus is: on the music toggle, which sits outside it, too
+  const onEscape = (e: KeyboardEvent) => { if (e.key === 'Escape' && !title.contains(e.target as Node)) { leaveTitle(); document.getElementById('stage')?.focus(); } };
+  const closeTitle = () => { title.remove(); app.classList.remove('title-open'); window.removeEventListener('keydown', onEscape); };
   app.classList.add('title-open');
-  const first = stops.find((s) => s.id === 'about') ?? stops[0];
+  window.addEventListener('keydown', onEscape);
+  const first: Landmark | undefined = stops.find((s) => s.id === 'about') ?? stops[0];   // none if the stops failed to load
+  // The title stays up, with the button showing that the goose is taking off, until the flight has really started: the
+  // first take-off downloads the 3D renderers and collision data, which takes seconds on a phone. Closing the title
+  // first left a bare map that did nothing, and a stop opened meanwhile was closed again when the flight began.
+  // Skip and Escape stay live meanwhile and drop the take-off, so a slow or stalled load never traps the visitor.
+  let launching = false;
+  const endLaunch = () => { launching = false; startBtn.removeAttribute('aria-disabled'); startBtn.removeAttribute('aria-busy'); };
+  const leaveTitle = () => {
+    if (launching) { endLaunch(); actor.cancelStart?.(); }
+    closeTitle(); music.start();
+  };
   startBtn.addEventListener('click', () => {
-    closeTitle();
-    actor.start({ cx: first.canvas[0] - 60, cy: first.canvas[1] + 240 }).catch((e) => map.toast(`Could not start flight: ${e?.message ?? e}`));
+    if (launching) return;
+    launching = true;
+    music.start();                       // inside the click: browsers only allow audible playback from a gesture
+    // aria-disabled, not disabled: a disabled button drops keyboard focus to the page, where Escape no longer reaches the title
+    startBtn.setAttribute('aria-disabled', 'true');
+    startBtn.setAttribute('aria-busy', 'true');
+    startLabel.textContent = 'Taking off…';
+    startError.hidden = true;
+    const at = first ? { cx: first.canvas[0] - 60, cy: first.canvas[1] + 240 } : undefined;
+    // through a promise, so a synchronous throw also lands in the failure path below instead of leaving the title stuck
+    Promise.resolve().then(() => actor.start(at)).then(() => { if (launching) { endLaunch(); closeTitle(); } }, (e) => {
+      console.warn('Goose flight could not start:', e);
+      if (!launching) return;            // the visitor already left the title with Skip or Escape
+      endLaunch();
+      startLabel.textContent = 'Try again';
+      startError.textContent = 'The flight could not start. Check the connection and try again, or jump straight to the stops below.';
+      startError.hidden = false;
+      startBtn.focus();
+    });
   });
-  lookBtn.addEventListener('click', () => { closeTitle(); jumpTo(first); map.toast(`No flying needed: pick a stop from the list, or press 1–${stops.length}`); });
-  title.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeTitle(); document.getElementById('stage')?.focus(); } e.stopPropagation(); });
+  lookBtn.addEventListener('click', () => {
+    leaveTitle();
+    if (first) jumpTo(first);
+    map.toast(touch() ? 'No flying needed: pick a stop from the list' : `No flying needed: pick a stop from the list, or press 1–${stops.length}`);
+  });
+  title.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { leaveTitle(); document.getElementById('stage')?.focus(); }
+    e.stopPropagation();
+  });
   window.setTimeout(() => startBtn.focus(), 0);
+  window.setTimeout(() => actor.prefetch?.(), PREFETCH_DELAY_MS);
 
   // ------------------------------------------------------------------ progress
   const nearest = (from: [number, number], pool: Landmark[]) => {
@@ -96,7 +151,7 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
     if (found.has(s.id)) return;
     found.add(s.id); save();
     const award = s.portfolio?.award ? ` - ${s.portfolio.award}` : '';
-    map.toast(found.size === stops.length ? `Found ${s.name}${award}. That is all ${stops.length} stops!` : `Found ${s.name}${award} (${found.size}/${stops.length}). Press L to land and read it`);
+    map.toast(found.size === stops.length ? `Found ${s.name}${award}. That is all ${stops.length} stops!` : `Found ${s.name}${award} (${found.size}/${stops.length}). ${touch() ? 'Tap Land to read it' : 'Press L to land and read it'}`);
     update();
     if (found.size === stops.length && !finished) {
       finished = true;
@@ -117,7 +172,7 @@ export function startPortfolioGame(map: MapAPI, actor: ActorModule, stops: Landm
       const [s, d] = nearest(here, stops);
       if (s && d < FIND_RADIUS) {
         if (!found.has(s.id)) find(s);
-        else if (lastNear !== s.id) map.toast(`Over ${s.name} - press L to land and read it`);
+        else if (lastNear !== s.id) map.toast(`Over ${s.name} - ${touch() ? 'tap Land to read it' : 'press L to land and read it'}`);
         lastNear = s.id;
       } else lastNear = null;
     }

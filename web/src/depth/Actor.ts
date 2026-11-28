@@ -99,6 +99,7 @@ class GooseActor implements Actor {
   private flight: Flight | null = null;
   private hud: FlightHud | null = null;
   private starting: Promise<void> | null = null;
+  private startCancelled = false;
   private isActive = false;
   private autoStep = true;
   private lastTime = NaN;
@@ -139,8 +140,18 @@ class GooseActor implements Actor {
 
   start(at?: { cx: number; cy: number }): Promise<void> {
     if (this.isActive) return Promise.resolve();
+    this.startCancelled = false;
     this.starting ??= this.takeOff(at).finally(() => { this.starting = null; });
     return this.starting;
+  }
+
+  /** Drop a take-off that is still loading: start()'s promise then resolves with the goose grounded. A later start() undoes this. */
+  cancelStart(): void { this.startCancelled = true; }
+
+  /** Download what a take-off needs (collision index, feathers, the three.js renderers) without creating GL contexts. */
+  prefetch(): void {
+    this.loadData().catch(() => { /* start() retries */ });
+    import('./renderers').catch(() => { /* start() retries */ });
   }
 
   stop(): void {
@@ -220,6 +231,7 @@ class GooseActor implements Actor {
     gl.shadow.clear();
     await nextFrame();
     if (this.gl !== gl) return;
+    if (this.startCancelled) { this.heights.release(); return; }   // stop() never runs for a take-off that never began
 
     this.isActive = true;
     this.autoStep = true;
@@ -239,7 +251,9 @@ class GooseActor implements Actor {
     const zoom = v.zoom < MIN_FLIGHT_ZOOM ? FLIGHT_ZOOM : v.zoom;
     this.map.setView({ cx: c.cx, cy: c.cy, zoom }, { animate: true });
     this.intro = { until: performance.now() + INTRO_TIMEOUT_MS, prev: null };
-    this.map.toast('Flying as a goose: A / D turn, W / S climb and dive, Shift boost, Space flap, L lands');
+    this.map.toast(matchMedia('(pointer: coarse)').matches
+      ? 'Flying as a goose: the arrow buttons turn, climb and dive; Flap, Boost, and Land to come down'
+      : 'Flying as a goose: A / D turn, W / S climb and dive, Shift boost, Space flap, L lands');
     this.map.invalidate();
   }
 
@@ -458,7 +472,11 @@ class GooseActor implements Actor {
     if (!key) return;
     // a release always ends the hold, wherever focus went meanwhile (e.g. into a panel opened mid-flight)
     if (e.type === 'keyup') { this.keys.delete(key); return; }
+    // an Escape the map UI has already used (to close a panel) does not land the goose as well. Only Escape: the map's
+    // own key handler marks the steering keys as handled too.
+    if (e.key === 'Escape' && e.defaultPrevented) return;
     if (e.ctrlKey || e.metaKey || e.altKey || inControls(e.target)) return;
+    if (key === 'flap' && pressable(e.target)) return;      // Space presses the button that has focus
     e.preventDefault();
     if (key === 'land') { this.stop(); return; }
     this.keys.add(key);
@@ -557,9 +575,18 @@ const canvasPx = (c: { cx: number; cy: number }): [number, number] => [c.cx, c.c
 
 function clamp(v: number, limit: number): number { return Math.max(-limit, Math.min(limit, v)); }
 
-/** Keys aimed at a form control or an open map panel (e.g. settings during flight) are not flight input. */
+/**
+ * Keys aimed at a text field, a select or a dialog (a map panel such as Settings opened mid-flight, the title screen)
+ * are not flight input. A plain button or link with focus does not take the flight keys: a click on the mute button
+ * used to leave the goose deaf to the keyboard, L and Escape included.
+ */
 function inControls(t: EventTarget | null): boolean {
-  return t instanceof Element && (!!t.closest('#ui, input, textarea, select') || (t as HTMLElement).isContentEditable);
+  return t instanceof Element && (!!t.closest('input, textarea, select, [role="dialog"]') || (t as HTMLElement).isContentEditable);
+}
+
+/** Space activates a focused button, so it does not flap there. It does nothing on a link, so it still flaps on one. */
+function pressable(t: EventTarget | null): boolean {
+  return t instanceof Element && !!t.closest('button, [role="button"]');
 }
 
 /** The next animation frame, or 100 ms when none are being produced (a hidden tab). */

@@ -116,7 +116,8 @@ The map's own JavaScript costs 1–5 ms per frame. The remaining frame time is s
 - `actor_check` 16/16
 - `depth_selfcheck`
 - `test_collision` 9/9
-- `test_art_import` 9/9
+- `test_art_import` 16/16
+- `test_harmonize` 42/42
 - `browser_check` 14/14
 - `test_google3d_pipeline`
 

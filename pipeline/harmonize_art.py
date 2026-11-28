@@ -19,6 +19,17 @@ resolution the tile borders show as straight lines. Two corrections, both driven
 3. Colour levelling, only where the cross-fade had nothing to blend with. Along each shared edge the mean colour of thin strips on both sides is compared in blocks; each
    tile takes half of the (smoothed, clipped) difference at the edge, fading out with a cosine over band_px.
 
+Locked tiles (art_harmonize.locked_regions, regions from config/regions.json): finished tiles must not change when
+tiles are added next to them. locked_regions is either a list of region names (one lock group) or a list of such
+lists (ordered lock groups, oldest first). The first group goes through all of the above among itself only, exactly as
+if no other tile existed. Every later group is then fitted to the groups before it, seeing no later group and no
+unlocked tile: its gains are solved with the earlier gains held, and on an edge with an earlier tile it takes the whole
+correction (one-sided cross-fade into the earlier tile's margin painting, full colour levelling and seam diffusion on
+its side, none on the earlier side); edges inside the group are treated as above. The unlocked tiles come last, fitted
+to all locked groups the same way. So a region published unlocked and then locked as a new last group keeps exactly
+the art it had (provided no unlocked tile next to it changed in between), and no earlier group ever changes. With no
+locked tile among the accepted ones, all tiles are equal.
+
 Usage: from publish_tiles (config/world.json 'art_harmonize'); or  python3 pipeline/harmonize_art.py  for a report.
 """
 import os, sys, glob, json
@@ -29,11 +40,36 @@ from world import cfg, ROOT
 
 DEFAULTS = {'enabled': True, 'detail_sigma': 1.2, 'gain_mean': 1.15, 'gain_clip': [0.85, 1.6], 'detail_strip_px': 64,
             'band_px': 256, 'strip_px': 8, 'block_px': 64, 'max_step': 30, 'passes': 2,
-            'diffuse': True, 'diffuse_strip_px': 2, 'diffuse_sigma': 1.5, 'xfade': True, 'xfade_px': 192, 'xfade_min_ncc': 0.2, 'xfade_ncc_ramp': 0.2, 'xfade_flat_std': 3.0, 'xfade_max_shift': 6}
+            'diffuse': True, 'diffuse_strip_px': 2, 'diffuse_sigma': 1.5, 'xfade': True, 'xfade_px': 192, 'xfade_min_ncc': 0.2, 'xfade_ncc_ramp': 0.2, 'xfade_flat_std': 3.0, 'xfade_max_shift': 6,
+            'locked_regions': []}
 
 
 def settings():
     s = dict(DEFAULTS); s.update(cfg().get('art_harmonize') or {}); return s
+
+
+def lock_groups(s):
+    """Ordered lock groups (lists of tile ids, oldest first) from locked_regions: a list of region names is one group, a
+    list of lists of names is one group per inner list. A tile already in an earlier group stays there. An unknown
+    region name, or a mix of names and lists, stops the publish."""
+    lr = s.get('locked_regions') or []
+    if all(isinstance(r, str) for r in lr): names = [lr] if lr else []
+    elif all(isinstance(r, list) and all(isinstance(x, str) for x in r) for r in lr): names = lr
+    else: raise SystemExit('art_harmonize.locked_regions: give a list of region names (one group) or a list of lists of '
+                           'region names (ordered groups, oldest first), not a mix')
+    regions = json.load(open(os.path.join(ROOT, 'config', 'regions.json'))) if names else {}
+    bad = sorted({r for g in names for r in g if r not in regions})
+    if bad: raise SystemExit(f'art_harmonize.locked_regions: no such region in config/regions.json: {", ".join(bad)}')
+    out, seen = [], set()
+    for g in names:
+        ids = {f'{i}_{j}' for r in g for i, j in regions[r]['tiles']} - seen
+        out.append(ids); seen |= ids
+    return out
+
+
+def locked_tiles(s):
+    """All locked tile ids (every lock group)."""
+    return set().union(*lock_groups(s))
 
 
 def _blur(a, sigma):
@@ -80,6 +116,26 @@ def detail_gains(tiles, s):
     x = np.linalg.lstsq(A, y, rcond=None)[0]
     x += np.log(s['gain_mean']) - x.mean()
     g = np.clip(np.exp(x), *s['gain_clip'])
+    return {k: float(g[idx[k]]) for k in keys}
+
+
+def free_gains(tiles, s, fixed):
+    """Gains of the tiles not in fixed ({tile: log gain}, held as given) from every edge that touches one of them. Free
+    tiles next to a fixed tile get no mean shift; a group touching no fixed tile is pulled weakly to gain_mean (the
+    per-tile anchor rows), which gives it the same normalisation as detail_gains."""
+    keys = sorted(k for k in tiles if k not in fixed); idx = {k: n for n, k in enumerate(keys)}
+    rows, rhs = [], []
+    for a, b, ax in _edges(tiles):
+        if a in fixed and b in fixed: continue
+        sa, sb = _strips(tiles[a], tiles[b], ax, s['detail_strip_px'])
+        r = np.zeros(len(keys)); y = np.log(_energy(sb)) - np.log(_energy(sa))   # want x_a - x_b = log(Eb / Ea)
+        if a in fixed: y -= fixed[a]
+        else: r[idx[a]] = 1
+        if b in fixed: y += fixed[b]
+        else: r[idx[b]] = -1
+        rows.append(r); rhs.append(y)
+    A = np.vstack(rows + [np.eye(len(keys)) * 1e-3]); y = np.array(rhs + [1e-3 * np.log(s['gain_mean'])] * len(keys))
+    g = np.clip(np.exp(np.linalg.lstsq(A, y, rcond=None)[0]), *s['gain_clip'])
     return {k: float(g[idx[k]]) for k in keys}
 
 
@@ -163,15 +219,18 @@ def _side_coords(F_, side):
     return {'L': (xx, yy), 'R': (F_ - xx, yy), 'T': (yy, xx), 'B': (F_ - yy, xx)}[side]
 
 
-def crossfade(t, gains, s, srcs):
+def crossfade(t, gains, s, srcs, fixed=(), ok_fixed=None):
     """World-space blend: every pixel is a normalised weighted mix of all paintings that cover it (the tile's own art and
-    its neighbours' margins), with weights that are continuous across tile borders and corners."""
+    its neighbours' margins), with weights that are continuous across tile borders and corners.
+    Tiles in fixed (locked, already final) are passed through and take no margin from anyone; their per-side validity
+    comes from ok_fixed (the run that finished them), so a free neighbour fades one-sided into their margin painting."""
     F_ = next(iter(t.values())).shape[0]; h = float(s['xfade_px']); B = s['block_px']
-    imgs = {k: (Image.open(p).convert('RGB'), o) for k, (p, o) in srcs.items() if k in t}
     ss = lambda x: x * x * (3 - 2 * x)
     C = lambda d: ss(np.clip((d + h) / (2 * h), 0, 1))               # centred ramp: 0.5 at the border
     I = lambda d: ss(np.clip(d / h, 0, 1))                           # inside ramp: 0 at the border
     nb = lambda k, side: f'{int(k.split("_")[0]) + SIDES[side][0]}_{int(k.split("_")[1]) + SIDES[side][1]}'
+    use = {k for k in t if k not in fixed}; use |= {nb(k, side) for k in use for side in SIDES}   # sources needed
+    imgs = {k: (Image.open(p).convert('RGB'), o) for k, (p, o) in srcs.items() if k in t and k in use}
     hh = int(h)
     # 1. neighbour margins into each tile, aligned, gain-matched, with per-pixel validity along the border
     ext, ok_in, report = {}, {}, []
@@ -179,6 +238,9 @@ def crossfade(t, gains, s, srcs):
         i, j = map(int, k.split('_')); X, Y = i * F_, j * F_
         for side in SIDES:
             n = nb(k, side); ok_in[(k, side)] = np.zeros(F_, np.float32)
+            if k in fixed:
+                if ok_fixed and (k, side) in ok_fixed: ok_in[(k, side)] = ok_fixed[(k, side)]
+                continue
             if n not in t or n not in imgs: continue
             box = {'L': (X, Y, X + hh, Y + F_), 'R': (X + F_ - hh, Y, X + F_, Y + F_),
                    'T': (X, Y, X + F_, Y + hh), 'B': (X, Y + F_ - hh, X + F_, Y + F_)}[side]
@@ -210,8 +272,9 @@ def crossfade(t, gains, s, srcs):
         for side in SIDES:
             d, a = coords[side]; w *= own_ramp(k, side, d, a)
         return w
-    out = {}
+    out = {k: t[k] for k in t if k in fixed}
     for k in t:
+        if k in fixed: continue
         W = own_weight(k); num = W[..., None] * t[k]; den = W.copy()
         for side in SIDES:
             if (k, side) not in ext: continue
@@ -227,12 +290,18 @@ def crossfade(t, gains, s, srcs):
     return out, report, ok_in
 
 
-def seam_diffuse(t, s):
+def seam_diffuse(t, s, fixed=()):
     """Remove the step that is left exactly at each shared edge (also when every available painting carries it, e.g.
     where an image tool's own tile met the neighbour context it reproduced). The per-row difference across the edge is
     split between both tiles and extended inwards as a harmonic (Laplace) function: a component with wavelength lam
     decays like exp(-2 pi dist / lam), so fine detail of the step is corrected within a few px and broad colour
-    differences fade out smoothly over band_px. Two Jacobi passes settle the corners."""
+    differences fade out smoothly over band_px. Two Jacobi passes settle the corners.
+    Tiles in fixed are not changed: edges between two of them are skipped, and a free tile facing one takes all of it.
+    Then each pass is three sweeps, each measured after the one before: edges with a fixed tile running vertically, the
+    same running horizontally, then edges between free tiles. Correcting edges that meet at a corner at once
+    double-counts there: a free|free edge next to the fixed tiles (36-tile ring, published tiles: step 9.4 in its first
+    64 px, 1.5 with the sweeps; 0.85 mid-edge either way), or a free tile with fixed tiles on two adjacent sides (a
+    notch), whose corner would get both full corrections."""
     F_ = next(iter(t.values())).shape[0]; band = s['band_px']; w = s['diffuse_strip_px']
     L2 = 2 * F_; k = np.arange(L2 // 2 + 1)
     dist = np.arange(band, dtype=np.float32) + 0.5
@@ -240,9 +309,11 @@ def seam_diffuse(t, s):
     taper = (0.5 * (1 + np.cos(np.pi * np.clip(dist / band, 0, 1))))[:, None]  # keeps even k=0 inside the band
     g = np.exp(-0.5 * (np.arange(-4, 5) / s['diffuse_sigma']) ** 2); g /= g.sum()
     steps = []
-    for _ in range(2):
+    for _, sweep in [(p, sw) for p in range(2) for sw in (((True, 1), (True, 0), (False, None)) if fixed else (None,))]:
         corr = {kk: np.zeros_like(v) for kk, v in t.items()}
         for a, b, ax in _edges(t):
+            if a in fixed and b in fixed: continue
+            if sweep is not None and (sweep[0] != (a in fixed or b in fixed) or sweep[1] not in (None, ax)): continue
             sa, sb = _strips(t[a], t[b], ax, w)
             d = sa.mean(1) - sb.mean(1)                                         # (F_, 3): a minus b along the edge
             d = np.stack([np.convolve(np.pad(d[:, c], 4, mode='edge'), g, 'valid') for c in range(3)], -1)
@@ -250,23 +321,25 @@ def seam_diffuse(t, s):
             if not _: steps.append(float(np.abs(d).mean()))
             D = np.fft.rfft(np.concatenate([d, d[::-1]], 0), axis=0)            # mirrored: no wrap-around at the ends
             f = np.stack([np.fft.irfft(D[:, c][None, :] * decay, n=L2, axis=1)[:, :F_] for c in range(3)], -1)
-            f = f * taper[..., None] / 2                                        # (band, F_, 3), half to each side
+            f = f * taper[..., None] / (1 if a in fixed or b in fixed else 2)   # (band, F_, 3), half to each side
             if ax == 1:
                 corr[a][:, -band:] -= f[::-1].transpose(1, 0, 2); corr[b][:, :band] += f.transpose(1, 0, 2)
             else:
                 corr[a][-band:] -= f[::-1]; corr[b][:band] += f
-        t = {kk: np.clip(v + corr[kk], 0, 255) for kk, v in t.items()}
+        t = {kk: v if kk in fixed else np.clip(v + corr[kk], 0, 255) for kk, v in t.items()}
     return t, steps
 
 
-def colour_level(tiles, s, ok_in=None):
-    corr = {k: np.zeros_like(v) for k, v in tiles.items()}
+def colour_level(tiles, s, ok_in=None, fixed=()):
+    """Tiles in fixed are not changed: edges between two of them are skipped, and a free tile facing one takes it all.
+    Edges between free tiles are all measured on the input; edges with a fixed tile running horizontally are measured
+    after those running vertically have been levelled (see below)."""
     B, w, band = s['block_px'], s['strip_px'], s['band_px']
     d_edge = np.arange(band, dtype=np.float32)
     fall = 0.5 * (1 + np.cos(np.pi * d_edge / band))                 # 1 at the edge -> 0 at band px
-    report = []
-    for a, b, ax in _edges(tiles):
-        sa, sb = _strips(tiles[a], tiles[b], ax, w)
+
+    def measure(src, a, b, ax):
+        sa, sb = _strips(src[a], src[b], ax, w)
         L = sa.shape[0]
         diff = sa.reshape(L // B, B, w, 3).mean((1, 2)) - sb.reshape(L // B, B, w, 3).mean((1, 2))   # per block
         # smooth along the edge, interpolate to every pixel, clip
@@ -280,15 +353,88 @@ def colour_level(tiles, s, ok_in=None):
             z = np.zeros(L, np.float32)
             done = np.maximum(ok_in.get((a, sa_), z), ok_in.get((b, sb_), z))
             full = full * (1 - done)[:, None]
-        report.append((a, b, float(np.abs(diff).mean())))
-        half = full / 2                                               # a moves by -half, b by +half
+        return full, float(np.abs(diff).mean())
+
+    def apply(corr, a, b, ax, half):                                  # a moves by -half, b by +half
+        for k in (a, b):
+            if k not in corr: corr[k] = np.zeros_like(tiles[k])
         if ax == 1:
             corr[a][:, -band:] -= half[:, None, :] * fall[::-1][None, :, None]
             corr[b][:, :band] += half[:, None, :] * fall[None, :, None]
         else:
             corr[a][-band:] -= half[None, :, :] * fall[::-1][:, None, None]
             corr[b][:band] += half[None, :, :] * fall[:, None, None]
-    return {k: np.clip(tiles[k] + corr[k], 0, 255) for k in tiles}, report
+
+    edges = [e for e in _edges(tiles) if not (e[0] in fixed and e[1] in fixed)]
+    side = lambda a, b: a in fixed or b in fixed
+    m = {(a, b): measure(tiles, a, b, ax) for a, b, ax in edges if not side(a, b) or ax == 1}
+    if fixed:   # horizontal edges with a fixed tile are measured after the vertical ones are levelled, so a free tile
+        # with fixed tiles on two adjacent sides is not corrected twice in their shared corner
+        corr = {}
+        for a, b, ax in edges:
+            if side(a, b) and ax == 1: apply(corr, a, b, ax, m[(a, b)][0])
+        cur = {k: np.clip(v + corr[k], 0, 255) if k in corr and k not in fixed else v for k, v in tiles.items()}
+        m.update({(a, b): measure(cur, a, b, ax) for a, b, ax in edges if side(a, b) and ax == 0})
+    corr, report = {}, []
+    for a, b, ax in edges:
+        full, d = m[(a, b)]; report.append((a, b, d))
+        apply(corr, a, b, ax, full if side(a, b) else full / 2)        # fixed side: dropped
+    return {k: tiles[k] if k in fixed or k not in corr else np.clip(tiles[k] + corr[k], 0, 255) for k in tiles}, report
+
+
+def stages(tiles, locked):
+    """The order in which tiles are finished: the lock groups present (locked is one set of tile ids or a list of them,
+    oldest first), then the unlocked tiles; with no locked tile present, all tiles together."""
+    groups = [locked] if isinstance(locked, (set, frozenset)) else list(locked)
+    seen, out = set(), []
+    for g in groups:
+        g = (set(g) & set(tiles)) - seen
+        if g: out.append(g); seen |= g
+    rest = set(tiles) - seen
+    return out + [rest] if rest else out
+
+
+def harmonize_tiles(t, s, locked, srcs):
+    """Core of harmonize on float arrays {tile id: HxWx3}; srcs = base_sources() (used when xfade is on).
+    locked: one set of tile ids, or a list of them (ordered lock groups, oldest first). The first group is harmonised
+    among itself exactly as if the others did not exist; each later group, and last the unlocked tiles, is then fitted to
+    everything before it without seeing anything after it. Returns (arrays, total gains, cross-fade report,
+    colour-levelling report, seam-diffusion steps)."""
+    st = stages(t, locked)
+    sub = lambda keys: {k: t[k] for k in t if k in keys}            # same order as t: the edge order fixes the float sums
+    total = {k: 1.0 for k in t}
+    for _ in range(s['passes']):
+        first = sub(st[0])
+        if _edges(first):
+            g = detail_gains(first, s)
+            if _: g = {k: v / s['gain_mean'] for k, v in g.items()}   # later passes only even out what is left
+        else: g = {k: 1.0 for k in first}                             # tiles with no neighbour stay as they are
+        m = s['gain_mean'] if _ else 1.0
+        done = set(st[0])
+        for grp in st[1:]:   # solved in first-pass units (before the division by gain_mean) against the earlier gains
+            fixed = {k: np.log(g[k] * m) for k in t if k in done}
+            g.update({k: v / m for k, v in free_gains(sub(done | grp), s, fixed).items()})
+            done |= grp
+        t = {k: apply_gain(v, g[k], s['detail_sigma']) for k, v in t.items()}
+        total = {k: total[k] * g[k] for k in t}
+    xrep, ok_in, rep, dsteps = [], None, [], []
+    fin = sub(st[0])
+    if _edges(fin):
+        if s.get('xfade'):
+            fin, xrep, ok_in = crossfade(fin, total, s, srcs)
+        fin, rep = colour_level(fin, s, ok_in)
+        if s.get('diffuse'):
+            fin, dsteps = seam_diffuse(fin, s)
+    for grp in st[1:]:
+        # the next group against the finished earlier ones (which every call below passes through unchanged)
+        cur = {k: fin.get(k, v) for k, v in t.items() if k in fin or k in grp}
+        if s.get('xfade'):
+            cur, x, ok_in = crossfade(cur, total, s, srcs, fixed=fin, ok_fixed=ok_in); xrep += x
+        cur, r = colour_level(cur, s, ok_in, fixed=fin); rep += r
+        if s.get('diffuse'):
+            cur, d = seam_diffuse(cur, s, fixed=fin); dsteps += d
+        fin = cur
+    return {k: fin[k] for k in t}, total, xrep, rep, dsteps
 
 
 def harmonize(images, verbose=True):
@@ -296,22 +442,15 @@ def harmonize(images, verbose=True):
     s = settings()
     if not s.get('enabled') or len(images) < 2: return images, None
     t = {k: np.asarray(v.convert('RGB'), np.float32) for k, v in images.items()}
-    total = {k: 1.0 for k in t}
-    for _ in range(s['passes']):
-        g = detail_gains(t, s)
-        if _: g = {k: v / s['gain_mean'] for k, v in g.items()}       # later passes only even out what is left
-        t = {k: apply_gain(v, g[k], s['detail_sigma']) for k, v in t.items()}
-        total = {k: total[k] * g[k] for k in t}
-    xrep, ok_in = [], None
-    if s.get('xfade'):
-        t, xrep, ok_in = crossfade(t, total, s, base_sources())
-    t, rep = colour_level(t, s, ok_in)
-    dsteps = []
-    if s.get('diffuse'):
-        t, dsteps = seam_diffuse(t, s)
+    groups = [g & set(t) for g in lock_groups(s)]
+    t, total, xrep, rep, dsteps = harmonize_tiles(t, s, groups, base_sources() if s.get('xfade') else {})
     info = {'gains': {k: round(v, 3) for k, v in total.items()}, 'xfade': xrep,
             'colour_steps_before': {f'{a}|{b}': round(d, 1) for a, b, d in rep}}
     if verbose:
+        n = [len(g) for g in groups if g]; free = len(t) - sum(n)
+        if n and (free or len(n) > 1):
+            print(f'harmonize: locked tiles kept as finished, in {len(n)} group(s) of {"+".join(map(str, n))}, each fitted '
+                  f'to the ones before it; {free} unlocked tiles fitted to them')
         gv = np.array(list(total.values()))
         print(f'harmonize: detail gains {gv.min():.2f}-{gv.max():.2f} (median {np.median(gv):.2f}); '
               f'{len(rep)} edges levelled, mean colour step {np.mean([d for *_, d in rep]):.1f} -> 0 at the edge')

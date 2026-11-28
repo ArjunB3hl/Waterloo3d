@@ -623,3 +623,30 @@ def seam_metrics(a, b, axis):
     worst = [r for _s, r in sorted(runs, key=lambda x: -x[0])[:5]]
     return {'grad_ratio': round(grad_ratio, 3), 'step_ratio': round(step_ratio, 3), 'cross_mean': round(float(cross.mean()), 2),
             'interior_mean': round(float(inner.mean()), 2), 'worst': worst}
+
+
+def hsv(rgb):
+    """sRGB uint8 (...,3) -> hue (deg, 0-360), saturation and value (0-1) as float arrays."""
+    a = to_float(rgb) / 255.0
+    mx = a.max(-1); mn = a.min(-1); d = np.maximum(mx - mn, 1e-6)
+    r, g, b = a[..., 0], a[..., 1], a[..., 2]
+    h = np.where(mx == r, ((g - b) / d) % 6, np.where(mx == g, (b - r) / d + 2, (r - g) / d + 4)) * 60.0
+    return h, np.where(mx > 0, (mx - mn) / np.maximum(mx, 1e-6), 0.0), mx
+
+
+def blobs(mask, cell=4):
+    """4-connected blobs of a boolean mask (H, W divisible by cell) on a cell grid: a cell is on when >= 1/4 of its
+    pixels are. Returns [{'px': mask pixels in the blob's cells, 'bbox': [x0, y0, x1, y1]}], largest first (no scipy)."""
+    H, W = mask.shape
+    g = mask.reshape(H // cell, cell, W // cell, cell).sum((1, 3)); on = g * 4 >= cell * cell
+    seen = np.zeros(on.shape, bool); out = []
+    for y0, x0 in zip(*np.nonzero(on)):
+        if seen[y0, x0]: continue
+        stack = [(y0, x0)]; seen[y0, x0] = True; ys, xs, n = [], [], 0
+        while stack:
+            y, x = stack.pop(); ys.append(y); xs.append(x); n += int(g[y, x])
+            for yy, xx in ((y + 1, x), (y - 1, x), (y, x + 1), (y, x - 1)):
+                if 0 <= yy < on.shape[0] and 0 <= xx < on.shape[1] and on[yy, xx] and not seen[yy, xx]:
+                    seen[yy, xx] = True; stack.append((yy, xx))
+        out.append({'px': n, 'bbox': [int(min(xs)) * cell, int(min(ys)) * cell, (int(max(xs)) + 1) * cell, (int(max(ys)) + 1) * cell]})
+    return sorted(out, key=lambda b: -b['px'])
